@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94d3d810851032c43810c4d630f0304e, type: 3}
+  m_Name: CollectiblePrefabMapping
+  m_EditorClassIdentifier: 
+  pointTokenPrefabs:
+  - pointTokenType: 1
+    prefab: {fileID: 5940289607546129480, guid: da6ec0b464c662f4797af6ad30642357, type: 3}
+  - pointTokenType: 2
+    prefab: {fileID: 5940289607546129480, guid: d520d3a81b2a21443bd274b5576b818d, type: 3}
+  - pointTokenType: 3
+    prefab: {fileID: 5940289607546129480, guid: d8298df8ed256094bb38b9a19e5b84c0, type: 3}
+  - pointTokenType: 4
+    prefab: {fileID: 5940289607546129480, guid: 64127e61d9003744c9acb2aeb762844f, type: 3}
+  - pointTokenType: 5
+    prefab: {fileID: 5940289607546129480, guid: 4a18fe3dfc710c840b7cfb89353e3cb9, type: 3}
+  - pointTokenType: 6
+    prefab: {fileID: 5940289607546129480, guid: 6a53b65725288ed4a88d96608ccce481, type: 3}
+  multiplierTokenPrefabs:
+  - multiplierTokenType: 1
+    prefab: {fileID: 3935069962214072578, guid: bfe93e68f4dee8347af6272752b6d42f, type: 3}

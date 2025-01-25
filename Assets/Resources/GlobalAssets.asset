@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bf186cee7f8f44199ce92cc502f9e8, type: 3}
+  m_Name: GlobalAssets
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - buttonLocation: 0
+    material: {fileID: 2100000, guid: 37e01095f19bd324a90c70546a37a98b, type: 2}
+  - buttonLocation: 1
+    material: {fileID: 2100000, guid: ba0623ee216948f438777b110a0cd343, type: 2}
+  selectedMaterials:
+  - buttonLocation: 1
+    material: {fileID: 2100000, guid: d40ed962e6665d447b9552392d39aac0, type: 2}
+  - buttonLocation: 0
+    material: {fileID: 2100000, guid: d40ed962e6665d447b9552392d39aac0, type: 2}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d5bf906aabf764aa14911f743c5de9, type: 3}
+  m_Name: GameModeCollection
+  m_EditorClassIdentifier: 
+  gameModes:
+  - gameMode: 0
+    displayName: Pins
+    description: Knock over tokens to accumulate points
+    scene: 1
+  - gameMode: 1
+    displayName: Portals
+    description: Portals go Rrrrraaaaa
+    scene: 2
+  - gameMode: 2
+    displayName: Dartboard
+    description: The hell is this?
+    scene: 3
