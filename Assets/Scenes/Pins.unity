@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1964422401}
   - {fileID: 383946635}
@@ -1848,6 +1849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 225933821}
   - {fileID: 917210679}
@@ -2924,6 +2926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 58839149}
   - {fileID: 1791088303}
@@ -3526,6 +3529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 170726582}
   - {fileID: 1672779229}
@@ -11847,6 +11851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 311278655}
   - {fileID: 1224077848}
@@ -15524,7 +15529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229953147}
   - component: {fileID: 1229953146}
-  - component: {fileID: 1229953145}
+  - component: {fileID: 1229953148}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -15532,26 +15537,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1229953145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229953144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1229953146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15582,6 +15567,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1229953148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229953144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &1231558587
 GameObject:
   m_ObjectHideFlags: 0
@@ -16820,7 +16836,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -18485,55 +18501,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1470580803
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1470580805}
-  - component: {fileID: 1470580804}
-  m_Layer: 0
-  m_Name: PostProcessVolume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1470580804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470580803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 77d8370010056174494a57ea1a84229c, type: 2}
---- !u!4 &1470580805
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470580803}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3773813, y: 6.756346, z: 24.418243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1477984060
 GameObject:
   m_ObjectHideFlags: 0
@@ -18714,6 +18681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1221220919}
   - {fileID: 1724521118}
@@ -20511,6 +20479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 177106939}
   - {fileID: 2038448756}
@@ -20570,6 +20539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1819593278}
   - {fileID: 304066991}
@@ -21130,6 +21100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1170877787}
   - {fileID: 2073991732}
@@ -22890,6 +22861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1120160843}
   - {fileID: 415374485}
@@ -25611,6 +25583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 252302777}
   - {fileID: 1069136807}
@@ -26110,6 +26083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 364779795}
   - {fileID: 823497365}
@@ -26817,6 +26791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonLocation: 0
   boundaries:
   - {fileID: 1690959632}
   - {fileID: 3263888}
@@ -29247,4 +29222,3 @@ SceneRoots:
   - {fileID: 1298743690}
   - {fileID: 1324001288}
   - {fileID: 1860918788}
-  - {fileID: 1470580805}
