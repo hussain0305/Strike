@@ -24,6 +24,7 @@ public class PressAnyKeyToStart : MonoBehaviour
     {
         notReadySection.SetActive(false);
         readySection.SetActive(true);
+        ModeSelector.Instance.Init();
     }
     
     void Update()

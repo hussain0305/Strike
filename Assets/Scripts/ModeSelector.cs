@@ -34,6 +34,10 @@ public class ModeSelector : MonoBehaviour
     public Button removePlayerButton;
     public Button playButton;    
     public TextMeshProUGUI currentNumPlayersText;
+
+    [Header("DEBUG")]
+    public Button addStars;
+    
     private int maxPlayers = 8;
     
     private int currentNumPlayers = 1;
@@ -61,6 +65,12 @@ public class ModeSelector : MonoBehaviour
         removePlayerButton?.onClick.AddListener(RemovePlayer);
         
         playButton.onClick?.AddListener(StartGame);
+        
+        //===TODO: DEBUG. DELETE LATER===
+        addStars.onClick.AddListener(() =>
+        {
+            SaveManager.AddStars(40);
+        });
     }
 
     private void OnDisable()
@@ -70,9 +80,9 @@ public class ModeSelector : MonoBehaviour
         playButton?.onClick.RemoveAllListeners();
     }
 
-    private void Start()
+    public void Init()
     {
-        GameModeSelected(GameModeType.Pins);
+        GameModeSelected((GameModeType)0);
     }
 
     public void AddPlayer()
