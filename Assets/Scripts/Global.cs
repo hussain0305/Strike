@@ -101,6 +101,7 @@ public struct GameModeInfo
     public string displayName;
     public string description;
     public int scene;
+    public int starsRequiredToUnlock;
 }
 
 [System.Serializable]

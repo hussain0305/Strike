@@ -17,11 +17,14 @@ MonoBehaviour:
     displayName: Pins
     description: Knock over tokens to accumulate points
     scene: 1
+    starsRequiredToUnlock: 0
   - gameMode: 1
     displayName: Portals
     description: Portals go Rrrrraaaaa
     scene: 2
+    starsRequiredToUnlock: 50
   - gameMode: 2
     displayName: Dartboard
     description: The hell is this?
     scene: 3
+    starsRequiredToUnlock: 100
