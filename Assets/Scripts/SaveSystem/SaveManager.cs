@@ -78,7 +78,7 @@ public static class SaveManager
 
     public static async void LoadData()
     {
-        string savePath = SaveSystem.GetSavePath(); // Access Unity API on the main thread
+        string savePath = SaveSystem.GetSavePath();
 
         if (File.Exists(savePath))
         {

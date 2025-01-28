@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PressAnyKeyToStart : MonoBehaviour
+public class LandingPage : MonoBehaviour
 {
     public GameObject notReadySection;
     public GameObject readySection;
