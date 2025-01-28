@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameModeLevelMapping", menuName = "Game/Game Mode Level Mapping", order = 1)]
 public class GameModeLevelMapping : ScriptableObject
 {
-    public List<GameModeLevelInfo> gameModeLevels; // List of game modes and their levels
+    public List<GameModeLevelInfo> gameModeLevels;
 
     public List<int> GetLevelsForGameMode(GameModeType gameMode)
     {

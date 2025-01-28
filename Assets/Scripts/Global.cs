@@ -111,6 +111,15 @@ public struct ButtonMaterials
     public Material material;
 }
 
+[System.Serializable]
+public struct BallProperties
+{
+    public string name;
+    public float weight;
+    public float spin;
+    public float bounce;
+    public GameObject prefab;
+}
 
 public class Global : MonoBehaviour
 {

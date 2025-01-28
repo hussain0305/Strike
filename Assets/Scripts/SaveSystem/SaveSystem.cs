@@ -6,6 +6,7 @@ public class SaveData
 {
     public int stars = 0;
     public int[] unlockedGameModes = {0};
+    public int selectedBall = 0;
 }
 
 public static class SaveSystem

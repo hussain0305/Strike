@@ -5,8 +5,6 @@ using UnityEngine;
 public class GlobalAssets : ScriptableObject
 {
     private static GlobalAssets _instance;
-
-    // Static property to access the instance
     public static GlobalAssets Instance
     {
         get
@@ -23,7 +21,6 @@ public class GlobalAssets : ScriptableObject
         }
     }
 
-    // Add your references here
     public ButtonMaterials[] defaultMaterials;
     public ButtonMaterials[] selectedMaterials;
 

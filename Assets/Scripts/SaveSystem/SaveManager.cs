@@ -63,6 +63,19 @@ public static class SaveManager
         SaveData();
     }
 
+    public static void SetSelectedBall(int ballIndex)
+    {
+        EnsureDataLoaded();
+        currentSaveData.selectedBall = ballIndex;
+        SaveData();
+    }
+
+    public static int GetSelectedBall()
+    {
+        EnsureDataLoaded();
+        return currentSaveData.selectedBall;
+    }
+
     public static async void LoadData()
     {
         string savePath = SaveSystem.GetSavePath(); // Access Unity API on the main thread
@@ -79,11 +92,17 @@ public static class SaveManager
         else
         {
             Debug.LogWarning("Save file not found, returning default data.");
-            currentSaveData = new SaveData(); // Assign default data
+            currentSaveData = new SaveData();
         }
 
         Debug.Log("IsSaveLoaded set to true");
         IsSaveLoaded = true;
+        CoroutineDispatcher.Instance.RunCoroutine(DelayedSaveFileLoadedBroadcast());
+    }
+
+    public static IEnumerator DelayedSaveFileLoadedBroadcast()
+    {
+        yield return new WaitForSeconds(0.5f);
         OnSaveFileLoaded?.Invoke();
     }
     
@@ -103,12 +122,6 @@ public static class SaveManager
     }
     */
     
-    private static System.Collections.IEnumerator DelayedSaveFileLoadedEvent()
-    {
-        yield return new WaitForSeconds(0.1f);
-        OnSaveFileLoaded?.Invoke();
-    }
-
     private static void SaveData()
     {
         if (Application.platform == RuntimePlatform.WebGLPlayer)
