@@ -24,19 +24,19 @@ public class LandingPage : MonoBehaviour
 
     private void Start()
     {
-        loadingScreenText.text = "LOADING SAVE FILE";
+        loadingScreenText.text = "Loading Save file";
         CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
     }
 
     public void SaveLoaded()
     {
-        loadingScreenText.text = "SETTING THINGS UP";
+        loadingScreenText.text = "Setting things up";
         ModeSelector.Instance.Init();
     }
     
     public void GameReady()
     {
-        loadingScreenText.text = "PRESS ANY KEY TO START";
+        loadingScreenText.text = "Press any key to start";
     }
 
     void Update()

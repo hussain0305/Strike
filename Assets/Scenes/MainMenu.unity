@@ -2478,7 +2478,6 @@ GameObject:
   m_Component:
   - component: {fileID: 529094496}
   - component: {fileID: 529094495}
-  - component: {fileID: 529094494}
   - component: {fileID: 529094493}
   m_Layer: 0
   m_Name: BallPreviewCamera
@@ -2531,14 +2530,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &529094494
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 529094492}
-  m_Enabled: 1
 --- !u!20 &529094495
 Camera:
   m_ObjectHideFlags: 0
