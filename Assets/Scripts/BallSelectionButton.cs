@@ -33,7 +33,6 @@ public class BallSelectionButton : MonoBehaviour
 
     public void PreviewBall()
     {
-        SetSelected();
         BallSelectionPage.Instance.SetSelectedBall(BallIndex);
     }
 

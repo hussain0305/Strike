@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallSelectionPage : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class BallSelectionPage : MonoBehaviour
     public BallStatRow statWeight;
     public BallStatRow statSpin;
     public BallStatRow statBounce;
+    public Button equipBallButton;
     
     private Dictionary<int, GameObject> previewBalls;
     private Dictionary<int, BallSelectionButton> ballButtons;
+
+    private int currentSelectedBall;
     
     private static BallSelectionPage instance;
     public static BallSelectionPage Instance => instance;
@@ -32,7 +36,25 @@ public class BallSelectionPage : MonoBehaviour
         SaveManager.RegisterListener(this);
         SaveManager.OnSaveFileLoaded += SaveLoaded;
     }
-    
+
+    private void OnEnable()
+    {
+        equipBallButton.onClick.AddListener(() =>
+        {
+            SaveManager.SetSelectedBall(currentSelectedBall);
+        });
+
+        if (SaveManager.IsSaveLoaded)
+        {
+            HighlightSelected(SaveManager.GetSelectedBall());
+        }
+    }
+
+    private void OnDisable()
+    {
+        equipBallButton.onClick.RemoveAllListeners();
+    }
+
     public void SaveLoaded()
     {
         previewBalls = new Dictionary<int, GameObject>();
@@ -55,16 +77,12 @@ public class BallSelectionPage : MonoBehaviour
             i++;
         }
 
-        int currentSelectedBall = SaveManager.GetSelectedBall();
-        if (ballButtons.ContainsKey(currentSelectedBall))
-        {
-            ballButtons[currentSelectedBall].SetSelected();
-            SetSelectedBall(currentSelectedBall);
-        }
+        HighlightSelected(SaveManager.GetSelectedBall());
     }
     
     public void SetSelectedBall(int ballIndex)
     {
+        currentSelectedBall = ballIndex;
         ActivateBallPreview(ballIndex);
 
         statWeight.propertyTypeText.text = "WEIGHT";
@@ -81,8 +99,25 @@ public class BallSelectionPage : MonoBehaviour
         statBounce.propertySlider.value =
             Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].bounce / Balls.Instance.maxBounce);
         statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].bounce.ToString("F2");
+
+        HighlightSelected(ballIndex);
     }
     
+    public void HighlightSelected(int ballIndex)
+    {
+        foreach (int buttonIndex in ballButtons.Keys)
+        {
+            if (buttonIndex == ballIndex)
+            {
+                ballButtons[buttonIndex].SetSelected();
+            }
+            else
+            {
+                ballButtons[buttonIndex].SetUnselected();
+            }
+        }
+    }
+
     public void ActivateBallPreview(int ballIndex)
     {
         bool existingBallFound = false;
