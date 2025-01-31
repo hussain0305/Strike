@@ -157,14 +157,6 @@ public static class SaveManager
     #endregion
 }
 
-public class SaveManagerBehaviour : MonoBehaviour
-{
-    private void Start()
-    {
-        CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
-    }
-}
-
 /*
 private static void LoadData()
 {
