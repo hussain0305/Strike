@@ -78,21 +78,13 @@ public static class SaveManager
 
     public static async void LoadData()
     {
-        string savePath = SaveSystem.GetSavePath();
-
-        if (File.Exists(savePath))
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            await Task.Run(() =>
-            {
-                string encryptedJson = File.ReadAllText(savePath);
-                string json = EncryptionUtils.Decrypt(encryptedJson);
-                currentSaveData = JsonUtility.FromJson<SaveData>(json);
-            });
+            currentSaveData = WebGLSaveSystem.LoadGame();
         }
         else
         {
-            Debug.LogWarning("Save file not found, returning default data.");
-            currentSaveData = new SaveData();
+            currentSaveData = await SaveSystem.LoadGameAsync();
         }
 
         Debug.Log("IsSaveLoaded set to true");

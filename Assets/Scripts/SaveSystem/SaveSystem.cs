@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [System.Serializable]
@@ -34,6 +35,25 @@ public static class SaveSystem
             string encryptedJson = File.ReadAllText(path);
             string json = EncryptionUtils.Decrypt(encryptedJson);
             return JsonUtility.FromJson<SaveData>(json);
+        }
+        else
+        {
+            Debug.LogWarning("Save file not found, returning default data.");
+            return new SaveData();
+        }
+    }
+    
+    public static async Task<SaveData> LoadGameAsync()
+    {
+        string path = GetSavePath();
+        if (File.Exists(path))
+        {
+            return await Task.Run(() =>
+            {
+                string encryptedJson = File.ReadAllText(path);
+                string json = EncryptionUtils.Decrypt(encryptedJson);
+                return JsonUtility.FromJson<SaveData>(json);
+            });
         }
         else
         {
