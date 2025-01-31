@@ -10,13 +10,91 @@ public static class SaveManager
 {
     private static SaveData currentSaveData;
     public static event Action OnSaveFileLoaded;
+    public static event Action OnGameReady;
     public static bool IsSaveLoaded { get; private set; } = false;
+    public static bool IsGameReady { get; private set; } = false;
+    
+    private static readonly HashSet<MonoBehaviour> pendingListeners = new HashSet<MonoBehaviour>();
     
     static SaveManager()
     {
         KeyManager.GenerateAndStoreKeys();
         // LoadData();
     }
+    
+    public static async void LoadData()
+    {
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            currentSaveData = WebGLSaveSystem.LoadGame();
+        }
+        else
+        {
+            currentSaveData = await SaveSystem.LoadGameAsync();
+        }
+
+        Debug.Log("IsSaveLoaded set to true");
+        IsSaveLoaded = true;
+    }
+    
+    public static IEnumerator LoadSaveProcess()
+    {
+        yield return new WaitForSeconds(0.25f);//Wait for everyone to register
+
+        LoadData();
+
+        yield return new WaitUntil(() => IsSaveLoaded);
+        yield return new WaitForSeconds(0.25f);
+
+        OnSaveFileLoaded?.Invoke();
+    }
+    
+    private static void SaveData()
+    {
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            WebGLSaveSystem.SaveGame(currentSaveData);
+        }
+        else
+        {
+            SaveSystem.SaveGame(currentSaveData);
+        }
+    }
+    
+    private static void EnsureDataLoaded()
+    {
+        if (!IsSaveLoaded)
+        {
+            Debug.LogError("Save data has not been loaded yet!");
+            throw new InvalidOperationException("Save data is not loaded. Ensure LoadData is called before accessing save-related methods.");
+        }
+    }
+
+    #region Listeners
+
+    public static void RegisterListener(MonoBehaviour listener)
+    {
+        pendingListeners.Add(listener);
+    }
+
+    public static void MarkListenerComplete(MonoBehaviour listener)
+    {
+        if (pendingListeners.Contains(listener))
+        {
+            pendingListeners.Remove(listener);
+        }
+
+        if (pendingListeners.Count == 0)
+        {
+            Debug.Log("All listeners completed. Broadcasting OnGameReady.");
+            IsGameReady = true;
+            OnGameReady?.Invoke();
+        }
+    }
+
+    #endregion
+
+    #region Get From and Save To Save File
 
     public static int GetStars()
     {
@@ -76,62 +154,29 @@ public static class SaveManager
         return currentSaveData.selectedBall;
     }
 
-    public static async void LoadData()
-    {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            currentSaveData = WebGLSaveSystem.LoadGame();
-        }
-        else
-        {
-            currentSaveData = await SaveSystem.LoadGameAsync();
-        }
+    #endregion
+}
 
-        Debug.Log("IsSaveLoaded set to true");
-        IsSaveLoaded = true;
-        CoroutineDispatcher.Instance.RunCoroutine(DelayedSaveFileLoadedBroadcast());
-    }
-
-    public static IEnumerator DelayedSaveFileLoadedBroadcast()
+public class SaveManagerBehaviour : MonoBehaviour
+{
+    private void Start()
     {
-        yield return new WaitForSeconds(0.5f);
-        OnSaveFileLoaded?.Invoke();
-    }
-    
-    /*
-    private static void LoadData()
-    {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            currentSaveData = WebGLSaveSystem.LoadGame();
-        }
-        else
-        {
-            currentSaveData = SaveSystem.LoadGame();
-        }
-        IsSaveLoaded = true;
-        OnSaveFileLoaded?.Invoke();
-    }
-    */
-    
-    private static void SaveData()
-    {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            WebGLSaveSystem.SaveGame(currentSaveData);
-        }
-        else
-        {
-            SaveSystem.SaveGame(currentSaveData);
-        }
-    }
-    
-    private static void EnsureDataLoaded()
-    {
-        if (!IsSaveLoaded)
-        {
-            Debug.LogError("Save data has not been loaded yet!");
-            throw new InvalidOperationException("Save data is not loaded. Ensure LoadData is called before accessing save-related methods.");
-        }
+        CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
     }
 }
+
+/*
+private static void LoadData()
+{
+    if (Application.platform == RuntimePlatform.WebGLPlayer)
+    {
+        currentSaveData = WebGLSaveSystem.LoadGame();
+    }
+    else
+    {
+        currentSaveData = SaveSystem.LoadGame();
+    }
+    IsSaveLoaded = true;
+    OnSaveFileLoaded?.Invoke();
+}
+*/

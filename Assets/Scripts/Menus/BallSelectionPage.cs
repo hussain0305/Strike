@@ -27,21 +27,20 @@ public class BallSelectionPage : MonoBehaviour
         instance = this;
     }
 
-    private void OnEnable()
+    public void Start()
     {
+        SaveManager.RegisterListener(this);
         SaveManager.OnSaveFileLoaded += SaveLoaded;
     }
-
-    private void OnDisable()
-    {
-        SaveManager.OnSaveFileLoaded -= SaveLoaded;
-    }
-
+    
     public void SaveLoaded()
     {
         previewBalls = new Dictionary<int, GameObject>();
         ballButtons = new Dictionary<int, BallSelectionButton>();
         SpawnButtonsAndSetSelected();
+        SaveManager.OnSaveFileLoaded -= SaveLoaded;
+        SaveManager.MarkListenerComplete(this);
+        gameObject.SetActive(false);
     }
 
     public void SpawnButtonsAndSetSelected()

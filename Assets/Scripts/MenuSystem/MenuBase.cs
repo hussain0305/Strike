@@ -18,15 +18,33 @@ public class MenuBase : MonoBehaviour
     };
 
     public MenuType menuType;
+    public bool disableAfterRegister = true;
+    public bool waitForSaveFileLoaded = false;
 
     public void Start()
     {
-        RegisterAndDisable();
+        Register();
     }
     
-    public void RegisterAndDisable()
+    public void Register()
     {
         MenuManager.Instance.RegisterMenu(this);
-        gameObject.SetActive(false);
+        if (waitForSaveFileLoaded)
+        {
+            SaveManager.OnSaveFileLoaded += OnSaveFileLoaded;
+        }
+        else if (disableAfterRegister)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    
+    private void OnSaveFileLoaded()
+    {
+        SaveManager.OnSaveFileLoaded -= OnSaveFileLoaded;
+        if (disableAfterRegister)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
