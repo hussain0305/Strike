@@ -32,6 +32,7 @@ public class LandingPage : MonoBehaviour
         if(SaveManager.IsSaveLoaded && !isKeyPressed && (Input.anyKey || Input.GetMouseButtonDown(0)))
         {
             isKeyPressed = true;
+            MenuManager.Instance.OpenMenu(MenuBase.MenuType.MainMenu);
             gameObject.SetActive(false);
         }
     }
