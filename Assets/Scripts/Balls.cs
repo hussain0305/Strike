@@ -25,4 +25,14 @@ public class Balls : ScriptableObject
     public float maxWeight = 10;
     public float maxSpin = 15;
     public float maxBounce = 3;
+
+    public BallProperties GetBall(int index)
+    {
+        if (index < allBalls.Count)
+        {
+            return allBalls[index];
+        }
+
+        return allBalls[0];
+    }
 }

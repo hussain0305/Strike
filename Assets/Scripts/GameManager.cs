@@ -14,8 +14,12 @@ public class GameManager : MonoBehaviour
     public delegate void NextShotCued();
     public static event NextShotCued OnNextShotCued;
 
-    [Header("Controls Panel")]
+    [Header("Level Objects")]
+    public Tee tee;
+    [HideInInspector]
     public Ball ball;
+
+    [Header("Controls Panel")]
     public PowerInput powerInput;
     public SpinInput spinInput;
     public AngleInput angleInput;
@@ -23,7 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject trajectoryButtonSection;
     public GameObject trajectoryHistoryButton;
     public LineRenderer trajectory;
-
+    
     [Header("Game Screen")]
     public Button fireButton;
     public Button nextButton;
@@ -80,8 +84,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        startPosition = ball.transform.position;
-        ballMass = ball.rb.mass;
+        InitBall();
         gravity = -Physics.gravity.y;
         
         //===== Above this might need changing. Was written in the prototyping stage
@@ -96,6 +99,15 @@ public class GameManager : MonoBehaviour
         ShowLevelInfo();
         currentPlayerTurn = 0;
         RoundDataManager.Instance.SetCurrentShotTaker();
+    }
+
+    public void InitBall()
+    {
+        BallProperties selectionBall = Balls.Instance.GetBall(SaveManager.GetSelectedBall());
+        GameObject spawnedBall = Instantiate(selectionBall.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
+        ball = spawnedBall.GetComponent<Ball>();
+        startPosition = tee.ballPosition.position;
+        ballMass = ball.rb.mass;
     }
     
     public void SetupPlayers()
