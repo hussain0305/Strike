@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class MainMenuSceneSetup : MonoBehaviour
 {
+    public delegate void InMenu();
+    public static event InMenu OnMenu;
+
     public LandingPage landingPage;
     
     private void OnEnable()
@@ -20,13 +23,6 @@ public class MainMenuSceneSetup : MonoBehaviour
     private void Start()
     {
         InputManager.Instance.SetContext(GameContext.InMenu);
-        
-        // if (SaveManager.IsSaveLoaded)
-        // {
-        //     landingPage.ProceedToMainMenu(0.25f);
-        //     return;
-        // }
-        
         landingPage.SetText("Loading Save file");
         CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
     }
@@ -35,6 +31,7 @@ public class MainMenuSceneSetup : MonoBehaviour
     {
         landingPage.SetText("Setting things up");
         ModeSelector.Instance.Init();
+        OnMenu?.Invoke();
     }
     
     public void GameReady()

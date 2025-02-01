@@ -11,6 +11,9 @@ public class MenuManager : MonoBehaviour
     private Stack<GameObject> popupStack = new Stack<GameObject>();
 
     private Dictionary<MenuBase.MenuType, GameObject> menuDictionary = new Dictionary<MenuBase.MenuType, GameObject>();
+
+    private GameContext currentGameContext = GameContext.InMenu;
+    private MenuBase.MenuType? requiredMenuType = MenuBase.MenuType.MainMenu;
     
     private void Awake()
     {
@@ -26,8 +29,16 @@ public class MenuManager : MonoBehaviour
         }
     }
     
+    private void Start()
+    {
+        GameManager.OnGotInGame += InGame;
+        MainMenuSceneSetup.OnMenu += InMenus;
+    }
+
     private void OnDestroy()
     {
+        GameManager.OnGotInGame -= InGame;
+        MainMenuSceneSetup.OnMenu -= InMenus;
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
@@ -77,7 +88,13 @@ public class MenuManager : MonoBehaviour
             topMenu.SetActive(false);
 
             if (menuStack.Count > 0)
+            {
                 menuStack.Peek().SetActive(true);
+            }
+            else if (requiredMenuType.HasValue && menuDictionary.ContainsKey(requiredMenuType.Value))
+            {
+                OpenMenu(requiredMenuType.Value);
+            }
         }
     }
 
@@ -114,4 +131,17 @@ public class MenuManager : MonoBehaviour
     {
         return menuStack.Count != 0;
     }
+    
+    public void InGame()
+    {
+        currentGameContext = GameContext.InGame;
+        requiredMenuType = null;
+    }
+
+    public void InMenus()
+    {
+        currentGameContext = GameContext.InMenu;
+        requiredMenuType = MenuBase.MenuType.MainMenu;
+    }
+
 }

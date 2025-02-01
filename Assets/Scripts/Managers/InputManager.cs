@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -16,7 +17,19 @@ public class InputManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
+
+    private void Start()
+    {
+        GameManager.OnGotInGame += InGame;
+        MainMenuSceneSetup.OnMenu += InMenus;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGotInGame -= InGame;
+        MainMenuSceneSetup.OnMenu -= InMenus;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -25,6 +38,16 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void InGame()
+    {
+        SetContext(GameContext.InGame);
+    }
+
+    public void InMenus()
+    {
+        SetContext(GameContext.InMenu);
+    }
+    
     public void SetContext(GameContext context)
     {
         currentContext = context;

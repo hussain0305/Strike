@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     public delegate void NextShotCued();
     public static event NextShotCued OnNextShotCued;
 
+    public delegate void InGame();
+    public static event InGame OnGotInGame;
+
     [Header("Level Objects")]
     public Tee tee;
     [HideInInspector]
@@ -104,6 +107,7 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
+        OnGotInGame?.Invoke();
         InputManager.Instance.SetContext(GameContext.InGame);
     }
 
