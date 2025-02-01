@@ -114,10 +114,15 @@ public struct ButtonMaterials
 [System.Serializable]
 public struct BallProperties
 {
+    [Header("Display")]
     public string name;
+    
+    [Header("Properties")]
     public float weight;
     public float spin;
-    public float bounce;
+
+    [Header("Construction")]
+    public PhysicsMaterial physicsMaterial;
     public GameObject prefab;
 }
 

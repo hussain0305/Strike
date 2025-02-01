@@ -97,8 +97,8 @@ public class BallSelectionPage : MonoBehaviour
         
         statBounce.propertyTypeText.text = "BOUNCE";
         statBounce.propertySlider.value =
-            Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].bounce / Balls.Instance.maxBounce);
-        statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].bounce.ToString("F2");
+            Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness / Balls.Instance.maxBounce);
+        statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F2");
 
         HighlightSelected(ballIndex);
     }

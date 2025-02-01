@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allBalls:
   - name: Soccer Ball
-    ballIndex: 0
     weight: 1
     spin: 10
-    bounciness: 1
+    bounce: 0
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 1089681808455105078, guid: c3613743306a885429a288d93f20e705, type: 3}
   - name: Bowling Ball
-    ballIndex: 0
     weight: 5
     spin: 2
-    bounciness: 0
+    bounce: 0
+    physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
+  maxWeight: 10
+  maxSpin: 15
+  maxBounce: 3
