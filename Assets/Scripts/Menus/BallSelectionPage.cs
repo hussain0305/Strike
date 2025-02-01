@@ -77,7 +77,7 @@ public class BallSelectionPage : MonoBehaviour
             i++;
         }
 
-        HighlightSelected(SaveManager.GetSelectedBall());
+        SetSelectedBall(SaveManager.GetSelectedBall());
     }
     
     public void SetSelectedBall(int ballIndex)
