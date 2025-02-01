@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BallVicinityDetection : MonoBehaviour
 {
-    public BallControl ball;
+    public Ball ball;
     
     private void OnTriggerEnter(Collider other)
     {

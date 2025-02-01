@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public static event NextShotCued OnNextShotCued;
 
     [Header("Controls Panel")]
-    public BallControl ball;
+    public Ball ball;
     public PowerInput powerInput;
     public SpinInput spinInput;
     public AngleInput angleInput;

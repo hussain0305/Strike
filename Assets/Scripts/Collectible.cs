@@ -59,7 +59,7 @@ public class Collectible : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-        if (!(other != null && other.gameObject != null && other.gameObject.GetComponent<BallControl>()))
+        if (!(other != null && other.gameObject != null && other.gameObject.GetComponent<Ball>()))
         {
             return;
         }
@@ -76,7 +76,7 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!(other != null && other.gameObject != null && other.gameObject.GetComponent<BallControl>()))
+        if (!(other != null && other.gameObject != null && other.gameObject.GetComponent<Ball>()))
         {
             return;
         }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WallChecker : MonoBehaviour
 {
-    public BallControl ball;
+    public Ball ball;
 
     private void OnTriggerEnter(Collider other)
     {
