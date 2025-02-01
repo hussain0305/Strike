@@ -17,6 +17,7 @@ public class BallSelectionPage : MonoBehaviour
     private Dictionary<int, BallSelectionButton> ballButtons;
 
     private int currentSelectedBall;
+    private bool setupComplete = false;
     
     private static BallSelectionPage instance;
     public static BallSelectionPage Instance => instance;
@@ -34,7 +35,7 @@ public class BallSelectionPage : MonoBehaviour
     public void Start()
     {
         SaveManager.RegisterListener(this);
-        SaveManager.OnSaveFileLoaded += SaveLoaded;
+        SaveManager.OnSaveFileLoaded += SetupBallSelection;
     }
 
     private void OnEnable()
@@ -44,9 +45,9 @@ public class BallSelectionPage : MonoBehaviour
             SaveManager.SetSelectedBall(currentSelectedBall);
         });
 
-        if (SaveManager.IsSaveLoaded)
+        if (SaveManager.IsSaveLoaded && setupComplete)
         {
-            HighlightSelected(SaveManager.GetSelectedBall());
+            SetSelectedBall(SaveManager.GetSelectedBall());
         }
     }
 
@@ -55,14 +56,15 @@ public class BallSelectionPage : MonoBehaviour
         equipBallButton.onClick.RemoveAllListeners();
     }
 
-    public void SaveLoaded()
+    public void SetupBallSelection()
     {
         previewBalls = new Dictionary<int, GameObject>();
         ballButtons = new Dictionary<int, BallSelectionButton>();
         SpawnButtonsAndSetSelected();
-        SaveManager.OnSaveFileLoaded -= SaveLoaded;
+        SaveManager.OnSaveFileLoaded -= SetupBallSelection;
         SaveManager.MarkListenerComplete(this);
         gameObject.SetActive(false);
+        setupComplete = true;
     }
 
     public void SpawnButtonsAndSetSelected()

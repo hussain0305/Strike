@@ -1,10 +1,23 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BackButton : MonoBehaviour
 {
-    private void Start()
+    public Button backButton;
+
+    private void OnEnable()
     {
-        GetComponent<Button>().onClick.AddListener(() => MenuManager.Instance.CloseCurrentMenu());
+        backButton.onClick.AddListener(BackButtonPressed);
+    }
+
+    private void OnDisable()
+    {
+        backButton.onClick.RemoveListener(BackButtonPressed);
+    }
+    
+    public void BackButtonPressed()
+    {
+        MenuManager.Instance.CloseCurrentMenu();
     }
 }

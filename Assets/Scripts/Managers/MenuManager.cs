@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -16,11 +17,37 @@ public class MenuManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+    
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        List<MenuBase.MenuType> toRemove = new List<MenuBase.MenuType>();
+        
+        foreach (var pair in menuDictionary)
+        {
+            if (pair.Value == null)
+                toRemove.Add(pair.Key);
+        }
+
+        foreach (var key in toRemove)
+        {
+            menuDictionary.Remove(key);
+        }
+
+        menuStack.Clear();
+        popupStack.Clear();
     }
 
     public void OpenMenu(MenuBase.MenuType menuType)
@@ -81,5 +108,10 @@ public class MenuManager : MonoBehaviour
     public void RegisterMenu(MenuBase menuBase)
     {
         menuDictionary.Add(menuBase.menuType, menuBase.gameObject);
+    }
+
+    public bool IsAnyMenuOpen()
+    {
+        return menuStack.Count != 0;
     }
 }

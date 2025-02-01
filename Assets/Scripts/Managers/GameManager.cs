@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        InitGame();
         InitBall();
         gravity = -Physics.gravity.y;
         
@@ -99,6 +100,11 @@ public class GameManager : MonoBehaviour
         ShowLevelInfo();
         currentPlayerTurn = 0;
         RoundDataManager.Instance.SetCurrentShotTaker();
+    }
+
+    public void InitGame()
+    {
+        InputManager.Instance.SetContext(GameContext.InGame);
     }
 
     public void InitBall()

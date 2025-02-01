@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758970438876049892}
   m_Layer: 5
-  m_Name: BackButton
+  m_Name: GenericButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,7 +239,6 @@ GameObject:
   - component: {fileID: 7080004007706789898}
   - component: {fileID: 8319749005885086568}
   - component: {fileID: 7613472620511984029}
-  - component: {fileID: 8140754197710020494}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -368,19 +367,6 @@ MonoBehaviour:
   - {fileID: 7219761397132367859}
   - {fileID: 207431117644194636}
   backToDefaultOnEnable: 1
---- !u!114 &8140754197710020494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7442046952331692763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2fd81ef0e573741a5b1331e557390f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backButton: {fileID: 8319749005885086568}
 --- !u!1 &7929779002893896059
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +582,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <b><</b> BACK
+  m_text: LEVEL 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b3e32260e9ed2bb4796fce5365a3114e, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 4941b7eaa0aa05e4bb2c43a1d61bb1ea, type: 2}

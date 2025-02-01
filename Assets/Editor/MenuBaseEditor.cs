@@ -8,13 +8,14 @@ public class MenuBaseEditor : Editor
     {
         serializedObject.Update();
 
-        // Get references to serialized properties
+        SerializedProperty menuTypeProp = serializedObject.FindProperty("menuType"); 
         SerializedProperty disableAfterRegisterProp = serializedObject.FindProperty("disableAfterRegister");
         SerializedProperty waitForSaveFileLoadedProp = serializedObject.FindProperty("waitForSaveFileLoaded");
 
         EditorGUILayout.LabelField("Menu Settings", EditorStyles.boldLabel);
 
-        // DisableAfterRegister Toggle
+        EditorGUILayout.PropertyField(menuTypeProp, new GUIContent("Menu Type"));
+        
         EditorGUI.BeginChangeCheck();
         bool disableAfterRegister = EditorGUILayout.Toggle(new GUIContent("Disable After Register", "Disable menu immediately after registering"), disableAfterRegisterProp.boolValue);
         if (EditorGUI.EndChangeCheck())
@@ -23,7 +24,6 @@ public class MenuBaseEditor : Editor
             if (disableAfterRegister) waitForSaveFileLoadedProp.boolValue = false; // Ensure only one is enabled
         }
 
-        // WaitForSaveFileLoaded Toggle
         EditorGUI.BeginChangeCheck();
         bool waitForSaveFileLoaded = EditorGUILayout.Toggle(new GUIContent("Wait for Save File Loaded", "Keep menu enabled until save file loads"), waitForSaveFileLoadedProp.boolValue);
         if (EditorGUI.EndChangeCheck())

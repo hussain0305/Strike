@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//============---- ENUMS ----============
+
 [System.Serializable]
 public enum GameModeType
 {
@@ -68,6 +70,16 @@ public enum ButtonLocation
     GameHUD,
     MainMenu
 };
+
+public enum GameContext
+{
+    InMenu,
+    InGame,
+    InPauseMenu,
+    InQuitScreen
+}
+
+//============---- STRUCTS ----============
 
 public struct ShotInfo
 {
