@@ -90,17 +90,17 @@ public class BallSelectionPage : MonoBehaviour
         statWeight.propertyTypeText.text = "WEIGHT";
         statWeight.propertySlider.value =
             Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].weight / Balls.Instance.maxWeight);
-        statWeight.propertyValueText.text = Balls.Instance.allBalls[ballIndex].weight.ToString("F2");
+        statWeight.propertyValueText.text = Balls.Instance.allBalls[ballIndex].weight.ToString("F1");
         
         statSpin.propertyTypeText.text = "SPIN";
         statSpin.propertySlider.value =
             Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].spin / Balls.Instance.maxSpin);
-        statSpin.propertyValueText.text = Balls.Instance.allBalls[ballIndex].spin.ToString("F2");
+        statSpin.propertyValueText.text = Balls.Instance.allBalls[ballIndex].spin.ToString("F1");
         
         statBounce.propertyTypeText.text = "BOUNCE";
         statBounce.propertySlider.value =
             Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness / Balls.Instance.maxBounce);
-        statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F2");
+        statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F1");
 
         HighlightSelected(ballIndex);
     }

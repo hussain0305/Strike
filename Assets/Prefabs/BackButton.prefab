@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: ba0623ee216948f438777b110a0cd343, type: 2}
+  m_Material: {fileID: 2100000, guid: a71ee4f8a867b8041bc986e46ee68fd9, type: 2}
   m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: ba0623ee216948f438777b110a0cd343, type: 2}
+  m_Material: {fileID: 2100000, guid: a71ee4f8a867b8041bc986e46ee68fd9, type: 2}
   m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLocation: 1
+  buttonLocation: 2
   boundaries:
   - {fileID: 2986721668293111379}
   - {fileID: 4475960585436651875}
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: ba0623ee216948f438777b110a0cd343, type: 2}
+  m_Material: {fileID: 2100000, guid: a71ee4f8a867b8041bc986e46ee68fd9, type: 2}
   m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: ba0623ee216948f438777b110a0cd343, type: 2}
+  m_Material: {fileID: 2100000, guid: a71ee4f8a867b8041bc986e46ee68fd9, type: 2}
   m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -598,15 +598,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: <b><</b> BACK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3e32260e9ed2bb4796fce5365a3114e, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4941b7eaa0aa05e4bb2c43a1d61bb1ea, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 0c875accc3a5e1841b38bc89c88b3e6c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

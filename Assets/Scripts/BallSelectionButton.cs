@@ -7,6 +7,8 @@ public class BallSelectionButton : MonoBehaviour
     public Button button;
     public TextMeshProUGUI ballNameText;
     public Image[] outlines;
+    public Color selectedTextColor;
+    public Color unselectedTextColor;
     
     private int ballIndex;
     public int BallIndex => ballIndex;
@@ -47,10 +49,12 @@ public class BallSelectionButton : MonoBehaviour
     public void SetSelected()
     {
         SetBorderMaterial(GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.MainMenu));
+        ballNameText.color = selectedTextColor;
     }
 
     public void SetUnselected()
     {
         SetBorderMaterial(GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.MainMenu));
+        ballNameText.color = unselectedTextColor;
     }
 }

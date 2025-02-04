@@ -68,7 +68,10 @@ public enum WinCondition
 public enum ButtonLocation
 {
     GameHUD,
-    MainMenu
+    MainMenu,
+    BackButton,
+    MainMenu_1,
+    MainMenu_2,
 };
 
 public enum GameContext
