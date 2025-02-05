@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HexagonalPatternShader_Controlled 4
+  m_Name: HexagonalPatternShader_Controlled 5
   m_Shader: {fileID: 4800000, guid: d36e7c11b410e81458da9ebbbdcc5652, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -43,12 +43,11 @@ Material:
     m_Floats:
     - _GammaCorrect: 1
     - _Resolution: 500
-    - _Scale: 0.1
+    - _Scale: 0.15
     m_Colors:
-    - _BaseColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
-    - _BorderColor: {r: 0.020426467, g: 0, b: 0.05660379, a: 1}
-    - _IsolineColor1: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
-    - _IsolineColor2: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+    - _BaseColor: {r: 0.045686167, g: 0.025987895, b: 0.0754717, a: 1}
+    - _BorderColor: {r: 0.057286307, g: 0, b: 0.14150941, a: 1}
+    - _IsolineColor1: {r: 0.23274902, g: 0.17461729, b: 0.33962262, a: 1}
+    - _IsolineColor2: {r: 0.30930954, g: 0.1485849, b: 0.5, a: 1}
     - _Mouse: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
-  m_AllowLocking: 1
