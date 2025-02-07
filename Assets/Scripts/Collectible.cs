@@ -1,7 +1,16 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Collectible : MonoBehaviour
 {
+    public enum PointDisplayType
+    {
+        None,
+        FloatingBoard,
+        InBody
+    };
+    
     public delegate void CollectibleHit(CollectibleType type, int value);
     public static event CollectibleHit OnCollectibleHit;
 
@@ -13,7 +22,6 @@ public class Collectible : MonoBehaviour
     public int value;
     public int numTimesCanBeCollected = 1;
     
-    public bool Collected { get; set; } = false;
     private int numTimesCollected = 0;
     private bool accountedForInThisShot = false;
 
@@ -23,9 +31,14 @@ public class Collectible : MonoBehaviour
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;
     public Transform body;
-    
-    [Header("Feedback and Visual Indicators")]
-    public bool spawnHeader = true;
+    public TextMeshPro inBodyPointDisplay;
+
+    [FormerlySerializedAs("pointIndicator")] [Header("Feedback and Visual Indicators")]
+    public PointDisplayType pointDisplay;
+
+    public bool SetupFloatingBoard => pointDisplay == PointDisplayType.FloatingBoard;
+    public bool SetupInBodyBoard => pointDisplay == PointDisplayType.InBody;
+    public bool HasPointBoard => pointDisplay != PointDisplayType.None;
     
     private CollectibleHeader header;
     
@@ -52,9 +65,9 @@ public class Collectible : MonoBehaviour
         defaultRotation = transform.rotation;
     }
 
-    public void Start()
+    public void InitPointDisplay()
     {
-        if (spawnHeader) SpawnHeader();
+        if (HasPointBoard) SetupPointBoard();
     }
 
     public void OnCollisionEnter(Collision other)
@@ -111,14 +124,23 @@ public class Collectible : MonoBehaviour
         header?.gameObject.SetActive(true);
     }
 
-    public void SpawnHeader()
+    public void SetupPointBoard()
     {
-        header = Instantiate(RoundDataManager.Instance.collectibleHeaderPrefab, RoundDataManager.Instance.collectibleHeadersParent);
-        header.SetText(value);
-        float headerOffset = (transform.position.y + (body.localScale.y * heightMultipleForOffsetCalculation) + 0.5f);
-        header.transform.position = transform.position;
-        header.transform.localScale = Mathf.Max(1, (header.transform.position.z / 30)) * header.transform.localScale;
-        header.transform.position = new Vector3(header.transform.position.x, headerOffset, header.transform.position.z);
-        header?.StartAnimation();
+        if (SetupFloatingBoard)
+        {
+            inBodyPointDisplay?.gameObject.SetActive(false);
+            header = Instantiate(RoundDataManager.Instance.collectibleHeaderPrefab, RoundDataManager.Instance.collectibleHeadersParent);
+            header.SetText(value);
+            float headerOffset = (transform.position.y + (body.localScale.y * heightMultipleForOffsetCalculation) + 0.5f);
+            header.transform.position = transform.position;
+            header.transform.localScale = Mathf.Max(1, (header.transform.position.z / 30)) * header.transform.localScale;
+            header.transform.position = new Vector3(header.transform.position.x, headerOffset, header.transform.position.z);
+            header?.StartAnimation();
+        }
+        else if (SetupInBodyBoard && inBodyPointDisplay)
+        {
+            inBodyPointDisplay.gameObject.SetActive(true);
+            inBodyPointDisplay.text = value.ToString();
+        }
     }
 }

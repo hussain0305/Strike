@@ -15,6 +15,7 @@ public class LevelExporter : MonoBehaviour
         public int value;
         public int numTimesCanBeCollected;
         public CollectibleParent parent;
+        public Collectible.PointDisplayType pointDisplayType;
     }
 
     [System.Serializable]
@@ -67,7 +68,8 @@ public class LevelExporter : MonoBehaviour
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.World
+                parent = CollectibleParent.World,
+                pointDisplayType = pointTokenScript.pointDisplay
             };
 
             levelData.collectibles.Add(collectibleData);
@@ -88,6 +90,9 @@ public class LevelExporter : MonoBehaviour
             PointToken pointTokenScript = collectible.GetComponent<PointToken>();
             PointTokenType ptt = pointTokenScript != null ? pointTokenScript.pointTokenType : PointTokenType.None;
 
+            Collectible.PointDisplayType displayType = pointTokenScript ? pointTokenScript.pointDisplay :
+                multiplierTokenScript ? multiplierTokenScript.pointDisplay : Collectible.PointDisplayType.None;
+            
             CollectibleData collectibleData = new CollectibleData
             {
                 type = collectibleScript.type,
@@ -97,7 +102,8 @@ public class LevelExporter : MonoBehaviour
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.UI
+                parent = CollectibleParent.UI,
+                pointDisplayType = displayType
             };
 
             levelData.collectibles.Add(collectibleData);

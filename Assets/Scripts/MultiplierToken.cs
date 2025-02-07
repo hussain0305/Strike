@@ -5,9 +5,8 @@ public class MultiplierToken : Collectible
     public MultiplierTokenType multiplierTokenType;
     public TextMeshProUGUI multipleText;
 
-    public new void Start()
+    public void Start()
     {
-        base.Start();
         multipleText.text = $"{value}x";
     }
 }

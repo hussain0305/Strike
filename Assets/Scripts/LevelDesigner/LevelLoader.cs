@@ -86,7 +86,9 @@ public class LevelLoader : MonoBehaviour
             {
                 collectibleScript.value = collectibleData.value;
                 collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
+                collectibleScript.pointDisplay = collectibleData.pointDisplayType;
                 collectibleScript.SaveDefaults();
+                collectibleScript.InitPointDisplay();
             }
         }
 

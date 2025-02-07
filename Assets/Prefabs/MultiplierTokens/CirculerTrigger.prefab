@@ -57,7 +57,8 @@ MonoBehaviour:
   numTimesCanBeCollected: 1
   heightMultipleForOffsetCalculation: 1
   body: {fileID: 0}
-  spawnHeader: 0
+  inBodyPointDisplay: {fileID: 0}
+  pointDisplay: 0
   multiplierTokenType: 1
   multipleText: {fileID: 3771657011414561744}
 --- !u!135 &7328153056742670938
@@ -175,8 +176,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5x
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b3e32260e9ed2bb4796fce5365a3114e, type: 2}
-  m_sharedMaterial: {fileID: 7451962224069584966, guid: b3e32260e9ed2bb4796fce5365a3114e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 839f6a08d1b60c54a9697732ff766cd6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -216,15 +217,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -301,7 +304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c3b5142dae387c241b4f838d6331068c, type: 2}
-  m_Color: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 0.6862745}
+  m_Color: {r: 0.6942801, g: 0.3820755, b: 1, a: 0.6862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
