@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class Ball : MonoBehaviour
     [HideInInspector]
     public bool collidedWithSomething = false;
     
+    public delegate void BallHitSomething(Collision collision, HashSet<PFXType> pfxTypes);
+    public static event BallHitSomething OnBallHitSomething;
+
     private void Awake()
     {
         teePosition = transform.position;
@@ -96,5 +100,17 @@ public class Ball : MonoBehaviour
         ball.position = teePosition;
         ball.rotation = Quaternion.identity;
         collidedWithSomething = false;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (((1 << other.gameObject.layer) & Global.levelSurfaces) != 0)
+        {
+            OnBallHitSomething?.Invoke(other, new HashSet<PFXType> {PFXType.FlatHitEffect});
+        }
+        else if(other.gameObject.GetComponent<Collectible>())
+        {
+            OnBallHitSomething?.Invoke(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D});
+        }
     }
 }

@@ -80,7 +80,14 @@ public enum GameContext
     InGame,
     InPauseMenu,
     InQuitScreen
-}
+};
+
+[System.Serializable]
+public enum PFXType
+{
+    FlatHitEffect,
+    HitPFX3D
+};
 
 //============---- STRUCTS ----============
 
@@ -141,7 +148,7 @@ public struct BallProperties
     public GameObject prefab;
 }
 
-public class Global : MonoBehaviour
+public static class Global
 {
-    
+    public static LayerMask levelSurfaces = LayerMask.GetMask("Wall", "Ground");
 }

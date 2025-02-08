@@ -21,9 +21,11 @@ public class GlobalAssets : ScriptableObject
         }
     }
 
+    [Header("Materials")]
     public ButtonMaterials[] defaultMaterials;
     public ButtonMaterials[] selectedMaterials;
-
+    public Material flatHitEffectMaterial;
+    
     private Dictionary<ButtonLocation, Material> defaultMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> selectedMaterialsDictionary;
     
