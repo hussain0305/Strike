@@ -27,7 +27,7 @@ public class EffectsManager : MonoBehaviour
         
         if (effectsToPlay.Contains(PFXType.FlatHitEffect))
         {
-            PlayFlatEffect(hitPosition, normal);
+            PlayFlatEffect(hitPosition, normal, collision.gameObject.transform);
         }
 
         if (effectsToPlay.Contains(PFXType.HitPFX3D))
@@ -36,17 +36,18 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    private void PlayFlatEffect(Vector3 position, Vector3 normal)
+    private void PlayFlatEffect(Vector3 position, Vector3 normal, Transform newParent)
     {
         GameObject effect = GetFromPool(flatEffectPool, flatEffectPrefab);
-        FlatHitEffect hitEffect = effect.GetComponent<FlatHitEffect>();
+        FlatHitEffect hitEffect = effect.GetComponentInChildren<FlatHitEffect>();
         hitEffect.ActivateHitEffect();
+        effect.transform.parent = null;
         effect.transform.position = position;
-
         effect.transform.rotation = Quaternion.LookRotation(normal, Vector3.forward);
+        effect.transform.localScale = Vector3.one;
+        effect.transform.parent = newParent;
         effect.SetActive(true);
-
-        ReturnToPool(effect, flatEffectPool, 1f);
+        ReturnToPool(effect, flatEffectPool, 1.5f);
     }
 
     private void PlayPFX3D(Vector3 position)

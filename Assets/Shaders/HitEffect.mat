@@ -25,13 +25,20 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _CircleFadeDuration: 1
+    - _CircleSize: 0.5
     - _DistortionStrength: 0.02
+    - _ExpansionDuration: 1
     - _FadeDuration: 1
+    - _RingCount: 3
+    - _RingFadeDuration: 1
+    - _RingSpawnInterval: 0.1
     - _RingThickness: 0.05
     - _RingWidth: 0.05
     - _TimeMultiplier: 1
     m_Colors:
+    - _CircleColor: {r: 0, g: 0.30188674, b: 0.024861246, a: 0.78431374}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RingColor: {r: 0, g: 1, b: 0.083981514, a: 1}
+    - _RingColor: {r: 0, g: 1, b: 0.08398149, a: 0.78431374}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
