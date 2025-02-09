@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,27 +13,22 @@ public class NotableEventsManager : MonoBehaviour
         public GameObject textGO;
     }
 
-    public HitTextInfo[] allTexts;
-    
-    private string[] streakTexts =
+    [System.Serializable]
+    public struct MultiplierUITextInfo
     {
-        "Missed",       //No hits
-        "Hit",          //Single Hit
-        "Double Hit",   //2x
-        "Triple Hit",   //3x
-        "Quad Hit",     //4x
-        "Penta Hit",    //5x
-        "Hexa Hit",     //6x
-        "Hepta Hit",    //7x
-        "Octa Hit",     //8x
-        "Nona Hit",     //9x
-        "Deca Hit"      //10x
-    };
+        public GameObject textGO;
+        public TextMeshProUGUI textComponent;
+    }
+
+    public HitTextInfo[] streakTexts;
+    public MultiplierUITextInfo multiplierText;
     
     private int numberHitsInThisShot = 0;
     private GameObject currentActiveText;
     private Coroutine scalingCoroutine;
 
+    private Coroutine multiplierAnimationRoutine;
+    
     private void OnEnable()
     {
         Collectible.OnCollectibleHit += CollectibleHit;
@@ -53,8 +49,16 @@ public class NotableEventsManager : MonoBehaviour
 
     public void CollectibleHit(CollectibleType type, int value)
     {
-        numberHitsInThisShot++;
-        PlayHitMessage(numberHitsInThisShot);
+        switch (type)
+        {
+            case CollectibleType.Multiple:
+                ShowMultiplierText(value);
+                break;
+            case CollectibleType.Points:
+                numberHitsInThisShot++;
+                PlayHitMessage(numberHitsInThisShot);
+                break;
+        }
     }
 
     public void NextShotCued()
@@ -67,12 +71,13 @@ public class NotableEventsManager : MonoBehaviour
         {
             PlayScaleDownAnimation(currentActiveText);
         }
+        HideMultiplierText();
         numberHitsInThisShot = 0;
     }
 
     public void PlayHitMessage(int numHits)
     {
-        foreach (HitTextInfo currentText in allTexts)
+        foreach (HitTextInfo currentText in streakTexts)
         {
             if (currentText.numHits == numHits)
             {
@@ -146,9 +151,56 @@ public class NotableEventsManager : MonoBehaviour
     
     public void DisableAllTexts()
     {
-        foreach (HitTextInfo currentText in allTexts)
+        foreach (HitTextInfo currentText in streakTexts)
         {
             currentText.textGO.SetActive(false);
         }
+    }
+
+    public void ShowMultiplierText(int value)
+    {
+        if (multiplierAnimationRoutine != null)
+        {
+            StopCoroutine(multiplierAnimationRoutine);
+        }
+
+        multiplierAnimationRoutine = StartCoroutine(AnimateMultiplierText(value));
+    }
+    
+    IEnumerator AnimateMultiplierText(int value)
+    {
+        multiplierText.textGO.SetActive(true);
+        multiplierText.textComponent.text = $"{value}x";
+        
+        float speed = 15.0f;
+        float maxAngle = 1.0f;
+        float scaleAmount = 1.01f;
+
+        Vector3 originalScale = Vector3.one;
+        GameObject textGO = multiplierText.textGO;
+        Transform textComp = multiplierText.textComponent.transform;
+        
+        while (textGO.activeSelf)
+        {
+            float angle = Mathf.Sin(Time.time * speed) * maxAngle;
+            float scale = 1.0f + Mathf.Sin(Time.time * speed) * 0.1f;
+
+            textComp.rotation = Quaternion.Euler(0, 0, angle);
+            textComp.localScale = originalScale * (scaleAmount * scale);
+
+            yield return null;
+        }
+
+        textComp.rotation = Quaternion.identity;
+        textComp.localScale = originalScale;
+    }
+
+    public void HideMultiplierText()
+    {
+        if (multiplierAnimationRoutine != null)
+        {
+            StopCoroutine(multiplierAnimationRoutine);
+        }
+        multiplierText.textGO.SetActive(false);
     }
 }
