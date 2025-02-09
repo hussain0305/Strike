@@ -39,6 +39,18 @@ public class NotableEventsManager : MonoBehaviour
         GameManager.OnNextShotCued += NextShotCued;
     }
 
+    private void OnDisable()
+    {
+        Collectible.OnCollectibleHit -= CollectibleHit;
+        GameManager.OnNextShotCued -= NextShotCued;
+    }
+
+    private void OnDestroy()
+    {
+        Collectible.OnCollectibleHit -= CollectibleHit;
+        GameManager.OnNextShotCued -= NextShotCued;
+    }
+
     public void CollectibleHit(CollectibleType type, int value)
     {
         numberHitsInThisShot++;
