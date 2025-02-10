@@ -138,6 +138,7 @@ public struct BallProperties
 {
     [Header("Display")]
     public string name;
+    public string description;
     
     [Header("Properties")]
     public float weight;

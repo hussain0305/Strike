@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class BallSelectionPage : MonoBehaviour
     public BallStatRow statSpin;
     public BallStatRow statBounce;
     public Button equipBallButton;
+    public TextMeshProUGUI ballDescription;
     
     private Dictionary<int, GameObject> previewBalls;
     private Dictionary<int, BallSelectionButton> ballButtons;
@@ -102,6 +104,8 @@ public class BallSelectionPage : MonoBehaviour
             Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness / Balls.Instance.maxBounce);
         statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F1");
 
+        ballDescription.text = Balls.Instance.allBalls[ballIndex].description;
+        
         HighlightSelected(ballIndex);
     }
     

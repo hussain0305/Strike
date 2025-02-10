@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool IsGameplayActive => Instance != null;
+    
     public delegate void BallShot();
     public static event BallShot OnBallShot;
     

@@ -14,17 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allBalls:
   - name: Soccer Ball
+    description: 
     weight: 1
     spin: 10
-    bounce: 0
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 1089681808455105078, guid: c3613743306a885429a288d93f20e705, type: 3}
   - name: Bowling Ball
+    description: 
     weight: 5
     spin: 2
-    bounce: 0
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
+  - name: Sniper Ball
+    description: Casts a dot at the aim
+    weight: 0.5
+    spin: 5
+    physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3
