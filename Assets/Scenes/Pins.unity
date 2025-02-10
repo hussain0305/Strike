@@ -8557,12 +8557,10 @@ MonoBehaviour:
   fireButton: {fileID: 2000367810}
   nextButton: {fileID: 1609780930}
   nextButtonFill: {fileID: 1740030270}
-  topPanel: {fileID: 1854849909}
-  bottomPanel: {fileID: 757568002}
   angleIndicator: {fileID: 824971010}
   volleyText: {fileID: 1978612705}
   objectiveText: {fileID: 1447707924}
-  ResultScreen: {fileID: 358978871}
+  resultScreen: {fileID: 358978871}
   pinBehaviour: 1
 --- !u!4 &642570808
 Transform:
@@ -10019,6 +10017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 757568002}
+  - component: {fileID: 757568003}
   m_Layer: 5
   m_Name: ShootingSection
   m_TagString: Untagged
@@ -10048,6 +10047,19 @@ RectTransform:
   m_AnchoredPosition: {x: -15, y: 15}
   m_SizeDelta: {x: 340, y: 610}
   m_Pivot: {x: 1, y: 0}
+--- !u!114 &757568003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757568001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000
 --- !u!1 &775988281
 GameObject:
   m_ObjectHideFlags: 0
@@ -11239,6 +11251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 908865164}
   - component: {fileID: 908865165}
+  - component: {fileID: 908865166}
   m_Layer: 5
   m_Name: TrajectoryHistory
   m_TagString: Untagged
@@ -11291,6 +11304,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &908865166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908865163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000
 --- !u!1 &916607237
 GameObject:
   m_ObjectHideFlags: 0
@@ -24551,6 +24577,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1854849909}
+  - component: {fileID: 1854849910}
   m_Layer: 5
   m_Name: InfoSection
   m_TagString: Untagged
@@ -24580,6 +24607,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 445, y: 810}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1854849910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854849908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000
 --- !u!224 &1855235329 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4336084339529233435, guid: f9d4f85b0169bbc48ab16f4236c5b31b, type: 3}
@@ -26206,6 +26246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1975515635}
+  - component: {fileID: 1975515636}
   m_Layer: 5
   m_Name: Camera
   m_TagString: Untagged
@@ -26235,6 +26276,19 @@ RectTransform:
   m_AnchoredPosition: {x: 15, y: -15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1975515636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975515634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000
 --- !u!1 &1978612703
 GameObject:
   m_ObjectHideFlags: 0

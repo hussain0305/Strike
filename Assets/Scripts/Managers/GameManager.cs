@@ -37,14 +37,12 @@ public class GameManager : MonoBehaviour
     public Button fireButton;
     public Button nextButton;
     public Image nextButtonFill;
-    public Transform topPanel;
-    public Transform bottomPanel;
     public GameObject angleIndicator;
     public TextMeshProUGUI volleyText;
     public TextMeshProUGUI objectiveText;
     
     [Header("Results Screen")]
-    public Transform ResultScreen;
+    public Transform resultScreen;
 
     public PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     
@@ -109,6 +107,7 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
+        GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
         OnGotInGame?.Invoke();
         InputManager.Instance.SetContext(GameContext.InGame);
     }
@@ -357,9 +356,8 @@ public class GameManager : MonoBehaviour
 
     public void GameEnded()
     {
-        topPanel.gameObject.SetActive(false);
-        bottomPanel.gameObject.SetActive(false);
-        ResultScreen.gameObject.SetActive(true);
+        GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
+        resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
     }
 
