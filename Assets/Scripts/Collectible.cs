@@ -22,18 +22,12 @@ public class Collectible : MonoBehaviour
     public int value;
     public int numTimesCanBeCollected = 1;
     
-    private int numTimesCollected = 0;
-    private bool accountedForInThisShot = false;
-
-    private Vector3 defaultPosition;
-    private Quaternion defaultRotation;
-    
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;
     public Transform body;
     public TextMeshPro inBodyPointDisplay;
 
-    [FormerlySerializedAs("pointIndicator")] [Header("Feedback and Visual Indicators")]
+    [Header("Feedback and Visual Indicators")]
     public PointDisplayType pointDisplay;
 
     public bool SetupFloatingBoard => pointDisplay == PointDisplayType.FloatingBoard;
@@ -42,9 +36,18 @@ public class Collectible : MonoBehaviour
     
     private CollectibleHeader header;
     
+    private int numTimesCollected = 0;
+    private bool accountedForInThisShot = false;
+
+    private Vector3 defaultPosition;
+    private Quaternion defaultRotation;
+
+    private CollectibleHitReaction hitReaction;
+    
     public void Awake()
     {
         SaveDefaults();
+        hitReaction = GetComponent<CollectibleHitReaction>();
     }
 
     public void OnEnable()
@@ -85,8 +88,9 @@ public class Collectible : MonoBehaviour
         accountedForInThisShot = true;
         OnCollectibleHit?.Invoke(type, value);
         header?.gameObject.SetActive(false);
+        hitReaction?.CheckIfHitsExhasuted(numTimesCollected, numTimesCanBeCollected);
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (!(other != null && other.gameObject != null && other.gameObject.GetComponent<Ball>()))
@@ -141,6 +145,7 @@ public class Collectible : MonoBehaviour
         {
             inBodyPointDisplay.gameObject.SetActive(true);
             inBodyPointDisplay.text = value.ToString();
+            hitReaction?.UpdatePoints(value);
         }
     }
 }
