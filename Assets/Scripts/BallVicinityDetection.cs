@@ -6,13 +6,39 @@ using UnityEngine;
 public class BallVicinityDetection : MonoBehaviour
 {
     public Ball ball;
-    
-    private void OnTriggerEnter(Collider other)
+    private Vector3 lastPosition;
+
+    private void Start()
     {
-        if (other && other.gameObject.layer == LayerMask.NameToLayer("CollideWithBallUnaffected"))
-        {
+        lastPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        if (!GameManager.IsGameplayActive)
             return;
+        
+        if (ball.collidedWithSomething)
+            return;
+
+        Vector3 currentPosition = transform.position;
+        Vector3 motionVector = currentPosition - lastPosition;
+
+        float rayLength = GameManager.Instance.powerInput.Power / 4f;
+        
+        if (motionVector.sqrMagnitude > 0)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength))
+            {
+                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("CollideWithBallUnaffected"))
+                {
+                    ball.collidedWithSomething = true;
+                }
+            }
+            Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * rayLength, Color.red, 2f);
         }
-        ball.collidedWithSomething = true;
+
+        lastPosition = currentPosition;
     }
 }

@@ -5516,8 +5516,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3577214436539508945}
-  - component: {fileID: 5355186153142425333}
   - component: {fileID: 8906548497722168745}
+  - component: {fileID: 1934033899115560179}
   m_Layer: 6
   m_Name: Vicinity
   m_TagString: Untagged
@@ -5540,27 +5540,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3234842223703551136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5355186153142425333
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9138213115521254653}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!114 &8906548497722168745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5574,3 +5553,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 6740917276115417957}
+--- !u!114 &1934033899115560179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9138213115521254653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000

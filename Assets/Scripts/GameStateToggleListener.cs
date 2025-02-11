@@ -18,6 +18,5 @@ public class GameStateToggleListener : MonoBehaviour
     {
         bool shouldBeActive = System.Array.Exists(statesToBeActiveIn, state => state == currentState);
         gameObject.SetActive(shouldBeActive);
-        Debug.Log($"|| {gameObject.name} set to {shouldBeActive}");
     }
 }

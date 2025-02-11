@@ -223,7 +223,7 @@ public class ModeSelector : MonoBehaviour
     
     public void StartGame()
     {
-        if (currentSelectedMode == null || selectedLevel <= 0)
+        if (selectedLevel <= 0)
         {
             return;
         }

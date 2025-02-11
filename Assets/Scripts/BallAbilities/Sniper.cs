@@ -8,6 +8,8 @@ public class SniperAbility : BallAbility, IBallAbility
     private bool isActive = false;
 
     private Material unlitMaterial;
+
+    private int aimDotLayer;
     
     private void Start()
     {
@@ -18,6 +20,7 @@ public class SniperAbility : BallAbility, IBallAbility
         unlitMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         unlitMaterial.color = Color.red;
         aimDot.GetComponent<Renderer>().material = unlitMaterial;
+        aimDotLayer = ~(1 << LayerMask.NameToLayer("Ball"));
         
         Destroy(aimDot.GetComponent<Collider>());
         isActive = true;
@@ -39,7 +42,7 @@ public class SniperAbility : BallAbility, IBallAbility
     {
         if (!isActive) return;
 
-        if (Physics.Raycast(cylinderPivot.position, cylinderPivot.forward, out RaycastHit hit, Mathf.Infinity))
+        if (Physics.Raycast(cylinderPivot.position, cylinderPivot.forward, out RaycastHit hit, Mathf.Infinity, aimDotLayer))
         {
             float squaredDistance = (cylinderPivot.position - hit.point).sqrMagnitude;
             SetDotSize(squaredDistance);

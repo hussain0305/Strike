@@ -116,8 +116,8 @@ public class Collectible : MonoBehaviour
         {
             numTimesCollected = 0;
             accountedForInThisShot = false;
-            rBody.linearVelocity = Vector3.zero;
-            rBody.angularVelocity = Vector3.zero;
+            // rBody.linearVelocity = Vector3.zero;
+            // rBody.angularVelocity = Vector3.zero;
             transform.position = defaultPosition;
             transform.rotation = defaultRotation;
         }
