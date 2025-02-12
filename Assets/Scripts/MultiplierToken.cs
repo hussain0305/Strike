@@ -7,6 +7,7 @@ public class MultiplierToken : Collectible
 
     public void Start()
     {
+        base.Start();
         multipleText.text = $"{value}x";
     }
 }

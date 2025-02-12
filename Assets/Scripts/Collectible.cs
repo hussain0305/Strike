@@ -52,7 +52,7 @@ public class Collectible : MonoBehaviour
         hitReaction = GetComponent<CollectibleHitReaction>();
     }
 
-    private void Start()
+    public void Start()
     {
         collectingLayer = LayerMask.GetMask("Ball", "OtherCollectingObject");
     }
@@ -111,7 +111,6 @@ public class Collectible : MonoBehaviour
 
         numTimesCollected++;
         accountedForInThisShot = true;
-        Debug.Log("multiplier collected");
         OnCollectibleHit?.Invoke(type, value);
         header?.gameObject.SetActive(false);
     }
