@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     public delegate void InGame();
     public static event InGame OnGotInGame;
 
+    public delegate void GameEndedEvent();
+    public static event GameEndedEvent OnGameEnded;
+
     [Header("Level Objects")]
     public Tee tee;
     [HideInInspector]
@@ -356,6 +359,7 @@ public class GameManager : MonoBehaviour
 
     public void GameEnded()
     {
+        OnGameEnded?.Invoke();
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
