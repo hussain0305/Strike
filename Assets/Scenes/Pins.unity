@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 1964422401}
@@ -254,6 +255,8 @@ MonoBehaviour:
   - {fileID: 258391840}
   - {fileID: 1860392613}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &11302765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2076,6 +2079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 225933821}
@@ -2083,6 +2087,8 @@ MonoBehaviour:
   - {fileID: 1071627301}
   - {fileID: 862628985}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &131565077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3215,6 +3221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraBehaviour
   buttonLocation: 0
   boundaries:
   - {fileID: 58839149}
@@ -3222,6 +3229,8 @@ MonoBehaviour:
   - {fileID: 1445611144}
   - {fileID: 371250652}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &180122284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3614,6 +3623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: Default
   buttonLocation: 0
   boundaries:
   - {fileID: 170726582}
@@ -3621,6 +3631,8 @@ MonoBehaviour:
   - {fileID: 999566113}
   - {fileID: 2040226833}
   backToDefaultOnEnable: 1
+  staysSelected: 0
+  isEnabled: 1
 --- !u!1 &206550780
 GameObject:
   m_ObjectHideFlags: 0
@@ -11712,6 +11724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 311278655}
@@ -11719,6 +11732,8 @@ MonoBehaviour:
   - {fileID: 2129761505}
   - {fileID: 223705088}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &957117910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18762,6 +18777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: Default
   buttonLocation: 0
   boundaries:
   - {fileID: 1221220919}
@@ -18769,6 +18785,8 @@ MonoBehaviour:
   - {fileID: 50317279}
   - {fileID: 1807157961}
   backToDefaultOnEnable: 1
+  staysSelected: 0
+  isEnabled: 1
 --- !u!1 &1507414377
 GameObject:
   m_ObjectHideFlags: 0
@@ -20615,6 +20633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: Default
   buttonLocation: 0
   boundaries:
   - {fileID: 177106939}
@@ -20622,6 +20641,8 @@ MonoBehaviour:
   - {fileID: 966244775}
   - {fileID: 1232940502}
   backToDefaultOnEnable: 1
+  staysSelected: 0
+  isEnabled: 1
 --- !u!1 &1593052220
 GameObject:
   m_ObjectHideFlags: 0
@@ -20675,6 +20696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 1819593278}
@@ -20682,6 +20704,8 @@ MonoBehaviour:
   - {fileID: 170077345}
   - {fileID: 1683434959}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &1593052224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21071,6 +21095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: Default
   buttonLocation: 0
   boundaries:
   - {fileID: 1170877787}
@@ -21078,6 +21103,8 @@ MonoBehaviour:
   - {fileID: 1344871207}
   - {fileID: 1628859235}
   backToDefaultOnEnable: 1
+  staysSelected: 0
+  isEnabled: 1
 --- !u!1 &1613886594
 GameObject:
   m_ObjectHideFlags: 0
@@ -22763,6 +22790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraBehaviour
   buttonLocation: 0
   boundaries:
   - {fileID: 1120160843}
@@ -22770,6 +22798,8 @@ MonoBehaviour:
   - {fileID: 1809222955}
   - {fileID: 1537508718}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &1751537501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25448,6 +25478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 252302777}
@@ -25455,6 +25486,8 @@ MonoBehaviour:
   - {fileID: 347833438}
   - {fileID: 135835228}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &1934129428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25759,6 +25792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: CameraToggle
   buttonLocation: 0
   boundaries:
   - {fileID: 364779795}
@@ -25766,6 +25800,8 @@ MonoBehaviour:
   - {fileID: 1388303090}
   - {fileID: 1581507455}
   backToDefaultOnEnable: 0
+  staysSelected: 1
+  isEnabled: 1
 --- !u!114 &1964651178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26757,6 +26793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: Default
   buttonLocation: 0
   boundaries:
   - {fileID: 1690959632}
@@ -26764,6 +26801,8 @@ MonoBehaviour:
   - {fileID: 166711023}
   - {fileID: 335567373}
   backToDefaultOnEnable: 1
+  staysSelected: 0
+  isEnabled: 1
 --- !u!1 &2000673781
 GameObject:
   m_ObjectHideFlags: 0

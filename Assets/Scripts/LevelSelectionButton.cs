@@ -12,6 +12,19 @@ public class LevelSelectionButton : MonoBehaviour
     public Image[] outlines;
     
     private GameModeType gameMode;
+    private ButtonClickBehaviour clickBehaviour;
+    private ButtonClickBehaviour ClickBehaviour
+    {
+        get
+        {
+            if (!clickBehaviour)
+            {
+                clickBehaviour = GetComponentInChildren<ButtonClickBehaviour>();
+            }
+
+            return clickBehaviour;
+        }
+    }
     private int levelNumber;
     public int LevelNumber => levelNumber;
     
@@ -47,11 +60,39 @@ public class LevelSelectionButton : MonoBehaviour
         ModeSelector.Instance.SetSelectedLevel(levelNumber);
     }
 
+    public void SetBorderMaterial(int selectedLevel)
+    {
+        if (LevelNumber == selectedLevel)
+        {
+            SetBorderMaterial(GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.MainMenu));
+        }
+        else
+        {
+            SetBorderMaterial(ClickBehaviour.isEnabled
+                ? GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.MainMenu)
+                : GlobalAssets.Instance.GetLockedMaterial(ButtonLocation.MainMenu));
+        }
+    }
+    
     public void SetBorderMaterial(Material _mat)
     {
         foreach (Image outline in outlines)
         {
             outline.material = _mat;
         }
+    }
+
+    public void SetUnlocked()
+    {
+        button.enabled = true;
+        button.GetComponent<Image>().enabled = true;
+        ClickBehaviour.isEnabled = true;
+    }
+    
+    public void SetLocked()
+    {
+        button.enabled = false;
+        ClickBehaviour.isEnabled = false;
+        button.GetComponent<Image>().enabled = false;
     }
 }

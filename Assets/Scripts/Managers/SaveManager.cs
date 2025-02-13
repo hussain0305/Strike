@@ -154,6 +154,47 @@ public static class SaveManager
         return currentSaveData.selectedBall;
     }
 
+    public static void SetLevelCompleted(GameModeType gameMode, int levelIndex)
+    {
+        SetLevelCompleted((int)gameMode, levelIndex);
+    }
+    public static void SetLevelCompleted(int gameModeIndex, int levelIndex)
+    {
+        EnsureDataLoaded();
+        foreach (var progress in currentSaveData.levelProgress)
+        {
+            if (progress.gameMode == gameModeIndex)
+            {
+                if (levelIndex > progress.maxUnlockedLevel)
+                {
+                    progress.maxUnlockedLevel = levelIndex;
+                    SaveData();
+                }
+                return;
+            }
+        }
+        currentSaveData.levelProgress.Add(new LevelProgress(gameModeIndex, levelIndex));
+        SaveData();
+    }
+
+    public static int GetMaxUnlockedLevel(GameModeType gameModeIndex)
+    {
+        return GetMaxUnlockedLevel((int)gameModeIndex);
+    }
+    
+    public static int GetMaxUnlockedLevel(int gameModeIndex)
+    {
+        EnsureDataLoaded();
+        foreach (var progress in currentSaveData.levelProgress)
+        {
+            if (progress.gameMode == gameModeIndex)
+            {
+                return progress.maxUnlockedLevel;
+            }
+        }
+        return 0;
+    }
+
     #endregion
 }
 

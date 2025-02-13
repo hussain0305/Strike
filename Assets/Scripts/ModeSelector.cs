@@ -201,6 +201,7 @@ public class ModeSelector : MonoBehaviour
         }
         
         var levels = levelMapping.GetLevelsForGameMode(currentSelectedMode);
+        int highestUnlockedLevel = SaveManager.GetMaxUnlockedLevel(currentSelectedMode);
         while (levelButtonsPool.Count < levels.Count)
         {
             LevelSelectionButton newButton = Instantiate(levelButtonPrefab, levelButtonParent);
@@ -213,6 +214,14 @@ public class ModeSelector : MonoBehaviour
             LevelSelectionButton button = levelButtonsPool[i];
             button.gameObject.SetActive(true);
             button.SetMappedLevel(currentSelectedMode, levels[i]);
+            if (levels[i] <= highestUnlockedLevel + 1) //The next level after the highest unlocked will also be unlocked
+            {
+                button.SetUnlocked();
+            }
+            else
+            {
+                button.SetLocked();
+            }
         }
 
         for (int i = levels.Count; i < levelButtonsPool.Count; i++)
@@ -260,14 +269,7 @@ public class ModeSelector : MonoBehaviour
             {
                 continue;
             }
-            if (lsb.LevelNumber == selectedLevel)
-            {
-                lsb.SetBorderMaterial(GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.MainMenu));
-            }
-            else
-            {
-                lsb.SetBorderMaterial(GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.MainMenu));
-            }
+            lsb.SetBorderMaterial(selectedLevel);
         }
     }
 }

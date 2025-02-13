@@ -349,7 +349,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.7058824}
     m_PressedColor: {r: 0, g: 0, b: 0, a: 1}
     m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.7058824}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.7058824}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -380,6 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd7750c4d3022a4ab94683ddb35b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groupId: LevelSelection
   buttonLocation: 1
   boundaries:
   - {fileID: 2986721668293111379}
@@ -387,6 +388,8 @@ MonoBehaviour:
   - {fileID: 7219761397132367859}
   - {fileID: 207431117644194636}
   backToDefaultOnEnable: 1
+  staysSelected: 1
+  isEnabled: 1
 --- !u!1 &7929779002893896059
 GameObject:
   m_ObjectHideFlags: 0

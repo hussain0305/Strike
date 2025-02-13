@@ -24,10 +24,14 @@ public class GlobalAssets : ScriptableObject
     [Header("Materials")]
     public ButtonMaterials[] defaultMaterials;
     public ButtonMaterials[] selectedMaterials;
+    public ButtonMaterials[] lockedMaterials;
+    public ButtonMaterials[] hoverMaterials;
     public Material flatHitEffectMaterial;
     
+    private Dictionary<ButtonLocation, Material> lockedMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> defaultMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> selectedMaterialsDictionary;
+    private Dictionary<ButtonLocation, Material> hoverMaterialsDictionary;
     
     public Material GetDefaultMaterial(ButtonLocation buttonLocation)
     {
@@ -48,6 +52,26 @@ public class GlobalAssets : ScriptableObject
         return selectedMaterialsDictionary[buttonLocation];
     }
 
+    public Material GetLockedMaterial(ButtonLocation buttonLocation)
+    {
+        if (lockedMaterialsDictionary == null)
+        {
+            PrepareDictionaries();
+        }
+
+        return lockedMaterialsDictionary[buttonLocation];
+    }
+    
+    public Material GetHoverMaterial(ButtonLocation buttonLocation)
+    {
+        if (hoverMaterialsDictionary == null)
+        {
+            PrepareDictionaries();
+        }
+
+        return hoverMaterialsDictionary[buttonLocation];
+    }
+
     public void PrepareDictionaries()
     {
         defaultMaterialsDictionary = new Dictionary<ButtonLocation, Material>();
@@ -61,5 +85,16 @@ public class GlobalAssets : ScriptableObject
         {
             selectedMaterialsDictionary.Add(buttMat.buttonLocation, buttMat.material);
         }
-    }
+        
+        lockedMaterialsDictionary = new Dictionary<ButtonLocation, Material>();
+        foreach (ButtonMaterials buttMat in lockedMaterials)
+        {
+            lockedMaterialsDictionary.Add(buttMat.buttonLocation, buttMat.material);
+        }
+    
+        hoverMaterialsDictionary = new Dictionary<ButtonLocation, Material>();
+        foreach (ButtonMaterials buttMat in hoverMaterials)
+        {
+            hoverMaterialsDictionary.Add(buttMat.buttonLocation, buttMat.material);
+        }}
 }

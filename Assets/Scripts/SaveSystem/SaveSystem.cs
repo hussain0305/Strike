@@ -1,6 +1,20 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
+
+[System.Serializable]
+public class LevelProgress
+{
+    public int gameMode;
+    public int maxUnlockedLevel;
+
+    public LevelProgress(int gameMode, int maxUnlockedLevel)
+    {
+        this.gameMode = gameMode;
+        this.maxUnlockedLevel = maxUnlockedLevel;
+    }
+}
 
 [System.Serializable]
 public class SaveData
@@ -8,6 +22,7 @@ public class SaveData
     public int stars = 0;
     public int[] unlockedGameModes = {0};
     public int selectedBall = 0;
+    public List<LevelProgress> levelProgress = new List<LevelProgress> { new LevelProgress(0, 0) };
 }
 
 public static class SaveSystem
