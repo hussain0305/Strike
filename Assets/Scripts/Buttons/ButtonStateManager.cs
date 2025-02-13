@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,13 +19,22 @@ public class ButtonStateManager : MonoBehaviour
         }
     }
 
-    private Dictionary<string, ButtonClickBehaviour> selectedButtonsByGroup = new Dictionary<string, ButtonClickBehaviour>();
+    private Dictionary<ButtonClickBehaviour.ButtonGroup, ButtonClickBehaviour> selectedButtonsByGroup = new Dictionary<ButtonClickBehaviour.ButtonGroup, ButtonClickBehaviour>();
+
+    private void OnEnable()
+    {
+        ModeSelector.OnGameModeChanged += GameModeChanged;
+        GameManager.OnGameEnded += GameEnded;
+    }
+
+    private void OnDisable()
+    {
+        ModeSelector.OnGameModeChanged -= GameModeChanged;
+        GameManager.OnGameEnded -= GameEnded;
+    }
 
     public void RegisterButton(ButtonClickBehaviour button)
     {
-        if (string.IsNullOrEmpty(button.groupId))
-            button.groupId = "Global";
-
         if (!selectedButtonsByGroup.ContainsKey(button.groupId))
             selectedButtonsByGroup[button.groupId] = null;
     }
@@ -43,5 +53,15 @@ public class ButtonStateManager : MonoBehaviour
     public bool IsButtonSelected(ButtonClickBehaviour button)
     {
         return selectedButtonsByGroup.TryGetValue(button.groupId, out var selectedButton) && selectedButton == button;
+    }
+
+    public void GameModeChanged()
+    {
+        selectedButtonsByGroup[ButtonClickBehaviour.ButtonGroup.LevelSelection] = null;
+    }
+
+    public void GameEnded()
+    {
+        selectedButtonsByGroup?.Clear();
     }
 }

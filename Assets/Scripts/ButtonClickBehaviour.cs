@@ -7,7 +7,16 @@ using UnityEngine.UI;
 
 public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public string groupId = "Default";
+    [System.Serializable]
+    public enum ButtonGroup
+    {
+        Default,
+        LevelSelection,
+        BallSelection,
+        CameraToggle,
+        CamerBehaviour
+    }
+    public ButtonGroup groupId = ButtonGroup.Default;
     public ButtonLocation buttonLocation;
     public Image[] boundaries;
     public bool backToDefaultOnEnable = true;

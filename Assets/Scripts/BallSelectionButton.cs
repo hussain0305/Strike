@@ -12,6 +12,19 @@ public class BallSelectionButton : MonoBehaviour
     
     private int ballIndex;
     public int BallIndex => ballIndex;
+
+    private ButtonClickBehaviour buttonBehaviour;
+    public ButtonClickBehaviour ButtonBehaviour
+    {
+        get
+        {
+            if (buttonBehaviour == null)
+            {
+                buttonBehaviour = GetComponentInChildren<ButtonClickBehaviour>();
+            }
+            return buttonBehaviour;
+        }
+    }
     
     public void SetBallName(string _text)
     {
@@ -37,24 +50,15 @@ public class BallSelectionButton : MonoBehaviour
     {
         BallSelectionPage.Instance.SetSelectedBall(BallIndex);
     }
-
-    public void SetBorderMaterial(Material _mat)
-    {
-        foreach (Image outline in outlines)
-        {
-            outline.material = _mat;
-        }
-    }
-
+    
     public void SetSelected()
     {
-        SetBorderMaterial(GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.MainMenu));
+        ButtonBehaviour.SetSelected();
         ballNameText.color = selectedTextColor;
     }
 
     public void SetUnselected()
     {
-        SetBorderMaterial(GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.MainMenu));
         ballNameText.color = unselectedTextColor;
     }
 }

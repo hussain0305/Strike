@@ -45,6 +45,9 @@ public class ModeSelector : MonoBehaviour
     
     private static ModeSelector instance;
     public static ModeSelector Instance => instance;
+    
+    public delegate void GameModeChanged();
+    public static event GameModeChanged OnGameModeChanged;
 
     private void Awake()
     {
@@ -142,6 +145,7 @@ public class ModeSelector : MonoBehaviour
 
     public void GameModeSelected(GameModeType currentSelected)
     {
+        OnGameModeChanged?.Invoke();
         selectedLevel = -1;
         currentSelectedMode = currentSelected;
         currentSelectedModeInfo = gameModeInfo.GetGameModeInfo(currentSelected);
