@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    public delegate void GameExitedPrematurely();
+    public static event GameExitedPrematurely OnGameExitedPrematurely;
+
     public Button quitButton;
     public Button backButton;
     
@@ -21,6 +24,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        OnGameExitedPrematurely?.Invoke();
         SceneManager.LoadScene(0);
     }
 

@@ -24,13 +24,15 @@ public class ButtonStateManager : MonoBehaviour
     private void OnEnable()
     {
         ModeSelector.OnGameModeChanged += GameModeChanged;
-        GameManager.OnGameEnded += GameEnded;
+        GameManager.OnGameEnded += RefreshDictionary;
+        PauseMenu.OnGameExitedPrematurely += RefreshDictionary;
     }
 
     private void OnDisable()
     {
         ModeSelector.OnGameModeChanged -= GameModeChanged;
-        GameManager.OnGameEnded -= GameEnded;
+        GameManager.OnGameEnded -= RefreshDictionary;
+        PauseMenu.OnGameExitedPrematurely -= RefreshDictionary;
     }
 
     public void RegisterButton(ButtonClickBehaviour button)
@@ -60,7 +62,7 @@ public class ButtonStateManager : MonoBehaviour
         ResetLevelSelectionButtons();
     }
 
-    public void GameEnded()
+    public void RefreshDictionary()
     {
         selectedButtonsByGroup?.Clear();
     }

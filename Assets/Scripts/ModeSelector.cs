@@ -146,7 +146,7 @@ public class ModeSelector : MonoBehaviour
     public void GameModeSelected(GameModeType currentSelected)
     {
         OnGameModeChanged?.Invoke();
-        selectedLevel = -1;
+        ResetSelectedLevel();
         currentSelectedMode = currentSelected;
         currentSelectedModeInfo = gameModeInfo.GetGameModeInfo(currentSelected);
         selectedGameModeNameText.text = currentSelectedModeInfo.displayName;
@@ -238,6 +238,7 @@ public class ModeSelector : MonoBehaviour
     {
         if (selectedLevel <= 0)
         {
+            LevelSelectionMenu.Instance.PromptToSelectLevel();
             return;
         }
 
@@ -263,6 +264,11 @@ public class ModeSelector : MonoBehaviour
     {
         selectedLevel = level;
         HighlightSelectedButton();
+    }
+
+    public void ResetSelectedLevel()
+    {
+        selectedLevel = -1;
     }
 
     public void HighlightSelectedButton()
