@@ -57,11 +57,16 @@ public class ButtonStateManager : MonoBehaviour
 
     public void GameModeChanged()
     {
-        selectedButtonsByGroup[ButtonClickBehaviour.ButtonGroup.LevelSelection] = null;
+        ResetLevelSelectionButtons();
     }
 
     public void GameEnded()
     {
         selectedButtonsByGroup?.Clear();
+    }
+
+    public void ResetLevelSelectionButtons()
+    {
+        selectedButtonsByGroup[ButtonClickBehaviour.ButtonGroup.LevelSelection] = null;
     }
 }
