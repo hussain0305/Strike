@@ -14,6 +14,10 @@ public class BallSelectionPage : MonoBehaviour
     public BallStatRow statBounce;
     public Button equipBallButton;
     public TextMeshProUGUI ballDescription;
+
+    [Header("Rarity")]
+    public Image[] frame;
+    public TextMeshProUGUI rarityText;
     
     private Dictionary<int, GameObject> previewBalls;
     private Dictionary<int, BallSelectionButton> ballButtons;
@@ -105,6 +109,15 @@ public class BallSelectionPage : MonoBehaviour
         statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F1");
 
         ballDescription.text = Balls.Instance.allBalls[ballIndex].description;
+
+        RarityAppearance rarityAppearance =
+            GlobalAssets.Instance.GetRarityAppearanceSettings(Balls.Instance.allBalls[ballIndex].rarity);
+        foreach (Image img in frame)
+        {
+            img.material = rarityAppearance.material;
+        }
+        rarityText.text = Balls.Instance.allBalls[ballIndex].rarity.ToString();
+        rarityText.color = rarityAppearance.color;
         
         HighlightSelected(ballIndex);
     }

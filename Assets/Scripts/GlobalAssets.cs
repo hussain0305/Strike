@@ -27,7 +27,10 @@ public class GlobalAssets : ScriptableObject
     public ButtonMaterials[] lockedMaterials;
     public ButtonMaterials[] hoverMaterials;
     public Material flatHitEffectMaterial;
-    
+
+    [Header("Rarity")]
+    public RarityAppearance[] rarityAppearance;
+
     private Dictionary<ButtonLocation, Material> lockedMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> defaultMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> selectedMaterialsDictionary;
@@ -96,5 +99,19 @@ public class GlobalAssets : ScriptableObject
         foreach (ButtonMaterials buttMat in hoverMaterials)
         {
             hoverMaterialsDictionary.Add(buttMat.buttonLocation, buttMat.material);
-        }}
+        }
+    }
+
+    public RarityAppearance GetRarityAppearanceSettings(Rarity rarity)
+    {
+        foreach (RarityAppearance appearance in rarityAppearance)
+        {
+            if (appearance.rarity == rarity)
+            {
+                return appearance;
+            }
+        }
+
+        return rarityAppearance[0];
+    }
 }

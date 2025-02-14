@@ -89,6 +89,15 @@ public enum PFXType
     HitPFX3D
 };
 
+[System.Serializable]
+public enum Rarity
+{
+    Common,
+    Rare,
+    Epic,
+    Legendary
+};
+
 //============---- STRUCTS ----============
 
 public struct ShotInfo
@@ -140,6 +149,9 @@ public struct BallProperties
     public string name;
     public string description;
     
+    [Header("Rarity")]
+    public Rarity rarity;
+
     [Header("Properties")]
     public float weight;
     public float spin;
@@ -147,6 +159,15 @@ public struct BallProperties
     [Header("Construction")]
     public PhysicsMaterial physicsMaterial;
     public GameObject prefab;
+}
+
+[System.Serializable]
+public struct RarityAppearance
+{
+    public Rarity rarity;
+    public Color color;
+    public Material material;
+    public Material fontMaterial;
 }
 
 public static class Global

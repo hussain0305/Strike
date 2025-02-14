@@ -57,3 +57,20 @@ MonoBehaviour:
   - buttonLocation: 4
     material: {fileID: 2100000, guid: 1c1873c0aef5ef54cb35b6883707e1fd, type: 2}
   flatHitEffectMaterial: {fileID: 2100000, guid: d8919cc0689051a4cb81360c2603563c, type: 2}
+  rarityAppearance:
+  - rarity: 0
+    color: {r: 0.11764706, g: 1, b: 0, a: 1}
+    material: {fileID: 2100000, guid: 5f2f340b484175b4ab80bfb939083c41, type: 2}
+    fontMaterial: {fileID: 0}
+  - rarity: 1
+    color: {r: 1, g: 0.34635195, b: 0, a: 1}
+    material: {fileID: 2100000, guid: d43ecf997d87e27469998c6c9b6c4a73, type: 2}
+    fontMaterial: {fileID: 0}
+  - rarity: 2
+    color: {r: 0.51192415, g: 0.23113209, b: 1, a: 1}
+    material: {fileID: 2100000, guid: a49437fedcbd1374bb7ffdbcb7562c1a, type: 2}
+    fontMaterial: {fileID: 0}
+  - rarity: 3
+    color: {r: 1, g: 0.9899541, b: 0, a: 1}
+    material: {fileID: 2100000, guid: 7695b9e756b1d674d91e225269914d10, type: 2}
+    fontMaterial: {fileID: 0}
