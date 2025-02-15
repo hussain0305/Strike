@@ -7,6 +7,7 @@ public class LevelLoader : MonoBehaviour
     public PoolingManager poolingManager;
     public Transform colletiblesParentWorld;
     public Transform colletiblesParentUI;
+    public Transform starsParent;
 
     private int targetPoints;
     
@@ -59,7 +60,7 @@ public class LevelLoader : MonoBehaviour
 
         targetPoints = levelData.targetPoints;
 
-        foreach (var collectibleData in levelData.collectibles)
+        foreach (LevelExporter.CollectibleData collectibleData in levelData.collectibles)
         {
             GameObject collectibleObject = null;
             if (collectibleData.pointTokenType != PointTokenType.None)
@@ -90,6 +91,20 @@ public class LevelLoader : MonoBehaviour
                 collectibleScript.SaveDefaults();
                 collectibleScript.InitPointDisplay();
             }
+        }
+
+        foreach (LevelExporter.StarData starData in levelData.stars)
+        {
+            GameObject starObject = poolingManager.GetStar();
+
+            if (starObject == null)
+            {
+                Debug.LogWarning($"Failed to load star");
+                continue;
+            }
+            
+            starObject.transform.SetParent(starsParent);
+            starObject.transform.position = starData.position;
         }
 
         Debug.Log($"Level {levelNumber} loaded successfully!");

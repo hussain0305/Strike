@@ -19,18 +19,27 @@ public class LevelExporter : MonoBehaviour
     }
 
     [System.Serializable]
+    public class StarData
+    {
+        public int index;
+        public Vector3 position;
+    }
+    
+    [System.Serializable]
     public class LevelData
     {
         public GameModeType gameMode; 
         public int levelNumber;
         public int targetPoints;
         public List<CollectibleData> collectibles;
+        public List<StarData> stars;
     }
 
     public int level;
     public int targetPoints;
     public GameModeType gameMode;
     public Transform collectibleParentWorld;
+    public Transform starsParent;
     public Transform collectibleParentUI;
     public GameModeLevelMapping levelMapping;
     
@@ -41,7 +50,8 @@ public class LevelExporter : MonoBehaviour
             levelNumber = this.level,
             targetPoints = this.targetPoints,
             gameMode = this.gameMode,
-            collectibles = new List<CollectibleData>()
+            collectibles = new List<CollectibleData>(),
+            stars = new List<StarData>()
         };
 
         foreach (Transform collectible in collectibleParentWorld)
@@ -74,7 +84,7 @@ public class LevelExporter : MonoBehaviour
 
             levelData.collectibles.Add(collectibleData);
         }
-
+        
         foreach (Transform collectible in collectibleParentUI)
         {
             Collectible collectibleScript = collectible.GetComponent<Collectible>();
@@ -107,6 +117,24 @@ public class LevelExporter : MonoBehaviour
             };
 
             levelData.collectibles.Add(collectibleData);
+        }
+
+        foreach (Transform star in starsParent)
+        {
+            Star starScript = star.GetComponent<Star>();
+            if (starScript == null)
+            {
+                Debug.LogWarning($"Star script missing on object {star.name}, skipping.");
+                continue;
+            }
+            
+            StarData starData = new StarData
+            {
+                index = starScript.index,
+                position = star.position
+            };
+
+            levelData.stars.Add(starData);
         }
 
         string json = JsonUtility.ToJson(levelData, true);

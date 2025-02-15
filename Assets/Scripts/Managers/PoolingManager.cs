@@ -7,7 +7,8 @@ public class PoolingManager : MonoBehaviour
 
     private Dictionary<PointTokenType, Queue<GameObject>> pointTokensDictionary = new Dictionary<PointTokenType, Queue<GameObject>>();
     private Dictionary<MultiplierTokenType, Queue<GameObject>> multiplierTokensDictionary = new Dictionary<MultiplierTokenType, Queue<GameObject>>();
-
+    private Queue<GameObject> starPool = new Queue<GameObject>();
+    
     private GameObject GetObjectFromDictionary<T>(Dictionary<T, Queue<GameObject>> dictionary, T type, System.Func<T, GameObject> prefabGetter)
     {
         if (dictionary.TryGetValue(type, out Queue<GameObject> queue) && queue.Count > 0)
@@ -50,5 +51,23 @@ public class PoolingManager : MonoBehaviour
     public void ReturnObject(MultiplierTokenType type, GameObject obj)
     {
         ReturnObjectToDictionary(multiplierTokensDictionary, type, obj);
+    }
+    
+    public GameObject GetStar()
+    {
+        if (starPool.Count > 0)
+        {
+            GameObject star = starPool.Dequeue();
+            star.SetActive(true);
+            return star;
+        }
+
+        return Instantiate(prefabMapping.GetStarPrefab());
+    }
+
+    public void ReturnStar(GameObject star)
+    {
+        star.SetActive(false);
+        starPool.Enqueue(star);
     }
 }

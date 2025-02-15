@@ -19,6 +19,7 @@ public class CollectiblePrefabMapping : ScriptableObject
 
     public PointTokenPrefab[] pointTokenPrefabs;
     public MultiplierTokenPrefab[] multiplierTokenPrefabs;
+    public GameObject starPrefab;
     
     public GameObject GetPointTokenPrefab(PointTokenType pointTokenType)
     {
@@ -39,6 +40,15 @@ public class CollectiblePrefabMapping : ScriptableObject
                 return entry.prefab;
         }
         Debug.LogError($"Prefab not found for MultiplierTokenType: {multiplierTokenType}");
+        return null;
+    }
+    
+    public GameObject GetStarPrefab()
+    {
+        if (starPrefab != null)
+            return starPrefab;
+        
+        Debug.LogError("Star prefab not assigned!");
         return null;
     }
 }

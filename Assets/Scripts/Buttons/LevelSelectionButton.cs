@@ -7,9 +7,16 @@ using UnityEngine.UI;
 
 public class LevelSelectionButton : MonoBehaviour
 {
+    [System.Serializable]
+    public struct StarUIRepresentation
+    {
+        public Image collected;
+        public Image uncollected;
+    }
+    
     public Button button;
     public TextMeshProUGUI levelText;
-    public Image[] outlines;
+    public StarUIRepresentation[] stars;
     
     private GameModeType gameMode;
     private ButtonClickBehaviour buttonBehaviour;
@@ -28,6 +35,16 @@ public class LevelSelectionButton : MonoBehaviour
     private int levelNumber;
     public int LevelNumber => levelNumber;
     
+    private void OnEnable()
+    {
+        button.onClick.AddListener(ButtonPressed);
+    }
+
+    private void OnDisable()
+    {
+        button.onClick.RemoveAllListeners();
+    }
+
     public void SetText(string _text)
     {
         levelText.text = _text;
@@ -43,18 +60,21 @@ public class LevelSelectionButton : MonoBehaviour
         gameMode = _gameMode;
         levelNumber = _level;
         SetText(_level);
+        SetStars();
     }
 
-    private void OnEnable()
+    public void SetStars()
     {
-        button.onClick.AddListener(ButtonPressed);
+        SaveManager.GetStarsCollectedStatus((int)gameMode, levelNumber, out bool[] starsStatus);
+        int i = 0;
+        foreach (StarUIRepresentation star in stars)
+        {
+            star.collected.gameObject.SetActive(starsStatus[i]);
+            star.uncollected.gameObject.SetActive(!starsStatus[i]);
+            i++;
+        }
     }
-
-    private void OnDisable()
-    {
-        button.onClick.RemoveAllListeners();
-    }
-
+    
     public void ButtonPressed()
     {
         ModeSelector.Instance.SetSelectedLevel(levelNumber);

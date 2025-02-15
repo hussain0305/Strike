@@ -23,6 +23,7 @@ public class SaveData
     public int[] unlockedGameModes = {0};
     public int selectedBall = 0;
     public List<LevelProgress> levelProgress = new List<LevelProgress> { new LevelProgress(0, 0) };
+    public Dictionary<string, int> collectedStars = new Dictionary<string, int>();
 }
 
 public static class SaveSystem

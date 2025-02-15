@@ -194,7 +194,63 @@ public static class SaveManager
         }
         return 0;
     }
+    
+    public static void SetStarCollected(int gameMode, int levelIndex, int starIndex)
+    {
+        string key = $"{gameMode}-{levelIndex}";
 
+        if (!currentSaveData.collectedStars.ContainsKey(key))
+        {
+            currentSaveData.collectedStars[key] = 0;
+        }
+        currentSaveData.collectedStars[key] |= (1 << (starIndex - 1));
+    }
+
+    public static bool IsStarCollected(int gameMode, int levelIndex, int starIndex)
+    {
+        string key = $"{gameMode}-{levelIndex}";
+
+        if (!currentSaveData.collectedStars.ContainsKey(key))
+        {
+            return false;
+        }
+
+        return (currentSaveData.collectedStars[key] & (1 << (starIndex - 1))) != 0;
+    }
+
+    public static void GetStarsCollectedStatus(int gameMode, int levelIndex, out bool[] starStatus)
+    {
+        starStatus = new bool[3];
+        string key = $"{gameMode}-{levelIndex}";
+
+        if (currentSaveData.collectedStars.ContainsKey(key))
+        {
+            int bitmask = currentSaveData.collectedStars[key];
+            for (int i = 0; i < 3; i++)
+            {
+                starStatus[i] = (bitmask & (1 << i)) != 0;
+            }
+        }
+    }
+    
+    public static int GetCollectedStarsCount(int gameMode, int levelIndex)
+    {
+        string key = $"{gameMode}-{levelIndex}";
+
+        return currentSaveData.collectedStars.ContainsKey(key) ? CountBits(currentSaveData.collectedStars[key]) : 0;
+    }
+
+    private static int CountBits(int value)
+    {
+        int count = 0;
+        while (value > 0)
+        {
+            count += value & 1;
+            value >>= 1;
+        }
+        return count;
+    }
+    
     #endregion
 }
 

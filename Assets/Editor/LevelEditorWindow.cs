@@ -8,6 +8,7 @@ public class LevelEditorWindow : EditorWindow
     private GameModeType gameMode = GameModeType.Pins;
     private Transform collectibleParentWorld;
     private Transform collectibleParentUI;
+    private Transform starParent;
     private LevelExporter.LevelData loadedLevelData;
 
     [MenuItem("Tools/Level Editor")]
@@ -50,7 +51,7 @@ public class LevelEditorWindow : EditorWindow
 
         ClearExistingCollectibles();
 
-        LevelExporter levelExporter = FindObjectOfType<LevelExporter>();
+        LevelExporter levelExporter = FindAnyObjectByType<LevelExporter>();
         if (levelExporter == null)
         {
             Debug.LogError("LevelExporter not found in scene!");
@@ -59,6 +60,7 @@ public class LevelEditorWindow : EditorWindow
 
         collectibleParentWorld = levelExporter.collectibleParentWorld;
         collectibleParentUI = levelExporter.collectibleParentUI;
+        starParent = levelExporter.starsParent;
         
         CollectiblePrefabMapping prefabMapping = Resources.Load<CollectiblePrefabMapping>("CollectiblePrefabMapping");
         if (prefabMapping == null)
@@ -70,11 +72,11 @@ public class LevelEditorWindow : EditorWindow
         foreach (var collectibleData in loadedLevelData.collectibles)
         {
             GameObject prefab = null;
-            if (collectibleData.pointTokenType != PointTokenType.None) // Assuming there's a way to check if it's a PointToken
+            if (collectibleData.pointTokenType != PointTokenType.None)
             {
                 prefab = prefabMapping.GetPointTokenPrefab(collectibleData.pointTokenType);
             }
-            else if (collectibleData.multiplierTokenType != MultiplierTokenType.None) // Assuming there's a way to check if it's a MultiplierToken
+            else if (collectibleData.multiplierTokenType != MultiplierTokenType.None)
             {
                 prefab = prefabMapping.GetMultiplierTokenPrefab(collectibleData.multiplierTokenType);
             }
@@ -102,6 +104,23 @@ public class LevelEditorWindow : EditorWindow
             collectibleObject.transform.SetParent(collectibleData.parent == CollectibleParent.UI ? collectibleParentUI : collectibleParentWorld);
         }
 
+        foreach (var starData in loadedLevelData.stars)
+        {
+            GameObject prefab = prefabMapping.GetStarPrefab();
+
+            if (prefab == null)
+            {
+                Debug.LogError($"No prefab found for star");
+                return;
+            }
+
+            GameObject starObject = Instantiate(prefab, starParent);
+            starObject.transform.position = starData.position;
+
+            Star starScript = starObject.GetComponent<Star>();
+            starScript.index = starData.index;
+        }
+        
         Debug.Log($"Level {levelNumber} loaded in Scene View!");
     }
 
