@@ -149,6 +149,7 @@ public class GameStateManager : MonoBehaviour
     
     public void LoadNextLevel()
     {
+        ModeSelector.Instance.SetNextLevelSelected();
         SceneManager.LoadScene(1);
     }
 }

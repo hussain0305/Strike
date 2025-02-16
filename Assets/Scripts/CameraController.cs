@@ -217,4 +217,12 @@ public class CameraController : MonoBehaviour
         stayInPlaceCamButton.GetComponent<ButtonClickBehaviour>().SetToHighlighted();
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
     }
+
+    public void ResetCamera()
+    {
+        currentCameraHoistedAt = defaultCameraHoistAt;
+        Camera.main.transform.parent = null;
+        Camera.main.transform.position = currentCameraHoistedAt.transform.position;
+
+    }
 }

@@ -265,6 +265,11 @@ public class ModeSelector : MonoBehaviour
         HighlightSelectedButton();
     }
 
+    public void SetNextLevelSelected()
+    {
+        selectedLevel++;
+    }
+
     public void ResetSelectedLevel()
     {
         selectedLevel = -1;

@@ -11426,6 +11426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 927250442}
+  - component: {fileID: 927250443}
   m_Layer: 7
   m_Name: Arrow
   m_TagString: Untagged
@@ -11450,6 +11451,19 @@ Transform:
   - {fileID: 1969914561}
   m_Father: {fileID: 1222955430}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &927250443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927250441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44805602a12845947aa72d0ed14c8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statesToBeActiveIn: 01000000
 --- !u!1 &938757676
 GameObject:
   m_ObjectHideFlags: 0
@@ -11557,7 +11571,6 @@ MonoBehaviour:
   collectibleParentWorld: {fileID: 549877463}
   starsParent: {fileID: 1922110261}
   collectibleParentUI: {fileID: 1782344019}
-  levelMapping: {fileID: 11400000, guid: aea33191f09a9624fac938a1cb100711, type: 2}
 --- !u!4 &953383090
 Transform:
   m_ObjectHideFlags: 0

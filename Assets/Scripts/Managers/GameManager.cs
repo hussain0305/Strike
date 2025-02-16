@@ -428,6 +428,7 @@ public class GameManager : MonoBehaviour
     public void GameEnded()
     {
         OnGameEnded?.Invoke();
+        CameraController.Instance.ResetCamera();
         SetupResults();
     }
 
