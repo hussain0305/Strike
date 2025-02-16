@@ -25,14 +25,14 @@ public class ButtonStateManager : MonoBehaviour
     {
         ModeSelector.OnGameModeChanged += GameModeChanged;
         GameManager.OnGameEnded += RefreshDictionary;
-        PauseMenu.OnGameExitedPrematurely += RefreshDictionary;
+        GameManager.OnGameExitedPrematurely += RefreshDictionary;
     }
 
     private void OnDisable()
     {
         ModeSelector.OnGameModeChanged -= GameModeChanged;
         GameManager.OnGameEnded -= RefreshDictionary;
-        PauseMenu.OnGameExitedPrematurely -= RefreshDictionary;
+        GameManager.OnGameExitedPrematurely -= RefreshDictionary;
     }
 
     public void RegisterButton(ButtonClickBehaviour button)

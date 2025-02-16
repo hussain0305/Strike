@@ -1,7 +1,7 @@
 {
     "gameMode": 0,
     "levelNumber": 1,
-    "targetPoints": 300,
+    "targetPoints": 75,
     "collectibles": [
         {
             "type": 0,
@@ -21,7 +21,7 @@
             "value": 50,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 0,
@@ -41,7 +41,7 @@
             "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 0,
@@ -61,7 +61,7 @@
             "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 0,
@@ -81,7 +81,7 @@
             "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 0,
@@ -101,7 +101,7 @@
             "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 0,
@@ -121,7 +121,7 @@
             "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
-            "pointDisplayType": 2
+            "pointDisplayType": 0
         },
         {
             "type": 1,
@@ -142,6 +142,32 @@
             "numTimesCanBeCollected": 1,
             "parent": 1,
             "pointDisplayType": 0
+        }
+    ],
+    "stars": [
+        {
+            "index": 0,
+            "position": {
+                "x": 1.0270099639892579,
+                "y": 5.920000076293945,
+                "z": 38.849998474121097
+            }
+        },
+        {
+            "index": 1,
+            "position": {
+                "x": 8.65999984741211,
+                "y": 5.920000076293945,
+                "z": 38.849998474121097
+            }
+        },
+        {
+            "index": 2,
+            "position": {
+                "x": -7.570000171661377,
+                "y": 5.920000076293945,
+                "z": 38.849998474121097
+            }
         }
     ]
 }

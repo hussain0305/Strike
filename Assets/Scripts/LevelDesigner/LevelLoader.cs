@@ -4,7 +4,6 @@ using System.IO;
 
 public class LevelLoader : MonoBehaviour
 {
-    public PoolingManager poolingManager;
     public Transform colletiblesParentWorld;
     public Transform colletiblesParentUI;
     public Transform starsParent;
@@ -26,7 +25,7 @@ public class LevelLoader : MonoBehaviour
     
     public void LoadLevel()
     {
-        if (poolingManager == null)
+        if (PoolingManager.Instance == null)
         {
             Debug.LogError("PoolingManager is not assigned.");
             return;
@@ -65,11 +64,11 @@ public class LevelLoader : MonoBehaviour
             GameObject collectibleObject = null;
             if (collectibleData.pointTokenType != PointTokenType.None)
             {
-                collectibleObject = poolingManager.GetObject(collectibleData.pointTokenType);
+                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.pointTokenType);
             }
             else if (collectibleData.multiplierTokenType != MultiplierTokenType.None)
             {
-                collectibleObject = poolingManager.GetObject(collectibleData.multiplierTokenType);
+                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.multiplierTokenType);
             }
 
             if (collectibleObject == null)
@@ -95,7 +94,7 @@ public class LevelLoader : MonoBehaviour
 
         foreach (LevelExporter.StarData starData in levelData.stars)
         {
-            GameObject starObject = poolingManager.GetStar();
+            GameObject starObject = PoolingManager.Instance.GetStar();
 
             if (starObject == null)
             {

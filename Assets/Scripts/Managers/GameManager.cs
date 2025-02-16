@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager instance;
+    public static GameManager Instance => instance;
+
     public static bool IsGameplayActive => Instance != null;
     
     public delegate void BallShot();
@@ -21,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public delegate void GameEndedEvent();
     public static event GameEndedEvent OnGameEnded;
+    public delegate void GameExitedEvent();
+    public static event GameExitedEvent OnGameExitedPrematurely;
 
     [Header("Level Objects")]
     public Tee tee;
@@ -56,8 +61,6 @@ public class GameManager : MonoBehaviour
         get => Instance.ballState;
     }
 
-    private static GameManager instance;
-    public static GameManager Instance => instance;
     private int currentPlayerTurn;
     public int CurrentPlayerTurn => currentPlayerTurn;
 
@@ -356,20 +359,7 @@ public class GameManager : MonoBehaviour
 
         optTimePerShotRoutine = StartCoroutine(OptionalTimeRoutine());
     }
-
-    public void GameEnded()
-    {
-        OnGameEnded?.Invoke();
-        GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
-        resultScreen.gameObject.SetActive(true);
-        ResultsScreen.Instance.SetupResults();
-
-        if (GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired)
-        {
-            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
-        }
-    }
-
+    
     public void CheckToShowTrajectoryButton()
     {
         int trajectoryViewsRemaining = RoundDataManager.Instance.GetTrajectoryViewsRemaining();
@@ -428,5 +418,28 @@ public class GameManager : MonoBehaviour
     public void CheckToShowTrajectoryHistoryButton()
     {
         trajectoryHistoryButton.gameObject.SetActive(TrajectoryHistoryViewer.Instance.GetIsTrajectoryHistoryAvailable());
+    }
+
+    public void GameExitedPrematurely()
+    {
+        OnGameExitedPrematurely?.Invoke();
+    }
+    
+    public void GameEnded()
+    {
+        OnGameEnded?.Invoke();
+        SetupResults();
+    }
+
+    public void SetupResults()
+    {
+        GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
+        resultScreen.gameObject.SetActive(true);
+        ResultsScreen.Instance.SetupResults();
+
+        if (GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired)
+        {
+            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
+        }
     }
 }

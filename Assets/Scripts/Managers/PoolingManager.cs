@@ -3,11 +3,25 @@ using System.Collections.Generic;
 
 public class PoolingManager : MonoBehaviour
 {
+    private static PoolingManager instance;
+    public static PoolingManager Instance => instance;
+    
     public CollectiblePrefabMapping prefabMapping;
 
     private Dictionary<PointTokenType, Queue<GameObject>> pointTokensDictionary = new Dictionary<PointTokenType, Queue<GameObject>>();
     private Dictionary<MultiplierTokenType, Queue<GameObject>> multiplierTokensDictionary = new Dictionary<MultiplierTokenType, Queue<GameObject>>();
     private Queue<GameObject> starPool = new Queue<GameObject>();
+    
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     
     private GameObject GetObjectFromDictionary<T>(Dictionary<T, Queue<GameObject>> dictionary, T type, System.Func<T, GameObject> prefabGetter)
     {
@@ -24,6 +38,7 @@ public class PoolingManager : MonoBehaviour
 
     private void ReturnObjectToDictionary<T>(Dictionary<T, Queue<GameObject>> dictionary, T type, GameObject obj)
     {
+        obj.transform.SetParent(transform);
         obj.SetActive(false);
         if (!dictionary.TryGetValue(type, out Queue<GameObject> queue))
         {
@@ -67,6 +82,7 @@ public class PoolingManager : MonoBehaviour
 
     public void ReturnStar(GameObject star)
     {
+        star.transform.SetParent(transform);
         star.SetActive(false);
         starPool.Enqueue(star);
     }

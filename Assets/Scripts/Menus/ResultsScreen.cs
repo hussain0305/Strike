@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ResultsScreen : MonoBehaviour
@@ -96,16 +92,16 @@ public class ResultsScreen : MonoBehaviour
     public void RetryButtonClicked()
     {
         //TODO: Reload current scene cannot be hardcoded
-        SceneManager.LoadScene(1);
+        GameStateManager.Instance.RetryLevel();
     }
     
     public void MainMenuButtonClicked()
     {
-        SceneManager.LoadScene(0);
+        GameStateManager.Instance.ReturnToMainMenu();
     }
     
     public void NextLevelButtonClicked()
     {
-        SceneManager.LoadScene(1);
+        GameStateManager.Instance.LoadNextLevel();
     }
 }
