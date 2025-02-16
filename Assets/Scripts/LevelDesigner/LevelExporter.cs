@@ -41,7 +41,6 @@ public class LevelExporter : MonoBehaviour
     public Transform collectibleParentWorld;
     public Transform starsParent;
     public Transform collectibleParentUI;
-    public GameModeLevelMapping levelMapping;
     
     public void ExportLevel()
     {
@@ -142,9 +141,9 @@ public class LevelExporter : MonoBehaviour
         File.WriteAllText($"Assets/Resources/Levels/Level_{gameMode.ToString()}_{level}.json", json);
         Debug.Log($"Level {level} exported!");
         
-        if (levelMapping != null)
+        if (GameModeLevelMapping.Instance != null)
         {
-            var gameModeEntry = levelMapping.gameModeLevels.Find(entry => entry.gameMode == gameMode);
+            var gameModeEntry = GameModeLevelMapping.Instance.gameModeLevels.Find(entry => entry.gameMode == gameMode);
 
             if (gameModeEntry == null)
             {
@@ -153,7 +152,7 @@ public class LevelExporter : MonoBehaviour
                     gameMode = gameMode,
                     levels = new List<int>()
                 };
-                levelMapping.gameModeLevels.Add(gameModeEntry);
+                GameModeLevelMapping.Instance.gameModeLevels.Add(gameModeEntry);
             }
 
             int existingLevel = gameModeEntry.levels.Find(l => l == levelData.levelNumber);

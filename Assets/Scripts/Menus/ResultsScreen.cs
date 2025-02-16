@@ -60,14 +60,21 @@ public class ResultsScreen : MonoBehaviour
                 ShowPointsRequiredResultScreen();
                 break;
         }
+
+        CheckIsNextLevelAvailable();
     }
 
     public void ShowPointsRequiredResultScreen()
     {
         winConditionPointsRequirement.gameObject.SetActive(true);
         int playerPoints = RoundDataManager.Instance.GetPointsForPlayer(0);
-        wonMessage.gameObject.SetActive(playerPoints >= GameMode.Instance.pointsRequired);
-        lostMessage.gameObject.SetActive(!wonMessage.gameObject.activeSelf);
+        bool levelCleared = playerPoints >= GameMode.Instance.pointsRequired;
+        wonMessage.gameObject.SetActive(levelCleared);
+        lostMessage.gameObject.SetActive(!levelCleared);
+        if (levelCleared)
+        {
+            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
+        }
     }
 
     public void ShowPointsRankingResultScreen()
@@ -103,5 +110,11 @@ public class ResultsScreen : MonoBehaviour
     public void NextLevelButtonClicked()
     {
         GameStateManager.Instance.LoadNextLevel();
+    }
+
+    public void CheckIsNextLevelAvailable()
+    {
+        bool showNextLevelButton = ModeSelector.Instance.IsNextLevelAvailableAndUnlocked();
+        nextLevelButton.transform.parent.gameObject.SetActive(showNextLevelButton);
     }
 }

@@ -24,7 +24,6 @@ public class ModeSelector : MonoBehaviour
     public GameObject bottomPanelGameModeLocked;
 
     [Header("Levels")]
-    public GameModeLevelMapping levelMapping;
     public Transform levelButtonParent;
     public LevelSelectionButton levelButtonPrefab;
     private List<LevelSelectionButton> levelButtonsPool = new List<LevelSelectionButton>();
@@ -204,8 +203,8 @@ public class ModeSelector : MonoBehaviour
             button.gameObject.SetActive(false);
         }
         
-        var levels = levelMapping.GetLevelsForGameMode(currentSelectedMode);
-        int highestUnlockedLevel = SaveManager.GetMaxUnlockedLevel(currentSelectedMode);
+        var levels = GameModeLevelMapping.Instance.GetLevelsForGameMode(currentSelectedMode);
+        int highestClearedLevel = SaveManager.GetHighestClearedLevel(currentSelectedMode);
         while (levelButtonsPool.Count < levels.Count)
         {
             LevelSelectionButton newButton = Instantiate(levelButtonPrefab, levelButtonParent);
@@ -218,7 +217,7 @@ public class ModeSelector : MonoBehaviour
             LevelSelectionButton button = levelButtonsPool[i];
             button.gameObject.SetActive(true);
             button.SetMappedLevel(currentSelectedMode, levels[i]);
-            if (levels[i] <= highestUnlockedLevel + 1) //The next level after the highest unlocked will also be unlocked
+            if (levels[i] <= highestClearedLevel + 1) //The next level after the highest unlocked will also be unlocked
             {
                 button.SetUnlocked();
             }
@@ -281,5 +280,20 @@ public class ModeSelector : MonoBehaviour
             }
             lsb.SetBorderMaterial(selectedLevel);
         }
+    }
+
+    public bool IsNextLevelAvailable()
+    {
+        return GameModeLevelMapping.Instance.GetNumLevelsInGameMode(currentSelectedMode) > GetSelectedLevel();
+    }
+
+    public bool IsNextLevelUnlocked()
+    {
+        return SaveManager.GetHighestClearedLevel(GetSelectedGameMode()) >= GetSelectedLevel();
+    }
+    
+    public bool IsNextLevelAvailableAndUnlocked()
+    {
+        return IsNextLevelAvailable() && IsNextLevelUnlocked();
     }
 }

@@ -100,7 +100,8 @@ public class LevelEditorWindow : EditorWindow
             collectibleScript.type = collectibleData.type;
             collectibleScript.value = collectibleData.value;
             collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
-
+            collectibleScript.pointDisplay = collectibleData.pointDisplayType;
+            
             collectibleObject.transform.SetParent(collectibleData.parent == CollectibleParent.UI ? collectibleParentUI : collectibleParentWorld);
         }
 

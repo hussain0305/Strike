@@ -436,10 +436,5 @@ public class GameManager : MonoBehaviour
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
-
-        if (GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired)
-        {
-            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
-        }
     }
 }

@@ -12,6 +12,7 @@ public class CollectibleHitReaction : MonoBehaviour
 
     private void OnEnable()
     {
+        SetDefaultVisuals();
         GameManager.OnNextShotCued += SetDefaultVisuals;
     }
 

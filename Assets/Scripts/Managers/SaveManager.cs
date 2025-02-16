@@ -177,12 +177,12 @@ public static class SaveManager
         SaveData();
     }
 
-    public static int GetMaxUnlockedLevel(GameModeType gameModeIndex)
+    public static int GetHighestClearedLevel(GameModeType gameModeIndex)
     {
-        return GetMaxUnlockedLevel((int)gameModeIndex);
+        return GetHighestClearedLevel((int)gameModeIndex);
     }
     
-    public static int GetMaxUnlockedLevel(int gameModeIndex)
+    public static int GetHighestClearedLevel(int gameModeIndex)
     {
         EnsureDataLoaded();
         foreach (var progress in currentSaveData.levelProgress)
