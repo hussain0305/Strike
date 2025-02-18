@@ -16,6 +16,10 @@ public class GameModeLevelMapping : ScriptableObject
                 {
                     Debug.LogError("GlobalAssets instance not found. Please create one in the Resources folder.");
                 }
+                else
+                {
+                    instance.SortLevels();
+                }
             }
             return instance;
         }
@@ -23,6 +27,14 @@ public class GameModeLevelMapping : ScriptableObject
 
     public List<GameModeLevelInfo> gameModeLevels;
 
+    private void SortLevels()
+    {
+        foreach (var info in gameModeLevels)
+        {
+            info.levels.Sort();
+        }
+    }
+    
     public List<int> GetLevelsForGameMode(GameModeType gameMode)
     {
         foreach (var info in gameModeLevels)
