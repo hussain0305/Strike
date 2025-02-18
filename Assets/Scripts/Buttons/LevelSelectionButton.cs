@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,13 +66,19 @@ public class LevelSelectionButton : MonoBehaviour
 
     public void SetStars()
     {
-        SaveManager.GetStarsCollectedStatus(gameMode, levelNumber, out bool[] starsStatus);
+        int numStarsCollected = SaveManager.GetCollectedStarsCount((int)gameMode, levelNumber);
+
         int i = 0;
-        foreach (StarUIRepresentation star in stars)
+        for (; i < numStarsCollected; i++)
         {
-            star.collected.gameObject.SetActive(starsStatus[i]);
-            star.uncollected.gameObject.SetActive(!starsStatus[i]);
-            i++;
+            stars[i].collected.gameObject.SetActive(true);
+            stars[i].uncollected.gameObject.SetActive(false);
+        }
+
+        for (; i < stars.Length; i++)
+        {
+            stars[i].collected.gameObject.SetActive(false);
+            stars[i].uncollected.gameObject.SetActive(true);
         }
     }
     
