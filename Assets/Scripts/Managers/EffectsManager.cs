@@ -6,18 +6,22 @@ public class EffectsManager : MonoBehaviour
 {
     public GameObject flatEffectPrefab;
     public GameObject pfx3DPrefab;
+    public GameObject starHitPrefab;
 
     private Queue<GameObject> flatEffectPool = new Queue<GameObject>();
     private Queue<GameObject> pfx3DPool = new Queue<GameObject>();
+    private Queue<GameObject> starPFXPool = new Queue<GameObject>();
 
     private void OnEnable()
     {
         Ball.OnBallHitSomething += HandleBallHit;
+        Star.OnStarCollected += StarCollected;
     }
 
     private void OnDisable()
     {
         Ball.OnBallHitSomething -= HandleBallHit;
+        Star.OnStarCollected -= StarCollected;
     }
 
     private void HandleBallHit(Collision collision, HashSet<PFXType> effectsToPlay)
@@ -57,6 +61,20 @@ public class EffectsManager : MonoBehaviour
         effect.SetActive(true);
 
         ReturnToPool(effect, pfx3DPool, 1f);
+    }
+
+    private void PlayStarHitPFX(Vector3 position)
+    {
+        GameObject effect = GetFromPool(starPFXPool, starHitPrefab);
+        effect.transform.position = position;
+        effect.SetActive(true);
+        
+        ReturnToPool(effect, pfx3DPool, 1f);
+    }
+
+    private void StarCollected(int index, Vector3 position)
+    {
+        PlayStarHitPFX(position);
     }
 
     private GameObject GetFromPool(Queue<GameObject> pool, GameObject prefab)

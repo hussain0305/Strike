@@ -1,7 +1,7 @@
 {
     "gameMode": 0,
     "levelNumber": 2,
-    "targetPoints": 300,
+    "targetPoints": 100,
     "collectibles": [
         {
             "type": 0,
@@ -142,6 +142,32 @@
             "numTimesCanBeCollected": 1,
             "parent": 1,
             "pointDisplayType": 0
+        }
+    ],
+    "stars": [
+        {
+            "index": 0,
+            "position": {
+                "x": -6.797085285186768,
+                "y": 14.489999771118164,
+                "z": 57.63188171386719
+            }
+        },
+        {
+            "index": 1,
+            "position": {
+                "x": 26.549999237060548,
+                "y": 17.700000762939454,
+                "z": 84.58999633789063
+            }
+        },
+        {
+            "index": 2,
+            "position": {
+                "x": -0.33000001311302187,
+                "y": 7.059999942779541,
+                "z": 84.58999633789063
+            }
         }
     ]
 }

@@ -92,10 +92,16 @@ public class LevelLoader : MonoBehaviour
             }
         }
 
+        SaveManager.GetStarsCollectedStatus(ModeSelector.Instance.GetSelectedGameMode(),
+            ModeSelector.Instance.GetSelectedLevel(), out bool[] starStatus);
         foreach (LevelExporter.StarData starData in levelData.stars)
         {
+            if (starStatus[starData.index])
+            {
+                //Don't spawn the star if it was already collected
+                continue;
+            }
             GameObject starObject = PoolingManager.Instance.GetStar();
-
             if (starObject == null)
             {
                 Debug.LogWarning($"Failed to load star");
@@ -104,6 +110,8 @@ public class LevelLoader : MonoBehaviour
             
             starObject.transform.SetParent(starsParent);
             starObject.transform.position = starData.position;
+            Star starScript = starObject.GetComponent<Star>();
+            starScript.index = starData.index;
         }
 
         Debug.Log($"Level {levelNumber} loaded successfully!");

@@ -65,7 +65,7 @@ public class LevelSelectionButton : MonoBehaviour
 
     public void SetStars()
     {
-        SaveManager.GetStarsCollectedStatus((int)gameMode, levelNumber, out bool[] starsStatus);
+        SaveManager.GetStarsCollectedStatus(gameMode, levelNumber, out bool[] starsStatus);
         int i = 0;
         foreach (StarUIRepresentation star in stars)
         {

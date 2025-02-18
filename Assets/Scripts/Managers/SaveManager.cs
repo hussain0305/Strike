@@ -33,6 +33,7 @@ public static class SaveManager
             currentSaveData = await SaveSystem.LoadGameAsync();
         }
 
+        currentSaveData.SyncListToDictionary();
         Debug.Log("IsSaveLoaded set to true");
         IsSaveLoaded = true;
     }
@@ -51,6 +52,7 @@ public static class SaveManager
     
     private static void SaveData()
     {
+        currentSaveData.SyncDictionaryToList();
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             WebGLSaveSystem.SaveGame(currentSaveData);
@@ -203,7 +205,8 @@ public static class SaveManager
         {
             currentSaveData.collectedStars[key] = 0;
         }
-        currentSaveData.collectedStars[key] |= (1 << (starIndex - 1));
+        currentSaveData.collectedStars[key] |= (1 << (starIndex));
+        SaveData();
     }
 
     public static bool IsStarCollected(int gameMode, int levelIndex, int starIndex)
@@ -215,9 +218,15 @@ public static class SaveManager
             return false;
         }
 
-        return (currentSaveData.collectedStars[key] & (1 << (starIndex - 1))) != 0;
+        bool collected = (currentSaveData.collectedStars[key] & (1 << (starIndex))) != 0;
+        return collected;
     }
 
+    public static void GetStarsCollectedStatus(GameModeType gameMode, int levelIndex, out bool[] starStatus)
+    {
+        GetStarsCollectedStatus((int)gameMode, levelIndex, out starStatus);
+    }
+    
     public static void GetStarsCollectedStatus(int gameMode, int levelIndex, out bool[] starStatus)
     {
         starStatus = new bool[3];
@@ -253,19 +262,3 @@ public static class SaveManager
     
     #endregion
 }
-
-/*
-private static void LoadData()
-{
-    if (Application.platform == RuntimePlatform.WebGLPlayer)
-    {
-        currentSaveData = WebGLSaveSystem.LoadGame();
-    }
-    else
-    {
-        currentSaveData = SaveSystem.LoadGame();
-    }
-    IsSaveLoaded = true;
-    OnSaveFileLoaded?.Invoke();
-}
-*/

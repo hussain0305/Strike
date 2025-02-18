@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -17,6 +18,19 @@ public class LevelProgress
 }
 
 [System.Serializable]
+public class CollectedStarEntry
+{
+    public string key;
+    public int value;
+
+    public CollectedStarEntry(string key, int value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+[System.Serializable]
 public class SaveData
 {
     public int stars = 0;
@@ -24,6 +38,16 @@ public class SaveData
     public int selectedBall = 0;
     public List<LevelProgress> levelProgress = new List<LevelProgress> { new LevelProgress(0, 0) };
     public Dictionary<string, int> collectedStars = new Dictionary<string, int>();
+    
+    public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
+    public void SyncDictionaryToList()
+    {
+        collectedStarsList = collectedStars.Select(kvp => new CollectedStarEntry(kvp.Key, kvp.Value)).ToList();
+    }
+    public void SyncListToDictionary()
+    {
+        collectedStars = collectedStarsList.ToDictionary(entry => entry.key, entry => entry.value);
+    }
 }
 
 public static class SaveSystem

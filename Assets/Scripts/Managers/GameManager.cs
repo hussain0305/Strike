@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
     private int numPlayersInGame;
     private int volleyNumber = 1;
     private bool showTrajectory = false;
+    private List<int> starsCollected = new List<int>();
     private Coroutine minTimePerShotRoutine;
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
@@ -420,6 +421,11 @@ public class GameManager : MonoBehaviour
         trajectoryHistoryButton.gameObject.SetActive(TrajectoryHistoryViewer.Instance.GetIsTrajectoryHistoryAvailable());
     }
 
+    public void StarCollected(int index)
+    {
+        starsCollected.Add(index);
+    }
+
     public void GameExitedPrematurely()
     {
         OnGameExitedPrematurely?.Invoke();
@@ -429,7 +435,21 @@ public class GameManager : MonoBehaviour
     {
         OnGameEnded?.Invoke();
         CameraController.Instance.ResetCamera();
+        PostGameStuff();
         SetupResults();
+    }
+
+    public void PostGameStuff()
+    {
+        bool levelCleared = GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired &&
+                            RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.pointsRequired;
+        if (levelCleared)
+        {
+            foreach (int starIndex in starsCollected)
+            {
+                SaveManager.SetStarCollected((int)ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel(), starIndex);
+            }
+        }
     }
 
     public void SetupResults()
