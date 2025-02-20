@@ -15,6 +15,9 @@ public class GameStateManager : MonoBehaviour
     
     private List<GameStateToggleListener> stateToggleListeners = new List<GameStateToggleListener>();
 
+    private GameState currentGameState;
+    public GameState CurrentGameState => currentGameState;
+
     private void Awake()
     {
         if (Instance == null)
@@ -71,6 +74,7 @@ public class GameStateManager : MonoBehaviour
             }
         }
 
+        currentGameState = newState;
         StartCoroutine(DelayedBroadcast());
     }
 
