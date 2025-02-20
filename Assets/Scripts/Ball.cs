@@ -114,3 +114,71 @@ public class Ball : MonoBehaviour
         }
     }
 }
+
+/*
+public float speedMultiplier = 1.0f; // Adjustable speed factor
+IEnumerator FollowTrajectory_ConstantSpeed()
+{
+    if (trajectoryPoints == null || trajectoryPoints.Count < 2)
+        yield break;
+
+    // Compute cumulative squared distances to avoid costly sqrt operations
+    List<float> cumulativeSqrDistances = new List<float> { 0f };
+    float totalSqrDistance = 0f;
+
+    for (int i = 1; i < trajectoryPoints.Count; i++)
+    {
+        totalSqrDistance += (trajectoryPoints[i] - trajectoryPoints[i - 1]).sqrMagnitude;
+        cumulativeSqrDistances.Add(totalSqrDistance);
+    }
+
+    float baseSpeed = totalSqrDistance / (trajectoryPoints.Count * 0.1f); // Base speed
+    float adjustedSpeed = baseSpeed * speedMultiplier; // Apply user-defined speed factor
+    float travelSqrDistance = 0f;
+    int index = 0;
+
+    while (travelSqrDistance < totalSqrDistance)
+    {
+        // Find the segment in which the current distance falls
+        while (index < cumulativeSqrDistances.Count - 1 && travelSqrDistance > cumulativeSqrDistances[index + 1])
+        {
+            index++;
+        }
+
+        if (index >= trajectoryPoints.Count - 1)
+            break;
+
+        float segmentStart = cumulativeSqrDistances[index];
+        float segmentEnd = cumulativeSqrDistances[index + 1];
+        float segmentFraction = Mathf.InverseLerp(segmentStart, segmentEnd, travelSqrDistance);
+
+        // Move the ball smoothly along the segment
+        ball.position = Vector3.Lerp(trajectoryPoints[index], trajectoryPoints[index + 1], segmentFraction);
+
+        // Stop if we hit something or touch the ground
+        if (collidedWithSomething || ball.position.y <= groundLevel)
+        {
+            rb.isKinematic = false;
+            Vector3 finalVelocity = (trajectoryPoints[index + 1] - trajectoryPoints[index]) / 0.1f;
+            rb.velocity = finalVelocity;
+            GameManager.BallState = BallState.InPhysicsMotion;
+            yield break;
+        }
+
+        // Advance along the trajectory using squared distance for efficiency
+        travelSqrDistance += adjustedSpeed * Time.deltaTime;
+        yield return null;
+    }
+
+    rb.isKinematic = false;
+
+    // Set final velocity when transitioning to physics motion
+    if (trajectoryPoints.Count >= 2)
+    {
+        Vector3 finalVelocity = (trajectoryPoints[^1] - trajectoryPoints[^2]) / 0.1f;
+        rb.velocity = finalVelocity;
+    }
+
+    GameManager.BallState = BallState.InPhysicsMotion;
+}
+*/
