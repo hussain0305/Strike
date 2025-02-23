@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotgunAbility : BallAbility, IBallAbility
+public class ShotgunAbility : BallAbility
 {
     public GameObject pelletPrefab;
     public Vector2 spread = new Vector2(1f, .5f);
@@ -10,46 +10,33 @@ public class ShotgunAbility : BallAbility, IBallAbility
     private List<GameObject> activePellets = new List<GameObject>();
     private const int pelletCount = 50;
 
-    private void Start()
+    public override void Initialize(Ball ownerBall, IContextProvider _context)
     {
-        if (GameStateManager.Instance.CurrentGameState == GameStateManager.GameState.InGame)
-        {
-            StartCoroutine(InitializePelletPool());
-        }
+        base.Initialize(ownerBall, _context);
+        StartCoroutine(InitializePelletPool());
     }
-
-    private void OnEnable()
-    {
-        GameManager.OnBallShot += BallShot;
-        GameManager.OnNextShotCued += NextShotCued;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.OnBallShot -= BallShot;
-        GameManager.OnNextShotCued -= NextShotCued;
-    }
+    
 
     private IEnumerator InitializePelletPool()
     {
         for (int i = 0; i < pelletCount; i++)
         {
-            GameObject pellet = Instantiate(pelletPrefab);
+            GameObject pellet = Instantiate(pelletPrefab, transform);
             pellet.SetActive(false);
             pelletPool.Enqueue(pellet);
             yield return null;
         }
     }
 
-    public void BallShot()
+    public override void BallShot()
     {
         FireShotgunPellets();
     }
 
     private void FireShotgunPellets()
     {
-        Transform aim = GameManager.Instance.angleInput.cylinderPivot;
-        int pelletsToFire = 10;
+        Transform aim = context.GetAimTransform();
+        int pelletsToFire = 20;
         for (int i = 0; i < pelletsToFire; i++)
         {
             GameObject pellet = GetPelletFromPool();
@@ -78,16 +65,16 @@ public class ShotgunAbility : BallAbility, IBallAbility
         {
             return pelletPool.Dequeue();
         }
-        return null;
+        return Instantiate(pelletPrefab, transform);
     }
-
+    
     public void ReturnPelletToPool(GameObject pellet)
     {
         pellet.SetActive(false);
         pelletPool.Enqueue(pellet);
     }
 
-    public void NextShotCued()
+    public override void NextShotCued()
     {
         foreach (GameObject pellet in activePellets)
         {

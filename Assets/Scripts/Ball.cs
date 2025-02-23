@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    public delegate void BallHitSomething(Collision collision, HashSet<PFXType> pfxTypes);
+    public static event BallHitSomething OnBallHitSomething;
+
     public Transform ball;
     public Rigidbody rb;
 
@@ -16,25 +19,30 @@ public class Ball : MonoBehaviour
     private Vector3 teePosition;
     private List<Vector3> trajectoryPoints;
     private List<Vector3> capturedTrajectoryPoints;
+    private IContextProvider context;
+    
     [HideInInspector]
     public bool collidedWithSomething = false;
-    
-    public delegate void BallHitSomething(Collision collision, HashSet<PFXType> pfxTypes);
-    public static event BallHitSomething OnBallHitSomething;
 
-    private void Awake()
+    public void Initialize(IContextProvider _context)
     {
+        context = _context;
+        foreach (BallAbility ability in GetComponentsInChildren<BallAbility>())
+        {
+            ability.Initialize(this, context);
+        }
         teePosition = transform.position;
     }
-
+    
     public void Shoot()
     {
-        trajectoryPoints = GameManager.Instance.CalculateTrajectoryPoints();
-        RoundDataManager.Instance.StartLoggingShotInfo();
-        StartCoroutine(CaptureTrajectory());
+        trajectoryPoints = context.GetTrajectory();
         rb.isKinematic = true;
-        GameManager.BallState = BallState.InControlledMotion;
         StartCoroutine(FollowTrajectory());
+        if (GameStateManager.Instance.CurrentGameState == GameStateManager.GameState.InGame)
+        {
+            StartCoroutine(CaptureTrajectory());
+        }
     }
 
     IEnumerator FollowTrajectory()
@@ -54,7 +62,7 @@ public class Ball : MonoBehaviour
                 rb.isKinematic = false;
                 Vector3 finalVelocity = (nextPoint - currentPoint) / timeStep;
                 rb.linearVelocity = finalVelocity;
-                GameManager.BallState = BallState.InPhysicsMotion;
+                context.SetBallState(BallState.InPhysicsMotion);
                 yield break;
             }
 
@@ -75,7 +83,7 @@ public class Ball : MonoBehaviour
             rb.linearVelocity = finalVelocity;
         }
 
-        GameManager.BallState = BallState.InPhysicsMotion;
+        context.SetBallState(BallState.InPhysicsMotion);
     }
 
     public IEnumerator CaptureTrajectory()
@@ -93,7 +101,7 @@ public class Ball : MonoBehaviour
     public void ResetBall()
     {
         StopAllCoroutines();
-        RoundDataManager.Instance.FinishLoggingShotInfo(capturedTrajectoryPoints);
+        RoundDataManager.Instance?.FinishLoggingShotInfo(capturedTrajectoryPoints);
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;

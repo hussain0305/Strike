@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class SniperAbility : BallAbility, IBallAbility
+public class SniperAbility : BallAbility
 {
-    private Transform cylinderPivot;
+    private Transform aimTransform;
     private GameObject aimDot;
     private bool isActive = false;
 
@@ -11,9 +11,11 @@ public class SniperAbility : BallAbility, IBallAbility
 
     private int aimDotLayer;
     
-    private void Start()
+    public override void Initialize(Ball ownerBall, IContextProvider _context)
     {
-        cylinderPivot = GameManager.Instance.angleInput.cylinderPivot;
+        base.Initialize(ownerBall, _context);
+        
+        aimTransform = context.GetAimTransform();
 
         aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         aimDot.transform.localScale = Vector3.one * 1f;
@@ -25,26 +27,24 @@ public class SniperAbility : BallAbility, IBallAbility
         Destroy(aimDot.GetComponent<Collider>());
         isActive = true;
     }
-
-    private void OnEnable()
+    
+    public override void BallShot()
     {
-        GameManager.OnBallShot += StopSniper;
-        GameManager.OnNextShotCued += ResumeSniper;
+        StopSniper();
     }
 
-    private void OnDisable()
+    public override void NextShotCued()
     {
-        GameManager.OnBallShot -= StopSniper;
-        GameManager.OnNextShotCued -= ResumeSniper;
+        ResumeSniper();
     }
 
     private void Update()
     {
         if (!isActive) return;
 
-        if (Physics.Raycast(cylinderPivot.position, cylinderPivot.forward, out RaycastHit hit, Mathf.Infinity, aimDotLayer))
+        if (Physics.Raycast(aimTransform.position, aimTransform.forward, out RaycastHit hit, Mathf.Infinity, aimDotLayer))
         {
-            float squaredDistance = (cylinderPivot.position - hit.point).sqrMagnitude;
+            float squaredDistance = (aimTransform.position - hit.point).sqrMagnitude;
             SetDotSize(squaredDistance);
             
             aimDot.transform.position = hit.point;
@@ -92,5 +92,6 @@ public class SniperAbility : BallAbility, IBallAbility
         {
             Destroy(unlitMaterial);
         }
+        UnregisterFromEvents();
     }
 }

@@ -98,6 +98,13 @@ public enum Rarity
     Legendary
 };
 
+[System.Serializable]
+public enum GameEvent
+{
+    BallShot,
+    NextShotCued
+};
+
 //============---- STRUCTS ----============
 
 public struct ShotInfo

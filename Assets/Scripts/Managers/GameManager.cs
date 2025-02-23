@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     public delegate void GameEndedEvent();
     public static event GameEndedEvent OnGameEnded;
+    
     public delegate void GameExitedEvent();
     public static event GameExitedEvent OnGameExitedPrematurely;
 
@@ -81,6 +82,8 @@ public class GameManager : MonoBehaviour
     private Coroutine minTimePerShotRoutine;
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
+
+    private IContextProvider context;
     
     private void Awake()
     {
@@ -114,6 +117,8 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
+        context = new InGameContext();
+        context.RegisterToContextEvents();
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
         OnGotInGame?.Invoke();
         InputManager.Instance.SetContext(GameContext.InGame);
@@ -126,6 +131,7 @@ public class GameManager : MonoBehaviour
         ball = spawnedBall.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
         ballMass = ball.rb.mass;
+        ball.Initialize(context);
     }
     
     public void SetupPlayers()
@@ -232,6 +238,8 @@ public class GameManager : MonoBehaviour
         OnBallShot?.Invoke();
         DisableRelevantElementsDuringShot();
         StartMinTimePerShotPeriod();
+        RoundDataManager.Instance.StartLoggingShotInfo();
+        BallState = BallState.InControlledMotion;
     }
 
     public void DisableRelevantElementsDuringShot()
