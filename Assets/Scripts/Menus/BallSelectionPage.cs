@@ -14,6 +14,7 @@ public class BallSelectionPage : MonoBehaviour
     public BallStatRow statBounce;
     public Button equipBallButton;
     public TextMeshProUGUI ballDescription;
+    public BallPreviewController previewController;
 
     [Header("Rarity")]
     public Image[] frame;
@@ -91,35 +92,38 @@ public class BallSelectionPage : MonoBehaviour
     public void SetSelectedBall(int ballIndex)
     {
         currentSelectedBall = ballIndex;
-        ActivateBallPreview(ballIndex);
+        GameObject selectedBall = SetupBallForPreview(ballIndex);
 
+        BallProperties selectedBallProperties = Balls.Instance.allBalls[ballIndex];
         statWeight.propertyTypeText.text = "WEIGHT";
         statWeight.propertySlider.value =
-            Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].weight / Balls.Instance.maxWeight);
-        statWeight.propertyValueText.text = Balls.Instance.allBalls[ballIndex].weight.ToString("F1");
+            Mathf.Clamp01(selectedBallProperties.weight / Balls.Instance.maxWeight);
+        statWeight.propertyValueText.text = selectedBallProperties.weight.ToString("F1");
         
         statSpin.propertyTypeText.text = "SPIN";
         statSpin.propertySlider.value =
-            Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].spin / Balls.Instance.maxSpin);
-        statSpin.propertyValueText.text = Balls.Instance.allBalls[ballIndex].spin.ToString("F1");
+            Mathf.Clamp01(selectedBallProperties.spin / Balls.Instance.maxSpin);
+        statSpin.propertyValueText.text = selectedBallProperties.spin.ToString("F1");
         
         statBounce.propertyTypeText.text = "BOUNCE";
         statBounce.propertySlider.value =
-            Mathf.Clamp01(Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness / Balls.Instance.maxBounce);
-        statBounce.propertyValueText.text = Balls.Instance.allBalls[ballIndex].physicsMaterial.bounciness.ToString("F1");
+            Mathf.Clamp01(selectedBallProperties.physicsMaterial.bounciness / Balls.Instance.maxBounce);
+        statBounce.propertyValueText.text = selectedBallProperties.physicsMaterial.bounciness.ToString("F1");
 
-        ballDescription.text = Balls.Instance.allBalls[ballIndex].description;
+        ballDescription.text = selectedBallProperties.description;
 
         RarityAppearance rarityAppearance =
-            GlobalAssets.Instance.GetRarityAppearanceSettings(Balls.Instance.allBalls[ballIndex].rarity);
+            GlobalAssets.Instance.GetRarityAppearanceSettings(selectedBallProperties.rarity);
         foreach (Image img in frame)
         {
             img.material = rarityAppearance.material;
         }
-        rarityText.text = Balls.Instance.allBalls[ballIndex].rarity.ToString();
+        rarityText.text = selectedBallProperties.rarity.ToString();
         rarityText.color = rarityAppearance.color;
         
         HighlightSelected(ballIndex);
+
+        previewController.PlayPreview(selectedBallProperties.name, selectedBall);
     }
     
     public void HighlightSelected(int ballIndex)
@@ -137,23 +141,30 @@ public class BallSelectionPage : MonoBehaviour
         }
     }
 
-    public void ActivateBallPreview(int ballIndex)
+    public GameObject SetupBallForPreview(int ballIndex)
     {
-        bool existingBallFound = false;
+        GameObject selectedBall = null;
         foreach (int bIndex in previewBalls.Keys)
         {
             previewBalls[bIndex].SetActive(false);
             if (bIndex == ballIndex)
             {
-                previewBalls[bIndex].SetActive(true);
-                existingBallFound = true;
+                selectedBall = previewBalls[bIndex];
+                selectedBall.SetActive(true);
             }
         }
 
-        if (!existingBallFound)
+        if (!selectedBall)
         {
-            GameObject spawnedBall = Instantiate(Balls.Instance.allBalls[ballIndex].prefab, previewBallsParent);
-            previewBalls.Add(ballIndex, spawnedBall);
+            selectedBall = Instantiate(Balls.Instance.allBalls[ballIndex].prefab, previewBallsParent);
+            selectedBall.transform.localScale *= 0.25f;
+            previewBalls.Add(ballIndex, selectedBall);
         }
+
+        selectedBall.transform.position = previewController.ballLocation.position;
+        MainMenu.Context.InitPreview(selectedBall.GetComponent<Ball>(),
+            previewController.aimTransform,
+            previewController.trajectory);
+        return selectedBall;
     }
 }

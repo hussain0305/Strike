@@ -1,0 +1,51 @@
+using System;
+using UnityEngine;
+
+public class ExhibitionPin : MonoBehaviour
+{
+    public Material defaultMaterial;
+    public Material hitMaterial;
+    public Transform edges;
+
+    private Vector3 defaultPosition;
+    private Rigidbody rBody;
+    
+    private void Awake()
+    {
+        defaultPosition = transform.position;
+        rBody = GetComponent<Rigidbody>();
+    }
+
+    public void Reset()
+    {
+        transform.position = defaultPosition;
+        transform.rotation = Quaternion.identity;
+        rBody.angularVelocity = Vector3.zero;
+        rBody.linearVelocity = Vector3.zero;
+        SetDefaultVisuals();
+    }
+    
+    public void SetHitVisuals()
+    {
+        foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.sharedMaterial = hitMaterial;
+        }
+    }
+
+    public void SetDefaultVisuals()
+    {
+        foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.sharedMaterial = defaultMaterial;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.GetComponent<Ball>())
+        {
+            SetHitVisuals();
+        }
+    }
+}
