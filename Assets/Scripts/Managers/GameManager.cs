@@ -6,6 +6,12 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+public class BallShotEvent { }
+public class NextShotCuedEvent { }
+public class InGameEvent { }
+public class GameEndedEvent { }
+public class GameExitedEvent { }
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -13,21 +19,6 @@ public class GameManager : MonoBehaviour
 
     public static bool IsGameplayActive => Instance != null;
     
-    public delegate void BallShot();
-    public static event BallShot OnBallShot;
-    
-    public delegate void NextShotCued();
-    public static event NextShotCued OnNextShotCued;
-
-    public delegate void InGame();
-    public static event InGame OnGotInGame;
-
-    public delegate void GameEndedEvent();
-    public static event GameEndedEvent OnGameEnded;
-    
-    public delegate void GameExitedEvent();
-    public static event GameExitedEvent OnGameExitedPrematurely;
-
     [Header("Level Objects")]
     public Tee tee;
     [HideInInspector]
@@ -118,9 +109,8 @@ public class GameManager : MonoBehaviour
     public void InitGame()
     {
         context = new InGameContext();
-        context.RegisterToContextEvents();
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
-        OnGotInGame?.Invoke();
+        EventBus.Publish(new InGameEvent());
         InputManager.Instance.SetContext(GameContext.InGame);
     }
 
@@ -197,13 +187,12 @@ public class GameManager : MonoBehaviour
         angleIndicator.SetActive(true);
         nextButton.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(true);
-        ball.ResetBall();
         powerInput.powerSlider.value = 0;
         spinInput.ResetPointer();
         angleInput.ResetPointer();
         GameManager.BallState = BallState.OnTee;
         TogglePlayer();
-        OnNextShotCued?.Invoke();
+        EventBus.Publish(new NextShotCuedEvent());
         CheckToShowTrajectoryHistoryButton();
     }
 
@@ -235,7 +224,7 @@ public class GameManager : MonoBehaviour
     public void ShootBall()
     {
         ball.Shoot();
-        OnBallShot?.Invoke();
+        EventBus.Publish(new BallShotEvent());
         DisableRelevantElementsDuringShot();
         StartMinTimePerShotPeriod();
         RoundDataManager.Instance.StartLoggingShotInfo();
@@ -436,12 +425,12 @@ public class GameManager : MonoBehaviour
 
     public void GameExitedPrematurely()
     {
-        OnGameExitedPrematurely?.Invoke();
+        EventBus.Publish(new GameExitedEvent());
     }
     
     public void GameEnded()
     {
-        OnGameEnded?.Invoke();
+        EventBus.Publish(new GameEndedEvent());
         CameraController.Instance.ResetCamera();
         PostGameStuff();
         SetupResults();

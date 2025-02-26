@@ -3,11 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class BallHitSomethingEvent
+{
+    public Collision Collision { get; }
+    public HashSet<PFXType> PfxTypes { get; }
+
+    public BallHitSomethingEvent(Collision collision, HashSet<PFXType> pfxTypes)
+    {
+        Collision = collision;
+        PfxTypes = pfxTypes;
+    }
+}
+
 public class Ball : MonoBehaviour
 {
-    public delegate void BallHitSomething(Collision collision, HashSet<PFXType> pfxTypes);
-    public static event BallHitSomething OnBallHitSomething;
-
     public Transform ball;
     public Rigidbody rb;
 
@@ -23,6 +32,18 @@ public class Ball : MonoBehaviour
     
     [HideInInspector]
     public bool collidedWithSomething = false;
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<ResetPreviewEvent>(ResetBall);
+        EventBus.Subscribe<NextShotCuedEvent>(ResetBall);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<ResetPreviewEvent>(ResetBall);
+        EventBus.Unsubscribe<NextShotCuedEvent>(ResetBall);
+    }
 
     public void Initialize(IContextProvider _context)
     {
@@ -98,6 +119,16 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void ResetBall(ResetPreviewEvent e)
+    {
+        ResetBall();
+    }
+    
+    public void ResetBall(NextShotCuedEvent e)
+    {
+        ResetBall();
+    }
+    
     public void ResetBall()
     {
         StopAllCoroutines();
@@ -114,11 +145,11 @@ public class Ball : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & Global.levelSurfaces) != 0)
         {
-            OnBallHitSomething?.Invoke(other, new HashSet<PFXType> {PFXType.FlatHitEffect});
+            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}));
         }
         else if(other.gameObject.GetComponent<Collectible>())
         {
-            OnBallHitSomething?.Invoke(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D});
+            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}));
         }
     }
 }

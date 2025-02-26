@@ -28,12 +28,12 @@ public class SniperAbility : BallAbility
         isActive = true;
     }
     
-    public override void BallShot()
+    public override void BallShot(BallShotEvent e)
     {
         StopSniper();
     }
 
-    public override void NextShotCued()
+    public override void NextShotCued(NextShotCuedEvent e)
     {
         ResumeSniper();
     }

@@ -1,12 +1,8 @@
+using System;
 using UnityEngine;
+
+public class ResetPreviewEvent { }
 
 public class BallPreview : MonoBehaviour
 {
-    public delegate void ResetPreview();
-    public static event ResetPreview OnResetPreview;
-
-    public void TriggerResetPreview()
-    {
-        OnResetPreview?.Invoke();
-    }
 }

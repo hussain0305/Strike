@@ -1,11 +1,19 @@
-using System;
 using UnityEngine;
+
+public class StarCollectedEvent
+{
+    public int Index { get; }
+    public Vector3 Position { get; }
+
+    public StarCollectedEvent(int index, Vector3 position)
+    {
+        Index = index;
+        Position = position;
+    }
+}
 
 public class Star : MonoBehaviour
 {
-    public delegate void StarCollected(int index, Vector3 position);
-    public static event StarCollected OnStarCollected;
-
     public int index;
 
     private int collectionCollisionMask;
@@ -20,7 +28,7 @@ public class Star : MonoBehaviour
         if ((collectionCollisionMask & (1 << other.gameObject.layer)) != 0)
         {
             GameManager.Instance.StarCollected(index);
-            OnStarCollected?.Invoke(index, other.transform.position);
+            EventBus.Publish(new StarCollectedEvent(index, other.transform.position));
             gameObject.SetActive(false);
         }
     }

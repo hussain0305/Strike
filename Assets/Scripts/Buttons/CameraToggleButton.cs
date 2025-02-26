@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class CameraSwitchedEvent
+{
+    public CameraHoistLocation NewCameraPos { get; }
+
+    public CameraSwitchedEvent(CameraHoistLocation newCameraPos)
+    {
+        NewCameraPos = newCameraPos;
+    }
+}
+
 public class CameraToggleButton : MonoBehaviour
 {
-    public delegate void CameraSwitched(CameraHoistLocation newCameraPos);
-    public static event CameraSwitched OnCameraSwitched;
-
     public CameraHoistLocation hoistLocation;
     public Image[] outlines;
     
@@ -22,13 +29,13 @@ public class CameraToggleButton : MonoBehaviour
     private void OnEnable()
     {
         button.onClick.AddListener(ButtonPressed);
-        CameraController.OnCameraSwitchProcessed += CameraSwitchProcessed;
+        EventBus.Subscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
     }
 
     private void OnDisable()
     {
         button.onClick.RemoveAllListeners();
-        CameraController.OnCameraSwitchProcessed -= CameraSwitchProcessed;
+        EventBus.Unsubscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
     }
 
     public void ButtonPressed()
@@ -37,14 +44,14 @@ public class CameraToggleButton : MonoBehaviour
         {
             return;
         }
-        OnCameraSwitched?.Invoke(hoistLocation);
+        EventBus.Publish(new CameraSwitchedEvent(hoistLocation));
     }
 
-    public void CameraSwitchProcessed(CameraHoistLocation newCameraHoistLocation)
+    public void CameraSwitchProcessed(CameraSwitchProcessedEvent e)
     {
         foreach (Image outline in outlines)
         {
-            outline.material = newCameraHoistLocation == hoistLocation
+            outline.material = e.NewCameraPos == hoistLocation
                 ? GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.GameHUD)
                 : GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.GameHUD);
         }

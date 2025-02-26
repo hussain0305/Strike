@@ -13,7 +13,6 @@ public class MainMenu : MonoBehaviour
     {
         if (Context == null)
         {
-            Debug.Log(">>>New Context created");
             Context = new MenuContext();
         }
     }

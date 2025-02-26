@@ -26,12 +26,12 @@ public class BallPreviewController : MonoBehaviour
 
     private void OnEnable()
     {
-        BallPreview.OnResetPreview += ResetPreview;
+        EventBus.Subscribe<ResetPreviewEvent>(OnResetPreview);
     }
 
     private void OnDisable()
     {
-        BallPreview.OnResetPreview -= ResetPreview;
+        EventBus.Unsubscribe<ResetPreviewEvent>(OnResetPreview);
     }
 
     public void PlayPreview(string ballName, GameObject previewBall)
@@ -42,7 +42,7 @@ public class BallPreviewController : MonoBehaviour
         }
     }
 
-    public void ResetPreview()
+    public void OnResetPreview(ResetPreviewEvent e)
     {
         foreach (ExhibitionPin pin in previewPins)
         {

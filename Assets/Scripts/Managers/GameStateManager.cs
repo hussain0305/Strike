@@ -33,14 +33,14 @@ public class GameStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnGameEnded += GameEnded;
-        GameManager.OnGameExitedPrematurely += GameExitedPrematurely;
+        EventBus.Subscribe<GameEndedEvent>(GameEnded);
+        EventBus.Subscribe<GameExitedEvent>(GameExitedPrematurely);
     }
 
     private void OnDisable()
     {
-        GameManager.OnGameEnded -= GameEnded;
-        GameManager.OnGameExitedPrematurely -= GameExitedPrematurely;
+        EventBus.Unsubscribe<GameEndedEvent>(GameEnded);
+        EventBus.Unsubscribe<GameExitedEvent>(GameExitedPrematurely);
     }
 
     public void RegisterStateListener(GameStateToggleListener listener)
@@ -129,12 +129,12 @@ public class GameStateManager : MonoBehaviour
             PoolingManager.Instance.ReturnObject(pointCollectible.pointTokenType, pointCollectible.gameObject);
         }
     }
-    public void GameEnded()
+    public void GameEnded(GameEndedEvent e)
     {
         ReturnEverythingToPool();
     }
 
-    public void GameExitedPrematurely()
+    public void GameExitedPrematurely(GameExitedEvent e)
     {
         ReturnEverythingToPool();
         ReturnToMainMenu();

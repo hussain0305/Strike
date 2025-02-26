@@ -1,7 +1,17 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
+
+public class CollectibleHitEvent
+{
+    public CollectibleType Type { get; }
+    public int Value { get; }
+
+    public CollectibleHitEvent(CollectibleType type, int value)
+    {
+        Type = type;
+        Value = value;
+    }
+}
 
 public class Collectible : MonoBehaviour
 {
@@ -12,9 +22,6 @@ public class Collectible : MonoBehaviour
         InBody
     };
     
-    public delegate void CollectibleHit(CollectibleType type, int value);
-    public static event CollectibleHit OnCollectibleHit;
-
     [Header("Components")]
     public Rigidbody rBody;
     
@@ -59,14 +66,14 @@ public class Collectible : MonoBehaviour
 
     public void OnEnable()
     {
-        GameManager.OnBallShot += BallShot;
-        GameManager.OnNextShotCued += NextShotCued;
+        EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
     }
 
     public void OnDisable()
     {
-        GameManager.OnBallShot -= BallShot;
-        GameManager.OnNextShotCued -= NextShotCued;
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
     }
 
     public void SaveDefaults()
@@ -93,7 +100,7 @@ public class Collectible : MonoBehaviour
     
         numTimesCollected++;
         accountedForInThisShot = true;
-        OnCollectibleHit?.Invoke(type, value);
+        EventBus.Publish(new CollectibleHitEvent(type, value));
         header?.gameObject.SetActive(false);
         hitReaction?.CheckIfHitsExhasuted(numTimesCollected, numTimesCanBeCollected);
     }
@@ -111,16 +118,16 @@ public class Collectible : MonoBehaviour
 
         numTimesCollected++;
         accountedForInThisShot = true;
-        OnCollectibleHit?.Invoke(type, value);
+        EventBus.Publish(new CollectibleHitEvent(type, value));
         header?.gameObject.SetActive(false);
     }
 
-    public void BallShot()
+    public void BallShot(BallShotEvent e)
     {
         
     }
 
-    public void NextShotCued()
+    public void NextShotCued(NextShotCuedEvent e)
     {
         if (GameManager.Instance.pinBehaviour == PinBehaviourPerTurn.Reset)
         {

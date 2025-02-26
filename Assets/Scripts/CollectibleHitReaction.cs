@@ -12,13 +12,13 @@ public class CollectibleHitReaction : MonoBehaviour
 
     private void OnEnable()
     {
-        SetDefaultVisuals();
-        GameManager.OnNextShotCued += SetDefaultVisuals;
+        SetDefaultVisuals(null);
+        EventBus.Subscribe<NextShotCuedEvent>(SetDefaultVisuals);
     }
 
     private void OnDisable()
     {
-        GameManager.OnNextShotCued -= SetDefaultVisuals;
+        EventBus.Unsubscribe<NextShotCuedEvent>(SetDefaultVisuals);
     }
 
     public void CheckIfHitsExhasuted(int numTimesCollected, int numTimesCanBeCollected)
@@ -39,7 +39,7 @@ public class CollectibleHitReaction : MonoBehaviour
         defaultPointsDisplay?.gameObject.SetActive(false);
     }
 
-    public void SetDefaultVisuals()
+    public void SetDefaultVisuals(NextShotCuedEvent e)
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {

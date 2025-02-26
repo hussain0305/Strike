@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public class GameModeChangedEvent { }
+
 public class ModeSelector : MonoBehaviour
 {
     [Header("Game Mode")]
@@ -45,9 +47,6 @@ public class ModeSelector : MonoBehaviour
     private static ModeSelector instance;
     public static ModeSelector Instance => instance;
     
-    public delegate void GameModeChanged();
-    public static event GameModeChanged OnGameModeChanged;
-
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -144,7 +143,7 @@ public class ModeSelector : MonoBehaviour
 
     public void GameModeSelected(GameModeType currentSelected)
     {
-        OnGameModeChanged?.Invoke();
+        EventBus.Publish(new GameModeChangedEvent());
         ResetSelectedLevel();
         currentSelectedMode = currentSelected;
         currentSelectedModeInfo = gameModeInfo.GetGameModeInfo(currentSelected);

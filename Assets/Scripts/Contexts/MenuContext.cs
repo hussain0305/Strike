@@ -1,28 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuContext : BaseContext
+public class MenuContext : IContextProvider
 {
     private Ball currentBall;
     private Transform aimTransform;
     private LineRenderer trajectory;
     
-    public override Transform GetAimTransform()
+    public Transform GetAimTransform()
     {
         return aimTransform;
     }
 
-    public override List<Vector3> GetTrajectory()
+    public List<Vector3> GetTrajectory()
     {
         return SpoofTrajectory(currentBall.transform.position, 0);
     }
-
-    public override void RegisterToContextEvents()
-    {
-        
-    }
-
-    public override void SetBallState(BallState newState)
+    
+    public void SetBallState(BallState newState)
     {
         
     }

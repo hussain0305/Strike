@@ -33,17 +33,17 @@ public class RoundDataManager : MonoBehaviour
     
     private void OnEnable()
     {
-        GameManager.OnBallShot += BallShot;
-        Collectible.OnCollectibleHit += CollectibleHit;
+        EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
     }
 
     private void OnDisable()
     {
-        GameManager.OnBallShot -= BallShot;
-        Collectible.OnCollectibleHit -= CollectibleHit;
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
     }
     
-    public void BallShot()
+    public void BallShot(BallShotEvent e)
     {
         PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
         gameData.shotsTaken++;
@@ -82,18 +82,18 @@ public class RoundDataManager : MonoBehaviour
         }
     }
 
-    public void CollectibleHit(CollectibleType type, int value)
+    public void CollectibleHit(CollectibleHitEvent e)
     {
         PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
         PlayerScoreboard scoreboard = playerScoreboards[GameManager.Instance.CurrentPlayerTurn];
 
-        switch (type)
+        switch (e.Type)
         {
             case CollectibleType.Multiple:
-                currentShotMultipleAccrued *= value;
+                currentShotMultipleAccrued *= e.Value;
                 break;
             case CollectibleType.Points:
-                int pointsFromThisHit = currentShotMultipleAccrued * value;
+                int pointsFromThisHit = currentShotMultipleAccrued * e.Value;
                 gameData.totalPoints += pointsFromThisHit;
                 currentShotPointsAccrued += pointsFromThisHit;
                 scoreboard.TickToScore(gameData.totalPoints, pointsFromThisHit);

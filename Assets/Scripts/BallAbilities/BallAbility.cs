@@ -34,16 +34,16 @@ public abstract class BallAbility : MonoBehaviour
 
     public void RegisterToEvents()
     {
-        context?.RegisterListener(GameEvent.BallShot, BallShot);
-        context?.RegisterListener(GameEvent.NextShotCued, NextShotCued);
+        EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
     }
 
     public void UnregisterFromEvents()
     {
-        context?.UnregisterListener(GameEvent.BallShot, BallShot);
-        context?.UnregisterListener(GameEvent.NextShotCued, NextShotCued);
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
     }
 
-    public abstract void BallShot();
-    public abstract void NextShotCued();
+    public abstract void BallShot(BallShotEvent e);
+    public abstract void NextShotCued(NextShotCuedEvent e);
 }

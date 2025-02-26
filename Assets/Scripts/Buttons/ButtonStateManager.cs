@@ -23,16 +23,16 @@ public class ButtonStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        ModeSelector.OnGameModeChanged += GameModeChanged;
-        GameManager.OnGameEnded += RefreshDictionary;
-        GameManager.OnGameExitedPrematurely += RefreshDictionary;
+        EventBus.Subscribe<GameModeChangedEvent>(GameModeChanged);
+        EventBus.Subscribe<GameEndedEvent>(RefreshDictionary);
+        EventBus.Subscribe<GameExitedEvent>(RefreshDictionary);
     }
 
     private void OnDisable()
     {
-        ModeSelector.OnGameModeChanged -= GameModeChanged;
-        GameManager.OnGameEnded -= RefreshDictionary;
-        GameManager.OnGameExitedPrematurely -= RefreshDictionary;
+        EventBus.Unsubscribe<GameModeChangedEvent>(GameModeChanged);
+        EventBus.Unsubscribe<GameEndedEvent>(RefreshDictionary);
+        EventBus.Subscribe<GameExitedEvent>(RefreshDictionary);
     }
 
     public void RegisterButton(ButtonClickBehaviour button)
@@ -57,7 +57,7 @@ public class ButtonStateManager : MonoBehaviour
         return selectedButtonsByGroup.TryGetValue(button.groupId, out var selectedButton) && selectedButton == button;
     }
 
-    public void GameModeChanged()
+    public void GameModeChanged(GameModeChangedEvent e)
     {
         ResetLevelSelectionButtons();
     }
@@ -65,6 +65,16 @@ public class ButtonStateManager : MonoBehaviour
     public void RefreshDictionary()
     {
         selectedButtonsByGroup?.Clear();
+    }
+
+    public void RefreshDictionary(GameEndedEvent e)
+    {
+        RefreshDictionary();
+    }
+
+    public void RefreshDictionary(GameExitedEvent e)
+    {
+        RefreshDictionary();
     }
 
     public void ResetLevelSelectionButtons()

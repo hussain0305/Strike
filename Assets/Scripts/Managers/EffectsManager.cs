@@ -14,27 +14,27 @@ public class EffectsManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Ball.OnBallHitSomething += HandleBallHit;
-        Star.OnStarCollected += StarCollected;
+        EventBus.Subscribe<BallHitSomethingEvent>(HandleBallHit);
+        EventBus.Subscribe<StarCollectedEvent>(StarCollected);
     }
 
     private void OnDisable()
     {
-        Ball.OnBallHitSomething -= HandleBallHit;
-        Star.OnStarCollected -= StarCollected;
+        EventBus.Unsubscribe<BallHitSomethingEvent>(HandleBallHit);
+        EventBus.Unsubscribe<StarCollectedEvent>(StarCollected);
     }
 
-    private void HandleBallHit(Collision collision, HashSet<PFXType> effectsToPlay)
+    private void HandleBallHit(BallHitSomethingEvent e)
     {
-        Vector3 hitPosition = collision.GetContact(0).point;
-        Vector3 normal = collision.GetContact(0).normal;
+        Vector3 hitPosition = e.Collision.GetContact(0).point;
+        Vector3 normal = e.Collision.GetContact(0).normal;
         
-        if (effectsToPlay.Contains(PFXType.FlatHitEffect))
+        if (e.PfxTypes.Contains(PFXType.FlatHitEffect))
         {
-            PlayFlatEffect(hitPosition, normal, collision.gameObject.transform);
+            PlayFlatEffect(hitPosition, normal, e.Collision.gameObject.transform);
         }
 
-        if (effectsToPlay.Contains(PFXType.HitPFX3D))
+        if (e.PfxTypes.Contains(PFXType.HitPFX3D))
         {
             PlayPFX3D(hitPosition);
         }
@@ -72,9 +72,9 @@ public class EffectsManager : MonoBehaviour
         ReturnToPool(effect, pfx3DPool, 1f);
     }
 
-    private void StarCollected(int index, Vector3 position)
+    private void StarCollected(StarCollectedEvent e)
     {
-        PlayStarHitPFX(position);
+        PlayStarHitPFX(e.Position);
     }
 
     private GameObject GetFromPool(Queue<GameObject> pool, GameObject prefab)

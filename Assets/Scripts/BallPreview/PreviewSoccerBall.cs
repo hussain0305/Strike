@@ -8,7 +8,6 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
     public void PlayPreview(GameObject previewBall)
     {
         ball = previewBall.GetComponent<Ball>();
-        Debug.Log(">>> In soccer ball play preview");
         CoroutineDispatcher.Instance.RunCoroutine(PreviewRoutine(), CoroutineType.BallPreview);
     }
 
@@ -24,8 +23,7 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
             ball.Shoot();
             
             yield return new WaitForSeconds(2);
-            TriggerResetPreview();
-            ball.ResetBall();
+            EventBus.Publish(new ResetPreviewEvent());
         }
     }
 }

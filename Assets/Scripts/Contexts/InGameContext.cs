@@ -2,25 +2,19 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class InGameContext : BaseContext
+public class InGameContext : IContextProvider
 {
-    public override Transform GetAimTransform()
+    public Transform GetAimTransform()
     {
         return GameManager.Instance.angleInput.cylinderPivot;
     }
 
-    public override List<Vector3> GetTrajectory()
+    public List<Vector3> GetTrajectory()
     {
         return GameManager.Instance.CalculateTrajectoryPoints();
     }
 
-    public override void RegisterToContextEvents()
-    {
-        GameManager.OnBallShot += BallShot;
-        GameManager.OnNextShotCued += NextShotCued;
-    }
-
-    public override void SetBallState(BallState newState)
+    public void SetBallState(BallState newState)
     {
         GameManager.BallState = newState;
     }

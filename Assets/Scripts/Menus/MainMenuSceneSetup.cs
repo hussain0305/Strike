@@ -1,10 +1,9 @@
 using UnityEngine;
 
+public class InMenuEvent { }
+
 public class MainMenuSceneSetup : MonoBehaviour
 {
-    public delegate void InMenu();
-    public static event InMenu OnMenu;
-
     public LandingPage landingPage;
     
     private void OnEnable()
@@ -31,7 +30,7 @@ public class MainMenuSceneSetup : MonoBehaviour
     {
         landingPage.SetText("Setting things up");
         ModeSelector.Instance.Init();
-        OnMenu?.Invoke();
+        EventBus.Publish(new InMenuEvent());
     }
     
     public void GameReady()

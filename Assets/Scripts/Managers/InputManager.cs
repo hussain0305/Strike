@@ -20,14 +20,14 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnGotInGame += InGame;
-        MainMenuSceneSetup.OnMenu += InMenus;
+        EventBus.Subscribe<InGameEvent>(InGame);
+        EventBus.Subscribe<InMenuEvent>(InMenus);
     }
 
     private void OnDestroy()
     {
-        GameManager.OnGotInGame -= InGame;
-        MainMenuSceneSetup.OnMenu -= InMenus;
+        EventBus.Unsubscribe<InGameEvent>(InGame);
+        EventBus.Subscribe<InMenuEvent>(InMenus);
     }
 
     private void Update()
@@ -38,12 +38,12 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public void InGame()
+    public void InGame(InGameEvent e)
     {
         SetContext(GameContext.InGame);
     }
 
-    public void InMenus()
+    public void InMenus(InMenuEvent e)
     {
         SetContext(GameContext.InMenu);
     }

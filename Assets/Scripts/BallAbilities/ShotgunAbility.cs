@@ -28,7 +28,7 @@ public class ShotgunAbility : BallAbility
         }
     }
 
-    public override void BallShot()
+    public override void BallShot(BallShotEvent e)
     {
         FireShotgunPellets();
     }
@@ -74,7 +74,7 @@ public class ShotgunAbility : BallAbility
         pelletPool.Enqueue(pellet);
     }
 
-    public override void NextShotCued()
+    public override void NextShotCued(NextShotCuedEvent e)
     {
         foreach (GameObject pellet in activePellets)
         {

@@ -1,15 +1,19 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+
+public class CameraSwitchProcessedEvent
+{
+    public CameraHoistLocation NewCameraPos { get; }
+
+    public CameraSwitchProcessedEvent(CameraHoistLocation newCameraPos)
+    {
+        NewCameraPos = newCameraPos;
+    }
+}
 
 public class CameraController : MonoBehaviour
 {
-    public delegate void CameraSwitchProcessed(CameraHoistLocation newCameraPos);
-    public static event CameraSwitchProcessed OnCameraSwitchProcessed;
-
     public Button cameraToggleButton;
     public ScaleUpBulk markersScaleUp;
     public ScaleDownBulk markersScaleDown;
@@ -63,9 +67,9 @@ public class CameraController : MonoBehaviour
         followCamButton.onClick.AddListener(SetToFollowCam);
         stayInPlaceCamButton.onClick.AddListener(SetToStayCam);
         
-        GameManager.OnBallShot += BallShot;
-        GameManager.OnNextShotCued += NextShotCued;
-        CameraToggleButton.OnCameraSwitched += CameraSwitchedButtonPressed;
+        EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
+        EventBus.Subscribe<CameraSwitchedEvent>(CameraSwitchedButtonPressed);
     }
 
     private void OnDisable()
@@ -74,9 +78,9 @@ public class CameraController : MonoBehaviour
         followCamButton.onClick.RemoveAllListeners();
         stayInPlaceCamButton.onClick.RemoveAllListeners();
         
-        GameManager.OnBallShot -= BallShot;
-        GameManager.OnNextShotCued -= NextShotCued;
-        CameraToggleButton.OnCameraSwitched -= CameraSwitchedButtonPressed;
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
+        EventBus.Unsubscribe<CameraSwitchedEvent>(CameraSwitchedButtonPressed);
     }
 
     public void RolloutMenuButtonPressed()
@@ -158,7 +162,7 @@ public class CameraController : MonoBehaviour
         cameraMovementCoroutine = null;
     }
 
-    public void BallShot()
+    public void BallShot(BallShotEvent e)
     {
         if (followBallOnShoot)
         {
@@ -169,7 +173,7 @@ public class CameraController : MonoBehaviour
         // MoveToCameraPosition(shotCameraHoistAt);
     }
 
-    public void NextShotCued()
+    public void NextShotCued(NextShotCuedEvent e)
     {
         cameraFollow.followBall = false;
         cameraFollow.enabled = false;
@@ -178,14 +182,14 @@ public class CameraController : MonoBehaviour
         ToggleRollOutMenuVisibility(false);
     }
 
-    public void CameraSwitchedButtonPressed(CameraHoistLocation newCameraPosition)
+    public void CameraSwitchedButtonPressed(CameraSwitchedEvent e)
     {
         if (!GameManager.BallShootable || cameraMovementCoroutine != null)
         {
             return;
         }
-        OnCameraSwitchProcessed?.Invoke(newCameraPosition);
-        MoveToCameraPosition(newCameraPosition);
+        EventBus.Publish(new CameraSwitchProcessedEvent(e.NewCameraPos));
+        MoveToCameraPosition(e.NewCameraPos);
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
     }
 

@@ -28,6 +28,16 @@ public class CoroutineDispatcher : MonoBehaviour
 
     private Dictionary<CoroutineType, Coroutine> activeCoroutines = new Dictionary<CoroutineType, Coroutine>();
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe<InGameEvent>(StopPreviewCoroutines);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<InGameEvent>(StopPreviewCoroutines);
+    }
+    
     public void RunCoroutine(IEnumerator coroutine, CoroutineType coroutineType = CoroutineType.Untracked)
     {
         if (coroutineType != CoroutineType.Untracked && activeCoroutines.TryGetValue(coroutineType, out Coroutine existingCoroutine))
@@ -53,5 +63,14 @@ public class CoroutineDispatcher : MonoBehaviour
             StopCoroutine(runningCoroutine);
         }
         activeCoroutines.Clear();
+    }
+
+    public void StopPreviewCoroutines(InGameEvent e)
+    {
+        if (activeCoroutines.TryGetValue(CoroutineType.BallPreview, out Coroutine runningCoroutine))
+        {
+            StopCoroutine(runningCoroutine);
+            activeCoroutines.Remove(CoroutineType.BallPreview);
+        }
     }
 }

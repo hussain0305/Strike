@@ -31,28 +31,28 @@ public class NotableEventsManager : MonoBehaviour
     
     private void OnEnable()
     {
-        Collectible.OnCollectibleHit += CollectibleHit;
-        GameManager.OnNextShotCued += NextShotCued;
+        EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
+        EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
     }
 
     private void OnDisable()
     {
-        Collectible.OnCollectibleHit -= CollectibleHit;
-        GameManager.OnNextShotCued -= NextShotCued;
+        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
     }
 
     private void OnDestroy()
     {
-        Collectible.OnCollectibleHit -= CollectibleHit;
-        GameManager.OnNextShotCued -= NextShotCued;
+        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
     }
 
-    public void CollectibleHit(CollectibleType type, int value)
+    public void CollectibleHit(CollectibleHitEvent e)
     {
-        switch (type)
+        switch (e.Type)
         {
             case CollectibleType.Multiple:
-                ShowMultiplierText(value);
+                ShowMultiplierText(e.Value);
                 break;
             case CollectibleType.Points:
                 numberHitsInThisShot++;
@@ -61,7 +61,7 @@ public class NotableEventsManager : MonoBehaviour
         }
     }
 
-    public void NextShotCued()
+    public void NextShotCued(NextShotCuedEvent e)
     {
         if (numberHitsInThisShot == 0)
         {

@@ -27,15 +27,15 @@ public class TrajectoryHistoryViewer : MonoBehaviour
     
     private void OnEnable()
     {
-        GameManager.OnBallShot += BallShot;
+        EventBus.Subscribe<BallShotEvent>(BallShot);
     }
 
     private void OnDisable()
     {
-        GameManager.OnBallShot -= BallShot;
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
     }
 
-    public void BallShot()
+    public void BallShot(BallShotEvent e)
     {
         HideTrajectoryHistory();
     }

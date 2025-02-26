@@ -31,14 +31,14 @@ public class MenuManager : MonoBehaviour
     
     private void Start()
     {
-        GameManager.OnGotInGame += InGame;
-        MainMenuSceneSetup.OnMenu += InMenus;
+        EventBus.Subscribe<InGameEvent>(InGame);
+        EventBus.Subscribe<InMenuEvent>(InMenus);
     }
 
     private void OnDestroy()
     {
-        GameManager.OnGotInGame -= InGame;
-        MainMenuSceneSetup.OnMenu -= InMenus;
+        EventBus.Unsubscribe<InGameEvent>(InGame);
+        EventBus.Unsubscribe<InMenuEvent>(InMenus);
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
@@ -132,13 +132,13 @@ public class MenuManager : MonoBehaviour
         return menuStack.Count != 0;
     }
     
-    public void InGame()
+    public void InGame(InGameEvent e)
     {
         currentGameContext = GameContext.InGame;
         requiredMenuType = null;
     }
 
-    public void InMenus()
+    public void InMenus(InMenuEvent e)
     {
         currentGameContext = GameContext.InMenu;
         requiredMenuType = MenuBase.MenuType.MainMenu;
