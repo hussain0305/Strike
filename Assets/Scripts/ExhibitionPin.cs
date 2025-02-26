@@ -16,7 +16,17 @@ public class ExhibitionPin : MonoBehaviour
         rBody = GetComponent<Rigidbody>();
     }
 
-    public void Reset()
+    private void OnEnable()
+    {
+        EventBus.Subscribe<NextShotCuedEvent>(Reset);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<NextShotCuedEvent>(Reset);
+    }
+
+    public void Reset(NextShotCuedEvent e)
     {
         transform.position = defaultPosition;
         transform.rotation = Quaternion.identity;

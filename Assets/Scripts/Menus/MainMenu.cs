@@ -7,13 +7,16 @@ public class MainMenu : MonoBehaviour
     public Button ballSelectionButton;
     public Button gameModeSelectionButton;
 
-    public static MenuContext Context { get; private set; }
-
-    private void Awake()
+    private static MenuContext _context;
+    public static MenuContext Context
     {
-        if (Context == null)
+        get
         {
-            Context = new MenuContext();
+            if (_context == null)
+            {
+                _context = new MenuContext();
+            }
+            return _context;
         }
     }
 
@@ -36,8 +39,13 @@ public class MainMenu : MonoBehaviour
         gameModeSelectionButton.onClick.RemoveAllListeners();
     }
 
+    public static void ClearContext()
+    {
+        _context = null;
+    }
+    
     private void OnDestroy()
     {
-        Context = null;
+        ClearContext();
     }
 }

@@ -22,6 +22,11 @@ public class MenuContext : IContextProvider
         
     }
 
+    public PinBehaviourPerTurn GetPinResetBehaviour()
+    {
+        return PinBehaviourPerTurn.Reset;
+    }
+
     public List<Vector3> SpoofTrajectory(Vector3 startPosition, float spinEffect)
     {
         List<Vector3> trajectoryPoints = new List<Vector3>();

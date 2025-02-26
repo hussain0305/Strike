@@ -2854,8 +2854,7 @@ MonoBehaviour:
   ballLocation: {fileID: 2082857684}
   aimTransform: {fileID: 1560274411}
   trajectory: {fileID: 1378399229}
-  previewPins:
-  - {fileID: 1616522165}
+  previewSceneObjects: {fileID: 442456184}
 --- !u!1 &448707315
 GameObject:
   m_ObjectHideFlags: 0
@@ -7709,7 +7708,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -24.999878}
+  m_AnchoredPosition: {x: 100, y: -24.999817}
   m_SizeDelta: {x: 1500, y: -500}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1575466799
@@ -7787,6 +7786,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EmptyPin
       objectReference: {fileID: 0}
+    - target: {fileID: 5940289607546129480, guid: e98b2145422c9864cb4ecbeeb02dca7e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6987421419775571179, guid: e98b2145422c9864cb4ecbeeb02dca7e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -7849,17 +7852,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6987421419775571179, guid: e98b2145422c9864cb4ecbeeb02dca7e, type: 3}
   m_PrefabInstance: {fileID: 1616522163}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1616522165 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4427299825370637543, guid: e98b2145422c9864cb4ecbeeb02dca7e, type: 3}
-  m_PrefabInstance: {fileID: 1616522163}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a65f13a0e55d3c4b96602636bda0a03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1633539863
 GameObject:
   m_ObjectHideFlags: 0

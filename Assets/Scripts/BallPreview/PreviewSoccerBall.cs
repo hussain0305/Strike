@@ -15,7 +15,7 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
     {
         while (true)
         {
-            MainMenu.Context.DrawTrajectory(MainMenu.Context.GetTrajectory().ToArray());
+            // MainMenu.Context.DrawTrajectory(MainMenu.Context.GetTrajectory().ToArray());
 
             yield return new WaitForSeconds(1);
             
@@ -23,7 +23,7 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
             ball.Shoot();
             
             yield return new WaitForSeconds(2);
-            EventBus.Publish(new ResetPreviewEvent());
+            EventBus.Publish(new NextShotCuedEvent());
         }
     }
 }

@@ -18,4 +18,9 @@ public class InGameContext : IContextProvider
     {
         GameManager.BallState = newState;
     }
+
+    public PinBehaviourPerTurn GetPinResetBehaviour()
+    {
+        return GameManager.Instance.pinBehaviour;
+    }
 }

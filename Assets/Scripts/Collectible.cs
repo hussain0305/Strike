@@ -52,6 +52,8 @@ public class Collectible : MonoBehaviour
     private Quaternion defaultRotation;
 
     private CollectibleHitReaction hitReaction;
+
+    private IContextProvider context;
     
     public void Awake()
     {
@@ -74,6 +76,11 @@ public class Collectible : MonoBehaviour
     {
         EventBus.Unsubscribe<BallShotEvent>(BallShot);
         EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
+    }
+
+    public void Initialize(IContextProvider _contextProvider)
+    {
+        context = _contextProvider;
     }
 
     public void SaveDefaults()
@@ -129,7 +136,7 @@ public class Collectible : MonoBehaviour
 
     public void NextShotCued(NextShotCuedEvent e)
     {
-        if (GameManager.Instance.pinBehaviour == PinBehaviourPerTurn.Reset)
+        if (context.GetPinResetBehaviour() == PinBehaviourPerTurn.Reset)
         {
             numTimesCollected = 0;
             accountedForInThisShot = false;

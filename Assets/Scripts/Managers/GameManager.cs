@@ -57,6 +57,19 @@ public class GameManager : MonoBehaviour
     public int CurrentPlayerTurn => currentPlayerTurn;
 
     public static bool BallShootable => BallState == BallState.OnTee;
+    
+    private static InGameContext _context;
+    public static InGameContext Context
+    {
+        get
+        {
+            if (_context == null)
+            {
+                _context = new InGameContext();
+            }
+            return _context;
+        }
+    }
 
     private float gravity;
     private float ballMass;
@@ -73,8 +86,6 @@ public class GameManager : MonoBehaviour
     private Coroutine minTimePerShotRoutine;
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
-
-    private IContextProvider context;
     
     private void Awake()
     {
@@ -108,7 +119,6 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
-        context = new InGameContext();
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
         EventBus.Publish(new InGameEvent());
         InputManager.Instance.SetContext(GameContext.InGame);
@@ -121,7 +131,7 @@ public class GameManager : MonoBehaviour
         ball = spawnedBall.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
         ballMass = ball.rb.mass;
-        ball.Initialize(context);
+        ball.Initialize(Context);
     }
     
     public void SetupPlayers()
@@ -454,5 +464,15 @@ public class GameManager : MonoBehaviour
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
+    }
+
+    private static void DiscardGameContext()
+    {
+        _context = null;
+    }
+    
+    private void OnDestroy()
+    {
+        DiscardGameContext();
     }
 }

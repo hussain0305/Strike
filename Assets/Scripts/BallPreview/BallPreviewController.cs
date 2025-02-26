@@ -9,7 +9,7 @@ public class BallPreviewController : MonoBehaviour
     public Transform ballLocation;
     public Transform aimTransform;
     public LineRenderer trajectory;
-    public ExhibitionPin[] previewPins;
+    public Transform previewSceneObjects;
     
     private Dictionary<string, IBallPreview> previewStrategies;
     
@@ -22,16 +22,16 @@ public class BallPreviewController : MonoBehaviour
             // { BallType.Shotgun, new ShotgunBallPreview() }
             // Add more types as needed
         };
+
+        InitializeElements();
     }
 
-    private void OnEnable()
+    private void InitializeElements()
     {
-        EventBus.Subscribe<ResetPreviewEvent>(OnResetPreview);
-    }
-
-    private void OnDisable()
-    {
-        EventBus.Unsubscribe<ResetPreviewEvent>(OnResetPreview);
+        foreach (Collectible collectible in previewSceneObjects.GetComponentsInChildren<Collectible>())
+        {
+            collectible.Initialize(MainMenu.Context);
+        }
     }
 
     public void PlayPreview(string ballName, GameObject previewBall)
@@ -39,14 +39,6 @@ public class BallPreviewController : MonoBehaviour
         if (previewStrategies.TryGetValue(ballName, out IBallPreview preview))
         {
             preview.PlayPreview(previewBall);
-        }
-    }
-
-    public void OnResetPreview(ResetPreviewEvent e)
-    {
-        foreach (ExhibitionPin pin in previewPins)
-        {
-            pin.Reset();
         }
     }
 }
