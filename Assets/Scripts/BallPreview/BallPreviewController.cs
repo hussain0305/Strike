@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 public class BallPreviewController : MonoBehaviour
 {
-    public Transform ballLocation;
     public Transform aimTransform;
     public LineRenderer trajectory;
     public Transform previewSceneObjects;
+    public Tee tee;
     
     private Dictionary<string, IBallPreview> previewStrategies;
     

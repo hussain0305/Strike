@@ -25,7 +25,6 @@ public class Ball : MonoBehaviour
     public float dipClamp = 5f;
     public float groundLevel = 0.0f;
 
-    private Vector3 teePosition;
     private List<Vector3> trajectoryPoints;
     private List<Vector3> capturedTrajectoryPoints;
     private IContextProvider context;
@@ -52,7 +51,6 @@ public class Ball : MonoBehaviour
         {
             ability.Initialize(this, context);
         }
-        teePosition = transform.position;
     }
     
     public void Shoot()
@@ -119,12 +117,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void ResetBall(ResetPreviewEvent e)
-    {
-        ResetBall();
-    }
-    
-    public void ResetBall(NextShotCuedEvent e)
+    public void ResetBall<T>(T e)
     {
         ResetBall();
     }
@@ -136,7 +129,7 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
-        ball.position = teePosition;
+        ball.position = context.GetBallTeePosition().position;
         ball.rotation = Quaternion.identity;
         collidedWithSomething = false;
     }

@@ -7,4 +7,5 @@ public interface IContextProvider
     List<Vector3> GetTrajectory();
     void SetBallState(BallState newState);
     PinBehaviourPerTurn GetPinResetBehaviour();
+    Transform GetBallTeePosition();
 }

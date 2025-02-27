@@ -23,4 +23,9 @@ public class InGameContext : IContextProvider
     {
         return GameManager.Instance.pinBehaviour;
     }
+
+    public Transform GetBallTeePosition()
+    {
+        return GameManager.Instance.tee.ballPosition;
+    }
 }

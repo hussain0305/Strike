@@ -6,6 +6,7 @@ public class MenuContext : IContextProvider
     private Ball currentBall;
     private Transform aimTransform;
     private LineRenderer trajectory;
+    private Tee tee;
     
     public Transform GetAimTransform()
     {
@@ -14,7 +15,7 @@ public class MenuContext : IContextProvider
 
     public List<Vector3> GetTrajectory()
     {
-        return SpoofTrajectory(currentBall.transform.position, 0);
+        return SpoofTrajectory(currentBall.transform.position, currentBall.spinEffect);
     }
     
     public void SetBallState(BallState newState)
@@ -27,6 +28,11 @@ public class MenuContext : IContextProvider
         return PinBehaviourPerTurn.Reset;
     }
 
+    public Transform GetBallTeePosition()
+    {
+        return tee.ballPosition;
+    }
+
     public List<Vector3> SpoofTrajectory(Vector3 startPosition, float spinEffect)
     {
         List<Vector3> trajectoryPoints = new List<Vector3>();
@@ -35,12 +41,15 @@ public class MenuContext : IContextProvider
         float launchVelocity = 10f;
         Vector3 initialVelocity = trajectory.transform.forward * launchVelocity;
 
-        Vector2 spin = Vector2.one;
+        Vector2 spin = new Vector2(Random.Range(-2f, 2f), Random.Range(-0.5f, 0.2f));
         float sideSpin = spin.x;
         float topSpin = spin.y;
 
-        float curveScale = Mathf.Clamp(spinEffect * Mathf.Abs(sideSpin), 0, spinEffect);
-        float dipScale = -Mathf.Clamp(spinEffect * Mathf.Abs(topSpin), 0, spinEffect);
+        float randomCurveEffect = Random.Range(0f, 2f);
+        float randomDipEffect = Random.Range(-0.5f, 0.2f);
+
+        float curveScale = Mathf.Clamp(randomCurveEffect * Mathf.Abs(sideSpin), 0, spinEffect);
+        float dipScale = -Mathf.Clamp(randomDipEffect * Mathf.Abs(topSpin), 0, spinEffect);
 
         float curveDuration = 2.0f;
 
@@ -92,11 +101,12 @@ public class MenuContext : IContextProvider
         return trajectoryPoints;
     }
 
-    public void InitPreview(Ball _ball, Transform _aimTransform, LineRenderer _trajectory)
+    public void InitPreview(Ball _ball, Transform _aimTransform, LineRenderer _trajectory, Tee _tee)
     {
         currentBall = _ball;
         aimTransform = _aimTransform;
         trajectory = _trajectory;
+        tee = _tee;
     }
     
     public void DrawTrajectory(Vector3[] trajectoryPoints)

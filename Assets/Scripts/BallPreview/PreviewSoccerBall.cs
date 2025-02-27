@@ -13,17 +13,18 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
 
     IEnumerator PreviewRoutine()
     {
+        ball.Initialize(MainMenu.Context);
         while (true)
         {
             // MainMenu.Context.DrawTrajectory(MainMenu.Context.GetTrajectory().ToArray());
+            EventBus.Publish(new NextShotCuedEvent());
 
             yield return new WaitForSeconds(1);
             
-            ball.Initialize(MainMenu.Context);
             ball.Shoot();
-            
-            yield return new WaitForSeconds(2);
-            EventBus.Publish(new NextShotCuedEvent());
+            EventBus.Publish(new BallShotEvent());
+
+            yield return new WaitForSeconds(3);
         }
     }
 }

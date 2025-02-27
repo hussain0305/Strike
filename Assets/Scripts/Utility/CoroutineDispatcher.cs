@@ -31,11 +31,15 @@ public class CoroutineDispatcher : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<InGameEvent>(StopPreviewCoroutines);
+        EventBus.Subscribe<GoingBackEvent>(StopPreviewCoroutines);
+        EventBus.Subscribe<BallSelectedEvent>(StopPreviewCoroutines);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<InGameEvent>(StopPreviewCoroutines);
+        EventBus.Unsubscribe<GoingBackEvent>(StopPreviewCoroutines);
+        EventBus.Unsubscribe<BallSelectedEvent>(StopPreviewCoroutines);
     }
     
     public void RunCoroutine(IEnumerator coroutine, CoroutineType coroutineType = CoroutineType.Untracked)
@@ -65,7 +69,12 @@ public class CoroutineDispatcher : MonoBehaviour
         activeCoroutines.Clear();
     }
 
-    public void StopPreviewCoroutines(InGameEvent e)
+    private void StopPreviewCoroutines<T>(T e)
+    {
+        StopPreviewCoroutines();
+    }
+    
+    public void StopPreviewCoroutines()
     {
         if (activeCoroutines.TryGetValue(CoroutineType.BallPreview, out Coroutine runningCoroutine))
         {

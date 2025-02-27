@@ -53,9 +53,11 @@ public class ExhibitionPin : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.GetComponent<Ball>())
+        Ball ball = other.gameObject.GetComponent<Ball>();
+        if (ball)
         {
             SetHitVisuals();
+            ball.collidedWithSomething = true;
         }
     }
 }

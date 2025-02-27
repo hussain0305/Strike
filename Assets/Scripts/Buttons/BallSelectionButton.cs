@@ -2,6 +2,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class BallSelectedEvent
+{
+    public int Index;
+    public BallSelectedEvent(int index)
+    {
+        Index = index;
+    }
+}
+
 public class BallSelectionButton : MonoBehaviour
 {
     public Button button;
@@ -48,6 +57,7 @@ public class BallSelectionButton : MonoBehaviour
 
     public void PreviewBall()
     {
+        EventBus.Publish(new BallSelectedEvent(BallIndex));
         BallSelectionPage.Instance.SetSelectedBall(BallIndex);
     }
     
