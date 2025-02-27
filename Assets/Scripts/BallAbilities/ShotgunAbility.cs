@@ -53,7 +53,7 @@ public class ShotgunAbility : BallAbility
                 Rigidbody rb = pellet.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    rb.linearVelocity = (aim.forward+ spreadOffset).normalized * 80f;
+                    rb.linearVelocity = (aim.forward + spreadOffset).normalized * 80f;
                 }
             }
         }

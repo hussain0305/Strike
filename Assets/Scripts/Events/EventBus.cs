@@ -1,16 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class EventBus
 {
     private static Dictionary<Type, Delegate> eventTable = new Dictionary<Type, Delegate>();
-
+    
     public static void Subscribe<T>(Action<T> listener)
     {
         if (!eventTable.ContainsKey(typeof(T)))
+        {
             eventTable[typeof(T)] = null;
+        }
 
-        eventTable[typeof(T)] = (Action<T>)eventTable[typeof(T)] + listener;
+        var existingDelegate = eventTable[typeof(T)] as Action<T>;
+
+        if (existingDelegate != null && existingDelegate.GetInvocationList().Contains(listener))
+        {
+            return;
+        }
+
+        eventTable[typeof(T)] = existingDelegate + listener;
     }
 
     public static void Unsubscribe<T>(Action<T> listener)
@@ -34,3 +45,13 @@ public static class EventBus
         eventTable.Clear();
     }
 }
+
+/*
+public static void Subscribe<T>(Action<T> listener)
+{
+    if (!eventTable.ContainsKey(typeof(T)))
+        eventTable[typeof(T)] = null;
+
+    eventTable[typeof(T)] = (Action<T>)eventTable[typeof(T)] + listener;
+}
+*/

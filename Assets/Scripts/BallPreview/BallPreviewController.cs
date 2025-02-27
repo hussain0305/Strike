@@ -18,7 +18,7 @@ public class BallPreviewController : MonoBehaviour
         previewStrategies = new Dictionary<string, IBallPreview>
         {
             { "Soccer Ball", new PreviewSoccerBall() },
-            // { BallType.Sniper, new SniperBallPreview() },
+            { "Shotgun Ball", new PreviewShotgunBall() },
             // { BallType.Shotgun, new ShotgunBallPreview() }
             // Add more types as needed
         };

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PreviewSoccerBall : BallPreview, IBallPreview
+public class PreviewShotgunBall : BallPreview, IBallPreview
 {
     private Ball ball;
     
