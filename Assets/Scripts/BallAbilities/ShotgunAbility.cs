@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShotgunAbility : BallAbility
 {
     public GameObject pelletPrefab;
-    public Vector2 spread = new Vector2(1f, .5f);
+    public Vector2 spread = new Vector2(2f, 1f);
     private Queue<GameObject> pelletPool = new Queue<GameObject>();
     private List<GameObject> activePellets = new List<GameObject>();
     private const int pelletCount = 50;
@@ -53,7 +53,7 @@ public class ShotgunAbility : BallAbility
                 Rigidbody rb = pellet.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    rb.linearVelocity = (aim.forward + spreadOffset).normalized * 80f;
+                    rb.linearVelocity = (aim.forward + spreadOffset).normalized * context.GetLaunchForce();
                 }
             }
         }
