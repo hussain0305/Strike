@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
                 CheckToShowTrajectoryButton();
             }
 
-            if (true)//showTrajectory
+            if (showTrajectory)
             {
                 List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
                 DrawTrajectory(trajectoryPoints.ToArray());

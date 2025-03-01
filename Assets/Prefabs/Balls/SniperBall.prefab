@@ -4847,7 +4847,7 @@ GameObject:
   - component: {fileID: 7069517535911163313}
   - component: {fileID: 3798794528407180581}
   - component: {fileID: 1516453715555116339}
-  - component: {fileID: 6740917276115417957}
+  - component: {fileID: 67386951401660019}
   - component: {fileID: 7988299721373633392}
   m_Layer: 6
   m_Name: SniperBall
@@ -4970,12 +4970,12 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &6740917276115417957
+--- !u!114 &67386951401660019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4984,7 +4984,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1089681808455105078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58c0f389146e8b45bcd868669d749d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 347a5f17432a90b4dae22ca425fedbe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 3234842223703551136}
@@ -5072,7 +5072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4690533fe1410ad49939c775b387f6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 6740917276115417957}
+  ball: {fileID: 67386951401660019}
 --- !u!1 &9138213115521254653
 GameObject:
   m_ObjectHideFlags: 0
@@ -5118,7 +5118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e4cef0496911a46ac08ae192f0e74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 6740917276115417957}
+  ball: {fileID: 67386951401660019}
 --- !u!114 &7610025539870540025
 MonoBehaviour:
   m_ObjectHideFlags: 0

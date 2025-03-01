@@ -25,14 +25,15 @@ public class Ball : MonoBehaviour
     public float dipClamp = 5f;
     public float groundLevel = 0.0f;
 
-    private List<Vector3> trajectoryPoints;
-    private List<Vector3> capturedTrajectoryPoints;
-    private IContextProvider context;
+    protected IContextProvider context;
 
-    private int trajectoryDefinition = 10;
-    private float gravity;
-    private Tee tee;
-    private Vector3 startPosition;
+    protected List<Vector3> trajectoryPoints;
+    protected List<Vector3> capturedTrajectoryPoints;
+
+    protected int trajectoryDefinition = 10;
+    protected float gravity;
+    protected Tee tee;
+    protected Vector3 startPosition;
     
     [HideInInspector]
     public bool collidedWithSomething = false;
@@ -156,9 +157,9 @@ public class Ball : MonoBehaviour
         }
     }
     
-    public List<Vector3> CalculateTrajectory()
+    public virtual List<Vector3> CalculateTrajectory()
     {
-        List<Vector3> trajectoryPoints = new List<Vector3>();
+        trajectoryPoints = new List<Vector3>();
         float timeStep = 0.1f;
 
         Vector2 spin = context.GetSpinVector();
@@ -220,7 +221,6 @@ public class Ball : MonoBehaviour
 
         return trajectoryPoints;
     }
-
 }
 
 /*
