@@ -28,6 +28,11 @@ public class Ball : MonoBehaviour
     private List<Vector3> trajectoryPoints;
     private List<Vector3> capturedTrajectoryPoints;
     private IContextProvider context;
+
+    private int trajectoryDefinition = 10;
+    private float gravity;
+    private Tee tee;
+    private Vector3 startPosition;
     
     [HideInInspector]
     public bool collidedWithSomething = false;
@@ -51,11 +56,16 @@ public class Ball : MonoBehaviour
         {
             ability.Initialize(this, context);
         }
+
+        trajectoryDefinition = context.GetTrajectoryDefinition();
+        tee = context.GetTee();
+        startPosition = tee.ballPosition.position;
+        gravity = context.GetGravity();
     }
     
     public void Shoot()
     {
-        trajectoryPoints = context.GetTrajectory();
+        trajectoryPoints = CalculateTrajectory();
         rb.isKinematic = true;
         StartCoroutine(FollowTrajectory());
         if (GameStateManager.Instance.CurrentGameState == GameStateManager.GameState.InGame)
@@ -129,7 +139,7 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
-        ball.position = context.GetBallTeePosition().position;
+        ball.position = startPosition;
         ball.rotation = Quaternion.identity;
         collidedWithSomething = false;
     }
@@ -145,6 +155,72 @@ public class Ball : MonoBehaviour
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}));
         }
     }
+    
+    public List<Vector3> CalculateTrajectory()
+    {
+        List<Vector3> trajectoryPoints = new List<Vector3>();
+        float timeStep = 0.1f;
+
+        Vector2 spin = context.GetSpinVector();
+        float launchForce = context.GetLaunchForce() / rb.mass;
+        Vector3 initialVelocity = context.GetLaunchAngle() * Vector3.forward * launchForce;
+
+        float sideSpin = spin.x;
+        float topSpin = spin.y;
+
+        float curveScale = Mathf.Clamp(spinEffect * Mathf.Abs(sideSpin), 0, curveClamp);
+        float dipScale = -Mathf.Clamp(spinEffect * Mathf.Abs(topSpin), 0, dipClamp);
+
+        float curveDuration = 2.0f;
+
+        bool isCurving = true;
+        Vector3 previousPoint;
+        Vector3 currentPoint = Vector3.zero;
+        Vector3 lastVelocity;
+        float x = 0, y = 0, z = 0;
+
+        for (int i = 0; i < trajectoryDefinition; i++)
+        {
+            float t = i * timeStep;
+            previousPoint = currentPoint;
+            currentPoint = new Vector3(x, y, z);
+            lastVelocity = (currentPoint - previousPoint) / timeStep;
+
+            if (isCurving)
+            {
+                x = startPosition.x + initialVelocity.x * t;
+                z = startPosition.z + initialVelocity.z * t;
+                y = startPosition.y + initialVelocity.y * t - 0.5f * gravity * t * t;
+
+                float curveFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * curveScale * Mathf.Sign(sideSpin);
+                float dipFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * dipScale * Mathf.Sign(topSpin);
+
+                x += curveFactor;
+                y += dipFactor;
+
+                if (t >= curveDuration)
+                {
+                    isCurving = false;
+                }
+            }
+            else
+            {
+                x = currentPoint.x + lastVelocity.x * timeStep;
+                z = currentPoint.z + lastVelocity.z * timeStep;
+                y = currentPoint.y + lastVelocity.y * timeStep - 0.5f * gravity * timeStep * timeStep;
+            }
+
+            trajectoryPoints.Add(new Vector3(x, y, z));
+
+            if (y < 0)
+            {
+                break;
+            }
+        }
+
+        return trajectoryPoints;
+    }
+
 }
 
 /*

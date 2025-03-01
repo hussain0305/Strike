@@ -71,13 +71,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public float Gravity => gravity;
+    public float LaunchForce => launchForce;
+    public Vector2 SpinVector => spinVector;
+    public Quaternion LaunchAngle => launchAngle;
+    public const int TRAJECTORY_DEFINITION = 100;
+
     private float gravity;
     private float ballMass;
     private float launchForce;
     private Vector2 spinVector;
     private Vector3 startPosition;
     private Quaternion launchAngle;
-    private const int TRAJECTORY_DEFINITION = 100;
 
     private int numPlayersInGame;
     private int volleyNumber = 1;
@@ -101,7 +106,6 @@ public class GameManager : MonoBehaviour
     {
         InitGame();
         InitBall();
-        gravity = -Physics.gravity.y;
         
         //===== Above this might need changing. Was written in the prototyping stage
         nextButton.onClick.RemoveAllListeners();
@@ -122,6 +126,7 @@ public class GameManager : MonoBehaviour
         GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
         EventBus.Publish(new InGameEvent());
         InputManager.Instance.SetContext(GameContext.InGame);
+        gravity = -Physics.gravity.y;
     }
 
     public void InitBall()
@@ -175,9 +180,9 @@ public class GameManager : MonoBehaviour
                 CheckToShowTrajectoryButton();
             }
 
-            if (showTrajectory)
+            if (true)//showTrajectory
             {
-                List<Vector3> trajectoryPoints = CalculateTrajectoryPoints();
+                List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
                 DrawTrajectory(trajectoryPoints.ToArray());
             }
         }
@@ -249,78 +254,13 @@ public class GameManager : MonoBehaviour
         DisableTrajectory();
     }
     
-    public List<Vector3> CalculateTrajectoryPoints()
-    {
-        List<Vector3> trajectoryPoints = new List<Vector3>();
-        float timeStep = 0.1f;
-
-        float launchVelocity = launchForce / ballMass;
-        Vector3 initialVelocity = launchAngle * Vector3.forward * launchVelocity;
-
-        Vector2 spin = spinInput.SpinVector;
-        float sideSpin = spin.x;
-        float topSpin = spin.y;
-
-        float curveScale = Mathf.Clamp(ball.spinEffect * Mathf.Abs(sideSpin), 0, ball.curveClamp);
-        float dipScale = -Mathf.Clamp(ball.spinEffect * Mathf.Abs(topSpin), 0, ball.dipClamp);
-
-        float curveDuration = 2.0f;
-
-        bool isCurving = true;
-        Vector3 previousPoint;
-        Vector3 currentPoint = Vector3.zero;
-        Vector3 lastVelocity;
-        float x = 0, y = 0, z = 0;
-
-        for (int i = 0; i < TRAJECTORY_DEFINITION; i++)
-        {
-            float t = i * timeStep;
-            previousPoint = currentPoint;
-            currentPoint = new Vector3(x, y, z);
-            lastVelocity = (currentPoint - previousPoint) / timeStep;
-
-            if (isCurving)
-            {
-                x = startPosition.x + initialVelocity.x * t;
-                z = startPosition.z + initialVelocity.z * t;
-                y = startPosition.y + initialVelocity.y * t - 0.5f * gravity * t * t;
-
-                float curveFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * curveScale * Mathf.Sign(sideSpin);
-                float dipFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * dipScale * Mathf.Sign(topSpin);
-
-                x += curveFactor;
-                y += dipFactor;
-
-                if (t >= curveDuration)
-                {
-                    isCurving = false;
-                }
-            }
-            else
-            {
-                x = currentPoint.x + lastVelocity.x * timeStep;
-                z = currentPoint.z + lastVelocity.z * timeStep;
-                y = currentPoint.y + lastVelocity.y * timeStep - 0.5f * gravity * timeStep * timeStep;
-            }
-
-            trajectoryPoints.Add(new Vector3(x, y, z));
-
-            if (y < 0)
-            {
-                break;
-            }
-        }
-
-        return trajectoryPoints;
-    }
-    
     private void DrawTrajectory(Vector3[] trajectoryPoints)
     {
         trajectory.positionCount = trajectoryPoints.Length;
         trajectory.SetPositions(trajectoryPoints);
 
-        trajectory.startWidth = 0.25f;
-        trajectory.endWidth = 0.25f;
+        trajectory.startWidth = 0.2f;
+        trajectory.endWidth = 0.2f;
         // trajectory.material = new Material(Shader.Find("Sprites/Default")); // Basic material
         trajectory.startColor = Color.green;
         trajectory.endColor = Color.red;

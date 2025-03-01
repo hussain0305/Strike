@@ -16,7 +16,8 @@ public class PreviewSoccerBall : BallPreview, IBallPreview
         ball.Initialize(MainMenu.Context);
         while (true)
         {
-            // MainMenu.Context.DrawTrajectory(MainMenu.Context.GetTrajectory().ToArray());
+            MainMenu.Context.SpoofNewTrajectory();
+            MainMenu.Context.DrawTrajectory(ball.CalculateTrajectory().ToArray());
             EventBus.Publish(new NextShotCuedEvent());
 
             yield return new WaitForSeconds(1);

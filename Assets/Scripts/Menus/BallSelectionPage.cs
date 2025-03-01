@@ -162,10 +162,7 @@ public class BallSelectionPage : MonoBehaviour
         }
 
         selectedBall.transform.position = previewController.tee.ballPosition.position;
-        MainMenu.Context.InitPreview(selectedBall.GetComponent<Ball>(),
-            previewController.aimTransform,
-            previewController.trajectory,
-            previewController.tee);
+        MainMenu.Context.InitPreview(selectedBall.GetComponent<Ball>(), previewController);
         return selectedBall;
     }
 }

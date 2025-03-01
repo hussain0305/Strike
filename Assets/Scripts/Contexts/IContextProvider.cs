@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 public interface IContextProvider
 {
-    Transform GetAimTransform();
-    List<Vector3> GetTrajectory();
+    int GetTrajectoryDefinition();
     void SetBallState(BallState newState);
+    float GetGravity();
+    float GetLaunchForce();
+    Tee GetTee();
+    Vector2 GetSpinVector();
+    Transform GetAimTransform();
+    Quaternion GetLaunchAngle();
     PinBehaviourPerTurn GetPinResetBehaviour();
-    Transform GetBallTeePosition();
 }

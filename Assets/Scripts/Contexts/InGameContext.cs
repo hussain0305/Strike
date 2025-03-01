@@ -9,9 +9,19 @@ public class InGameContext : IContextProvider
         return GameManager.Instance.angleInput.cylinderPivot;
     }
 
-    public List<Vector3> GetTrajectory()
+    public float GetLaunchForce()
     {
-        return GameManager.Instance.CalculateTrajectoryPoints();
+        return GameManager.Instance.LaunchForce;
+    }
+
+    public Quaternion GetLaunchAngle()
+    {
+        return GameManager.Instance.LaunchAngle;
+    }
+
+    public Vector2 GetSpinVector()
+    {
+        return GameManager.Instance.SpinVector;
     }
 
     public void SetBallState(BallState newState)
@@ -24,8 +34,18 @@ public class InGameContext : IContextProvider
         return GameManager.Instance.pinBehaviour;
     }
 
-    public Transform GetBallTeePosition()
+    public Tee GetTee()
     {
-        return GameManager.Instance.tee.ballPosition;
+        return GameManager.Instance.tee;
+    }
+
+    public int GetTrajectoryDefinition()
+    {
+        return GameManager.TRAJECTORY_DEFINITION;
+    }
+
+    public float GetGravity()
+    {
+        return GameManager.Instance.Gravity;
     }
 }
