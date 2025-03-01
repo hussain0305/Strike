@@ -65,6 +65,23 @@ public class MenuContext : IContextProvider
         spoofedSpinVector = new Vector2(Random.Range(-0.25f, 0.25f), Random.Range(-0.5f, -0.25f));
         spoofedLaunchAngle = Quaternion.identity;
         spoofedLaunchForce = Random.Range(6f, 7f) / (currentBall ? currentBall.rb.mass : 1);
+        aimTransform.rotation = spoofedLaunchAngle;
+    }
+
+    public void SetSpoofedSpinVector(Vector2 _spinVector)
+    {
+        spoofedSpinVector = _spinVector;
+    }
+
+    public void SetSpoofedLaunchAngle(Quaternion _launchAngle)
+    {
+        spoofedLaunchAngle = _launchAngle;
+        aimTransform.rotation = spoofedLaunchAngle;
+    }
+
+    public void SetSpoofedLaunchForce(float _launchForce)
+    {
+        spoofedLaunchForce = _launchForce;
     }
     
     public void InitPreview(Ball _ball, BallPreviewController _previewController)

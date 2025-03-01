@@ -17,14 +17,17 @@ public class SniperAbility : BallAbility
         
         aimTransform = context.GetAimTransform();
 
-        aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        aimDot.transform.localScale = Vector3.one * 1f;
-        unlitMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-        unlitMaterial.color = Color.red;
-        aimDot.GetComponent<Renderer>().material = unlitMaterial;
-        aimDotLayer = ~(1 << LayerMask.NameToLayer("Ball"));
-        
-        Destroy(aimDot.GetComponent<Collider>());
+        if (!aimDot)
+        {
+            aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            aimDot.transform.localScale = Vector3.one * 1f;
+            unlitMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            unlitMaterial.color = Color.red;
+            aimDot.GetComponent<Renderer>().material = unlitMaterial;
+            aimDotLayer = ~(1 << LayerMask.NameToLayer("Ball"));
+            Destroy(aimDot.GetComponent<Collider>());
+            aimDot.transform.parent = ownerBall.transform;
+        }
         isActive = true;
     }
     
@@ -70,6 +73,7 @@ public class SniperAbility : BallAbility
     private void SetDotSize(float squaredDistance)
     {
         float size;
+        float relativeScaling = 1 / ball.transform.localScale.x;
         if (squaredDistance < 500f)
         {
             size = Mathf.Lerp(0.1f, 0.2f, squaredDistance / 1000);
@@ -83,7 +87,7 @@ public class SniperAbility : BallAbility
             size = Mathf.Clamp(squaredDistance / 18000, 1f, 1.5f);
         }
 
-        aimDot.transform.localScale = Vector3.one * size;
+        aimDot.transform.localScale = size * relativeScaling * Vector3.one;
     }
 
     private void OnDestroy()

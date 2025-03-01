@@ -6,7 +6,6 @@ public class SniperBall : Ball
     public override List<Vector3> CalculateTrajectory()
     {
         gravity = 0;
-        Debug.Log(">>> sssfgdggg");
         trajectoryPoints = new List<Vector3>();
         float timeStep = 0.1f;
 
