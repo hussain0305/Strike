@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
-        GameStateManager.Instance.SetGameState(GameStateManager.GameState.InGame);
+        GameStateManager.Instance.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());
         InputManager.Instance.SetContext(GameContext.InGame);
         gravity = -Physics.gravity.y;
@@ -401,7 +401,7 @@ public class GameManager : MonoBehaviour
 
     public void SetupResults()
     {
-        GameStateManager.Instance.SetGameState(GameStateManager.GameState.OnResultScreen);
+        GameStateManager.Instance.SetGameState(GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
     }

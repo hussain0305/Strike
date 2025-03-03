@@ -4,14 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public class GameStateChangedEvent
+{
+    public GameState gameState;
+
+    public GameStateChangedEvent(GameState newGameState)
+    {
+        gameState = newGameState;
+    }
+}
+
 public class GameStateManager : MonoBehaviour
 {
     private static GameStateManager instance;
     public static GameStateManager Instance => instance;
-
-    public enum GameState { Menu, InGame, OnResultScreen }
-    
-    public event Action<GameState> OnGameStateChanged;
     
     private List<GameStateToggleListener> stateToggleListeners = new List<GameStateToggleListener>();
 
@@ -61,7 +67,7 @@ public class GameStateManager : MonoBehaviour
         IEnumerator DelayedBroadcast()
         {
             yield return null;
-            OnGameStateChanged?.Invoke(newState);
+            EventBus.Publish(new GameStateChangedEvent(newState));
 
             stateToggleListeners.RemoveAll(listener => listener == null || listener.gameObject == null);
 

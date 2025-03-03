@@ -105,6 +105,13 @@ public enum GameEvent
     NextShotCued
 };
 
+public enum GameState
+{
+    Menu,
+    InGame,
+    OnResultScreen
+}
+
 //============---- STRUCTS ----============
 
 public struct ShotInfo

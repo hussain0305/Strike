@@ -1,16 +1,16 @@
 {
     "gameMode": 0,
     "levelNumber": 4,
-    "targetPoints": 300,
+    "targetPoints": 150,
     "collectibles": [
         {
             "type": 0,
             "pointTokenType": 4,
             "multiplierTokenType": 0,
             "position": {
-                "x": -2.2799999713897707,
+                "x": -20.59000015258789,
                 "y": 0.5199999809265137,
-                "z": 43.77000045776367
+                "z": 64.87000274658203
             },
             "rotation": {
                 "x": 0.0,
@@ -18,18 +18,19 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 25,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
-            "pointTokenType": 4,
+            "pointTokenType": 1,
             "multiplierTokenType": 0,
             "position": {
-                "x": -3.069999933242798,
-                "y": 0.5199999809265137,
-                "z": 42.75
+                "x": -21.440000534057618,
+                "y": 0.5600000023841858,
+                "z": 58.970001220703128
             },
             "rotation": {
                 "x": 0.0,
@@ -37,18 +38,19 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 5,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
-            "pointTokenType": 4,
+            "pointTokenType": 3,
             "multiplierTokenType": 0,
             "position": {
-                "x": 1.8300000429153443,
-                "y": 0.5199999809265137,
-                "z": 42.709999084472659
+                "x": -0.44999998807907107,
+                "y": 0.6200000047683716,
+                "z": 71.9800033569336
             },
             "rotation": {
                 "x": 0.0,
@@ -56,18 +58,19 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 5,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
-            "pointTokenType": 4,
+            "pointTokenType": 3,
             "multiplierTokenType": 0,
             "position": {
-                "x": -3.0450000762939455,
-                "y": 0.5199999809265137,
-                "z": 41.42900085449219
+                "x": -0.44999998807907107,
+                "y": 4.760000228881836,
+                "z": 71.9800033569336
             },
             "rotation": {
                 "x": 0.0,
@@ -75,18 +78,19 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 5,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
-            "pointTokenType": 4,
+            "pointTokenType": 2,
             "multiplierTokenType": 0,
             "position": {
-                "x": 1.2239999771118165,
+                "x": 21.06999969482422,
                 "y": 0.5199999809265137,
-                "z": 41.472999572753909
+                "z": 62.06999969482422
             },
             "rotation": {
                 "x": 0.0,
@@ -94,47 +98,10 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 5,
             "numTimesCanBeCollected": 1,
-            "parent": 0
-        },
-        {
-            "type": 0,
-            "pointTokenType": 4,
-            "multiplierTokenType": 0,
-            "position": {
-                "x": -2.0,
-                "y": 0.5199999809265137,
-                "z": 45.900001525878909
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            },
-            "value": 50,
-            "numTimesCanBeCollected": 1,
-            "parent": 0
-        },
-        {
-            "type": 0,
-            "pointTokenType": 4,
-            "multiplierTokenType": 0,
-            "position": {
-                "x": 1.0199999809265137,
-                "y": 0.5199999809265137,
-                "z": 40.229000091552737
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            },
-            "value": 50,
-            "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
@@ -143,7 +110,7 @@
             "position": {
                 "x": -0.5699999928474426,
                 "y": 0.48000049591064455,
-                "z": 44.5
+                "z": 77.94000244140625
             },
             "rotation": {
                 "x": 0.0,
@@ -151,18 +118,19 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 75,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 0,
             "pointTokenType": 6,
             "multiplierTokenType": 0,
             "position": {
-                "x": 1.159999966621399,
+                "x": 17.799999237060548,
                 "y": 0.48000097274780276,
-                "z": 44.06999969482422
+                "z": 67.86000061035156
             },
             "rotation": {
                 "x": 0.0,
@@ -170,9 +138,10 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 50,
             "numTimesCanBeCollected": 1,
-            "parent": 0
+            "parent": 0,
+            "pointDisplayType": 2
         },
         {
             "type": 1,
@@ -191,7 +160,34 @@
             },
             "value": 4,
             "numTimesCanBeCollected": 1,
-            "parent": 1
+            "parent": 1,
+            "pointDisplayType": 0
+        }
+    ],
+    "stars": [
+        {
+            "index": 0,
+            "position": {
+                "x": -9.630000114440918,
+                "y": 0.699999988079071,
+                "z": 57.29999923706055
+            }
+        },
+        {
+            "index": 0,
+            "position": {
+                "x": 8.199999809265137,
+                "y": 15.0600004196167,
+                "z": 89.05000305175781
+            }
+        },
+        {
+            "index": 0,
+            "position": {
+                "x": 27.530000686645509,
+                "y": 7.309999942779541,
+                "z": 84.3499984741211
+            }
         }
     ]
 }

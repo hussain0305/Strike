@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameStateToggleListener : MonoBehaviour
 {
-    public GameStateManager.GameState[] statesToBeActiveIn;
+    public GameState[] statesToBeActiveIn;
 
     private void OnEnable()
     {
@@ -14,7 +14,7 @@ public class GameStateToggleListener : MonoBehaviour
         GameStateManager.Instance.UnregisterStateListener(this);
     }
 
-    public void CheckState(GameStateManager.GameState currentState)
+    public void CheckState(GameState currentState)
     {
         bool shouldBeActive = System.Array.Exists(statesToBeActiveIn, state => state == currentState);
         gameObject.SetActive(shouldBeActive);

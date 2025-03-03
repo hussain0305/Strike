@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Audio;
+
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager Instance { get; private set; }
+
+    public AudioMixer audioMixer;
+    public AudioSource musicSourceA;
+    public AudioSource musicSourceB;
+    public AudioSource sfxSource;
+
+    public SoundLibrary soundLibrary;
+
+    private AudioSource activeMusicSource;
+    private HashSet<string> uniquePlayingSounds = new HashSet<string>();
+
+    public enum AudioChannel { Music, SFX }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        activeMusicSource = musicSourceA;
+    }
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
+    }
+
+    public void PlayMusic(AudioClip clip, bool loop = true, float fadeDuration = 1.0f)
+    {
+        if (activeMusicSource.clip == clip) return;
+        
+        AudioSource newSource = activeMusicSource == musicSourceA ? musicSourceB : musicSourceA;
+        newSource.clip = clip;
+        newSource.loop = loop;
+        newSource.Play();
+        
+        StartCoroutine(CrossfadeMusic(activeMusicSource, newSource, fadeDuration));
+        activeMusicSource = newSource;
+    }
+
+    private System.Collections.IEnumerator CrossfadeMusic(AudioSource from, AudioSource to, float duration)
+    {
+        float time = 0;
+        while (time < duration)
+        {
+            float t = time / duration;
+            from.volume = Mathf.Lerp(1, 0, t);
+            to.volume = Mathf.Lerp(0, 1, t);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        from.Stop();
+        from.volume = 1;
+    }
+
+    public void PlaySFX(AudioClip clip, bool allowOverlap = true)
+    {
+        if (!allowOverlap)
+        {
+            if (uniquePlayingSounds.Contains(clip.name)) return;
+            uniquePlayingSounds.Add(clip.name);
+        }
+
+        sfxSource.PlayOneShot(clip);
+        StartCoroutine(RemoveFromUniqueList(clip));
+    }
+
+    private System.Collections.IEnumerator RemoveFromUniqueList(AudioClip clip)
+    {
+        yield return new WaitForSeconds(clip.length);
+        uniquePlayingSounds.Remove(clip.name);
+    }
+
+    public void ToggleChannel(AudioChannel channel, bool enabled)
+    {
+        string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
+        audioMixer.SetFloat(param, enabled ? 0 : -80);
+    }
+
+    public void OnGameStateChanged(GameStateChangedEvent e)
+    {
+        AudioClip clip = null;
+
+        switch (e.gameState)
+        {
+            case GameState.Menu:
+                clip = soundLibrary.menuMusic;
+                break;
+            case GameState.InGame:
+                clip = soundLibrary.levelMusic;
+                break;
+        }
+
+        if (clip != null)
+        {
+            PlayMusic(clip);
+        }
+    }
+    
+    public void PlaySuccessfulActionSFX()
+    {
+        PlaySFX(soundLibrary.successfulActionSFX, false);
+    }
+    
+    public void PlayUnsuccessfulActionSFX()
+    {
+        PlaySFX(soundLibrary.unsuccessfulActionSFX, false);
+    }
+}

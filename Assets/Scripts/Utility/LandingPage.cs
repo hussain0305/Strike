@@ -29,7 +29,7 @@ public class LandingPage : MonoBehaviour
         IEnumerator MainMenuOpen()
         {
             yield return new WaitForSeconds(delay);
-            GameStateManager.Instance.SetGameState(GameStateManager.GameState.Menu);
+            GameStateManager.Instance.SetGameState(GameState.Menu);
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.MainMenu);
             gameObject.SetActive(false);
         }

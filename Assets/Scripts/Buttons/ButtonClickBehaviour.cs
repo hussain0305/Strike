@@ -21,8 +21,16 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public Image[] boundaries;
     public bool backToDefaultOnEnable = true;
     public bool staysSelected = false;
+    public bool playsHoverSound = true;
+    public bool playsClickSound = true;
+    public bool overrideHoverSound = false;
+    public AudioClip hoverClipOverride;
+    public bool overrideClickSound = false;
+    public AudioClip clickClipOverride;
     [HideInInspector]
     public bool isEnabled = true;
+
+    private SoundLibrary soundLibrary => AudioManager.Instance?.soundLibrary;
 
     private void Awake()
     {
@@ -59,6 +67,9 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
         {
             SetToDefault();
         }
+        
+        PlaySound(playsClickSound, overrideClickSound, clickClipOverride, 
+            soundLibrary?.buttonClickSFX);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -67,6 +78,9 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
         {
             SetToHover();
         }
+
+        PlaySound(playsHoverSound, overrideHoverSound, hoverClipOverride, 
+            soundLibrary?.buttonHoverSFX);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -105,5 +119,19 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public void SetSelected()
     {
         ButtonStateManager.Instance.SelectButton(this);
+    }
+    
+    private void PlaySound(bool shouldPlay, bool overrideClip, AudioClip clip, AudioClip defaultSound)
+    {
+        if (!shouldPlay) return;
+    
+        if (overrideClip)
+        {
+            AudioManager.Instance.PlaySFX(clip, false);
+        }
+        else if(defaultSound != null)
+        {
+            AudioManager.Instance.PlaySFX(defaultSound, false);
+        }
     }
 }

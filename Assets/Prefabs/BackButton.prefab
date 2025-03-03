@@ -370,6 +370,12 @@ MonoBehaviour:
   - {fileID: 207431117644194636}
   backToDefaultOnEnable: 1
   staysSelected: 0
+  playsHoverSound: 1
+  playsClickSound: 1
+  overrideHoverSound: 0
+  hoverClipOverride: {fileID: 0}
+  overrideClickSound: 1
+  clickClipOverride: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
   isEnabled: 1
 --- !u!114 &8140754197710020494
 MonoBehaviour:

@@ -69,7 +69,7 @@ public class Ball : MonoBehaviour
         trajectoryPoints = CalculateTrajectory();
         rb.isKinematic = true;
         StartCoroutine(FollowTrajectory());
-        if (GameStateManager.Instance.CurrentGameState == GameStateManager.GameState.InGame)
+        if (GameStateManager.Instance.CurrentGameState == GameState.InGame)
         {
             StartCoroutine(CaptureTrajectory());
         }

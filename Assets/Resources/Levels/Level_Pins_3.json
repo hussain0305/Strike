@@ -8,9 +8,9 @@
             "pointTokenType": 4,
             "multiplierTokenType": 0,
             "position": {
-                "x": -14.069999694824219,
+                "x": -12.75,
                 "y": 0.5199999809265137,
-                "z": 32.790000915527347
+                "z": 34.43000030517578
             },
             "rotation": {
                 "x": 0.0,
@@ -18,7 +18,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 50,
+            "value": 25,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -38,7 +38,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 5,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -58,7 +58,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 5,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -78,7 +78,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 5,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -98,7 +98,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 20,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -118,7 +118,7 @@
                 "z": 0.0,
                 "w": 1.0
             },
-            "value": 25,
+            "value": 50,
             "numTimesCanBeCollected": 1,
             "parent": 0,
             "pointDisplayType": 2
@@ -144,5 +144,30 @@
             "pointDisplayType": 0
         }
     ],
-    "stars": []
+    "stars": [
+        {
+            "index": 0,
+            "position": {
+                "x": -15.640000343322754,
+                "y": 10.65999984741211,
+                "z": 53.02000045776367
+            }
+        },
+        {
+            "index": 0,
+            "position": {
+                "x": -4.46999979019165,
+                "y": 10.65999984741211,
+                "z": 63.77000045776367
+            }
+        },
+        {
+            "index": 0,
+            "position": {
+                "x": 15.829999923706055,
+                "y": 7.309999942779541,
+                "z": 50.20000076293945
+            }
+        }
+    ]
 }
