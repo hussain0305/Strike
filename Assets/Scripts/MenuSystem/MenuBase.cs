@@ -10,7 +10,8 @@ public class MenuBase : MonoBehaviour
         GameModeScreen,
         BallSelectionPage,
         QuitGameScreen,
-        PauseMenu
+        PauseMenu,
+        SettingsPage
     };
     
     [System.Serializable]
