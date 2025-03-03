@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,6 +33,21 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     private SoundLibrary soundLibrary => AudioManager.Instance?.soundLibrary;
 
+    private TextMeshProUGUI textComponent;
+    private TextMeshProUGUI TextComponent
+    {
+        get
+        {
+            if (textComponent == null)
+            {
+                textComponent = GetComponentInChildren<TextMeshProUGUI>();
+            }
+            return textComponent;
+        }
+    }
+
+    Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
+    
     private void Awake()
     {
         ButtonStateManager.Instance.RegisterButton(this);
@@ -101,6 +117,7 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void SetToDefault()
     {
+        TextComponent.color = Color.white;
         SetMaterial(isEnabled 
             ? GlobalAssets.Instance.GetDefaultMaterial(buttonLocation) 
             : GlobalAssets.Instance.GetLockedMaterial(buttonLocation));
@@ -108,16 +125,19 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void SetToHighlighted()
     {
+        TextComponent.color = Color.yellow;
         SetMaterial(GlobalAssets.Instance.GetSelectedMaterial(buttonLocation));
     }
     
     public void SetToHover()
     {
+        TextComponent.color = highlightedTextColor;
         SetMaterial(GlobalAssets.Instance.GetHoverMaterial(buttonLocation));
     }
 
     public void SetSelected()
     {
+        TextComponent.color = Color.yellow;
         ButtonStateManager.Instance.SelectButton(this);
     }
     

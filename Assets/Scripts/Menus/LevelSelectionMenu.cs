@@ -14,6 +14,10 @@ public class LevelSelectionMenu : MonoBehaviour
     private Color promptLineColor;
     private Color promptTextColor;
     private Color transparentColor;
+
+    [Header("Info Section")]
+    public GameObject soloModeSection;
+    public GameObject passplaySection;
     
     private static LevelSelectionMenu instance;
     public static LevelSelectionMenu Instance => instance;
@@ -39,6 +43,12 @@ public class LevelSelectionMenu : MonoBehaviour
         PromptGameObject.SetActive(false);
         ButtonStateManager.Instance.ResetLevelSelectionButtons();
         ModeSelector.Instance.ResetSelectedLevel();
+        EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }
 
     private Coroutine promptRoutine;
@@ -83,5 +93,11 @@ public class LevelSelectionMenu : MonoBehaviour
             StopCoroutine(promptRoutine);
         }
         promptRoutine = StartCoroutine(FadePrompt());
+    }
+
+    public void NumPlayersChanged(NumPlayersChangedEvent e)
+    {
+        soloModeSection.SetActive(e.numPlayers == 1);
+        passplaySection.SetActive(e.numPlayers != 1);
     }
 }

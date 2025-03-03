@@ -7,6 +7,15 @@ using UnityEngine.UI;
 
 public class GameModeChangedEvent { }
 
+public class NumPlayersChangedEvent
+{
+    public int numPlayers;
+    public NumPlayersChangedEvent(int _num)
+    {
+        numPlayers = _num;
+    }
+}
+
 public class ModeSelector : MonoBehaviour
 {
     [Header("Game Mode")]
@@ -124,6 +133,7 @@ public class ModeSelector : MonoBehaviour
         {
             addPlayerButton.enabled = false;
         }
+        EventBus.Publish(new NumPlayersChangedEvent(currentNumPlayers));
     }
 
     public void NextGameMode()
