@@ -396,6 +396,7 @@ public class GameManager : MonoBehaviour
             {
                 SaveManager.SetStarCollected((int)ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel(), starIndex);
             }
+            SaveManager.AddStars(starsCollected.Count);
         }
     }
 

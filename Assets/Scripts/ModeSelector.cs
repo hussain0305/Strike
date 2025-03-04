@@ -47,6 +47,7 @@ public class ModeSelector : MonoBehaviour
 
     [Header("DEBUG")]
     public Button addStars;
+    public Button deductStars;
     
     private int maxPlayers = 8;
     
@@ -80,6 +81,11 @@ public class ModeSelector : MonoBehaviour
         addStars.onClick.AddListener(() =>
         {
             SaveManager.AddStars(40);
+        });
+        //===TODO: DEBUG. DELETE LATER===
+        deductStars.onClick.AddListener(() =>
+        {
+            SaveManager.SpendStars(20);
         });
     }
 

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
+public class SaveLoadedEvent { }
+
 public static class SaveManager
 {
     private static SaveData currentSaveData;
@@ -36,6 +38,7 @@ public static class SaveManager
         currentSaveData.SyncListToDictionary();
         Debug.Log("IsSaveLoaded set to true");
         IsSaveLoaded = true;
+        EventBus.Publish(new SaveLoadedEvent());
     }
     
     public static IEnumerator LoadSaveProcess()
@@ -109,6 +112,7 @@ public static class SaveManager
         EnsureDataLoaded();
         currentSaveData.stars = currentSaveData.stars + numStars;
         SaveData();
+        EventBus.Publish(new StarsEarnedEvent(numStars));
     }
 
     public static void SpendStars(int numStars)
@@ -116,6 +120,7 @@ public static class SaveManager
         EnsureDataLoaded();
         currentSaveData.stars = currentSaveData.stars - numStars;
         SaveData();
+        EventBus.Publish(new StarsSpentEvent(numStars));
     }
 
     public static bool GetIsGameModeUnlocked(int gameModeIndex)

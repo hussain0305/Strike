@@ -12,6 +12,24 @@ public class StarCollectedEvent
     }
 }
 
+public class StarsEarnedEvent
+{
+    public int NumStarsEarned;
+    public StarsEarnedEvent(int numStarsEarned)
+    {
+        NumStarsEarned = numStarsEarned;
+    }
+}
+
+public class StarsSpentEvent
+{
+    public int NumStarsSpent;
+    public StarsSpentEvent(int numStarsSpent)
+    {
+        NumStarsSpent = numStarsSpent;
+    }
+}
+
 public class Star : MonoBehaviour
 {
     public int index;
