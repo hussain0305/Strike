@@ -12,18 +12,26 @@ public class BallSelectionPage : MonoBehaviour
     public BallStatRow statWeight;
     public BallStatRow statSpin;
     public BallStatRow statBounce;
-    public Button equipBallButton;
     public TextMeshProUGUI ballDescription;
     public BallPreviewController previewController;
 
     [Header("Rarity")]
     public Image[] frame;
     public TextMeshProUGUI rarityText;
-    
-    private Dictionary<int, GameObject> previewBalls;
-    private Dictionary<int, BallSelectionButton> ballButtons;
 
-    private int currentSelectedBall;
+    [Header("Equip")]
+    public GameObject equipSection;
+    public Button equipBallButton;
+
+    [Header("Unlock")]
+    public GameObject unlockSection;
+    public Button unlockBallButton;
+    public TextMeshProUGUI unlockCostText;
+    
+    private Dictionary<string, GameObject> previewBalls;
+    private Dictionary<string, BallSelectionButton> ballButtons;
+
+    private string currentSelectedBall;
     private bool setupComplete = false;
     
     private static BallSelectionPage instance;
@@ -47,10 +55,14 @@ public class BallSelectionPage : MonoBehaviour
 
     private void OnEnable()
     {
+        EventBus.Subscribe<BallSelectedEvent>(BallSelected);
+        
         equipBallButton.onClick.AddListener(() =>
         {
             SaveManager.SetSelectedBall(currentSelectedBall);
         });
+        
+        unlockBallButton.onClick.AddListener(TryUnlockBall);
 
         if (SaveManager.IsSaveLoaded && setupComplete)
         {
@@ -60,13 +72,16 @@ public class BallSelectionPage : MonoBehaviour
 
     private void OnDisable()
     {
+        EventBus.Unsubscribe<BallSelectedEvent>(BallSelected);
+        
         equipBallButton.onClick.RemoveAllListeners();
+        unlockBallButton.onClick.RemoveAllListeners();
     }
 
     public void SetupBallSelection()
     {
-        previewBalls = new Dictionary<int, GameObject>();
-        ballButtons = new Dictionary<int, BallSelectionButton>();
+        previewBalls = new Dictionary<string, GameObject>();
+        ballButtons = new Dictionary<string, BallSelectionButton>();
         SpawnButtonsAndSetSelected();
         SaveManager.OnSaveFileLoaded -= SetupBallSelection;
         SaveManager.MarkListenerComplete(this);
@@ -82,19 +97,25 @@ public class BallSelectionPage : MonoBehaviour
             BallSelectionButton spawnedSelectionButton = Instantiate(ballSelectionPrefab, ballSelectionButtonsParent);
             spawnedSelectionButton.SetBallName(ballProperty.name);
             spawnedSelectionButton.SetBallIndex(i);
-            ballButtons.Add(i, spawnedSelectionButton);
+            spawnedSelectionButton.SetBallID(ballProperty.id);
+            ballButtons.Add(ballProperty.id, spawnedSelectionButton);
             i++;
         }
 
         SetSelectedBall(SaveManager.GetSelectedBall());
     }
-    
-    public void SetSelectedBall(int ballIndex)
-    {
-        currentSelectedBall = ballIndex;
-        GameObject selectedBall = SetupBallForPreview(ballIndex);
 
-        BallProperties selectedBallProperties = Balls.Instance.allBalls[ballIndex];
+    public void BallSelected(BallSelectedEvent e)
+    {
+        SetSelectedBall(e.ID);
+    }
+    
+    public void SetSelectedBall(string ballID)
+    {
+        currentSelectedBall = ballID;
+        GameObject selectedBall = SetupBallForPreview(ballID);
+
+        BallProperties selectedBallProperties = Balls.Instance.GetBall(ballID);
         statWeight.propertyTypeText.text = "WEIGHT";
         statWeight.propertySlider.value =
             Mathf.Clamp01(selectedBallProperties.weight / Balls.Instance.maxWeight);
@@ -121,48 +142,71 @@ public class BallSelectionPage : MonoBehaviour
         rarityText.text = selectedBallProperties.rarity.ToString();
         rarityText.color = rarityAppearance.color;
         
-        HighlightSelected(ballIndex);
-
+        HighlightSelected(ballID);
+        SetupEquipOrUnlockButton();
+        
         previewController.PlayPreview(selectedBallProperties.name, selectedBall);
     }
     
-    public void HighlightSelected(int ballIndex)
+    public void HighlightSelected(string ballID)
     {
-        foreach (int buttonIndex in ballButtons.Keys)
+        foreach (string bID in ballButtons.Keys)
         {
-            if (buttonIndex == ballIndex)
+            if (bID == ballID)
             {
-                ballButtons[buttonIndex].SetSelected();
+                ballButtons[ballID].SetSelected();
             }
             else
             {
-                ballButtons[buttonIndex].SetUnselected();
+                ballButtons[bID].SetUnselected();
             }
         }
     }
 
-    public GameObject SetupBallForPreview(int ballIndex)
+    public GameObject SetupBallForPreview(string ballID)
     {
         GameObject selectedBall = null;
-        foreach (int bIndex in previewBalls.Keys)
+        foreach (string bID in previewBalls.Keys)
         {
-            previewBalls[bIndex].SetActive(false);
-            if (bIndex == ballIndex)
+            previewBalls[bID].SetActive(false);
+            if (bID == ballID)
             {
-                selectedBall = previewBalls[bIndex];
+                selectedBall = previewBalls[ballID];
                 selectedBall.SetActive(true);
             }
         }
 
         if (!selectedBall)
         {
-            selectedBall = Instantiate(Balls.Instance.allBalls[ballIndex].prefab, previewBallsParent);
+            selectedBall = Instantiate(Balls.Instance.GetBall(ballID).prefab, previewBallsParent);
             selectedBall.transform.localScale *= 0.25f;
-            previewBalls.Add(ballIndex, selectedBall);
+            previewBalls.Add(ballID, selectedBall);
         }
 
         selectedBall.transform.position = previewController.tee.ballPosition.position;
         MainMenu.Context.InitPreview(selectedBall.GetComponent<Ball>(), previewController);
         return selectedBall;
+    }
+
+    public void SetupEquipOrUnlockButton()
+    {
+        bool isBallUnlocked = SaveManager.IsBallUnlocked(currentSelectedBall);
+        equipSection.gameObject.SetActive(isBallUnlocked);
+        unlockSection.gameObject.SetActive(!isBallUnlocked);
+        if (!isBallUnlocked)
+        {
+            unlockCostText.text = Balls.Instance.GetBallCost(currentSelectedBall).ToString();
+        }
+    }
+
+    public void TryUnlockBall()
+    {
+        int cost = Balls.Instance.GetBallCost(currentSelectedBall);
+        if (cost <= SaveManager.GetStars())
+        {
+            SaveManager.SpendStars(cost);
+            SaveManager.AddUnlockedBall(currentSelectedBall);
+            SetupEquipOrUnlockButton();
+        }
     }
 }

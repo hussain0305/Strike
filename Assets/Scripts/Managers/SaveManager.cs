@@ -148,14 +148,14 @@ public static class SaveManager
         SaveData();
     }
 
-    public static void SetSelectedBall(int ballIndex)
+    public static void SetSelectedBall(string ballID)
     {
         EnsureDataLoaded();
-        currentSaveData.selectedBall = ballIndex;
+        currentSaveData.selectedBall = ballID;
         SaveData();
     }
 
-    public static int GetSelectedBall()
+    public static string GetSelectedBall()
     {
         EnsureDataLoaded();
         return currentSaveData.selectedBall;
@@ -200,6 +200,19 @@ public static class SaveManager
             }
         }
         return 0;
+    }
+
+    public static void AddUnlockedBall(string ballID)
+    {
+        EnsureDataLoaded();
+        currentSaveData.unlockedBalls.Add(ballID);
+        SaveData();
+    }
+
+    public static bool IsBallUnlocked(string ballID)
+    {
+        EnsureDataLoaded();
+        return currentSaveData.unlockedBalls.Contains(ballID);
     }
     
     public static void SetStarCollected(int gameMode, int levelIndex, int starIndex)

@@ -173,6 +173,10 @@ public struct BallProperties
     [Header("Construction")]
     public PhysicsMaterial physicsMaterial;
     public GameObject prefab;
+
+    [Header("Meta")]
+    public string id;
+    public int cost;
 }
 
 [System.Serializable]

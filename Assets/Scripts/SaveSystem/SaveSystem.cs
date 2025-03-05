@@ -35,9 +35,10 @@ public class SaveData
 {
     public int stars = 0;
     public int[] unlockedGameModes = {0};
-    public int selectedBall = 0;
+    public string selectedBall = "soccBall";
     public List<LevelProgress> levelProgress = new List<LevelProgress> { new LevelProgress(0, 0) };
     public Dictionary<string, int> collectedStars = new Dictionary<string, int>();
+    public List<string> unlockedBalls = new() { "soccBall" };
     
     public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
     public void SyncDictionaryToList()

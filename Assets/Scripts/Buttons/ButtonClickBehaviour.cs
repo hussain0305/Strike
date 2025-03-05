@@ -117,7 +117,7 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void SetToDefault()
     {
-        TextComponent.color = Color.white;
+        SetTextComponentColor(Color.white);
         SetMaterial(isEnabled 
             ? GlobalAssets.Instance.GetDefaultMaterial(buttonLocation) 
             : GlobalAssets.Instance.GetLockedMaterial(buttonLocation));
@@ -125,19 +125,19 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void SetToHighlighted()
     {
-        TextComponent.color = Color.yellow;
+        SetTextComponentColor(Color.yellow);
         SetMaterial(GlobalAssets.Instance.GetSelectedMaterial(buttonLocation));
     }
     
     public void SetToHover()
     {
-        TextComponent.color = highlightedTextColor;
+        SetTextComponentColor(highlightedTextColor);
         SetMaterial(GlobalAssets.Instance.GetHoverMaterial(buttonLocation));
     }
 
     public void SetSelected()
     {
-        TextComponent.color = Color.yellow;
+        SetTextComponentColor(Color.yellow);
         ButtonStateManager.Instance.SelectButton(this);
     }
     
@@ -153,5 +153,10 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
         {
             AudioManager.Instance.PlaySFX(defaultSound, false);
         }
+    }
+
+    public void SetTextComponentColor(Color col)
+    {
+        if(TextComponent) TextComponent.color = col;
     }
 }

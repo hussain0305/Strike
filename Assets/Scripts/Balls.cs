@@ -26,13 +26,32 @@ public class Balls : ScriptableObject
     public float maxSpin = 15;
     public float maxBounce = 3;
 
-    public BallProperties GetBall(int index)
+    private Dictionary<string, BallProperties> ballProperties;
+    
+    public BallProperties GetBall(string id)
     {
-        if (index < allBalls.Count)
+        if (ballProperties == null)
         {
-            return allBalls[index];
+            SetupDictionary();
         }
 
-        return allBalls[0];
+        return ballProperties.TryGetValue(id, out var properties) 
+            ? properties 
+            : new BallProperties { id = "unknown" };
+    }
+
+    public void SetupDictionary()
+    {
+        ballProperties = new Dictionary<string, BallProperties>();
+        
+        foreach (BallProperties ball in allBalls)
+        {
+            ballProperties.Add(ball.id, ball);
+        }
+    }
+
+    public int GetBallCost(string id)
+    {
+        return GetBall(id).cost;
     }
 }

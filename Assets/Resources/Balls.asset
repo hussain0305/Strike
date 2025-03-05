@@ -20,6 +20,8 @@ MonoBehaviour:
     spin: 10
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 1089681808455105078, guid: c3613743306a885429a288d93f20e705, type: 3}
+    id: soccBall
+    cost: 0
   - name: Bowling Ball
     description: 
     rarity: 1
@@ -27,6 +29,8 @@ MonoBehaviour:
     spin: 2
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
+    id: bowlingBall
+    cost: 30
   - name: Sniper Ball
     description: Hit exactly where you aim. No Gravity, no spin.
     rarity: 2
@@ -34,6 +38,8 @@ MonoBehaviour:
     spin: 5
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
+    id: sniperBall
+    cost: 90
   - name: Shotgun Ball
     description: A flurry of pellets shoot with the ball, hitting additional targets
     rarity: 3
@@ -41,6 +47,8 @@ MonoBehaviour:
     spin: 5
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
+    id: shotgunBall
+    cost: 500
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3

@@ -5,9 +5,11 @@ using UnityEngine.UI;
 public class BallSelectedEvent
 {
     public int Index;
-    public BallSelectedEvent(int index)
+    public string ID;
+    public BallSelectedEvent(int index, string id)
     {
-        Index = index;
+        Index = index; 
+        ID = id;
     }
 }
 
@@ -22,6 +24,9 @@ public class BallSelectionButton : MonoBehaviour
     private int ballIndex;
     public int BallIndex => ballIndex;
 
+    private string ballID;
+    public string BallID => ballID;
+    
     private ButtonClickBehaviour buttonBehaviour;
     public ButtonClickBehaviour ButtonBehaviour
     {
@@ -57,8 +62,7 @@ public class BallSelectionButton : MonoBehaviour
 
     public void PreviewBall()
     {
-        EventBus.Publish(new BallSelectedEvent(BallIndex));
-        BallSelectionPage.Instance.SetSelectedBall(BallIndex);
+        EventBus.Publish(new BallSelectedEvent(BallIndex, BallID));
     }
     
     public void SetSelected()
@@ -70,5 +74,10 @@ public class BallSelectionButton : MonoBehaviour
     public void SetUnselected()
     {
         ballNameText.color = unselectedTextColor;
+    }
+
+    public void SetBallID(string id)
+    {
+        ballID = id;
     }
 }
