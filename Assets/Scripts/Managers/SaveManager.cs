@@ -148,14 +148,14 @@ public static class SaveManager
         SaveData();
     }
 
-    public static void SetSelectedBall(string ballID)
+    public static void SetEquippedBall(string ballID)
     {
         EnsureDataLoaded();
         currentSaveData.selectedBall = ballID;
         SaveData();
     }
 
-    public static string GetSelectedBall()
+    public static string GetEquippedBall()
     {
         EnsureDataLoaded();
         return currentSaveData.selectedBall;

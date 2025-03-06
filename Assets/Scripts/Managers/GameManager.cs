@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
 
     public void InitBall()
     {
-        BallProperties selectionBall = Balls.Instance.GetBall(SaveManager.GetSelectedBall());
+        BallProperties selectionBall = Balls.Instance.GetBall(SaveManager.GetEquippedBall());
         GameObject spawnedBall = Instantiate(selectionBall.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
         ball = spawnedBall.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;

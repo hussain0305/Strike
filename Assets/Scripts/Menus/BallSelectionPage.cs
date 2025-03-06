@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class BallSelectionPage : MonoBehaviour
 {
@@ -22,12 +22,14 @@ public class BallSelectionPage : MonoBehaviour
     [Header("Equip")]
     public GameObject equipSection;
     public Button equipBallButton;
-
+    public GameObject equippedSection;
+    
     [Header("Unlock")]
     public GameObject unlockSection;
     public Button unlockBallButton;
     public TextMeshProUGUI unlockCostText;
-    
+    public GameObject cantUnlockSection;
+
     private Dictionary<string, GameObject> previewBalls;
     private Dictionary<string, BallSelectionButton> ballButtons;
 
@@ -37,6 +39,8 @@ public class BallSelectionPage : MonoBehaviour
     private static BallSelectionPage instance;
     public static BallSelectionPage Instance => instance;
 
+    private Coroutine cantUnlockMessageCoroutine;
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -59,14 +63,15 @@ public class BallSelectionPage : MonoBehaviour
         
         equipBallButton.onClick.AddListener(() =>
         {
-            SaveManager.SetSelectedBall(currentSelectedBall);
+            SaveManager.SetEquippedBall(currentSelectedBall);
+            SetupEquipOrUnlockButton();
         });
         
         unlockBallButton.onClick.AddListener(TryUnlockBall);
 
         if (SaveManager.IsSaveLoaded && setupComplete)
         {
-            SetSelectedBall(SaveManager.GetSelectedBall());
+            SetSelectedBall(SaveManager.GetEquippedBall());
         }
     }
 
@@ -102,7 +107,7 @@ public class BallSelectionPage : MonoBehaviour
             i++;
         }
 
-        SetSelectedBall(SaveManager.GetSelectedBall());
+        SetSelectedBall(SaveManager.GetEquippedBall());
     }
 
     public void BallSelected(BallSelectedEvent e)
@@ -112,6 +117,7 @@ public class BallSelectionPage : MonoBehaviour
     
     public void SetSelectedBall(string ballID)
     {
+        CancelOngoingProcesses();
         currentSelectedBall = ballID;
         GameObject selectedBall = SetupBallForPreview(ballID);
 
@@ -190,9 +196,12 @@ public class BallSelectionPage : MonoBehaviour
 
     public void SetupEquipOrUnlockButton()
     {
+        bool isCurrentBallEquipped = SaveManager.GetEquippedBall() == currentSelectedBall;
         bool isBallUnlocked = SaveManager.IsBallUnlocked(currentSelectedBall);
-        equipSection.gameObject.SetActive(isBallUnlocked);
+        equippedSection.gameObject.SetActive(isCurrentBallEquipped);
+        equipSection.gameObject.SetActive(isBallUnlocked && !isCurrentBallEquipped);
         unlockSection.gameObject.SetActive(!isBallUnlocked);
+        cantUnlockSection.gameObject.SetActive(false);
         if (!isBallUnlocked)
         {
             unlockCostText.text = Balls.Instance.GetBallCost(currentSelectedBall).ToString();
@@ -208,5 +217,31 @@ public class BallSelectionPage : MonoBehaviour
             SaveManager.AddUnlockedBall(currentSelectedBall);
             SetupEquipOrUnlockButton();
         }
+        else
+        {
+            CancelOngoingProcesses();
+            cantUnlockMessageCoroutine = StartCoroutine(ShowCannotUnlockMessage());
+        }
+    }
+
+    public void CancelOngoingProcesses()
+    {
+        if (cantUnlockMessageCoroutine != null)
+        {
+            StopCoroutine(cantUnlockMessageCoroutine);
+        }
+    }
+
+    private IEnumerator ShowCannotUnlockMessage()
+    {
+        equippedSection.gameObject.SetActive(false);
+        equipSection.gameObject.SetActive(false);
+        unlockSection.gameObject.SetActive(false);
+        cantUnlockSection.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2);
+
+        SetupEquipOrUnlockButton();
+        cantUnlockMessageCoroutine = null;
     }
 }
