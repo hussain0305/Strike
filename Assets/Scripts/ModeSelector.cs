@@ -24,8 +24,6 @@ public class ModeSelector : MonoBehaviour
     public Button prevGameModeButton;
     public TextMeshProUGUI selectedGameModeNameText;
     public TextMeshProUGUI selectedGameModeDescriptionText;
-    private GameModeType currentSelectedMode;
-    private GameModeInfo currentSelectedModeInfo;
     public GameObject bottomPanelGameModeUnlocked;
 
     [Header("Game Mode - Locked")]
@@ -49,6 +47,9 @@ public class ModeSelector : MonoBehaviour
     public Button addStars;
     public Button deductStars;
     
+    private GameModeType currentSelectedMode;
+    private GameModeInfo currentSelectedModeInfo;
+
     private int maxPlayers = 8;
     
     private int currentNumPlayers = 1;

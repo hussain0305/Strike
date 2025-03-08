@@ -62,6 +62,7 @@ public class Ball : MonoBehaviour
         tee = context.GetTee();
         startPosition = tee.ballPosition.position;
         gravity = context.GetGravity();
+        gameObject.AddComponent<PortalTraveler>();
     }
     
     public void Shoot()
