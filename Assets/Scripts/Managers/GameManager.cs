@@ -293,6 +293,7 @@ public class GameManager : MonoBehaviour
         for (int i = trajectorySegments.Count; i < trajectories.Length; i++)
         {
             trajectories[i].enabled = false;
+            trajectories[i].gameObject.SetActive(false);
         }
     }
     

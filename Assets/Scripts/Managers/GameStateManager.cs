@@ -153,13 +153,12 @@ public class GameStateManager : MonoBehaviour
 
     public void RetryLevel()
     {
-        //TODO: Reload current scene cannot be hardcoded
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(ModeSelector.Instance.CurrentSelectedModeInfo.scene);
     }
     
     public void LoadNextLevel()
     {
         ModeSelector.Instance.SetNextLevelSelected();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(ModeSelector.Instance.CurrentSelectedModeInfo.scene);
     }
 }
