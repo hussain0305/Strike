@@ -13,7 +13,7 @@ public class PreviewShotgunBall : BallPreview, IBallPreview
 
     public IEnumerator PreviewRoutine()
     {
-        ball.Initialize(MainMenu.Context);
+        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier);
         while (true)
         {
             MainMenu.Context.SpoofNewTrajectory();

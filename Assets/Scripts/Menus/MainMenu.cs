@@ -8,16 +8,29 @@ public class MainMenu : MonoBehaviour
     public Button gameModeSelectionButton;
     public Button settingsPageButton;
 
-    private static MenuContext _context;
+    private static MenuContext context;
     public static MenuContext Context
     {
         get
         {
-            if (_context == null)
+            if (context == null)
             {
-                _context = new MenuContext();
+                context = new MenuContext();
             }
-            return _context;
+            return context;
+        }
+    }
+
+    private static ITrajectoryModifier trajectoryModifier;
+    public static ITrajectoryModifier TrajectoryModifier
+    {
+        get
+        {
+            if (trajectoryModifier == null)
+            {
+                trajectoryModifier = new DefaultTrajectoryModifier();
+            }
+            return trajectoryModifier;
         }
     }
 
@@ -47,7 +60,7 @@ public class MainMenu : MonoBehaviour
 
     public static void ClearContext()
     {
-        _context = null;
+        context = null;
     }
     
     private void OnDestroy()

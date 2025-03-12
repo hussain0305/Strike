@@ -31,7 +31,8 @@ public class BallVicinityDetection : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength))
             {
-                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("CollideWithBallUnaffected"))
+                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("CollideWithBallUnaffected") &&
+                    hit.collider.gameObject != ball.gameObject)
                 {
                     ball.collidedWithSomething = true;
                 }

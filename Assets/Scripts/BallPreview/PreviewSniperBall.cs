@@ -13,7 +13,7 @@ public class PreviewSniperBall : BallPreview, IBallPreview
 
     public IEnumerator PreviewRoutine()
     {
-        ball.Initialize(MainMenu.Context);
+        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier);
         Vector3[] drawnTrajectory = new[] { Vector3.zero, Vector3.zero };
         while (true)
         {

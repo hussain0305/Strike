@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
     public GameObject trajectoryHistoryButton;
-    public LineRenderer trajectory;
+    public LineRenderer[] trajectories;
     
     [Header("Game Screen")]
     public Button fireButton;
@@ -58,19 +58,42 @@ public class GameManager : MonoBehaviour
 
     public static bool BallShootable => BallState == BallState.OnTee;
     
-    private static InGameContext _context;
+    private static InGameContext context;
     public static InGameContext Context
     {
         get
         {
-            if (_context == null)
+            if (context == null)
             {
-                _context = new InGameContext();
+                context = new InGameContext();
             }
-            return _context;
+            return context;
         }
     }
 
+    private static ITrajectoryModifier trajectoryModifier;
+    public static ITrajectoryModifier TrajectoryModifier
+    {
+        get
+        {
+            if (trajectoryModifier == null)
+            {
+                Debug.Log("Determining trajectory modifier");
+                switch (ModeSelector.Instance.CurrentSelectedMode)
+                {
+                    case GameModeType.Portals:
+                        trajectoryModifier = new PortalTrajectoryModifier();
+                        break;
+                    default:
+                        trajectoryModifier = new DefaultTrajectoryModifier();
+                        break;
+                }
+            }
+
+            return trajectoryModifier;
+        }
+    }
+    
     public float Gravity => gravity;
     public float LaunchForce => launchForce;
     public Vector2 SpinVector => spinVector;
@@ -136,7 +159,7 @@ public class GameManager : MonoBehaviour
         ball = spawnedBall.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
         ballMass = ball.rb.mass;
-        ball.Initialize(Context);
+        ball.Initialize(Context, TrajectoryModifier);
     }
     
     public void SetupPlayers()
@@ -169,6 +192,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        showTrajectory = true;
         if (BallShootable)
         {
             launchForce = powerInput.Power;
@@ -183,7 +207,8 @@ public class GameManager : MonoBehaviour
             if (showTrajectory)
             {
                 List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
-                DrawTrajectory(trajectoryPoints.ToArray());
+                List<List<Vector3>> finalTrajectory = ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints);
+                DrawTrajectory(finalTrajectory);
             }
         }
     }
@@ -254,18 +279,23 @@ public class GameManager : MonoBehaviour
         DisableTrajectory();
     }
     
-    private void DrawTrajectory(Vector3[] trajectoryPoints)
+    public void DrawTrajectory(List<List<Vector3>> trajectorySegments)
     {
-        trajectory.positionCount = trajectoryPoints.Length;
-        trajectory.SetPositions(trajectoryPoints);
+        for (int i = 0; i < trajectorySegments.Count; i++)
+        {
+            LineRenderer line = trajectories[i];
+            line.positionCount = trajectorySegments[i].Count;
+            line.SetPositions(trajectorySegments[i].ToArray());
+            line.enabled = true;
+            line.gameObject.SetActive(true);
+        }
 
-        trajectory.startWidth = 0.2f;
-        trajectory.endWidth = 0.2f;
-        // trajectory.material = new Material(Shader.Find("Sprites/Default")); // Basic material
-        trajectory.startColor = Color.green;
-        trajectory.endColor = Color.red;
+        for (int i = trajectorySegments.Count; i < trajectories.Length; i++)
+        {
+            trajectories[i].enabled = false;
+        }
     }
-
+    
     public void StartMinTimePerShotPeriod()
     {
         IEnumerator<WaitForSeconds> MinTimeRoutine()
@@ -332,7 +362,6 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator ShowTrajectory()
     {
-        trajectory.gameObject.SetActive(true);
         showTrajectory = true;
         int secondsRemaining = GameMode.Instance.projectileViewDuration;
         trajectoryButton.SetCountdownText(secondsRemaining);
@@ -359,7 +388,10 @@ public class GameManager : MonoBehaviour
     public void DisableTrajectory()
     {
         DiscardTrajectoryViewRoutine();
-        trajectory.gameObject.SetActive(false);
+        foreach (LineRenderer trajectory in trajectories)
+        {
+            trajectory.gameObject.SetActive(false);
+        }
         trajectoryButtonSection.gameObject.SetActive(false);
     }
 
@@ -406,10 +438,11 @@ public class GameManager : MonoBehaviour
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
     }
-
+    
     private static void DiscardGameContext()
     {
-        _context = null;
+        context = null;
+        trajectoryModifier = null;
     }
     
     private void OnDestroy()

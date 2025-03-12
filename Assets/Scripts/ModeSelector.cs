@@ -47,7 +47,6 @@ public class ModeSelector : MonoBehaviour
     public Button addStars;
     public Button deductStars;
     
-    private GameModeType currentSelectedMode;
     private GameModeInfo currentSelectedModeInfo;
 
     private int maxPlayers = 8;
@@ -55,6 +54,9 @@ public class ModeSelector : MonoBehaviour
     private int currentNumPlayers = 1;
     private int selectedLevel = 1;
     
+    private GameModeType currentSelectedMode;
+    public GameModeType CurrentSelectedMode => currentSelectedMode;
+
     private static ModeSelector instance;
     public static ModeSelector Instance => instance;
     

@@ -26,8 +26,10 @@ public class Ball : MonoBehaviour
     public float groundLevel = 0.0f;
 
     protected IContextProvider context;
+    public ITrajectoryModifier trajectoryModifier;
 
     protected List<Vector3> trajectoryPoints;
+    protected List<List<Vector3>> finalTrajectory;
     protected List<Vector3> capturedTrajectoryPoints;
 
     protected int trajectoryDefinition = 10;
@@ -50,9 +52,11 @@ public class Ball : MonoBehaviour
         EventBus.Unsubscribe<NextShotCuedEvent>(ResetBall);
     }
 
-    public void Initialize(IContextProvider _context)
+    public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier)
     {
         context = _context;
+        trajectoryModifier = _trajectoryModifier;
+        
         foreach (BallAbility ability in GetComponentsInChildren<BallAbility>())
         {
             ability.Initialize(this, context);
@@ -68,6 +72,8 @@ public class Ball : MonoBehaviour
     public void Shoot()
     {
         trajectoryPoints = CalculateTrajectory();
+        finalTrajectory = trajectoryModifier.ModifyTrajectory(trajectoryPoints);
+
         rb.isKinematic = true;
         StartCoroutine(FollowTrajectory());
         if (GameStateManager.Instance.CurrentGameState == GameState.InGame)
@@ -78,39 +84,43 @@ public class Ball : MonoBehaviour
 
     IEnumerator FollowTrajectory()
     {
-        if (trajectoryPoints == null || trajectoryPoints.Count == 0)
+        if (finalTrajectory == null || finalTrajectory.Count == 0)
             yield break;
 
         float timeStep = 0.1f;
 
-        for (int i = 0; i < trajectoryPoints.Count - 1; i++)
+        foreach (List<Vector3> trajectoryPart in finalTrajectory)
         {
-            Vector3 currentPoint = trajectoryPoints[i];
-            Vector3 nextPoint = trajectoryPoints[i + 1];
-
-            if (collidedWithSomething || currentPoint.y <= groundLevel || nextPoint.y <= groundLevel)
+            for (int i = 0; i < trajectoryPart.Count - 1; i++)
             {
-                rb.isKinematic = false;
-                Vector3 finalVelocity = (nextPoint - currentPoint) / timeStep;
-                rb.linearVelocity = finalVelocity;
-                context.SetBallState(BallState.InPhysicsMotion);
-                yield break;
-            }
+                Vector3 currentPoint = trajectoryPart[i];
+                Vector3 nextPoint = trajectoryPart[i + 1];
 
-            float elapsedTime = 0f;
-            while (elapsedTime < timeStep)
-            {
-                elapsedTime += Time.deltaTime;
-                ball.position = Vector3.Lerp(currentPoint, nextPoint, elapsedTime / timeStep);
-                yield return null;
+                if (collidedWithSomething || currentPoint.y <= groundLevel || nextPoint.y <= groundLevel)
+                {
+                    rb.isKinematic = false;
+                    Vector3 finalVelocity = (nextPoint - currentPoint) / timeStep;
+                    rb.linearVelocity = finalVelocity;
+                    context.SetBallState(BallState.InPhysicsMotion);
+                    yield break;
+                }
+
+                float elapsedTime = 0f;
+                while (elapsedTime < timeStep)
+                {
+                    elapsedTime += Time.deltaTime;
+                    ball.position = Vector3.Lerp(currentPoint, nextPoint, elapsedTime / timeStep);
+                    yield return null;
+                }
             }
         }
 
         rb.isKinematic = false;
 
-        if (trajectoryPoints.Count >= 2)
+        if (finalTrajectory.Count > 0 && finalTrajectory[^1].Count >= 2)
         {
-            Vector3 finalVelocity = (trajectoryPoints[^1] - trajectoryPoints[^2]) / timeStep;
+            List<Vector3> lastPartOfTrajectory = finalTrajectory[^1];
+            Vector3 finalVelocity = (lastPartOfTrajectory[^1] - lastPartOfTrajectory[^2]) / timeStep;
             rb.linearVelocity = finalVelocity;
         }
 
