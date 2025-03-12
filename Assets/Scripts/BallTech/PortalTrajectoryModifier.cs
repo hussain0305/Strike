@@ -15,16 +15,6 @@ public class PortalTrajectoryModifier : ITrajectoryModifier
         {
             Vector3 currentPoint = trajectoryPoints[i];
             Vector3 nextPoint = trajectoryPoints[i + 1];
-
-            if (currentEntryPortal && currentExitPortal)
-            {
-                currentPoint = currentExitPortal.TransformPoint(
-                    currentEntryPortal.InverseTransformPoint(currentPoint)
-                );
-                nextPoint = currentExitPortal.TransformPoint(
-                    currentEntryPortal.InverseTransformPoint(nextPoint)
-                );
-            }
             
             RaycastHit hit;
             bool portalHit = false;
@@ -44,6 +34,13 @@ public class PortalTrajectoryModifier : ITrajectoryModifier
 
                     currentEntryPortal = portal.transform;
                     currentExitPortal = portal.linkedPortal.transform;
+
+                    for (int j = i + 1; j < trajectoryPoints.Count; j++)
+                    {
+                        trajectoryPoints[j] = currentExitPortal.TransformPoint(
+                            currentEntryPortal.InverseTransformPoint(trajectoryPoints[j])
+                        );
+                    }
                 }
             }
 
