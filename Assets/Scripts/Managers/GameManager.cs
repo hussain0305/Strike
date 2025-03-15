@@ -12,6 +12,13 @@ public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
 
+[System.Serializable]
+public class TrajectorySegmentVisuals
+{
+    public LineRenderer trajectory;
+    public MeshRenderer segmentEnd;
+}
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -31,7 +38,7 @@ public class GameManager : MonoBehaviour
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
     public GameObject trajectoryHistoryButton;
-    public LineRenderer[] trajectories;
+    public TrajectorySegmentVisuals[] trajectories;
     
     [Header("Game Screen")]
     public Button fireButton;
@@ -207,8 +214,9 @@ public class GameManager : MonoBehaviour
             if (showTrajectory)
             {
                 List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
-                List<List<Vector3>> finalTrajectory = ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints);
-                DrawTrajectory(finalTrajectory);
+                List<List<Vector3>> finalizedTrajectory = ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints);
+                Debug.Log(">>> num segments = " + finalizedTrajectory.Count);
+                DrawTrajectory(finalizedTrajectory);
             }
         }
     }
@@ -283,17 +291,19 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < trajectorySegments.Count; i++)
         {
-            LineRenderer line = trajectories[i];
+            LineRenderer line = trajectories[i].trajectory;
             line.positionCount = trajectorySegments[i].Count;
             line.SetPositions(trajectorySegments[i].ToArray());
             line.enabled = true;
-            line.gameObject.SetActive(true);
+
+            trajectories[i].segmentEnd.transform.position = trajectorySegments[i][^1];
+            trajectories[i].segmentEnd.enabled = true;
         }
 
         for (int i = trajectorySegments.Count; i < trajectories.Length; i++)
         {
-            trajectories[i].enabled = false;
-            trajectories[i].gameObject.SetActive(false);
+            trajectories[i].segmentEnd.enabled = false;
+            trajectories[i].trajectory.enabled = false;
         }
     }
     
@@ -389,9 +399,10 @@ public class GameManager : MonoBehaviour
     public void DisableTrajectory()
     {
         DiscardTrajectoryViewRoutine();
-        foreach (LineRenderer trajectory in trajectories)
+        foreach (var trajectory in trajectories)
         {
-            trajectory.gameObject.SetActive(false);
+            trajectory.segmentEnd.enabled = false;
+            trajectory.trajectory.enabled = false;
         }
         trajectoryButtonSection.gameObject.SetActive(false);
     }
