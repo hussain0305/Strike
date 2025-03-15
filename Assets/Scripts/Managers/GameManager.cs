@@ -215,7 +215,6 @@ public class GameManager : MonoBehaviour
             {
                 List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
                 List<List<Vector3>> finalizedTrajectory = ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints);
-                Debug.Log(">>> num segments = " + finalizedTrajectory.Count);
                 DrawTrajectory(finalizedTrajectory);
             }
         }

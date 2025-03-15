@@ -26,6 +26,24 @@ public class LevelExporter : MonoBehaviour
     }
     
     [System.Serializable]
+    public class PortalData
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public Vector3[] path;
+        public float movementSpeed;
+        public Vector3 rotationAxis;
+        public float rotationSpeed;
+    }
+    
+    [System.Serializable]
+    public class PortalSet
+    {
+        public PortalData portalA;
+        public PortalData portalB;
+    }
+    
+    [System.Serializable]
     public class LevelData
     {
         public GameModeType gameMode; 
@@ -33,15 +51,17 @@ public class LevelExporter : MonoBehaviour
         public int targetPoints;
         public List<CollectibleData> collectibles;
         public List<StarData> stars;
+        public List<PortalSet> portals;
     }
 
     public int level;
     public int targetPoints;
     public GameModeType gameMode;
-    public Transform collectibleParentWorld;
     public Transform starsParent;
+    public Transform portalsParent;
     public Transform collectibleParentUI;
-    
+    public Transform collectibleParentWorld;
+
     public void ExportLevel()
     {
         LevelData levelData = new LevelData
@@ -50,7 +70,8 @@ public class LevelExporter : MonoBehaviour
             targetPoints = this.targetPoints,
             gameMode = this.gameMode,
             collectibles = new List<CollectibleData>(),
-            stars = new List<StarData>()
+            stars = new List<StarData>(),
+            portals = new List<PortalSet>()
         };
 
         foreach (Transform collectible in collectibleParentWorld)
@@ -136,6 +157,23 @@ public class LevelExporter : MonoBehaviour
             levelData.stars.Add(starData);
         }
 
+        
+        foreach (PortalPair portalPair in portalsParent.GetComponentsInChildren<PortalPair>())
+        {
+            if (!portalPair.gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            PortalSet portalSet = new PortalSet
+            {
+                portalA = ExtractPortalData(portalPair.portalA),
+                portalB = ExtractPortalData(portalPair.portalB)
+            };
+
+            levelData.portals.Add(portalSet);
+        }
+
         string json = JsonUtility.ToJson(levelData, true);
         Directory.CreateDirectory("Assets/Resources/Levels");
         File.WriteAllText($"Assets/Resources/Levels/Level_{gameMode.ToString()}_{level}.json", json);
@@ -170,5 +208,34 @@ public class LevelExporter : MonoBehaviour
         {
             Debug.LogError("Level mapping ScriptableObject is not assigned!");
         }
+    }
+    
+    PortalData ExtractPortalData(Portal portal)
+    {
+        PortalData portalData = new PortalData
+        {
+            position = portal.transform.position,
+            rotation = portal.transform.rotation,
+            path = null,
+            movementSpeed = 0,
+            rotationAxis = Vector3.zero,
+            rotationSpeed = 0
+        };
+
+        ContinuousMovement movementScript = portal.GetComponent<ContinuousMovement>();
+        if (movementScript)
+        {
+            portalData.path = new[] { movementScript.pointATransform.position, movementScript.pointBTransform.position };
+            portalData.movementSpeed = movementScript.speed;
+        }
+
+        ContinuousRotation rotationScript = portal.GetComponent<ContinuousRotation>();
+        if (rotationScript)
+        {
+            portalData.rotationAxis = rotationScript.rotationAxis;
+            portalData.rotationSpeed = rotationScript.rotationSpeed;
+        }
+
+        return portalData;
     }
 }

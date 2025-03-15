@@ -6,9 +6,10 @@ public class LevelEditorWindow : EditorWindow
 {
     private int levelNumber = 1;
     private GameModeType gameMode = GameModeType.Pins;
-    private Transform collectibleParentWorld;
-    private Transform collectibleParentUI;
     private Transform starParent;
+    private Transform portalsParent;
+    private Transform collectibleParentUI;
+    private Transform collectibleParentWorld;
     private LevelExporter.LevelData loadedLevelData;
 
     [MenuItem("Tools/Level Editor")]
@@ -61,6 +62,7 @@ public class LevelEditorWindow : EditorWindow
         collectibleParentWorld = levelExporter.collectibleParentWorld;
         collectibleParentUI = levelExporter.collectibleParentUI;
         starParent = levelExporter.starsParent;
+        portalsParent = levelExporter.portalsParent;
         
         CollectiblePrefabMapping prefabMapping = Resources.Load<CollectiblePrefabMapping>("CollectiblePrefabMapping");
         if (prefabMapping == null)
@@ -122,9 +124,70 @@ public class LevelEditorWindow : EditorWindow
             starScript.index = starData.index;
         }
         
+        if (loadedLevelData.portals != null && loadedLevelData.portals.Count > 0)
+        {
+            PortalPair[] allPortalPairs = portalsParent.GetComponentsInChildren<PortalPair>(true);
+
+            int i;
+            for (i = 0; i < loadedLevelData.portals.Count; i++)
+            {
+                LevelExporter.PortalSet portalSet = loadedLevelData.portals[i];
+                PortalPair portalPair = allPortalPairs[i];
+                portalPair.gameObject.SetActive(true);
+
+                ApplyPortalData(portalPair.portalA, portalSet.portalA);
+                ApplyPortalData(portalPair.portalB, portalSet.portalB);
+            }
+
+            for (; i < allPortalPairs.Length; i++)
+            {
+                allPortalPairs[i].gameObject.SetActive(false);
+            }
+        }
+        
         Debug.Log($"Level {levelNumber} loaded in Scene View!");
     }
 
+    void ApplyPortalData(Portal portal, LevelExporter.PortalData portalData)
+    {
+        GameObject portalObject = portal.gameObject;
+        Undo.RecordObject(portalObject.transform, "Move Portal");
+        portalObject.transform.position = portalData.position;
+        portalObject.transform.rotation = portalData.rotation;
+
+        bool portalMoves = portalData.path != null && portalData.path.Length > 1;
+        var cmScript = portalObject.GetComponent<ContinuousMovement>();
+
+        if (portalMoves)
+        {
+            if (!cmScript) cmScript = Undo.AddComponent<ContinuousMovement>(portalObject);
+            Undo.RecordObject(cmScript, "Modify Portal Movement");
+            cmScript.pointA = portalData.path[0];
+            cmScript.pointB = portalData.path[1];
+        }
+        else if (cmScript)
+        {
+            Undo.DestroyObjectImmediate(cmScript);
+        }
+
+        bool portalRotates = portalData.rotationSpeed != 0;
+        var crScript = portalObject.GetComponent<ContinuousRotation>();
+
+        if (portalRotates)
+        {
+            if (!crScript) crScript = Undo.AddComponent<ContinuousRotation>(portalObject);
+            Undo.RecordObject(crScript, "Modify Portal Rotation");
+            crScript.rotationAxis = portalData.rotationAxis;
+            crScript.rotationSpeed = portalData.rotationSpeed;
+        }
+        else if (crScript)
+        {
+            Undo.DestroyObjectImmediate(crScript);
+        }
+
+        EditorUtility.SetDirty(portalObject);
+    }
+    
     private void SaveLevel()
     {
         if (loadedLevelData == null)

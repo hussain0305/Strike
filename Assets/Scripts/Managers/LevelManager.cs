@@ -6,10 +6,11 @@ public class LevelManager : MonoBehaviour
     private static LevelManager instance;
     public static LevelManager Instance => instance;
 
+    public Transform starsParent;
+    public Transform portalsParent;
     public Transform collectiblesWorldParent;
     public Transform collectiblesWorldCanvasParent;
-    public Transform starsParent;
-    
+
     private void Awake()
     {
         if (instance != null && instance != this)

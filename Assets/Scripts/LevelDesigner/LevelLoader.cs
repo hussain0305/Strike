@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
 public class LevelLoader : MonoBehaviour
 {
-    public Transform colletiblesParentWorld;
-    public Transform colletiblesParentUI;
     public Transform starsParent;
+    public Transform portalsParent;
+    public Transform colletiblesParentUI;
+    public Transform colletiblesParentWorld;
 
     private int targetPoints;
     
@@ -115,9 +117,61 @@ public class LevelLoader : MonoBehaviour
             starScript.index = starData.index;
         }
 
+        PortalPair[] allPortalPairs = portalsParent.GetComponentsInChildren<PortalPair>(true);
+        int i;
+        for (i = 0; i < levelData.portals.Count; i++)
+        {
+            LevelExporter.PortalSet portalSet = levelData.portals[i];
+            PortalPair portalPair = allPortalPairs[i];
+            portalPair.gameObject.SetActive(true);
+
+            ApplyPortalData(portalPair.portalA, portalSet.portalA);
+            ApplyPortalData(portalPair.portalB, portalSet.portalB);
+        }
+
+        for (; i < allPortalPairs.Length; i++)
+        {
+            allPortalPairs[i].gameObject.SetActive(false);
+        }
+        
         Debug.Log($"Level {levelNumber} loaded successfully!");
     }
 
+    void ApplyPortalData(Portal portal, LevelExporter.PortalData portalData)
+    {
+        GameObject portalObject = portal.gameObject;
+        portalObject.transform.position = portalData.position;
+        portalObject.transform.rotation = portalData.rotation;
+
+        bool portalMoves = portalData.path != null && portalData.path.Length > 1;
+        var cmScript = portalObject.GetComponent<ContinuousMovement>();
+
+        if (portalMoves)
+        {
+            if (!cmScript) cmScript = portalObject.AddComponent<ContinuousMovement>();
+            cmScript.pointA = portalData.path[0];
+            cmScript.pointB = portalData.path[1];
+        }
+        else if (cmScript)
+        {
+            Destroy(cmScript);
+        }
+
+        bool portalRotates = portalData.rotationSpeed != 0;
+        var crScript = portalObject.GetComponent<ContinuousRotation>();
+
+        if (portalRotates)
+        {
+            if (!crScript) crScript = portalObject.AddComponent<ContinuousRotation>();
+            crScript.rotationAxis = portalData.rotationAxis;
+            crScript.rotationSpeed = portalData.rotationSpeed;
+        }
+        else if (crScript)
+        {
+            Destroy(crScript);
+        }
+    }
+    
     public int GetTargetPoints()
     {
         return targetPoints;

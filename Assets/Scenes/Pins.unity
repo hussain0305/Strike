@@ -5504,6 +5504,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!1 &378263159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 378263160}
+  m_Layer: 0
+  m_Name: PortalsParent
+  m_TagString: StarsInWorld
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &378263160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378263159}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 856693394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &381517276
 GameObject:
   m_ObjectHideFlags: 0
@@ -6953,9 +6984,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10075ed443932ad4f9fe287930d5f1cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colletiblesParentWorld: {fileID: 549877463}
-  colletiblesParentUI: {fileID: 1782344019}
   starsParent: {fileID: 1922110261}
+  portalsParent: {fileID: 378263160}
+  colletiblesParentUI: {fileID: 1782344019}
+  colletiblesParentWorld: {fileID: 549877463}
 --- !u!1 &520457862
 GameObject:
   m_ObjectHideFlags: 0
@@ -8591,11 +8623,11 @@ MonoBehaviour:
   trajectoryHistoryButton: {fileID: 1732607316}
   trajectories:
   - trajectory: {fileID: 2026108910}
-    segmentEnd: {fileID: 1551532716}
+    segmentEnd: {fileID: 1551532719}
   - trajectory: {fileID: 1723991485}
-    segmentEnd: {fileID: 1835472792}
+    segmentEnd: {fileID: 1835472795}
   - trajectory: {fileID: 1275961549}
-    segmentEnd: {fileID: 1437418505}
+    segmentEnd: {fileID: 1437418508}
   fireButton: {fileID: 2000367810}
   nextButton: {fileID: 1609780930}
   nextButtonFill: {fileID: 1740030270}
@@ -10689,6 +10721,7 @@ Transform:
   - {fileID: 1384111840}
   - {fileID: 549877463}
   - {fileID: 1922110261}
+  - {fileID: 378263160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856693395
@@ -10703,9 +10736,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791f7f40c7f248744bcd26fa1210e528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  starsParent: {fileID: 1922110261}
+  portalsParent: {fileID: 378263160}
   collectiblesWorldParent: {fileID: 549877463}
   collectiblesWorldCanvasParent: {fileID: 1782344019}
-  starsParent: {fileID: 1922110261}
 --- !u!1 &862628984
 GameObject:
   m_ObjectHideFlags: 0
@@ -11598,9 +11632,10 @@ MonoBehaviour:
   level: 3
   targetPoints: 100
   gameMode: 0
-  collectibleParentWorld: {fileID: 549877463}
   starsParent: {fileID: 1922110261}
+  portalsParent: {fileID: 378263160}
   collectibleParentUI: {fileID: 1782344019}
+  collectibleParentWorld: {fileID: 549877463}
 --- !u!4 &953383090
 Transform:
   m_ObjectHideFlags: 0
