@@ -38,11 +38,13 @@ public class LevelSelectionButton : MonoBehaviour
     
     private void OnEnable()
     {
+        EventBus.Subscribe<ButtonClickedEvent>(ButtonPressedEvent);
         button.onClick.AddListener(ButtonPressed);
     }
 
     private void OnDisable()
     {
+        EventBus.Unsubscribe<ButtonClickedEvent>(ButtonPressedEvent);
         button.onClick.RemoveAllListeners();
     }
 
@@ -84,14 +86,27 @@ public class LevelSelectionButton : MonoBehaviour
     
     public void ButtonPressed()
     {
-        ModeSelector.Instance.SetSelectedLevel(levelNumber);
+        EventBus.Publish(new ButtonClickedEvent(LevelNumber, ButtonGroup.LevelSelection));
     }
 
-    public void SetBorderMaterial(int selectedLevel)
+    public void ButtonPressedEvent(ButtonClickedEvent e)
+    {
+        if (e.ButtonGroup != ButtonGroup.LevelSelection)
+        {
+            return;
+        }
+        UpdateAppearance(e.Index);
+    }
+    
+    public void UpdateAppearance(int selectedLevel)
     {
         if (LevelNumber == selectedLevel)
         {
             ButtonBehaviour.SetSelected();
+        }
+        else
+        {
+            ButtonBehaviour.SetUnselected();
         }
     }
     
@@ -100,6 +115,7 @@ public class LevelSelectionButton : MonoBehaviour
         button.enabled = true;
         button.GetComponent<Image>().enabled = true;
         ButtonBehaviour.isEnabled = true;
+        ButtonBehaviour.SetToDefault();
     }
     
     public void SetLocked()
@@ -107,5 +123,6 @@ public class LevelSelectionButton : MonoBehaviour
         button.enabled = false;
         ButtonBehaviour.isEnabled = false;
         button.GetComponent<Image>().enabled = false;
+        ButtonBehaviour.SetToDefault();
     }
 }

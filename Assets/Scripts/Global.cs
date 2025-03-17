@@ -112,6 +112,16 @@ public enum GameState
     OnResultScreen
 }
 
+[System.Serializable]
+public enum ButtonGroup
+{
+    Default,
+    LevelSelection,
+    BallSelection,
+    CameraToggle,
+    CamerBehaviour
+}
+
 //============---- STRUCTS ----============
 
 public struct ShotInfo

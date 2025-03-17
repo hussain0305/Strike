@@ -6,17 +6,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public class ButtonClickedEvent
+{
+    public int Index;
+    public ButtonGroup ButtonGroup;
+    public ButtonClickedEvent(int _index, ButtonGroup _buttonGroup)
+    {
+        Index = _index;
+        ButtonGroup = _buttonGroup;
+    }
+}
+
 public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [System.Serializable]
-    public enum ButtonGroup
-    {
-        Default,
-        LevelSelection,
-        BallSelection,
-        CameraToggle,
-        CamerBehaviour
-    }
     public ButtonGroup groupId = ButtonGroup.Default;
     public ButtonLocation buttonLocation;
     public Image[] boundaries;
@@ -30,6 +32,8 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public AudioClip clickClipOverride;
     [HideInInspector]
     public bool isEnabled = true;
+    [HideInInspector]
+    public bool isSelected = false;
 
     private SoundLibrary soundLibrary => AudioManager.Instance?.soundLibrary;
 
@@ -48,11 +52,6 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
     
-    private void Awake()
-    {
-        ButtonStateManager.Instance.RegisterButton(this);
-    }
-
     private void OnEnable()
     {
         if (backToDefaultOnEnable)
@@ -90,7 +89,7 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (isEnabled && !ButtonStateManager.Instance.IsButtonSelected(this))
+        if (isEnabled && !isSelected)
         {
             SetToHover();
         }
@@ -101,17 +100,9 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (isEnabled && (!staysSelected || !ButtonStateManager.Instance.IsButtonSelected(this)))
+        if (isEnabled && (!staysSelected || !isSelected))
         {
             SetToDefault();
-        }
-    }
-    
-    public void SetMaterial(Material _mat)
-    {
-        foreach (Image img in boundaries)
-        {
-            img.material = _mat;
         }
     }
 
@@ -138,7 +129,14 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public void SetSelected()
     {
         SetTextComponentColor(Color.yellow);
-        ButtonStateManager.Instance.SelectButton(this);
+        SetMaterial(GlobalAssets.Instance.GetSelectedMaterial(buttonLocation));
+        isSelected = staysSelected;
+    }
+    
+    public void SetUnselected()
+    {
+        isSelected = false;
+        SetToDefault();
     }
     
     private void PlaySound(bool shouldPlay, bool overrideClip, AudioClip clip, AudioClip defaultSound)
@@ -152,6 +150,14 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
         else if(defaultSound != null)
         {
             AudioManager.Instance.PlaySFX(defaultSound, false);
+        }
+    }
+
+    public void SetMaterial(Material _mat)
+    {
+        foreach (Image img in boundaries)
+        {
+            img.material = _mat;
         }
     }
 

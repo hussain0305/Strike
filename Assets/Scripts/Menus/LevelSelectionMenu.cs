@@ -41,7 +41,6 @@ public class LevelSelectionMenu : MonoBehaviour
     private void OnEnable()
     {
         PromptGameObject.SetActive(false);
-        ButtonStateManager.Instance.ResetLevelSelectionButtons();
         ModeSelector.Instance.ResetSelectedLevel();
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }

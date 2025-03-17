@@ -81,6 +81,8 @@ public class ModeSelector : MonoBehaviour
         
         playButton.onClick?.AddListener(StartGame);
         
+        EventBus.Subscribe<ButtonClickedEvent>(SomeButtonClicked);
+        
         //===TODO: DEBUG. DELETE LATER===
         addStars.onClick.AddListener(() =>
         {
@@ -98,6 +100,7 @@ public class ModeSelector : MonoBehaviour
         addPlayerButton?.onClick.RemoveAllListeners();
         removePlayerButton?.onClick.RemoveAllListeners();
         playButton?.onClick.RemoveAllListeners();
+        EventBus.Unsubscribe<ButtonClickedEvent>(SomeButtonClicked);
     }
 
     public void Init()
@@ -278,10 +281,17 @@ public class ModeSelector : MonoBehaviour
         return currentSelectedMode;
     }
 
-    public void SetSelectedLevel(int level)
+    public void SomeButtonClicked(ButtonClickedEvent e)
     {
-        selectedLevel = level;
-        HighlightSelectedButton();
+        if (e.ButtonGroup == ButtonGroup.LevelSelection)
+        {
+            LevelSelection(e.Index);
+        }
+    }
+
+    public void LevelSelection(int _SelectedLevel)
+    {
+        selectedLevel = _SelectedLevel;
     }
 
     public void SetNextLevelSelected()
@@ -293,19 +303,7 @@ public class ModeSelector : MonoBehaviour
     {
         selectedLevel = -1;
     }
-
-    public void HighlightSelectedButton()
-    {
-        foreach (LevelSelectionButton lsb in levelButtonsPool)
-        {
-            if (!lsb.gameObject.activeSelf)
-            {
-                continue;
-            }
-            lsb.SetBorderMaterial(selectedLevel);
-        }
-    }
-
+    
     public bool IsNextLevelAvailable()
     {
         return GameModeLevelMapping.Instance.GetNumLevelsInGameMode(currentSelectedMode) > GetSelectedLevel();

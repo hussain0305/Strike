@@ -73,6 +73,7 @@ public class BallSelectionButton : MonoBehaviour
 
     public void SetUnselected()
     {
+        ButtonBehaviour.SetUnselected();
         ballNameText.color = unselectedTextColor;
     }
 
