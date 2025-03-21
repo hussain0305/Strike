@@ -6,7 +6,7 @@ public class InGameContext : IContextProvider
 {
     public Transform GetAimTransform()
     {
-        return GameManager.Instance.angleInput.cylinderPivot;
+        return GameManager.Instance.AngleInput.cylinderPivot;
     }
 
     public float GetLaunchForce()

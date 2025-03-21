@@ -1,66 +1,83 @@
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SpinInput : MonoBehaviour
 {
     public RectTransform controlArea;
     public RectTransform pointer;
-    public float spinMultiplier = 2f;
-    public TextMeshProUGUI spinValueText;
-    
-    public Vector2 SpinVector { get; private set; }
+    private float swipeSpeed = 5f;
+    public TextMeshProUGUI[] spinValueText;
 
+    public Vector2 SpinVector { get; private set; }
+    
     private Vector3 RestingPosition => new(0, 0, -0.1f);
 
-    private Vector2 center;
     private bool isInteracting;
-
+    private Vector2 startTouchPosition;
+    private Vector2 controlBounds;
+    
     private void Start()
     {
-        center = controlArea.rect.center;
+        controlBounds = controlArea.rect.size / 2f;
     }
 
+    private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
+    
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (!BallParameterController.IsInputtingSpin())
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                controlArea,
-                Input.mousePosition,
-                Camera.main, 
-                out Vector2 localMousePosition
-            );
-
-            // Check if the mouse click is inside the control area
-            if (controlArea.rect.Contains(localMousePosition))
-            {
-                isInteracting = true;
-
-                Vector3 offset = localMousePosition - center;
-                float radius = controlArea.rect.width / 2f;
-
-                if (offset.magnitude > radius)
-                    offset = offset.normalized * radius;
-
-                offset.z = RestingPosition.z;
-                pointer.localPosition = offset;
-                SpinVector = Vector2.ClampMagnitude(offset / radius, 1f);
-                SpinVector *= spinMultiplier;
-                string spinText = $"{SpinVector.x:F2}, {SpinVector.y:F2}";
-                spinValueText.text = spinText;
-            }
+            return;
         }
-        else if (isInteracting)
+        
+        if (Input.GetMouseButtonDown(0))
         {
-            isInteracting = false;
+            isInteracting = true;
+            startTouchPosition = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButton(0) && isInteracting)
+        {
+            Vector2 currentTouchPosition = Input.mousePosition;
+            Vector2 swipeDelta = currentTouchPosition - startTouchPosition;
+
+            swipeDelta *= swipeSpeed;
+
+            SpinVector += swipeDelta / new Vector2(Screen.width, Screen.height);
+            SpinVector = Vector2.ClampMagnitude(SpinVector, 1f);
+            
+            string spinText = $"{SpinVector.x * 100:F0}, {SpinVector.y * 100:F0}";
+            foreach (TextMeshProUGUI valText in spinValueText)
+            {
+                valText.text = spinText;
+            }
+            startTouchPosition = currentTouchPosition;
+            
+            UpdatePointer();
         }
     }
 
-    public void ResetPointer()
+    public void UpdatePointer()
+    {
+        Vector2 pointerPos = new Vector2(SpinVector.x * controlBounds.x, SpinVector.y * controlBounds.y);
+        Debug.Log(">>> pointerPos " + pointerPos);
+        pointer.localPosition = pointerPos;
+    }
+    
+    private void OnEnable()
+    {
+        EventBus.Subscribe<NextShotCuedEvent>(ResetPointer);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<NextShotCuedEvent>(ResetPointer);
+    }
+
+    public void ResetPointer(NextShotCuedEvent e)
     {
         pointer.localPosition = RestingPosition;
         SpinVector = Vector2.zero;
-        spinValueText.text = "";
     }
 }

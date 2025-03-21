@@ -24,7 +24,7 @@ public class BallVicinityDetection : MonoBehaviour
         Vector3 currentPosition = transform.position;
         Vector3 motionVector = currentPosition - lastPosition;
 
-        float rayLength = GameManager.Instance.powerInput.Power / 4f;
+        float rayLength = GameManager.Instance.PowerInput.Power / 4f;
         
         if (motionVector.sqrMagnitude > 0)
         {

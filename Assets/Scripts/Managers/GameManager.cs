@@ -31,10 +31,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Ball ball;
 
-    [Header("Controls Panel")]
-    public PowerInput powerInput;
-    public SpinInput spinInput;
-    public AngleInput angleInput;
+    [FormerlySerializedAs("ballInputController")] [Header("Controls Panel")]
+    public BallParameterController ballParameterController;
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
     public GameObject trajectoryHistoryButton;
@@ -101,6 +99,9 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    public PowerInput PowerInput => ballParameterController.powerInput;
+    public SpinInput SpinInput => ballParameterController.spinInput;
+    public AngleInput AngleInput => ballParameterController.angleInput;
     public float Gravity => gravity;
     public float LaunchForce => launchForce;
     public Vector2 SpinVector => spinVector;
@@ -202,9 +203,9 @@ public class GameManager : MonoBehaviour
         showTrajectory = true;
         if (BallShootable)
         {
-            launchForce = powerInput.Power;
-            launchAngle = angleInput.cylinderPivot.rotation;
-            spinVector = spinInput.SpinVector;
+            launchForce = PowerInput.Power;
+            launchAngle = AngleInput.cylinderPivot.rotation;
+            spinVector = SpinInput.SpinVector;
 
             if (!trajectoryButtonSection.gameObject.activeSelf && launchForce > 20 && launchAngle.eulerAngles.sqrMagnitude > 1)
             {
@@ -234,9 +235,6 @@ public class GameManager : MonoBehaviour
         angleIndicator.SetActive(true);
         nextButton.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(true);
-        powerInput.powerSlider.value = 0;
-        spinInput.ResetPointer();
-        angleInput.ResetPointer();
         GameManager.BallState = BallState.OnTee;
         TogglePlayer();
         EventBus.Publish(new NextShotCuedEvent());

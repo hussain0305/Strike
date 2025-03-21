@@ -7,9 +7,7 @@ public class AngleInput : MonoBehaviour
     public RectTransform controlArea;
     public RectTransform pointer;
     public float rotationSpeed = 1f;
-    public TextMeshProUGUI angleValueText;
-    public Vector2 pitchLimits = new Vector2(-75, 5);
-    public Vector2 yawLimits = new Vector2(-75, 75);
+    public TextMeshProUGUI[] angleValueText;
     public float planeDistance = 2.0f;
     public Vector2 InputVector { get; private set; }
 
@@ -17,55 +15,87 @@ public class AngleInput : MonoBehaviour
 
     private Vector2 center;
     private bool isInteracting;
+    private Vector2 startTouch;
+    private bool isDragging = false;
+    private Vector2 accumulatedAngles;
+    private MinMaxInt pitchLimits = new (-5, 75);
+    private MinMaxInt yawLimits = new (-75, 75);
+
+    private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
 
     private void Start()
     {
         center = controlArea.rect.center;
     }
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe<NextShotCuedEvent>(ResetPointer);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<NextShotCuedEvent>(ResetPointer);
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (!BallParameterController.IsInputtingAngle())
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                controlArea,
-                Input.mousePosition,
-                Camera.main,
-                out Vector2 localMousePosition
-            );
-
-            if (controlArea.rect.Contains(localMousePosition))
-            {
-                isInteracting = true;
-
-                Vector3 offset = localMousePosition - center;
-                float radius = controlArea.rect.width / 2f;
-
-                if (offset.magnitude > radius)
-                    offset = offset.normalized * radius;
-
-                offset.z = RestingPosition.z;
-                pointer.localPosition = offset;
-                InputVector = offset;
-            }
+            return;
         }
-        else if (isInteracting)
+        
+        if (Input.GetMouseButtonDown(0))
         {
-            isInteracting = false;
-            pointer.localPosition = RestingPosition;
-            InputVector = Vector2.zero;
+            StartSwipe(Input.mousePosition);
         }
-
-        if (InputVector.sqrMagnitude > 0f)
+        else if (Input.GetMouseButton(0))
         {
-            RotatePointer();
-            ClampRotation();
+            UpdateSwipe(Input.mousePosition);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            EndSwipe();
         }
 
         Vector2 angle = CalculateProjectedAngle();
-        angleValueText.text = $"{angle.x}, {angle.y}";
+        foreach (TextMeshProUGUI valText in angleValueText)
+        {
+            valText.text = $"{100 * angle.x}, {100 * angle.y}";
+        }
     }
-    
+
+    void StartSwipe(Vector2 position)
+    {
+        startTouch = position;
+        isDragging = true;
+    }
+
+    void UpdateSwipe(Vector2 position)
+    {
+        if (!isDragging) return;
+
+        Vector2 swipeVector = position - startTouch;
+
+        float yawDelta = Mathf.Atan2(swipeVector.x, Screen.width) * Mathf.Rad2Deg;
+        float pitchDelta = Mathf.Atan2(swipeVector.y, Screen.height) * Mathf.Rad2Deg;
+
+        accumulatedAngles.y += yawDelta;
+        accumulatedAngles.x += pitchDelta;
+
+        accumulatedAngles.x = Mathf.Clamp(accumulatedAngles.x, pitchLimits.Min, pitchLimits.Max);
+        accumulatedAngles.y = Mathf.Clamp(accumulatedAngles.y, yawLimits.Min, yawLimits.Max);
+
+        cylinderPivot.rotation = Quaternion.Euler(-accumulatedAngles.x, accumulatedAngles.y, 0);
+
+        startTouch = position;
+    }
+
+    void EndSwipe()
+    {
+        isDragging = false;
+    }
+
     public Vector2 CalculateProjectedAngle()
     {
         Vector3 forwardDirection = cylinderPivot.forward;
@@ -80,30 +110,16 @@ public class AngleInput : MonoBehaviour
 
     private void ClampRotation()
     {
-        Vector3 eulerAngles = cylinderPivot.localRotation.eulerAngles;
+        accumulatedAngles.x = Mathf.Clamp(accumulatedAngles.x, pitchLimits.Min, pitchLimits.Max);
+        accumulatedAngles.y = Mathf.Clamp(accumulatedAngles.y, yawLimits.Min, yawLimits.Max);
 
-        eulerAngles.x = (eulerAngles.x > 180) ? eulerAngles.x - 360 : eulerAngles.x;
-        eulerAngles.y = (eulerAngles.y > 180) ? eulerAngles.y - 360 : eulerAngles.y;
-
-        eulerAngles.x = Mathf.Clamp(eulerAngles.x, pitchLimits.x, pitchLimits.y);
-        eulerAngles.y = Mathf.Clamp(eulerAngles.y, yawLimits.x, yawLimits.y);
-
-        cylinderPivot.localRotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0);
+        cylinderPivot.rotation = Quaternion.Euler(accumulatedAngles.x, accumulatedAngles.y, 0);
     }
-    
-    private void RotatePointer()
-    {
-        float horizontalInput = InputVector.x;
-        float verticalInput = -InputVector.y;
 
-        cylinderPivot.Rotate(Vector3.up * (horizontalInput * rotationSpeed * Time.deltaTime));
-        cylinderPivot.Rotate(Vector3.right * (verticalInput * rotationSpeed * Time.deltaTime));
-    }
-    
-    public void ResetPointer()
+    public void ResetPointer(NextShotCuedEvent e)
     {
         pointer.localPosition = RestingPosition;
-        angleValueText.text = "";
         cylinderPivot.rotation = Quaternion.identity;
+        accumulatedAngles = Vector2.zero;
     }
 }

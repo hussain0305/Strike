@@ -72,6 +72,7 @@ public enum ButtonLocation
     BackButton,
     MainMenu_1,
     MainMenu_2,
+    GameHUDAlt,
 };
 
 public enum GameContext
@@ -196,6 +197,36 @@ public struct RarityAppearance
     public Color color;
     public Material material;
     public Material fontMaterial;
+}
+
+[System.Serializable]
+public struct MinMaxInt
+{
+    public int Min;
+    public int Max;
+
+    public MinMaxInt(int min, int max)
+    {
+        Min = min;
+        Max = max;
+    }
+    
+    public int Clamp(int value) => Mathf.Clamp(value, Min, Max);
+}
+
+[System.Serializable]
+public struct MinMaxFloat
+{
+    public float Min;
+    public float Max;
+
+    public MinMaxFloat(float min, float max)
+    {
+        Min = min;
+        Max = max;
+    }
+
+    public float Clamp(float value) => Mathf.Clamp(value, Min, Max);
 }
 
 public static class Global
