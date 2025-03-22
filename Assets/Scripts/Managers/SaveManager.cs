@@ -289,7 +289,7 @@ public static class SaveManager
     
     public static void SetSFXVolume(int newSFXVolume)
     {
-        currentSaveData.musicVolume = newSFXVolume;
+        currentSaveData.sfxVolume = newSFXVolume;
         SaveData();
     }
     

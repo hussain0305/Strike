@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     public AudioMixer audioMixer;
+
     public AudioSource musicSourceA;
     public AudioSource musicSourceB;
     public AudioSource sfxSource;
@@ -39,11 +40,13 @@ public class AudioManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
+        EventBus.Subscribe<SaveLoadedEvent>(OnSaveLoaded);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
+        EventBus.Unsubscribe<SaveLoadedEvent>(OnSaveLoaded);
     }
 
     public void PlayMusic(AudioClip clip, bool loop = true, float fadeDuration = 1.0f)
@@ -92,18 +95,14 @@ public class AudioManager : MonoBehaviour
         uniquePlayingSounds.Remove(clip.name);
     }
 
-    public void ToggleChannel(AudioChannel channel, bool enabled)
-    {
-        string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
-        audioMixer.SetFloat(param, enabled ? 0 : -80);
-    }
-
     public void SetVolume(AudioChannel channel, float volume)
     {
         string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
-        audioMixer.SetFloat(param, Mathf.Lerp(-80, 0, volume));
-    }
 
+        float dB = (volume > 0) ? Mathf.Lerp(-30, 0, volume) : -80;
+        audioMixer.SetFloat(param, dB);
+    }
+    
     public void OnGameStateChanged(GameStateChangedEvent e)
     {
         AudioClip clip = null;
@@ -122,6 +121,12 @@ public class AudioManager : MonoBehaviour
         {
             PlayMusic(clip);
         }
+    }
+
+    public void OnSaveLoaded(SaveLoadedEvent e)
+    {
+        SetVolume(AudioChannel.Music, SaveManager.GetMusicVolume());
+        SetVolume(AudioChannel.SFX, SaveManager.GetSFXVolume());
     }
     
     public void PlaySuccessfulActionSFX()
