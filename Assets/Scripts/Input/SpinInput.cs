@@ -61,7 +61,6 @@ public class SpinInput : MonoBehaviour
     public void UpdatePointer()
     {
         Vector2 pointerPos = new Vector2(SpinVector.x * controlBounds.x, SpinVector.y * controlBounds.y);
-        Debug.Log(">>> pointerPos " + pointerPos);
         pointer.localPosition = pointerPos;
     }
     
