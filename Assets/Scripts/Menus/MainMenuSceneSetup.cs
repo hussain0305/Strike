@@ -8,15 +8,15 @@ public class MainMenuSceneSetup : MonoBehaviour
     
     private void OnEnable()
     {
-        SaveManager.OnSaveFileLoaded += SaveLoaded;
-        SaveManager.OnGameReady += GameReady;
+        EventBus.Subscribe<SaveLoadedEvent>(SaveLoaded);
+        EventBus.Subscribe<GameReadyEvent>(GameReady);
         SaveManager.LoadData();
     }
 
     private void OnDisable()
     {
-        SaveManager.OnSaveFileLoaded -= SaveLoaded;
-        SaveManager.OnGameReady -= GameReady;
+        EventBus.Unsubscribe<SaveLoadedEvent>(SaveLoaded);
+        EventBus.Unsubscribe<GameReadyEvent>(GameReady);
     }
 
     private void Start()
@@ -26,14 +26,14 @@ public class MainMenuSceneSetup : MonoBehaviour
         CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
     }
 
-    public void SaveLoaded()
+    public void SaveLoaded(SaveLoadedEvent e)
     {
         landingPage.SetText("Setting things up");
         ModeSelector.Instance.Init();
         EventBus.Publish(new InMenuEvent());
     }
     
-    public void GameReady()
+    public void GameReady(GameReadyEvent e)
     {
         landingPage.SetText("Press any key to start");
     }

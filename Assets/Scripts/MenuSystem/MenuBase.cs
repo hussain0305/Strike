@@ -34,7 +34,7 @@ public class MenuBase : MonoBehaviour
         MenuManager.Instance.RegisterMenu(this);
         if (waitForSaveFileLoaded)
         {
-            SaveManager.OnSaveFileLoaded += OnSaveFileLoaded;
+            EventBus.Subscribe<SaveLoadedEvent>(OnSaveFileLoaded);
         }
         else if (disableAfterRegister)
         {
@@ -42,10 +42,10 @@ public class MenuBase : MonoBehaviour
         }
     }
     
-    private void OnSaveFileLoaded()
+    private void OnSaveFileLoaded(SaveLoadedEvent e)
     {
-        SaveManager.OnSaveFileLoaded -= OnSaveFileLoaded;
-        if (disableAfterRegister)
+        EventBus.Unsubscribe<SaveLoadedEvent>(OnSaveFileLoaded);
+        if (waitForSaveFileLoaded)
         {
             gameObject.SetActive(false);
         }

@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class SaveLoadedEvent { }
+public class GameReadyEvent { }
 
 public static class SaveManager
 {
     private static SaveData currentSaveData;
-    public static event Action OnSaveFileLoaded;
-    public static event Action OnGameReady;
     public static bool IsSaveLoaded { get; private set; } = false;
     public static bool IsGameReady { get; private set; } = false;
     
@@ -38,7 +37,6 @@ public static class SaveManager
         currentSaveData.SyncListToDictionary();
         Debug.Log("IsSaveLoaded set to true");
         IsSaveLoaded = true;
-        EventBus.Publish(new SaveLoadedEvent());
     }
     
     public static IEnumerator LoadSaveProcess()
@@ -50,7 +48,7 @@ public static class SaveManager
         yield return new WaitUntil(() => IsSaveLoaded);
         yield return new WaitForSeconds(0.25f);
 
-        OnSaveFileLoaded?.Invoke();
+        EventBus.Publish(new SaveLoadedEvent());
     }
     
     private static void SaveData()
@@ -93,7 +91,7 @@ public static class SaveManager
         {
             Debug.Log("All listeners completed. Broadcasting OnGameReady.");
             IsGameReady = true;
-            OnGameReady?.Invoke();
+            EventBus.Publish(new GameReadyEvent());
         }
     }
 
@@ -276,6 +274,28 @@ public static class SaveManager
             value >>= 1;
         }
         return count;
+    }
+
+    public static void SetMusicVolume(int newMusicVolume)
+    {
+        currentSaveData.musicVolume = newMusicVolume;
+        SaveData();
+    }
+    
+    public static int GetMusicVolume()
+    {
+        return currentSaveData.musicVolume;
+    }
+    
+    public static void SetSFXVolume(int newSFXVolume)
+    {
+        currentSaveData.musicVolume = newSFXVolume;
+        SaveData();
+    }
+    
+    public static int GetSFXVolume()
+    {
+        return currentSaveData.sfxVolume;
     }
     
     #endregion

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -58,7 +59,7 @@ public class AudioManager : MonoBehaviour
         activeMusicSource = newSource;
     }
 
-    private System.Collections.IEnumerator CrossfadeMusic(AudioSource from, AudioSource to, float duration)
+    private IEnumerator CrossfadeMusic(AudioSource from, AudioSource to, float duration)
     {
         float time = 0;
         while (time < duration)
@@ -85,7 +86,7 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(RemoveFromUniqueList(clip));
     }
 
-    private System.Collections.IEnumerator RemoveFromUniqueList(AudioClip clip)
+    private IEnumerator RemoveFromUniqueList(AudioClip clip)
     {
         yield return new WaitForSeconds(clip.length);
         uniquePlayingSounds.Remove(clip.name);
@@ -95,6 +96,12 @@ public class AudioManager : MonoBehaviour
     {
         string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
         audioMixer.SetFloat(param, enabled ? 0 : -80);
+    }
+
+    public void SetVolume(AudioChannel channel, float volume)
+    {
+        string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
+        audioMixer.SetFloat(param, Mathf.Lerp(-80, 0, volume));
     }
 
     public void OnGameStateChanged(GameStateChangedEvent e)
