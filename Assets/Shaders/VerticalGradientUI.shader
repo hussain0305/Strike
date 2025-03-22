@@ -4,6 +4,7 @@ Shader "Abyss/VerticalGradientUI"
     {
         _ColorTop ("Top Color", Color) = (1, 0, 0, 1) // Red
         _ColorBottom ("Bottom Color", Color) = (0, 0, 1, 1) // Blue
+       _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
@@ -18,7 +19,8 @@ Shader "Abyss/VerticalGradientUI"
             // Properties
             fixed4 _ColorTop;
             fixed4 _ColorBottom;
-
+            sampler2D _MainTex;
+            
             struct appdata_t
             {
                 float4 vertex : POSITION;
