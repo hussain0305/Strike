@@ -99,7 +99,7 @@ public class AudioManager : MonoBehaviour
     {
         string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
 
-        float dB = (volume > 0) ? Mathf.Lerp(-30, 0, volume) : -80;
+        float dB = (volume > 0) ? Mathf.Lerp(-30, 0, volume / 100) : -80;
         audioMixer.SetFloat(param, dB);
     }
     
