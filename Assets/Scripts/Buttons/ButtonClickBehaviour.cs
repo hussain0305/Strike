@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ButtonClickedEvent
@@ -21,7 +22,7 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 {
     public ButtonGroup groupId = ButtonGroup.Default;
     public ButtonLocation buttonLocation;
-    public Image[] boundaries;
+    public Image outline;
     public bool backToDefaultOnEnable = true;
     public bool staysSelected = false;
     public bool playsHoverSound = true;
@@ -155,10 +156,7 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void SetMaterial(Material _mat)
     {
-        foreach (Image img in boundaries)
-        {
-            img.material = _mat;
-        }
+        outline.material = _mat;
     }
 
     public void SetTextComponentColor(Color col)

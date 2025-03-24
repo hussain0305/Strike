@@ -17,7 +17,7 @@ public class CameraSwitchedEvent
 public class CameraToggleButton : MonoBehaviour
 {
     public CameraHoistLocation hoistLocation;
-    public Image[] outlines;
+    public Image outline;
     
     private Button button;
     
@@ -49,11 +49,8 @@ public class CameraToggleButton : MonoBehaviour
 
     public void CameraSwitchProcessed(CameraSwitchProcessedEvent e)
     {
-        foreach (Image outline in outlines)
-        {
-            outline.material = e.NewCameraPos == hoistLocation
-                ? GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.GameHUD)
-                : GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.GameHUD);
-        }
+        outline.material = e.NewCameraPos == hoistLocation
+            ? GlobalAssets.Instance.GetSelectedMaterial(ButtonLocation.GameHUD)
+            : GlobalAssets.Instance.GetDefaultMaterial(ButtonLocation.GameHUD);
     }
 }

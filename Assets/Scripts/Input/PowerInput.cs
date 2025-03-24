@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class PowerInput : MonoBehaviour
 {
-    public Slider powerSlider;
     public TextMeshProUGUI[] powerText;
 
     public float Power { get; private set; }
@@ -57,10 +56,8 @@ public class PowerInput : MonoBehaviour
 
         float verticalDelta = (position.y - startTouch.y) / Screen.height;
         Power += verticalDelta * powerMultiplier;
-        Power = Mathf.Clamp(Power, 0f, powerSlider.maxValue);
-
-        powerSlider.value = Power;
-
+        Power = Mathf.Clamp(Power, 0f, 100);
+        
         foreach (TextMeshProUGUI valText in powerText)
         {
             valText.text = Power.ToString("F0");
@@ -76,7 +73,6 @@ public class PowerInput : MonoBehaviour
 
     public void Reset(NextShotCuedEvent e)
     {
-        powerSlider.value = 0;
         Power = 0;
     }
 }

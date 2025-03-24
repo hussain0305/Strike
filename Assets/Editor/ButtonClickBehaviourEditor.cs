@@ -17,7 +17,7 @@ public class ButtonClickBehaviourEditor : Editor
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groupId"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("buttonLocation"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("boundaries"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("outline"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("backToDefaultOnEnable"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("staysSelected"));
         

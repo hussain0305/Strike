@@ -167,7 +167,7 @@ public class RoundDataManager : MonoBehaviour
         currentShotInfo = new ShotInfo();
         currentShotInfo.angle = GameManager.Instance.AngleInput.CalculateProjectedAngle();
         currentShotInfo.spin = GameManager.Instance.SpinInput.SpinVector;
-        currentShotInfo.power = (int)GameManager.Instance.PowerInput.powerSlider.value;
+        currentShotInfo.power = (int)GameManager.Instance.PowerInput.Power;
     }
 
     public void FinishLoggingShotInfo(List<Vector3> capturedTrajectory)

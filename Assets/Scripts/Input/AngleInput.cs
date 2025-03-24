@@ -4,8 +4,6 @@ using UnityEngine;
 public class AngleInput : MonoBehaviour
 {
     public Transform cylinderPivot;
-    public RectTransform controlArea;
-    public RectTransform pointer;
     public float rotationSpeed = 1f;
     public TextMeshProUGUI[] angleValueText;
     public float planeDistance = 2.0f;
@@ -13,7 +11,6 @@ public class AngleInput : MonoBehaviour
 
     private Vector3 RestingPosition => new(0, 0, -0.1f);
 
-    private Vector2 center;
     private bool isInteracting;
     private Vector2 startTouch;
     private bool isDragging = false;
@@ -22,12 +19,7 @@ public class AngleInput : MonoBehaviour
     private MinMaxInt yawLimits = new (-75, 75);
 
     private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
-
-    private void Start()
-    {
-        center = controlArea.rect.center;
-    }
-
+    
     private void OnEnable()
     {
         EventBus.Subscribe<NextShotCuedEvent>(ResetPointer);
@@ -118,7 +110,6 @@ public class AngleInput : MonoBehaviour
 
     public void ResetPointer(NextShotCuedEvent e)
     {
-        pointer.localPosition = RestingPosition;
         cylinderPivot.rotation = Quaternion.identity;
         accumulatedAngles = Vector2.zero;
     }
