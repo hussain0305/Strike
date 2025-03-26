@@ -113,7 +113,6 @@ public class LevelSelectionButton : MonoBehaviour
     public void SetUnlocked()
     {
         button.enabled = true;
-        button.GetComponent<Image>().enabled = true;
         ButtonBehaviour.isEnabled = true;
         ButtonBehaviour.SetToDefault();
     }
@@ -122,7 +121,6 @@ public class LevelSelectionButton : MonoBehaviour
     {
         button.enabled = false;
         ButtonBehaviour.isEnabled = false;
-        button.GetComponent<Image>().enabled = false;
         ButtonBehaviour.SetToDefault();
     }
 }
