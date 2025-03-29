@@ -86,12 +86,7 @@ public class LevelLoader : MonoBehaviour
             Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
             if (collectibleScript != null)
             {
-                collectibleScript.value = collectibleData.value;
-                collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
-                collectibleScript.pointDisplay = collectibleData.pointDisplayType;
-                collectibleScript.Initialize(GameManager.Context);
-                collectibleScript.SaveDefaults();
-                collectibleScript.InitPointDisplay();
+                collectibleScript.InitializeAndSetup(GameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
             }
         }
 

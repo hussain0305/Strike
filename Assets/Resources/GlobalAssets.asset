@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bf186cee7f8f44199ce92cc502f9e8, type: 3}
   m_Name: GlobalAssets
   m_EditorClassIdentifier: 
+  positiveCollectibleMaterial: {fileID: 2100000, guid: b24ff0d122e8cb047ab76d89a241543e, type: 2}
+  negativeCollectibleMaterial: {fileID: 2100000, guid: a3c707c88ce4b5b43a77a702537812ca, type: 2}
+  collectibleHitMaterial: {fileID: 2100000, guid: 1819256defa9a5e48ba367916ab2ccff, type: 2}
   defaultMaterials:
   - buttonLocation: 0
     material: {fileID: 2100000, guid: 37e01095f19bd324a90c70546a37a98b, type: 2}

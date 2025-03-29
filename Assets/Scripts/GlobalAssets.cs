@@ -21,6 +21,11 @@ public class GlobalAssets : ScriptableObject
         }
     }
 
+    [Header("Collectibles")]
+    public Material positiveCollectibleMaterial;
+    public Material negativeCollectibleMaterial;
+    public Material collectibleHitMaterial;
+    
     [Header("Materials")]
     public ButtonMaterials[] defaultMaterials;
     public ButtonMaterials[] selectedMaterials;

@@ -33,7 +33,10 @@ public class Collectible : MonoBehaviour
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;
     public Transform body;
-    public TextMeshPro inBodyPointDisplay;
+    public TextMeshPro inBodyPointDisplayPositive;
+    public TextMeshPro inBodyPointDisplayNegative;
+    public TextMeshPro InBodyActivePointDisplay => value > 0 ? inBodyPointDisplayPositive : inBodyPointDisplayNegative;
+    public TextMeshPro InBodyInactivePointDisplay => value < 0 ? inBodyPointDisplayPositive : inBodyPointDisplayNegative;
 
     [Header("Feedback and Visual Indicators")]
     public PointDisplayType pointDisplay;
@@ -83,15 +86,28 @@ public class Collectible : MonoBehaviour
         context = _contextProvider;
     }
 
+    public void InitializeAndSetup(IContextProvider _contextProvider, int _value, int _numTimesCanBeCollected, PointDisplayType _displayType)
+    {
+        value = _value;
+        numTimesCanBeCollected = _numTimesCanBeCollected;
+        pointDisplay = _displayType;
+        context = _contextProvider;
+        
+        SaveDefaults();
+        InitAppearance();
+    }
+
     public void SaveDefaults()
     {
         defaultPosition = transform.position;
         defaultRotation = transform.rotation;
     }
 
-    public void InitPointDisplay()
+    public void InitAppearance()
     {
         if (HasPointBoard) SetupPointBoard();
+        
+        GetComponent<CollectibleHitReaction>()?.SetDefaultVisuals(null);
     }
 
     public void OnCollisionEnter(Collision other)
@@ -152,7 +168,8 @@ public class Collectible : MonoBehaviour
     {
         if (SetupFloatingBoard)
         {
-            inBodyPointDisplay?.gameObject.SetActive(false);
+            inBodyPointDisplayPositive?.gameObject.SetActive(false);
+            inBodyPointDisplayNegative?.gameObject.SetActive(false);
             header = Instantiate(RoundDataManager.Instance.collectibleHeaderPrefab, RoundDataManager.Instance.collectibleHeadersParent);
             header.SetText(value);
             float headerOffset = (transform.position.y + (body.localScale.y * heightMultipleForOffsetCalculation) + 0.5f);
@@ -161,11 +178,12 @@ public class Collectible : MonoBehaviour
             header.transform.position = new Vector3(header.transform.position.x, headerOffset, header.transform.position.z);
             header?.StartAnimation();
         }
-        else if (SetupInBodyBoard && inBodyPointDisplay)
+        else if (SetupInBodyBoard && InBodyActivePointDisplay)
         {
-            inBodyPointDisplay.gameObject.SetActive(true);
-            inBodyPointDisplay.text = value.ToString();
+            InBodyActivePointDisplay.gameObject.SetActive(true);
+            InBodyActivePointDisplay.text = value.ToString();
             hitReaction?.UpdatePoints(value);
         }
+        InBodyInactivePointDisplay?.gameObject.SetActive(false);
     }
 }

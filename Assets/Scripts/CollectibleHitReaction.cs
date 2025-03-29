@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CollectibleHitReaction : MonoBehaviour
 {
-    public Material defaultMaterial;
-    public Material hitMaterial;
     public Transform edges;
-    public TextMeshPro defaultPointsDisplay;
     public TextMeshPro hitPointsDisplay;
 
+    private Collectible collectible;
+    private Collectible Collectible => collectible ??= GetComponent<Collectible>();
+    
     private void OnEnable()
     {
         SetDefaultVisuals(null);
@@ -33,25 +33,29 @@ public class CollectibleHitReaction : MonoBehaviour
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
-            mr.sharedMaterial = hitMaterial;
+            mr.sharedMaterial = GlobalAssets.Instance.collectibleHitMaterial;
         }
         hitPointsDisplay?.gameObject.SetActive(true);
-        defaultPointsDisplay?.gameObject.SetActive(false);
+        Collectible.inBodyPointDisplayPositive?.gameObject.SetActive(false);
+        Collectible.inBodyPointDisplayNegative?.gameObject.SetActive(false);
     }
 
     public void SetDefaultVisuals(NextShotCuedEvent e)
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
-            mr.sharedMaterial = defaultMaterial;
+            mr.sharedMaterial = Collectible.value > 0
+                ? GlobalAssets.Instance.positiveCollectibleMaterial
+                : GlobalAssets.Instance.negativeCollectibleMaterial;
         }
         hitPointsDisplay?.gameObject.SetActive(false);
-        defaultPointsDisplay?.gameObject.SetActive(true);
+        Collectible.InBodyActivePointDisplay?.gameObject.SetActive(true);
+        Collectible.InBodyInactivePointDisplay?.gameObject.SetActive(false);
     }
 
     public void UpdatePoints(int points)
     {
         hitPointsDisplay.text = points.ToString();
-        defaultPointsDisplay.text = points.ToString();
+        Collectible.InBodyActivePointDisplay.text = points.ToString();
     }
 }
