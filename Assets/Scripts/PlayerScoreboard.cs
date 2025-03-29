@@ -10,7 +10,8 @@ public class PlayerScoreboard : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     [Header("Animation")]
-    public TextMeshProUGUI animationText;
+    public TextMeshProUGUI animationTextPositive;
+    public TextMeshProUGUI animationTextNegative;
     public RectTransform startPosition;
     public RectTransform targetPosition;
 
@@ -18,7 +19,8 @@ public class PlayerScoreboard : MonoBehaviour
     private int trueScore;
     private int currentScoreOnDisplay;
     private Coroutine addScoreCoroutine;
-    
+    private TextMeshProUGUI animationText;
+
     public void SetPlayer(int index)
     {
         playerIndex = index;
@@ -54,7 +56,11 @@ public class PlayerScoreboard : MonoBehaviour
 
     IEnumerator AddScore(int pointsFromThisHit)
     {
-        animationText.text = $"+{pointsFromThisHit.ToString()}";
+        animationTextPositive.gameObject.SetActive(false);
+        animationTextNegative.gameObject.SetActive(false);
+        animationText = pointsFromThisHit > 0 ? animationTextPositive : animationTextNegative;
+        string sign = pointsFromThisHit > 0 ? "+" : "";
+        animationText.text = $"{sign}{pointsFromThisHit.ToString()}";
         animationText.gameObject.SetActive(true);
         animationText.transform.localScale = Vector3.one;
         animationText.rectTransform.anchoredPosition = startPosition.anchoredPosition;
