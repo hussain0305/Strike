@@ -209,16 +209,16 @@ public class CameraController : MonoBehaviour
     public void SetToFollowCam()
     {
         followBallOnShoot = true;
-        followCamButton.GetComponent<ButtonClickBehaviour>().SetToHighlighted();
-        stayInPlaceCamButton.GetComponent<ButtonClickBehaviour>().SetToDefault();
+        followCamButton.GetComponent<ButtonFeedback>().SetToHighlighted();
+        stayInPlaceCamButton.GetComponent<ButtonFeedback>().SetToDefault();
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
     }
 
     public void SetToStayCam()
     {
         followBallOnShoot = false;
-        followCamButton.GetComponent<ButtonClickBehaviour>().SetToDefault();
-        stayInPlaceCamButton.GetComponent<ButtonClickBehaviour>().SetToHighlighted();
+        followCamButton.GetComponent<ButtonFeedback>().SetToDefault();
+        stayInPlaceCamButton.GetComponent<ButtonFeedback>().SetToHighlighted();
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
     }
 

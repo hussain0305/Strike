@@ -27,14 +27,14 @@ public class BallSelectionButton : MonoBehaviour
     private string ballID;
     public string BallID => ballID;
     
-    private ButtonClickBehaviour buttonBehaviour;
-    public ButtonClickBehaviour ButtonBehaviour
+    private ButtonFeedback buttonBehaviour;
+    public ButtonFeedback ButtonBehaviour
     {
         get
         {
             if (buttonBehaviour == null)
             {
-                buttonBehaviour = GetComponentInChildren<ButtonClickBehaviour>();
+                buttonBehaviour = GetComponentInChildren<ButtonFeedback>();
             }
             return buttonBehaviour;
         }

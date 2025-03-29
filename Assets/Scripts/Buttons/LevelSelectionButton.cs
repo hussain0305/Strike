@@ -20,14 +20,14 @@ public class LevelSelectionButton : MonoBehaviour
     public StarUIRepresentation[] stars;
     
     private GameModeType gameMode;
-    private ButtonClickBehaviour buttonBehaviour;
-    private ButtonClickBehaviour ButtonBehaviour
+    private ButtonFeedback buttonBehaviour;
+    private ButtonFeedback ButtonBehaviour
     {
         get
         {
             if (!buttonBehaviour)
             {
-                buttonBehaviour = GetComponentInChildren<ButtonClickBehaviour>();
+                buttonBehaviour = GetComponentInChildren<ButtonFeedback>();
             }
 
             return buttonBehaviour;

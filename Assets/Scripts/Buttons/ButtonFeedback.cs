@@ -18,7 +18,7 @@ public class ButtonClickedEvent
     }
 }
 
-public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public ButtonGroup groupId = ButtonGroup.Default;
     public ButtonLocation buttonLocation;
@@ -31,6 +31,13 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public AudioClip hoverClipOverride;
     public bool overrideClickSound = false;
     public AudioClip clickClipOverride;
+    
+    [Header("Hover Pop Animation")]
+    public Transform popTarget;
+    public float popScale = 1.1f;
+    public float popDuration = 0.15f;
+    private Coroutine popRoutine;
+
     [HideInInspector]
     public bool isEnabled = true;
     [HideInInspector]
@@ -53,6 +60,13 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
     Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
     
+    private void Awake()
+    {
+        if (popTarget == null)
+        {
+            popTarget = transform.parent;
+        }
+    }
     private void OnEnable()
     {
         if (backToDefaultOnEnable)
@@ -97,6 +111,13 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
 
         PlaySound(playsHoverSound, overrideHoverSound, hoverClipOverride, 
             soundLibrary?.buttonHoverSFX);
+        
+        if (popTarget != null)
+        {
+            if (popRoutine != null)
+                StopCoroutine(popRoutine);
+            popRoutine = StartCoroutine(PlayHoverPop());
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -113,6 +134,8 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
         SetMaterial(isEnabled 
             ? GlobalAssets.Instance.GetDefaultMaterial(buttonLocation) 
             : GlobalAssets.Instance.GetLockedMaterial(buttonLocation));
+        
+        popTarget.localScale = Vector3.one;
     }
 
     public void SetToHighlighted()
@@ -142,16 +165,22 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     
     private void PlaySound(bool shouldPlay, bool overrideClip, AudioClip clip, AudioClip defaultSound)
     {
-        if (!shouldPlay) return;
-    
-        if (overrideClip)
+        if (!shouldPlay || AudioManager.Instance == null) return;
+
+        AudioClip chosenClip = overrideClip ? clip : defaultSound;
+        if (chosenClip == null) return;
+
+        // Slight pitch variation for hover (not for click)
+        float pitch = 1f;
+        if (chosenClip == soundLibrary?.buttonHoverSFX)
         {
-            AudioManager.Instance.PlaySFX(clip, false);
+            pitch = UnityEngine.Random.Range(0.95f, 1.05f);
         }
-        else if(defaultSound != null)
-        {
-            AudioManager.Instance.PlaySFX(defaultSound, false);
-        }
+
+        AudioSource source = AudioManager.Instance.GetAvailableSFXSource();
+        source.pitch = pitch;
+        source.PlayOneShot(chosenClip);
+        StartCoroutine(AudioManager.Instance.ResetPitchAfter(chosenClip.length, source));
     }
 
     public void SetMaterial(Material _mat)
@@ -162,5 +191,31 @@ public class ButtonClickBehaviour : MonoBehaviour, IPointerDownHandler, IPointer
     public void SetTextComponentColor(Color col)
     {
         if(TextComponent) TextComponent.color = col;
+    }
+    
+    private IEnumerator PlayHoverPop()
+    {
+        Vector3 originalScale = Vector3.one;
+        Vector3 targetScale = originalScale * popScale;
+        float time = 0f;
+
+        while (time < popDuration / 2f)
+        {
+            popTarget.localScale = Vector3.Lerp(originalScale, targetScale, time / (popDuration / 2f));
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        popTarget.localScale = targetScale;
+        time = 0f;
+
+        while (time < popDuration / 2f)
+        {
+            popTarget.localScale = Vector3.Lerp(targetScale, originalScale, time / (popDuration / 2f));
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        popTarget.localScale = originalScale;
     }
 }

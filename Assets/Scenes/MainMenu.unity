@@ -950,6 +950,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 133630673}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!1001 &134026776
@@ -1845,6 +1848,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 216286517}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!1 &220233127
@@ -2756,6 +2762,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!114 &378287658
@@ -4421,6 +4430,7 @@ MonoBehaviour:
   musicSourceB: {fileID: 1149492089}
   sfxSource: {fileID: 2664369}
   soundLibrary: {fileID: 11400000, guid: 5f4bcfde529605f43a719c48ac55092a, type: 2}
+  sfxPoolSize: 10
 --- !u!4 &510470290
 Transform:
   m_ObjectHideFlags: 0
@@ -8491,6 +8501,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!114 &1095866236
@@ -11097,6 +11110,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!114 &1313757885
@@ -15931,6 +15947,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 2033316408}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!1 &2056760844
@@ -16302,6 +16321,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!114 &2090274940
@@ -17278,6 +17300,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!114 &7720443549113469861
@@ -17303,6 +17328,9 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  popTarget: {fileID: 0}
+  popScale: 1.1
+  popDuration: 0.15
   isEnabled: 1
   isSelected: 0
 --- !u!1 &7821983064394617601

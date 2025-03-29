@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ButtonClickBehaviour))]
-public class ButtonClickBehaviourEditor : Editor
+[CustomEditor(typeof(ButtonFeedback))]
+public class ButtonFeedbackEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -10,20 +10,20 @@ public class ButtonClickBehaviourEditor : Editor
         {
             return;
         }
-        
+
         serializedObject.Update();
 
-        ButtonClickBehaviour button = (ButtonClickBehaviour)target;
+        ButtonFeedback button = (ButtonFeedback)target;
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("groupId"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("buttonLocation"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("outline"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("backToDefaultOnEnable"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("staysSelected"));
-        
+
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Sounds", EditorStyles.boldLabel);
-        
+
         EditorGUILayout.PropertyField(serializedObject.FindProperty("playsHoverSound"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("playsClickSound"));
 
@@ -40,7 +40,14 @@ public class ButtonClickBehaviourEditor : Editor
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("clickClipOverride"));
         }
-        
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Hover Pop Animation", EditorStyles.boldLabel);
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("popTarget"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("popScale"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("popDuration"));
+
         serializedObject.ApplyModifiedProperties();
     }
 }
