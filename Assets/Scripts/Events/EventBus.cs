@@ -5,44 +5,41 @@ using UnityEngine;
 
 public static class EventBus
 {
-    private static Dictionary<Type, Delegate> eventTable = new Dictionary<Type, Delegate>();
+    private static Dictionary<Type, Delegate> subscribers = new Dictionary<Type, Delegate>();
     
     public static void Subscribe<T>(Action<T> listener)
     {
-        if (!eventTable.ContainsKey(typeof(T)))
-        {
-            eventTable[typeof(T)] = null;
-        }
+        var type = typeof(T);
+        if (!subscribers.ContainsKey(type))
+            subscribers[type] = null;
 
-        var existingDelegate = eventTable[typeof(T)] as Action<T>;
+        var existingDelegate = subscribers[type] as Action<T>;
 
         if (existingDelegate != null && existingDelegate.GetInvocationList().Contains(listener))
-        {
             return;
-        }
 
-        eventTable[typeof(T)] = existingDelegate + listener;
+        subscribers[type] = existingDelegate + listener;
     }
 
     public static void Unsubscribe<T>(Action<T> listener)
     {
-        if (eventTable.ContainsKey(typeof(T)))
+        if (subscribers.ContainsKey(typeof(T)))
         {
-            eventTable[typeof(T)] = (Action<T>)eventTable[typeof(T)] - listener;
-            if (eventTable[typeof(T)] == null)
-                eventTable.Remove(typeof(T));
+            subscribers[typeof(T)] = (Action<T>)subscribers[typeof(T)] - listener;
+            if (subscribers[typeof(T)] == null)
+                subscribers.Remove(typeof(T));
         }
     }
 
     public static void Publish<T>(T eventData)
     {
-        if (eventTable.ContainsKey(typeof(T)) && eventTable[typeof(T)] is Action<T> action)
+        if (subscribers.ContainsKey(typeof(T)) && subscribers[typeof(T)] is Action<T> action)
             action.Invoke(eventData);
     }
 
     public static void Clear()
     {
-        eventTable.Clear();
+        subscribers.Clear();
     }
 }
 
