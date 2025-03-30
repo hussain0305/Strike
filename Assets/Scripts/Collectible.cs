@@ -5,11 +5,13 @@ public class CollectibleHitEvent
 {
     public CollectibleType Type { get; }
     public int Value { get; }
+    public Vector3 HitPosition { get; }
 
-    public CollectibleHitEvent(CollectibleType type, int value)
+    public CollectibleHitEvent(CollectibleType type, int value, Vector3 hitPosition)
     {
         Type = type;
         Value = value;
+        HitPosition = hitPosition;
     }
 }
 
@@ -123,7 +125,7 @@ public class Collectible : MonoBehaviour
     
         numTimesCollected++;
         accountedForInThisShot = true;
-        EventBus.Publish(new CollectibleHitEvent(type, value));
+        EventBus.Publish(new CollectibleHitEvent(type, value, other.transform.position));
         header?.gameObject.SetActive(false);
         hitReaction?.CheckIfHitsExhasuted(numTimesCollected, numTimesCanBeCollected);
     }
@@ -141,7 +143,7 @@ public class Collectible : MonoBehaviour
 
         numTimesCollected++;
         accountedForInThisShot = true;
-        EventBus.Publish(new CollectibleHitEvent(type, value));
+        EventBus.Publish(new CollectibleHitEvent(type, value, other.transform.position));
         header?.gameObject.SetActive(false);
     }
 
