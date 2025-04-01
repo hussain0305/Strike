@@ -1,9 +1,10 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class FlavorText : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private TextMeshPro message;
     [SerializeField] private float lifetime = 1.2f;
     [SerializeField] private float popInTime = 0.2f;
     [SerializeField] private float scaleDownTime = 0.2f;
@@ -17,9 +18,10 @@ public class FlavorText : MonoBehaviour
         transform.localScale = Vector3.zero;
     }
 
-    public void Init(Sprite sprite, FlavorTextSpawner _spawner)
+    public void Init(string messageText, Material material, FlavorTextSpawner _spawner)
     {
-        spriteRenderer.sprite = sprite;
+        message.text = messageText;
+        message.fontMaterial = material;
         spawner = _spawner;
         StopAllCoroutines();
         StartCoroutine(PlayPopupRoutine());

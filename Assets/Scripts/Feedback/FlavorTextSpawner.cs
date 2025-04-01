@@ -1,14 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class FlavorTextSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject flavorPrefab;
-    [SerializeField] private List<Sprite> positiveSprites;
-    [SerializeField] private List<Sprite> negativeSprites;
+    [SerializeField] private string[] positiveMessages;
+    [SerializeField] private string[] negativeMessages;
+    [SerializeField] private Material[] positiveMaterials;
+    [SerializeField] private Material[] negativeMaterials;
     [SerializeField] private int poolSize = 10;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
@@ -40,12 +41,12 @@ public class FlavorTextSpawner : MonoBehaviour
 
     public void Spawn(Vector3 worldPos, bool isPositive)
     {
-        Sprite chosenSprite = GetRandomSprite(isPositive);
+        GetRandomMessageAndMaterial(isPositive, out string chosenMessage, out Material chosenMaterial);
         GameObject ft = GetFromPool();
 
         ft.transform.position = worldPos;
         ft.SetActive(true);
-        ft.GetComponent<FlavorText>().Init(chosenSprite, this);
+        ft.GetComponent<FlavorText>().Init(chosenMessage, chosenMaterial, this);
     }
 
     public void ReturnToPool(GameObject ft)
@@ -64,9 +65,11 @@ public class FlavorTextSpawner : MonoBehaviour
         return ft;
     }
 
-    private Sprite GetRandomSprite(bool isPositive)
+    private void GetRandomMessageAndMaterial(bool isPositive, out string msg, out Material mat)
     {
-        var list = isPositive ? positiveSprites : negativeSprites;
-        return list.Count > 0 ? list[Random.Range(0, list.Count)] : null;
+        var msgList = isPositive ? positiveMessages : negativeMessages;
+        var matList = isPositive ? positiveMaterials : negativeMaterials;
+        msg = msgList.Length > 0 ? msgList[Random.Range(0, msgList.Length)] : null;
+        mat = matList.Length > 0 ? matList[Random.Range(0, matList.Length)] : null;
     }
 }

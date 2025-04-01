@@ -7561,27 +7561,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flavorPrefab: {fileID: 476629344110022545, guid: eb766869d5c5bfb4d8908384ced9a96f, type: 3}
-  positiveSprites:
-  - {fileID: 1667611859, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -389780115, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 87421677, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -538644088, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1493957874, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -2115079784, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1384916270, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1116043173, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1292560795, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1285334383, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -42541302, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1279548747, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -82308252, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1822755677, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -1564144501, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  negativeSprites:
-  - {fileID: -1886713684, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -1598027339, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: 1265092243, guid: 288c8c101c053c440b213c413b774623, type: 3}
-  - {fileID: -332943152, guid: 288c8c101c053c440b213c413b774623, type: 3}
+  positiveMessages:
+  - WOW !
+  - AMAZING !
+  - BRILLIANT !
+  - BANG !!!
+  - SWEET !
+  - SCORE !!
+  - WOAH !!
+  - NOICE !
+  - TIGHT !!!
+  negativeMessages:
+  - OH NO
+  - UNFORTUNATE
+  - OOF
+  - NO WAY
+  positiveMaterials:
+  - {fileID: 2100000, guid: 0c875accc3a5e1841b38bc89c88b3e6c, type: 2}
+  - {fileID: 2100000, guid: a9c2f49a0180247419bb507090a67e3b, type: 2}
+  - {fileID: 2100000, guid: 7eb3cd51d80af2345bac94e969733843, type: 2}
+  - {fileID: 2100000, guid: 71e5dbed23ca7d24a8faa5207672e607, type: 2}
+  - {fileID: 2100000, guid: 839f6a08d1b60c54a9697732ff766cd6, type: 2}
+  - {fileID: 2100000, guid: 743a6c0c049ca8f4e8ee289fb8a8c7bb, type: 2}
+  negativeMaterials:
+  - {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
+  - {fileID: 2100000, guid: fb8a27a776088b644b48eeea6036d31a, type: 2}
+  - {fileID: 2100000, guid: 57d353a48b3747945abf07e8c0b3dfd4, type: 2}
   poolSize: 10
 --- !u!1 &1723991483
 GameObject:
