@@ -36,17 +36,23 @@ public class FlavorTextSpawner : MonoBehaviour
 
     public void CollectibleHit(CollectibleHitEvent e)
     {
-        Spawn(e.HitPosition, e.Value > 0);
+        Spawn(e.HitPosition, e.Value);
     }
 
-    public void Spawn(Vector3 worldPos, bool isPositive)
+    public void Spawn(Vector3 worldPos, int value)
     {
+        bool isPositive = value > 0;
+        float jitterStrength = 0;
+        if (value > 15)
+        {
+            jitterStrength = Mathf.Lerp(0, 25, (float)value / 100);
+        }
         GetRandomMessageAndMaterial(isPositive, out string chosenMessage, out Material chosenMaterial);
         GameObject ft = GetFromPool();
 
         ft.transform.position = worldPos;
         ft.SetActive(true);
-        ft.GetComponent<FlavorText>().Init(chosenMessage, chosenMaterial, this);
+        ft.GetComponent<FlavorText>().Init(chosenMessage, chosenMaterial, jitterStrength, this);
     }
 
     public void ReturnToPool(GameObject ft)

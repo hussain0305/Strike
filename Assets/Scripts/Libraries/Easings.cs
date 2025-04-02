@@ -95,4 +95,8 @@ public static class Easings
             : -Mathf.Pow(2, 10 * (t - 1)) * Mathf.Sin((t - 1.075f) * c4);
     }
     
+    public static float EaseOutQuint(float t)
+    {
+        return 1f - Mathf.Pow(1f - t, 5f);
+    }
 }
