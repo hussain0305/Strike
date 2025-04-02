@@ -35,10 +35,7 @@ public class Collectible : MonoBehaviour
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;
     public Transform body;
-    public TextMeshPro inBodyPointDisplayPositive;
-    public TextMeshPro inBodyPointDisplayNegative;
-    public TextMeshPro InBodyActivePointDisplay => value > 0 ? inBodyPointDisplayPositive : inBodyPointDisplayNegative;
-    public TextMeshPro InBodyInactivePointDisplay => value < 0 ? inBodyPointDisplayPositive : inBodyPointDisplayNegative;
+    public TextMeshPro inBodyPointDisplay;
 
     [Header("Feedback and Visual Indicators")]
     public PointDisplayType pointDisplay;
@@ -46,6 +43,14 @@ public class Collectible : MonoBehaviour
     public bool SetupFloatingBoard => pointDisplay == PointDisplayType.FloatingBoard;
     public bool SetupInBodyBoard => pointDisplay == PointDisplayType.InBody;
     public bool HasPointBoard => pointDisplay != PointDisplayType.None;
+
+    public Material RegularFontColor => value >= 0
+        ? GlobalAssets.Instance.positiveCollectibleTextMaterial
+        : GlobalAssets.Instance.negativeCollectibleTextMaterial;
+    
+    public Material HitFontColor => value > 0
+        ? GlobalAssets.Instance.positiveCollectibleHitTextMaterial
+        : GlobalAssets.Instance.negativeCollectibleHitTextMaterial;
     
     private CollectibleHeader header;
 
@@ -170,8 +175,7 @@ public class Collectible : MonoBehaviour
     {
         if (SetupFloatingBoard)
         {
-            inBodyPointDisplayPositive?.gameObject.SetActive(false);
-            inBodyPointDisplayNegative?.gameObject.SetActive(false);
+            inBodyPointDisplay?.gameObject.SetActive(false);
             header = Instantiate(RoundDataManager.Instance.collectibleHeaderPrefab, RoundDataManager.Instance.collectibleHeadersParent);
             header.SetText(value);
             float headerOffset = (transform.position.y + (body.localScale.y * heightMultipleForOffsetCalculation) + 0.5f);
@@ -180,12 +184,12 @@ public class Collectible : MonoBehaviour
             header.transform.position = new Vector3(header.transform.position.x, headerOffset, header.transform.position.z);
             header?.StartAnimation();
         }
-        else if (SetupInBodyBoard && InBodyActivePointDisplay)
+        else if (SetupInBodyBoard && inBodyPointDisplay)
         {
-            InBodyActivePointDisplay.gameObject.SetActive(true);
-            InBodyActivePointDisplay.text = value.ToString();
+            inBodyPointDisplay.gameObject.SetActive(true);
+            inBodyPointDisplay.text = value.ToString();
+            inBodyPointDisplay.fontMaterial = RegularFontColor;
             hitReaction?.UpdatePoints(value);
         }
-        InBodyInactivePointDisplay?.gameObject.SetActive(false);
     }
 }

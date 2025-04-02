@@ -33,11 +33,12 @@ public class CollectibleHitReaction : MonoBehaviour
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
-            mr.sharedMaterial = GlobalAssets.Instance.collectibleHitMaterial;
+            mr.sharedMaterial = Collectible.value > 0
+                ? GlobalAssets.Instance.positiveCollectibleHitMaterial
+                : GlobalAssets.Instance.negativeCollectibleHitMaterial;
         }
-        hitPointsDisplay?.gameObject.SetActive(true);
-        Collectible.inBodyPointDisplayPositive?.gameObject.SetActive(false);
-        Collectible.inBodyPointDisplayNegative?.gameObject.SetActive(false);
+
+        Collectible.inBodyPointDisplay.fontMaterial = Collectible.HitFontColor;
     }
 
     public void SetDefaultVisuals(NextShotCuedEvent e)
@@ -48,14 +49,13 @@ public class CollectibleHitReaction : MonoBehaviour
                 ? GlobalAssets.Instance.positiveCollectibleMaterial
                 : GlobalAssets.Instance.negativeCollectibleMaterial;
         }
-        hitPointsDisplay?.gameObject.SetActive(false);
-        Collectible.InBodyActivePointDisplay?.gameObject.SetActive(true);
-        Collectible.InBodyInactivePointDisplay?.gameObject.SetActive(false);
+        Collectible.inBodyPointDisplay.fontMaterial = Collectible.RegularFontColor;
     }
 
     public void UpdatePoints(int points)
     {
         hitPointsDisplay.text = points.ToString();
-        Collectible.InBodyActivePointDisplay.text = points.ToString();
+        Collectible.inBodyPointDisplay.text = points.ToString();
+        Collectible.inBodyPointDisplay.fontMaterial = Collectible.RegularFontColor;
     }
 }
