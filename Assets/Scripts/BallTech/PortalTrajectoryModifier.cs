@@ -20,7 +20,7 @@ public class PortalTrajectoryModifier : ITrajectoryModifier
             bool portalHit = false;
             if (Physics.Linecast(currentPoint, nextPoint, out hit))
             {
-                Portal portal = hit.collider.GetComponent<Portal>();
+                Portal portal = hit.collider.GetComponentInParent<Portal>();
                 if (portal != null && portal.linkedPortal != null)
                 {
                     portalHit = true;
