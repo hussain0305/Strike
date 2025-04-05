@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 55508155445f44a4889e09ec0db6211a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 978ac32a5f4e13a4dbff6d1abb49a78f, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ab719d424331b543a88dbe315740f30, type: 2}
     - target: {fileID: 919132149155446097, guid: 55508155445f44a4889e09ec0db6211a, type: 3}
       propertyPath: m_Name
       value: HexCylinder
@@ -1199,6 +1199,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1384111840}
   - {fileID: 31082387}
   - {fileID: 303052949}
   - {fileID: 1023542891}
@@ -1391,7 +1392,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: c1f93e4db7986a14eb5a630413d0e670, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 978ac32a5f4e13a4dbff6d1abb49a78f, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ab719d424331b543a88dbe315740f30, type: 2}
     - target: {fileID: 919132149155446097, guid: c1f93e4db7986a14eb5a630413d0e670, type: 3}
       propertyPath: m_Name
       value: HexCeiling
@@ -3491,7 +3492,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1384111840}
   - {fileID: 549877463}
   - {fileID: 1922110261}
   - {fileID: 378263160}
@@ -5910,7 +5910,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384111839}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.35, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5918,7 +5918,7 @@ Transform:
   - {fileID: 33700358}
   - {fileID: 393927040}
   - {fileID: 619757743}
-  m_Father: {fileID: 856693394}
+  m_Father: {fileID: 281953149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1402322065
 GameObject:
@@ -9229,6 +9229,10 @@ PrefabInstance:
     - target: {fileID: 6196988770490226171, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6559565028027183058, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7210752704203409029, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
       propertyPath: m_Camera
