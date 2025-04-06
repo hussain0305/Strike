@@ -18,7 +18,18 @@ public class AngleInput : MonoBehaviour
     private MinMaxInt pitchLimits = new (-5, 75);
     private MinMaxInt yawLimits = new (-75, 75);
 
-    private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
+    private BallParameterController ballParameterController;
+    private BallParameterController BallParameterController
+    {
+        get
+        {
+            if (!ballParameterController)
+            {
+                ballParameterController = GetComponent<BallParameterController>();
+            }
+            return ballParameterController;
+        }
+    }
     
     private void OnEnable()
     {

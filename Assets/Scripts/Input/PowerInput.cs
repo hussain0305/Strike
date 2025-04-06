@@ -7,7 +7,19 @@ public class PowerInput : MonoBehaviour
     public TextMeshProUGUI[] powerText;
 
     public float Power { get; private set; }
-    private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
+    
+    private BallParameterController ballParameterController;
+    private BallParameterController BallParameterController
+    {
+        get
+        {
+            if (!ballParameterController)
+            {
+                ballParameterController = GetComponent<BallParameterController>();
+            }
+            return ballParameterController;
+        }
+    }
 
     private float powerMultiplier = 100f;
     private Vector2 startTouch;

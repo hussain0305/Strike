@@ -318,4 +318,9 @@ public class ModeSelector : MonoBehaviour
     {
         return IsNextLevelAvailable() && IsNextLevelUnlocked();
     }
+
+    public int GetTutorialLevel()
+    {
+        return gameModeInfo.GetTutorialLevel();
+    }
 }

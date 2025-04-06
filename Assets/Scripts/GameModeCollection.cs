@@ -17,4 +17,17 @@ public class GameModeCollection : ScriptableObject
 
         return gameModes[0];
     }
+
+    public int GetTutorialLevel()
+    {
+        int highestGameModeSceneIndex = 0;
+        foreach (GameModeInfo modeInfo in gameModes)
+        {
+            if (modeInfo.scene > highestGameModeSceneIndex)
+            {
+                highestGameModeSceneIndex = modeInfo.scene;
+            }
+        }
+        return highestGameModeSceneIndex + 1;
+    }
 }

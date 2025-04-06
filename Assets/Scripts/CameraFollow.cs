@@ -22,6 +22,7 @@ public class CameraFollow : MonoBehaviour
 
             return ball;
         }
+        set => ball = value;
     }
     
     public Rigidbody ballRigidbody;
@@ -31,7 +32,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (ballRigidbody == null)
             {
-                ballRigidbody = GameManager.Instance.ball.rb;
+                ballRigidbody = GameManager.Instance?.ball.rb;
             }
 
             return ballRigidbody;

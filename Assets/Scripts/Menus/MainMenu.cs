@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -7,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public Button ballSelectionButton;
     public Button gameModeSelectionButton;
     public Button settingsPageButton;
+    public Button tuorialButton;
 
     private static MenuContext context;
     public static MenuContext Context
@@ -36,18 +38,28 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        ballSelectionButton.onClick.RemoveAllListeners();
         ballSelectionButton.onClick.AddListener(() =>
         {
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.BallSelectionPage);
         });
         
+        gameModeSelectionButton.onClick.RemoveAllListeners();
         gameModeSelectionButton.onClick.AddListener(() =>
         {
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.GameModeScreen);
         });
+        
+        settingsPageButton.onClick.RemoveAllListeners();
         settingsPageButton.onClick.AddListener(() =>
         {
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.SettingsPage);
+        });
+        
+        tuorialButton.onClick.RemoveAllListeners();
+        tuorialButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(ModeSelector.Instance.GetTutorialLevel());
         });
     }
 

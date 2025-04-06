@@ -22,7 +22,18 @@ public class SpinInput : MonoBehaviour
         controlBounds = controlArea.rect.size / 2f;
     }
 
-    private BallParameterController BallParameterController => GameManager.Instance.ballParameterController;
+    private BallParameterController ballParameterController;
+    private BallParameterController BallParameterController
+    {
+        get
+        {
+            if (!ballParameterController)
+            {
+                ballParameterController = GetComponent<BallParameterController>();
+            }
+            return ballParameterController;
+        }
+    }
     
     private void Update()
     {
