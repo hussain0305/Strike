@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
@@ -40,12 +42,39 @@ public class TutorialManager : MonoBehaviour
             return trajectoryModifier;
         }
     }
+
+    private bool showTrajectory;
     
     private void Start()
     {
         InitTutorial();
         SetupUI();
         gravity = -Physics.gravity.y;
+    }
+
+    private void OnEnable()
+    {
+        showTrajectory = false;
+        EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryEnabled);
+        EventBus.Subscribe<TutorialResetEvent>(TutorialReset);
+        EventBus.Subscribe<GameExitedEvent>(ReturnToMainMenu);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryEnabled);
+        EventBus.Unsubscribe<TutorialResetEvent>(TutorialReset);
+        EventBus.Unsubscribe<GameExitedEvent>(ReturnToMainMenu);
+    }
+
+    private void TrajectoryEnabled(TrajectoryEnabledEvent e)
+    {
+        showTrajectory = true;
+    }
+
+    private void TutorialReset(TutorialResetEvent e)
+    {
+        showTrajectory = false;
     }
 
     private void Update()
@@ -63,7 +92,10 @@ public class TutorialManager : MonoBehaviour
             }
 
             List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
-            DrawTrajectory(ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints));
+            if (showTrajectory)
+            {
+                DrawTrajectory(ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints));
+            }
         }
     }
 
@@ -190,26 +222,7 @@ public class TutorialManager : MonoBehaviour
             trajectories[i].segmentEnd.enabled = false;
         }
     }
-
-    public void TrajectoryButtonPressed()
-    {
-        if (trajectoryViewRoutine != null) StopCoroutine(trajectoryViewRoutine);
-        trajectoryViewRoutine = StartCoroutine(ShowTrajectory());
-    }
-
-    private IEnumerator ShowTrajectory()
-    {
-        int seconds = 10;
-        trajectoryButton.SetCountdownText(seconds);
-        while (seconds-- > 0)
-        {
-            yield return new WaitForSeconds(1);
-            trajectoryButton.SetCountdownText(seconds);
-        }
-
-        DisableTrajectory();
-    }
-
+    
     private void DisableTrajectory()
     {
         foreach (var t in trajectories)
@@ -218,5 +231,10 @@ public class TutorialManager : MonoBehaviour
             t.segmentEnd.enabled = false;
         }
         trajectoryButtonSection.SetActive(false);
+    }
+    
+    public void ReturnToMainMenu(GameExitedEvent e)
+    {
+        SceneManager.LoadScene(0);
     }
 }

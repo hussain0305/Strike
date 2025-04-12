@@ -20,7 +20,7 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        GameManager.Instance.GameExitedPrematurely();
+        EventBus.Publish(new GameExitedEvent());
     }
 
     public void ReturnToGame()

@@ -29,7 +29,7 @@ public class TrajectoryButton : MonoBehaviour
         remainingInfoBubble.SetActive(false);
         countdownText.gameObject.SetActive(true);
         trajectoryIcon.gameObject.SetActive(false);
-        GameManager.Instance.TrajectoryButtonPressed();
+        EventBus.Publish(new TrajectoryEnabledEvent());
     }
 
     public void SetCountdownText(int secondsRemaining)

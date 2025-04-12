@@ -11,6 +11,7 @@ public class NextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
+public class TrajectoryEnabledEvent { }
 
 [System.Serializable]
 public class TrajectorySegmentVisuals
@@ -152,6 +153,16 @@ public class GameManager : MonoBehaviour
         RoundDataManager.Instance.SetCurrentShotTaker();
     }
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+    }
+
     public void InitGame()
     {
         GameStateManager.Instance.SetGameState(GameState.InGame);
@@ -200,7 +211,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
         showTrajectory = true;
+#endif
         if (BallShootable)
         {
             launchForce = PowerInput.Power;
@@ -356,7 +369,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TrajectoryButtonPressed()
+    public void TrajectoryButtonPressed(TrajectoryEnabledEvent e)
     {
         if (RoundDataManager.Instance.GetTrajectoryViewsRemaining() <= 0)
         {
@@ -412,11 +425,6 @@ public class GameManager : MonoBehaviour
     public void StarCollected(int index)
     {
         starsCollected.Add(index);
-    }
-
-    public void GameExitedPrematurely()
-    {
-        EventBus.Publish(new GameExitedEvent());
     }
     
     public void GameEnded()
