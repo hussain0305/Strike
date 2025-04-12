@@ -40,10 +40,12 @@ public class TutorialHUD : MonoBehaviour
     
     [Header("Tutorial Specific")] 
     public TextMeshProUGUI stepInstructionText;
+    public TextMeshProUGUI stepContinueText;
     public Button categorySelectionButton;
     public TutorialCategoryButton[] categoryButtons;
     
     public Dictionary<TutorialScreenElements, GameObject> tutorialScreenElements;
+    [HideInInspector]
     public TutorialScreenElements[] toggleableElements;
     
     private void Awake()
@@ -153,5 +155,11 @@ public class TutorialHUD : MonoBehaviour
         {
             tutorialScreenElements[toggleableElement].SetActive(false);
         }
+    }
+    
+    public void SetInstructionText(string instructionText, string secondaryText = "")
+    {
+        stepInstructionText.text = instructionText;
+        stepContinueText.text = secondaryText;
     }
 }

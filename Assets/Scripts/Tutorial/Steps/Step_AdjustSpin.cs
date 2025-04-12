@@ -21,7 +21,7 @@ public class Step_AdjustSpin : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.stepInstructionText.text = "Tap the Spin button to begin adding Spin";
+        controller.tutorialHUD.SetInstructionText("Tap the Spin button to begin adding Spin");
 
         targetButton = controller.tutorialHUD.spinButton;
         targetButton.onClick.AddListener(TargetButtonClicked);
@@ -40,7 +40,7 @@ public class Step_AdjustSpin : TutorialStep
             return;
 
         phase = Phase.WaitForSwipe;
-        controller.tutorialHUD.stepInstructionText.text = "Now swipe across the screen to set your spin.";
+        controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your spin.");
         startingSpin = controller.tutorialHUD.BallParameterController.spinInput.SpinVector;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
@@ -73,7 +73,7 @@ public class Step_AdjustSpin : TutorialStep
             {
                 phase = Phase.WaitForConfirmation;
 
-                controller.tutorialHUD.stepInstructionText.text = successfulText + "\n\nTap anywhere to continue.";
+                controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue.");
                 controller.StartCoroutine(WaitForScreenTap());
                 yield break;
             }
@@ -89,7 +89,7 @@ public class Step_AdjustSpin : TutorialStep
             yield return null;
         }
 
-        controller.tutorialHUD.stepInstructionText.text = "";
+        controller.tutorialHUD.SetInstructionText("");
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

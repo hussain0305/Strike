@@ -18,7 +18,7 @@ public class TutorialStep
         controller = tutorialController;
 
         controller.tutorialHUD.SetUIElementsActive(elementsToActivate.ToList());
-        controller.tutorialHUD.stepInstructionText.text = introText;
+        controller.tutorialHUD.SetInstructionText(introText);
     }
 
     public virtual void Reset() { }

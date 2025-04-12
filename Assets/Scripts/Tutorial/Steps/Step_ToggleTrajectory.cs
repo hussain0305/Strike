@@ -19,7 +19,7 @@ public class Step_ToggleTrajectory : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.stepInstructionText.text = "Tap the Trajectory button on the bottom right of your screen to see the trajectory of your shot";
+        controller.tutorialHUD.SetInstructionText("Tap the Trajectory button on the bottom right of your screen to see the trajectory of your shot");
 
         targetButton = controller.tutorialHUD.trajectoryButton.GetComponentInChildren<UnityEngine.UI.Button>(true);
         targetButton.onClick.AddListener(TargetButtonClicked);
@@ -39,7 +39,9 @@ public class Step_ToggleTrajectory : TutorialStep
         
         phase = Phase.WaitForConfirmation;
 
-        controller.tutorialHUD.stepInstructionText.text = successfulText + "\n\nTap anywhere to continue.";
+        controller.tutorialHUD.BallParameterController.powerInput.OverridePower(20);
+        controller.tutorialHUD.trajectoryButtonContainer.SetActive(false);
+        controller.tutorialHUD.SetInstructionText(successfulText,"Tap anywhere to continue.");
         controller.StartCoroutine(WaitForScreenTap());
     }
     
@@ -50,7 +52,7 @@ public class Step_ToggleTrajectory : TutorialStep
             yield return null;
         }
 
-        controller.tutorialHUD.stepInstructionText.text = "";
+        controller.tutorialHUD.SetInstructionText("");
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

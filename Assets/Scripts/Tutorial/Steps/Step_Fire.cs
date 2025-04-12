@@ -21,7 +21,7 @@ public class Step_Fire : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.stepInstructionText.text = "Make any final tweaks and hit Shoot";
+        controller.tutorialHUD.SetInstructionText("Make any final tweaks and hit Shoot");
 
         targetButton = controller.tutorialHUD.fireButton;
         targetButton.onClick.AddListener(TargetButtonClicked);
@@ -41,7 +41,7 @@ public class Step_Fire : TutorialStep
         
         phase = Phase.WaitForConfirmation;
 
-        controller.tutorialHUD.stepInstructionText.text = successfulText + "\n\nTap anywhere to continue.";
+        controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue.");
         controller.StartCoroutine(WaitForScreenTap());
     }
     
@@ -52,7 +52,7 @@ public class Step_Fire : TutorialStep
             yield return null;
         }
 
-        controller.tutorialHUD.stepInstructionText.text = "";
+        controller.tutorialHUD.SetInstructionText("");
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

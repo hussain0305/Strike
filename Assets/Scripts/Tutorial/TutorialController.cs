@@ -80,5 +80,4 @@ public class TutorialController : MonoBehaviour
     {
         MoveToNextStep();
     }
-    
 }

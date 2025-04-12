@@ -21,7 +21,7 @@ public class Step_AdjustAngle : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.stepInstructionText.text = "Tap the Angle button to start aiming";
+        controller.tutorialHUD.SetInstructionText("Tap the Angle button to start aiming");
 
         targetButton = controller.tutorialHUD.angleButton;
         targetButton.onClick.AddListener(TargetButtonClicked);
@@ -40,7 +40,7 @@ public class Step_AdjustAngle : TutorialStep
             return;
 
         phase = Phase.WaitForSwipe;
-        controller.tutorialHUD.stepInstructionText.text = "Now swipe across the screen to set your Angle.";
+        controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your Angle.");
         startingAngle = controller.tutorialHUD.BallParameterController.angleInput.cylinderPivot.rotation;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
@@ -73,7 +73,7 @@ public class Step_AdjustAngle : TutorialStep
             {
                 phase = Phase.WaitForConfirmation;
 
-                controller.tutorialHUD.stepInstructionText.text = successfulText + "\n\nTap anywhere to continue.";
+                controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue...");
                 controller.StartCoroutine(WaitForScreenTap());
                 yield break;
             }
@@ -89,7 +89,7 @@ public class Step_AdjustAngle : TutorialStep
             yield return null;
         }
 
-        controller.tutorialHUD.stepInstructionText.text = "";
+        controller.tutorialHUD.SetInstructionText("");
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

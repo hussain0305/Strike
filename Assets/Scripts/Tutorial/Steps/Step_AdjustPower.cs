@@ -21,7 +21,7 @@ public class Step_AdjustPower : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.stepInstructionText.text = "Tap the Power button to begin adding Power";
+        controller.tutorialHUD.SetInstructionText("Tap the Power button to begin adding Power");
 
         targetButton = controller.tutorialHUD.powerButton;
         targetButton.onClick.AddListener(TargetButtonClicked);
@@ -40,7 +40,7 @@ public class Step_AdjustPower : TutorialStep
             return;
 
         phase = Phase.WaitForSwipe;
-        controller.tutorialHUD.stepInstructionText.text = "Now swipe across the screen to set your Power.";
+        controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your Power.");
         startingPower = (int)controller.tutorialHUD.BallParameterController.powerInput.Power;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
@@ -73,7 +73,7 @@ public class Step_AdjustPower : TutorialStep
             {
                 phase = Phase.WaitForConfirmation;
 
-                controller.tutorialHUD.stepInstructionText.text = successfulText + "\n\nTap anywhere to continue.";
+                controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue.");
                 controller.StartCoroutine(WaitForScreenTap());
                 yield break;
             }
@@ -89,7 +89,7 @@ public class Step_AdjustPower : TutorialStep
             yield return null;
         }
 
-        controller.tutorialHUD.stepInstructionText.text = "";
+        controller.tutorialHUD.SetInstructionText("");
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

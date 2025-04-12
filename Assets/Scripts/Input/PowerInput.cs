@@ -87,4 +87,9 @@ public class PowerInput : MonoBehaviour
     {
         Power = 0;
     }
+    
+    public void OverridePower(int _power)
+    {
+        Power = _power;
+    }
 }
