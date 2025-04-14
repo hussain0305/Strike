@@ -51,39 +51,39 @@
 - Components **listen for and raise events** without needing direct references.
 - Example: Game state changes → UI updates, music transitions, and tutorials all respond independently.
 
-### 🎬 Previews
+## 🎬 Previews
 
-## Ball Selection Page
+### Ball Selection Page
 <p align="center">
   <img src="Showcase/Ball%20Selection.gif" alt="Ball Selection" width="600">
 </p>
 A quick look at how players browse and compare ball abilities in the selection menu.
 
-## Shooting Mechanics
+### Shooting Mechanics
 <p align="center"> 
   <img src="Showcase/Basic%20Shooting%20Demo.gif" alt="Basic Shooting" width="600"> 
 </p> 
 A demonstration of the swipe-based shooting mechanic, where angle, power, and spin are determined by user input.
 
-## Camera Control
+### Camera Control
 <p align="center">
    <img src="Showcase/Camera%20Angles.gif" alt="Camera Angles" width="600">
 </p>
 A look at how the player can switch camera angles and set camera bahviour like staying in place or the camera following the ball
 
-## Portals
+### Portals
 <p align="center">
   <img src="Showcase/Portals.gif" alt="Portals" width="600">
 </p>
 A showcase of the two-way portal system that maintains physics velocity and spin through seamless teleportation.
 
-## Shotgun Ball
+### Shotgun Ball
 <p align="center">
   <img src="Showcase/Shotgun%20Ball.gif" alt="Shotgun Ball" width="600">
 </p>
 The Shotgun Ball ability unleashes a burst of projectiles in an arc, perfect for hitting multiple scattered targets.
 
-## Sniper Ball
+### Sniper Ball
 <p align="center">
   <img src="Showcase/Sniper%20Ball.gif" alt="Sniper Ball" width="600">
 </p>
