@@ -30,6 +30,9 @@ public class RoundDataManager : MonoBehaviour
         }
         instance = this;
     }
+
+    private GameManager game;
+    private GameManager Game => game ??= GameManager.Instance;
     
     private void OnEnable()
     {
@@ -45,9 +48,9 @@ public class RoundDataManager : MonoBehaviour
     
     public void BallShot(BallShotEvent e)
     {
-        PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
         gameData.shotsTaken++;
-        playerGameData[GameManager.Instance.CurrentPlayerTurn] = gameData;
+        playerGameData[Game.CurrentPlayerTurn] = gameData;
     }
 
     public void CreateNewPlayerRecord(int _index)
@@ -84,8 +87,8 @@ public class RoundDataManager : MonoBehaviour
 
     public void CollectibleHit(CollectibleHitEvent e)
     {
-        PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
-        PlayerScoreboard scoreboard = playerScoreboards[GameManager.Instance.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
+        PlayerScoreboard scoreboard = playerScoreboards[Game.CurrentPlayerTurn];
 
         switch (e.Type)
         {
@@ -100,7 +103,7 @@ public class RoundDataManager : MonoBehaviour
                 break;
         }
 
-        playerGameData[GameManager.Instance.CurrentPlayerTurn] = gameData;
+        playerGameData[Game.CurrentPlayerTurn] = gameData;
     }
 
     public int GetPointsForPlayer(int index)
@@ -129,7 +132,7 @@ public class RoundDataManager : MonoBehaviour
 
     public void SetCurrentShotTaker()
     {
-        int currentShotTaker = GameManager.Instance.CurrentPlayerTurn;
+        int currentShotTaker = Game.CurrentPlayerTurn;
         for (int i = 0; i < playerScoreboards.Keys.Count; i++)
         {
             playerScoreboards[i].SetCurrentShotTaker(i == currentShotTaker);
@@ -138,36 +141,36 @@ public class RoundDataManager : MonoBehaviour
     
     public int GetTrajectoryViewsRemaining()
     {
-        PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
         return gameData.projectileViewsRemaining;
     }
 
     public void TrajectoryViewUsed()
     {
-        PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
         gameData.projectileViewsRemaining--;
-        playerGameData[GameManager.Instance.CurrentPlayerTurn] = gameData;
+        playerGameData[Game.CurrentPlayerTurn] = gameData;
     }
 
     public void AddPlayerShotHistory(ShotInfo shotInfo)
     {
-        PlayerGameData gameData = playerGameData[GameManager.Instance.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
         gameData.shotHistory.Add(shotInfo);
-        playerGameData[GameManager.Instance.CurrentPlayerTurn] = gameData;
+        playerGameData[Game.CurrentPlayerTurn] = gameData;
     }
 
     public List<ShotInfo> GetTrajectoryHistory()
     {
-        return playerGameData[GameManager.Instance.CurrentPlayerTurn].shotHistory;
+        return playerGameData[Game.CurrentPlayerTurn].shotHistory;
     }
 
     public void StartLoggingShotInfo()
     {
         currentShotPointsAccrued = 0;
         currentShotInfo = new ShotInfo();
-        currentShotInfo.angle = GameManager.Instance.AngleInput.CalculateProjectedAngle();
-        currentShotInfo.spin = GameManager.Instance.SpinInput.SpinVector;
-        currentShotInfo.power = (int)GameManager.Instance.PowerInput.Power;
+        currentShotInfo.angle = Game.AngleInput.CalculateProjectedAngle();
+        currentShotInfo.spin = Game.SpinInput.SpinVector;
+        currentShotInfo.power = (int)Game.PowerInput.Power;
     }
 
     public void FinishLoggingShotInfo(List<Vector3> capturedTrajectory)
