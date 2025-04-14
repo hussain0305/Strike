@@ -22,7 +22,7 @@
 
 ---
 
-## 🌐 Web & Poki Optimization
+## 🌐 Web Optimization
 
 *Strike* was built from the ground up with **WebGL deployment** in mind:
 
