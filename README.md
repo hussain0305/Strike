@@ -4,6 +4,12 @@
 
 ---
 
+> ⚠️ **Work in Progress:** This game is currently in development. New features, visuals, and polish are still being added.
+>
+> 🎨 This is a solo project — all design, programming, and visual effects were done without an artist. The game's appearance is driven entirely by custom shaders, code-based visuals, and gameplay-driven ideas.
+
+---
+
 ## 🕹 Gameplay Highlights
 
 - ⚡ **Swipe-Based Controls** – Full-screen swipes determine angle, power, and spin. Controls feel intuitive but reward mastery.
