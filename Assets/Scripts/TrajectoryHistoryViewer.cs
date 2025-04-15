@@ -7,6 +7,7 @@ public class TrajectoryHistoryViewer : MonoBehaviour
     [Tooltip("Number of materials here will dictate how many trajectories are shown")]
     public Material[] trajectoryHistoryMaterials;
     public Material[] trajectoryLabelMaterials;
+    public Color[] trajectoryBackgroundColors;
     public TrajectoryLabel labelPrefab;
     public Transform labelsParent;
     private readonly Queue<TrajectoryLabel> labelPool = new Queue<TrajectoryLabel>();
@@ -132,7 +133,8 @@ public class TrajectoryHistoryViewer : MonoBehaviour
             LineRenderer lineRenderer = trajectory.GetComponent<LineRenderer>();
             
             TrajectoryLabel label = GetLabelFromPool();
-            label.SetInfo(shotHistory[i].angle, shotHistory[i].spin, shotHistory[i].power, shotHistory[i].points, trajectoryLabelMaterials[i]);
+            label.SetInfo(shotHistory[i].angle, shotHistory[i].spin, shotHistory[i].power, shotHistory[i].points, 
+                trajectoryLabelMaterials[i], trajectoryBackgroundColors[i]);
             
             activeLabels.Add(label);
         }

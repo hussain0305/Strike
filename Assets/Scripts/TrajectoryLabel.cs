@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class TrajectoryLabel : MonoBehaviour
 {
     public Image identifier;
+    public Image background;
     public TextMeshProUGUI angleText;
     public TextMeshProUGUI spinText;
     public TextMeshProUGUI powerText;
     public TextMeshProUGUI pointsText;
 
-    public void SetInfo(Vector2 _angle, Vector2 _spin, int _power, int _points, Material _identifier)
+    public void SetInfo(Vector2 _angle, Vector2 _spin, int _power, int _points, Material _identifier, Color backgroundColor)
     {
+        background.color = backgroundColor;
         identifier.material = _identifier;
         angleText.text = $"{_angle.x:F2}, {_angle.y:F2}";
         spinText.text = $"{_spin.x:F2}, {_spin.y:F2}";
