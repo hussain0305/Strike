@@ -41,8 +41,9 @@ public class TutorialHUD : MonoBehaviour
     [Header("Tutorial Specific")] 
     public TextMeshProUGUI stepInstructionText;
     public TextMeshProUGUI stepContinueText;
-    public Button categorySelectionButton;
+    // public Button categorySelectionButton;
     public TutorialCategoryButton[] categoryButtons;
+    public Button exitButton;
     
     public Dictionary<TutorialScreenElements, GameObject> tutorialScreenElements;
     [HideInInspector]
@@ -90,15 +91,21 @@ public class TutorialHUD : MonoBehaviour
     {
         EventBus.Subscribe<TutorialCategorySelectedEvent>(CategorySelected);
         
-        categorySelectionButton.onClick.RemoveAllListeners();
-        categorySelectionButton.onClick.AddListener(OpenCategorySelectionMenu);
+        // categorySelectionButton.onClick.RemoveAllListeners();
+        // categorySelectionButton.onClick.AddListener(OpenCategorySelectionMenu);
+        
+        exitButton.onClick.AddListener(() =>
+        {
+            EventBus.Publish(new GameExitedEvent());
+        });
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<TutorialCategorySelectedEvent>(CategorySelected);
         
-        categorySelectionButton.onClick.RemoveAllListeners();
+        // categorySelectionButton.onClick.RemoveAllListeners();
+        exitButton.onClick.RemoveAllListeners();
     }
     
     public void ResetCategorySelectionMenu()

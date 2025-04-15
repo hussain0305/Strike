@@ -20,7 +20,8 @@ public class TutorialController : MonoBehaviour
         EventBus.Subscribe<TutorialCategorySelectedEvent>(CategorySelected);
         EventBus.Subscribe<TutorialStepCompletedEvent>(TutorialStepCompleted);
         Reset();
-        tutorialHUD.ResetCategorySelectionMenu();
+
+        EventBus.Publish(new TutorialCategorySelectedEvent(tutorialHUD.categoryButtons[0].AssociatedCategory));
     }
 
     private void OnDisable()
@@ -29,12 +30,18 @@ public class TutorialController : MonoBehaviour
         EventBus.Unsubscribe<TutorialStepCompletedEvent>(TutorialStepCompleted);
     }
     
-    public void Reset()
+    public void ResetData()
     {
         EventBus.Publish(new TutorialResetEvent());
         currentCategory = null;
         currentStep = null;
         currentStepIndex = -1;
+    }
+
+    public void Reset()
+    {
+        ResetData();
+        tutorialHUD.ResetCategorySelectionMenu();
     }
 
     public void CategorySelected(TutorialCategorySelectedEvent e)

@@ -75,6 +75,7 @@ public class TutorialManager : MonoBehaviour
     private void TutorialReset(TutorialResetEvent e)
     {
         showTrajectory = false;
+        ball?.ResetBall();
     }
 
     private void Update()

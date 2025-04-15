@@ -39,14 +39,22 @@ public class Step_Fire : TutorialStep
         if (phase != Phase.WaitForClick)
             return;
         
-        phase = Phase.WaitForConfirmation;
-
-        controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue.");
         controller.StartCoroutine(WaitForScreenTap());
     }
     
     private System.Collections.IEnumerator WaitForScreenTap()
     {
+        controller.tutorialHUD.SetInstructionText("", "");
+        float timeRemaining = 2;
+        while (timeRemaining >= 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        phase = Phase.WaitForConfirmation;
+
+        controller.tutorialHUD.SetInstructionText(successfulText, "Tap anywhere to continue.");
+
         while (!Input.GetMouseButtonDown(0) && Input.touchCount == 0)
         {
             yield return null;

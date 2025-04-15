@@ -20,7 +20,7 @@ public class TutorialCategoryButton : MonoBehaviour
     public Button button;
     
     private TutorialCategory associatedCategory;
-    private TutorialCategory AssociatedCategory => associatedCategory ??= GetComponent<TutorialCategory>();
+    public TutorialCategory AssociatedCategory => associatedCategory ??= GetComponent<TutorialCategory>();
 
     private void OnEnable()
     {
