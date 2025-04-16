@@ -73,6 +73,11 @@ public class LevelLoader : MonoBehaviour
                 collectibleObject = PoolingManager.Instance.GetObject(collectibleData.multiplierTokenType);
             }
 
+            else if (collectibleData.dangerTokenType != DangerTokenType.None)
+            {
+                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.dangerTokenType);
+            }
+
             if (collectibleObject == null)
             {
                 Debug.LogWarning($"Failed to load collectible of type {collectibleData.type}");

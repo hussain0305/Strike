@@ -22,7 +22,7 @@ public class DangerBorderFlicker : MonoBehaviour
 
     private void OnCollectibleHit(CollectibleHitEvent e)
     {
-        if (e.Value < 0)
+        if (e.Value < 0 || e.Type == CollectibleType.Danger)
         {
             TriggerFlicker();
         }

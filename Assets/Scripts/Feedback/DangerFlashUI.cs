@@ -22,7 +22,7 @@ public class DangerFlashUI : MonoBehaviour
 
     private void OnCollectibleHit(CollectibleHitEvent e)
     {
-        if (e.Value <= -50)
+        if (e.Value <= -50 || e.Type == CollectibleType.Danger)
         {
             TriggerFlash();
         }

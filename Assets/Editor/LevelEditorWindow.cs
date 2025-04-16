@@ -82,6 +82,10 @@ public class LevelEditorWindow : EditorWindow
             {
                 prefab = prefabMapping.GetMultiplierTokenPrefab(collectibleData.multiplierTokenType);
             }
+            else if (collectibleData.dangerTokenType != DangerTokenType.None)
+            {
+                prefab = prefabMapping.GetDangerTokenPrefab(collectibleData.dangerTokenType);
+            }
 
             if (prefab == null)
             {

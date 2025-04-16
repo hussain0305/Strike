@@ -10,6 +10,7 @@ public class LevelExporter : MonoBehaviour
         public CollectibleType type;
         public PointTokenType pointTokenType;
         public MultiplierTokenType multiplierTokenType;
+        public DangerTokenType dangerTokenType;
         public Vector3 position;
         public Quaternion rotation;
         public int value;
@@ -83,23 +84,30 @@ public class LevelExporter : MonoBehaviour
                 continue;
             }
 
+            DangerToken dangerTokenScript = collectible.GetComponent<DangerToken>();
+            DangerTokenType dtt = dangerTokenScript != null ? dangerTokenScript.dangerTokenType : DangerTokenType.None;
+            
             MultiplierToken multiplierTokenScript = collectible.GetComponent<MultiplierToken>();
             MultiplierTokenType mtt = multiplierTokenScript != null ? multiplierTokenScript.multiplierTokenType : MultiplierTokenType.None;
             
             PointToken pointTokenScript = collectible.GetComponent<PointToken>();
             PointTokenType ptt = pointTokenScript != null ? pointTokenScript.pointTokenType : PointTokenType.None;
 
+            Collectible.PointDisplayType displayType = pointTokenScript ? pointTokenScript.pointDisplay :
+                multiplierTokenScript ? multiplierTokenScript.pointDisplay : Collectible.PointDisplayType.None;
+
             CollectibleData collectibleData = new CollectibleData
             {
                 type = collectibleScript.type,
                 pointTokenType = ptt,
                 multiplierTokenType = mtt,
+                dangerTokenType = dtt,
                 position = collectible.position,
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
                 parent = CollectibleParent.World,
-                pointDisplayType = pointTokenScript.pointDisplay
+                pointDisplayType = displayType
             };
 
             levelData.collectibles.Add(collectibleData);
@@ -114,6 +122,9 @@ public class LevelExporter : MonoBehaviour
                 continue;
             }
 
+            DangerToken dangerTokenScript = collectible.GetComponent<DangerToken>();
+            DangerTokenType dtt = dangerTokenScript != null ? dangerTokenScript.dangerTokenType : DangerTokenType.None;
+            
             MultiplierToken multiplierTokenScript = collectible.GetComponent<MultiplierToken>();
             MultiplierTokenType mtt = multiplierTokenScript != null ? multiplierTokenScript.multiplierTokenType : MultiplierTokenType.None;
             
@@ -128,6 +139,7 @@ public class LevelExporter : MonoBehaviour
                 type = collectibleScript.type,
                 pointTokenType = ptt,
                 multiplierTokenType = mtt,
+                dangerTokenType = dtt,
                 position = collectible.position,
                 rotation = collectible.rotation,
                 value = collectibleScript.value,

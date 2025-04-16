@@ -33,7 +33,9 @@ public class CollectibleHitReaction : MonoBehaviour
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
-            mr.sharedMaterial = Collectible.value > 0
+            mr.sharedMaterial = Collectible.type == CollectibleType.Danger
+                ? GlobalAssets.Instance.dangerCollectibleHitMaterial
+                : Collectible.value > 0
                 ? GlobalAssets.Instance.positiveCollectibleHitMaterial
                 : GlobalAssets.Instance.negativeCollectibleHitMaterial;
         }
@@ -45,7 +47,9 @@ public class CollectibleHitReaction : MonoBehaviour
     {
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
-            mr.sharedMaterial = Collectible.value > 0
+            mr.sharedMaterial = Collectible.type == CollectibleType.Danger
+                ? GlobalAssets.Instance.dangerCollectibleMaterial
+                : Collectible.value > 0
                 ? GlobalAssets.Instance.positiveCollectibleMaterial
                 : GlobalAssets.Instance.negativeCollectibleMaterial;
         }

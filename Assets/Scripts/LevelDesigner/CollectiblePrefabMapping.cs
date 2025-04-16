@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "CollectiblePrefabMapping", menuName = "Game/Collectible Prefab Mapping")]
 public class CollectiblePrefabMapping : ScriptableObject
@@ -17,8 +18,16 @@ public class CollectiblePrefabMapping : ScriptableObject
         public GameObject prefab;
     }
 
+    [System.Serializable]
+    public class DangerTokenPrefab
+    {
+        public DangerTokenType dangerTokenType;
+        public GameObject prefab;
+    }
+
     public PointTokenPrefab[] pointTokenPrefabs;
     public MultiplierTokenPrefab[] multiplierTokenPrefabs;
+    public DangerTokenPrefab[] dangerTokenPrefabs;
     public GameObject starPrefab;
     
     public GameObject GetPointTokenPrefab(PointTokenType pointTokenType)
@@ -40,6 +49,17 @@ public class CollectiblePrefabMapping : ScriptableObject
                 return entry.prefab;
         }
         Debug.LogError($"Prefab not found for MultiplierTokenType: {multiplierTokenType}");
+        return null;
+    }
+    
+    public GameObject GetDangerTokenPrefab(DangerTokenType dangerTokenType)
+    {
+        foreach (var entry in dangerTokenPrefabs)
+        {
+            if (entry.dangerTokenType == dangerTokenType)
+                return entry.prefab;
+        }
+        Debug.LogError($"Prefab not found for DangerTokenType: {dangerTokenType}");
         return null;
     }
     

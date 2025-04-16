@@ -44,11 +44,15 @@ public class Collectible : MonoBehaviour
     public bool SetupInBodyBoard => pointDisplay == PointDisplayType.InBody;
     public bool HasPointBoard => pointDisplay != PointDisplayType.None;
 
-    public Material RegularFontColor => value >= 0
+    public Material RegularFontColor => type == CollectibleType.Danger
+        ? GlobalAssets.Instance.dangerCollectibleTextMaterial
+        : value >= 0
         ? GlobalAssets.Instance.positiveCollectibleTextMaterial
         : GlobalAssets.Instance.negativeCollectibleTextMaterial;
     
-    public Material HitFontColor => value > 0
+    public Material HitFontColor => type == CollectibleType.Danger
+        ? GlobalAssets.Instance.dangerCollectibleHitTextMaterial
+        : value >= 0
         ? GlobalAssets.Instance.positiveCollectibleHitTextMaterial
         : GlobalAssets.Instance.negativeCollectibleHitTextMaterial;
     

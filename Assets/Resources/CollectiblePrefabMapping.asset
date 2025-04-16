@@ -28,4 +28,9 @@ MonoBehaviour:
   multiplierTokenPrefabs:
   - multiplierTokenType: 1
     prefab: {fileID: 3935069962214072578, guid: bfe93e68f4dee8347af6272752b6d42f, type: 3}
+  dangerTokenPrefabs:
+  - dangerTokenType: 1
+    prefab: {fileID: 5940289607546129480, guid: a98707483a206e04e97250e1d23fed75, type: 3}
+  - dangerTokenType: 2
+    prefab: {fileID: 5940289607546129480, guid: ef3690bf01818d4448afa4a0b3667fd5, type: 3}
   starPrefab: {fileID: 5118622374533007032, guid: dc56e85319b698844bcc2ebdb7dcddb5, type: 3}

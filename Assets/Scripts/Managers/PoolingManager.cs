@@ -10,6 +10,7 @@ public class PoolingManager : MonoBehaviour
 
     private Dictionary<PointTokenType, Queue<GameObject>> pointTokensDictionary = new Dictionary<PointTokenType, Queue<GameObject>>();
     private Dictionary<MultiplierTokenType, Queue<GameObject>> multiplierTokensDictionary = new Dictionary<MultiplierTokenType, Queue<GameObject>>();
+    private Dictionary<DangerTokenType, Queue<GameObject>> dangerTokensDictionary = new Dictionary<DangerTokenType, Queue<GameObject>>();
     private Queue<GameObject> starPool = new Queue<GameObject>();
     
     private void Awake()
@@ -56,6 +57,11 @@ public class PoolingManager : MonoBehaviour
     public GameObject GetObject(MultiplierTokenType multiplierTokenType)
     {
         return GetObjectFromDictionary(multiplierTokensDictionary, multiplierTokenType, prefabMapping.GetMultiplierTokenPrefab);
+    }
+
+    public GameObject GetObject(DangerTokenType dangerTokenType)
+    {
+        return GetObjectFromDictionary(dangerTokensDictionary, dangerTokenType, prefabMapping.GetDangerTokenPrefab);
     }
 
     public void ReturnObject(PointTokenType type, GameObject obj)

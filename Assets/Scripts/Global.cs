@@ -51,6 +51,14 @@ public enum MultiplierTokenType
     BoxCollision
 };
 
+[System.Serializable]
+public enum DangerTokenType
+{
+    None,
+    Cube_3x3,
+    Pin_2x
+};
+
 public enum PinBehaviourPerTurn
 {
     StayAsIs,

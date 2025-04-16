@@ -24,15 +24,19 @@ public class GlobalAssets : ScriptableObject
     [Header("Collectibles Appearance")]
     public Material positiveCollectibleMaterial;
     public Material negativeCollectibleMaterial;
+    public Material dangerCollectibleMaterial;
     public Material positiveCollectibleHitMaterial;
     public Material negativeCollectibleHitMaterial;
+    public Material dangerCollectibleHitMaterial;
     
     [Header("Collectibles Font")]
     public Material multiplierCollectibleTextMaterial;
     public Material positiveCollectibleTextMaterial;
     public Material negativeCollectibleTextMaterial;
+    public Material dangerCollectibleTextMaterial;
     public Material positiveCollectibleHitTextMaterial;
     public Material negativeCollectibleHitTextMaterial;
+    public Material dangerCollectibleHitTextMaterial;
 
     [Header("Materials")]
     public ButtonMaterials[] defaultMaterials;
