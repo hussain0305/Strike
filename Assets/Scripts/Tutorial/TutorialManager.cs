@@ -142,7 +142,7 @@ public class TutorialManager : MonoBehaviour
         ball.Shoot();
         EventBus.Publish(new BallShotEvent());
         DisableRelevantElementsDuringShot();
-        StartMinTimePerShotPeriod();
+        // StartMinTimePerShotPeriod();
         ballState = BallState.InControlledMotion;
     }
 

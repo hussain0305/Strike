@@ -61,6 +61,7 @@ public class Step_Fire : TutorialStep
         }
 
         controller.tutorialHUD.SetInstructionText("");
+        EventBus.Publish(new NextShotCuedEvent());
         EventBus.Publish(new TutorialStepCompletedEvent());
     }
 }

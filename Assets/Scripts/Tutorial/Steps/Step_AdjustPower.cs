@@ -21,7 +21,7 @@ public class Step_AdjustPower : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.SetInstructionText("Tap the Power button to begin adding Power");
+        controller.tutorialHUD.SetInstructionText("Tap 'POWER' to begin adding Power");
 
         targetButton = controller.tutorialHUD.powerButton;
         targetButton.onClick.AddListener(TargetButtonClicked);

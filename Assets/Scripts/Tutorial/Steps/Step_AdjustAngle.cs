@@ -21,7 +21,7 @@ public class Step_AdjustAngle : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.SetInstructionText("Tap the Angle button to start aiming");
+        controller.tutorialHUD.SetInstructionText("Tap 'ANGLE' to start aiming");
 
         targetButton = controller.tutorialHUD.angleButton;
         targetButton.onClick.AddListener(TargetButtonClicked);

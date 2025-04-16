@@ -21,7 +21,7 @@ public class Step_AdjustSpin : TutorialStep
 
         phase = Phase.WaitForClick;
 
-        controller.tutorialHUD.SetInstructionText("Tap the Spin button to begin adding Spin");
+        controller.tutorialHUD.SetInstructionText("Tap 'SPIN' to begin adding Spin");
 
         targetButton = controller.tutorialHUD.spinButton;
         targetButton.onClick.AddListener(TargetButtonClicked);
