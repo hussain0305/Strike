@@ -14,8 +14,6 @@ public class TutorialManager : MonoBehaviour
     public TrajectorySegmentVisuals[] trajectories;
 
     public Button fireButton;
-    public Button nextButton;
-    public Image nextButtonFill;
     public GameObject angleIndicator;
 
     private float gravity;
@@ -121,12 +119,8 @@ public class TutorialManager : MonoBehaviour
         fireButton.onClick.RemoveAllListeners();
         fireButton.onClick.AddListener(FireButtonPressed);
 
-        nextButton.onClick.RemoveAllListeners();
-        nextButton.onClick.AddListener(CueNextShot);
-
         angleIndicator.SetActive(true);
-        nextButton.gameObject.SetActive(false);
-        fireButton.gameObject.SetActive(true);
+        fireButton.gameObject.SetActive(false);
     }
 
     public void FireButtonPressed()
@@ -150,50 +144,7 @@ public class TutorialManager : MonoBehaviour
     {
         angleIndicator.SetActive(false);
         fireButton.gameObject.SetActive(false);
-        nextButton.gameObject.SetActive(false);
         DisableTrajectory();
-    }
-
-    public void StartMinTimePerShotPeriod()
-    {
-        IEnumerator<WaitForSeconds> MinTimeRoutine()
-        {
-            yield return new WaitForSeconds(2);
-            minTimePerShotRoutine = null;
-            StartOptionalTimePerShotPeriod();
-        }
-
-        if (minTimePerShotRoutine != null)
-        {
-            StopCoroutine(minTimePerShotRoutine);
-        }
-
-        minTimePerShotRoutine = StartCoroutine(MinTimeRoutine());
-    }
-    
-    public void StartOptionalTimePerShotPeriod()
-    {
-        IEnumerator<WaitForSeconds> OptionalTimeRoutine()
-        {
-            nextButton.gameObject.SetActive(true);
-            float timePassed = 0;
-            float optionalTime = 5;
-            while (timePassed <= optionalTime)
-            {
-                timePassed += Time.deltaTime;
-                nextButtonFill.fillAmount = timePassed / optionalTime;
-                yield return null;
-            }
-            optTimePerShotRoutine = null;
-            CueNextShot();
-        }
-
-        if (optTimePerShotRoutine != null)
-        {
-            StopCoroutine(optTimePerShotRoutine);
-        }
-
-        optTimePerShotRoutine = StartCoroutine(OptionalTimeRoutine());
     }
     
     public void CueNextShot()
@@ -201,7 +152,6 @@ public class TutorialManager : MonoBehaviour
         EventBus.Publish(new NextShotCuedEvent());
         angleIndicator.SetActive(true);
         fireButton.gameObject.SetActive(true);
-        nextButton.gameObject.SetActive(false);
         ballState = BallState.OnTee;
     }
 
