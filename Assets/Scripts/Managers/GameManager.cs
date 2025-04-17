@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
     private Quaternion launchAngle;
 
     private int numPlayersInGame;
+    public int NumPlayersInGame => numPlayersInGame;
     private int volleyNumber = 1;
     private bool showTrajectory = false;
     private List<int> starsCollected = new List<int>();

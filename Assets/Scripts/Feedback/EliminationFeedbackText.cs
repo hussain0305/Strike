@@ -26,7 +26,10 @@ public class EliminationFeedbackText : MonoBehaviour
     public void ShowEliminationText(PlayerEliminatedEvent e)
     {
         elimination.SetActive(true);
-        eliminationText.text = $"PLAYER {e.PlayerIndex + 1} ELIMINATED!";
+        if(GameManager.Instance.NumPlayersInGame == 1)
+            eliminationText.text = $"!! ELIMINATED !!";
+        else
+            eliminationText.text = $"PLAYER {e.PlayerIndex + 1} ELIMINATED!";
     }
 
     public void DisableText<T>(T e)
