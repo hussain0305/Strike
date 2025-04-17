@@ -2,6 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class PlayerEliminatedEvent
+{
+    public int PlayerIndex;
+
+    public PlayerEliminatedEvent(int playerIndex)
+    {
+        this.PlayerIndex = playerIndex;
+    }
+}
+
 public class RoundDataManager : MonoBehaviour
 {
     public Canvas worldSpaceCanvas;
@@ -13,6 +23,8 @@ public class RoundDataManager : MonoBehaviour
     
     private Dictionary<int, PlayerGameData> playerGameData;
     private Dictionary<int, PlayerScoreboard> playerScoreboards;
+    private List<int> eliminationOrder;
+    public List<int> EliminationOrder => eliminationOrder;
 
     private ShotInfo currentShotInfo;
     private int currentShotPointsAccrued;
@@ -74,6 +86,7 @@ public class RoundDataManager : MonoBehaviour
 
     public void CreatePlayers(int numPlayers)
     {
+        eliminationOrder = new List<int>();
         playerScoreboards = new Dictionary<int, PlayerScoreboard>();
         for (int i = 0; i < numPlayers; i++)
         {
@@ -101,6 +114,14 @@ public class RoundDataManager : MonoBehaviour
                 currentShotPointsAccrued += pointsFromThisHit;
                 scoreboard.TickToScore(gameData.totalPoints, pointsFromThisHit);
                 break;
+            case CollectibleType.Danger:
+                if (!eliminationOrder.Contains(Game.CurrentPlayerTurn))
+                {
+                    eliminationOrder.Add(Game.CurrentPlayerTurn);
+                    scoreboard.SetEliminated();
+                    EventBus.Publish(new PlayerEliminatedEvent(Game.CurrentPlayerTurn));
+                }
+                break;
         }
 
         playerGameData[Game.CurrentPlayerTurn] = gameData;
@@ -124,10 +145,26 @@ public class RoundDataManager : MonoBehaviour
     
     public List<PlayerGameData> GetPlayerRankings()
     {
-        // Convert the dictionary values to a list and sort them by totalPoints in descending order
-        return playerGameData.Values
-            .OrderByDescending(player => player.totalPoints)
-            .ToList();
+        List<PlayerGameData> finalList = new List<PlayerGameData>(playerGameData.Count);
+
+        foreach (int idx in eliminationOrder)
+        {
+            var eliminated = playerGameData[idx];
+            finalList.Add(eliminated);
+        }
+
+        var survivors = playerGameData
+            .Where(kvp => !eliminationOrder.Contains(kvp.Key))
+            .Select(kvp => kvp.Value)
+            .OrderBy(p => p.totalPoints);
+
+        foreach (var survivor in survivors)
+        {
+            finalList.Add(survivor);
+        }
+
+        finalList.Reverse();
+        return finalList;
     }
 
     public void SetCurrentShotTaker()

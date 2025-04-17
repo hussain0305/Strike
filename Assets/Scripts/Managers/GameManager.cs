@@ -256,6 +256,33 @@ public class GameManager : MonoBehaviour
 
     public void TogglePlayer()
     {
+        int first = currentPlayerTurn;
+
+        do
+        {
+            currentPlayerTurn++;
+            if (currentPlayerTurn >= numPlayersInGame)
+            {
+                currentPlayerTurn = 0;
+                volleyNumber++;
+                volleyText.text = $"Volley {volleyNumber}";
+
+                if (volleyNumber > GameMode.Instance.numVolleys)
+                {
+                    GameEnded();
+                    return;
+                }
+            }
+
+        }
+        while (RoundDataManager.Instance.EliminationOrder.Contains(currentPlayerTurn)
+               && currentPlayerTurn != first);
+
+        RoundDataManager.Instance.SetCurrentShotTaker();
+    }
+
+    public void TogglePlayerDEL()
+    {
         currentPlayerTurn++;
         if (currentPlayerTurn >= numPlayersInGame)
         {

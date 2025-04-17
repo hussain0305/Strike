@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerScoreboard : MonoBehaviour
 {
     public GameObject currentShotTakerIndicator;
+    public GameObject eliminatedText;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI scoreText;
 
@@ -15,6 +16,9 @@ public class PlayerScoreboard : MonoBehaviour
     public RectTransform startPosition;
     public RectTransform targetPosition;
 
+    [Header("Other")]
+    public Material eliminatedMaterial;
+    
     private int playerIndex;
     private int trueScore;
     private int currentScoreOnDisplay;
@@ -106,5 +110,12 @@ public class PlayerScoreboard : MonoBehaviour
 
         SetScore(trueScore);
         addScoreCoroutine = null;
+    }
+
+    public void SetEliminated()
+    {
+        eliminatedText.SetActive(true);
+        nameText.fontMaterial = eliminatedMaterial;
+        scoreText.fontMaterial = eliminatedMaterial;
     }
 }

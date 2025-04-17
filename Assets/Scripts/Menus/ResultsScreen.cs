@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class ResultsScreen : MonoBehaviour
     
     [Header("Win Condition - Points Ranking")]
     public Transform winConditionPointsRanking;
+    public TextMeshProUGUI winConditionPointsRankingText;
     public RankRow[] rankRows;
     
     [Header("Universal")]
@@ -81,6 +83,7 @@ public class ResultsScreen : MonoBehaviour
     {
         winConditionPointsRanking.gameObject.SetActive(true);
         List<PlayerGameData> playerRanks = RoundDataManager.Instance.GetPlayerRankings();
+        winConditionPointsRankingText.text = $"{playerRanks[0].name} wins";
         int i = 0;
         while (i < playerRanks.Count)
         {
