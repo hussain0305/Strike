@@ -124,6 +124,8 @@ public class GameManager : MonoBehaviour
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
     
+    private bool gameOverOnNextShot = false;
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -156,11 +158,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Subscribe<PlayerEliminatedEvent>(PlayerEliminated);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Unsubscribe<PlayerEliminatedEvent>(PlayerEliminated);
     }
 
     public void InitGame()
@@ -245,6 +249,12 @@ public class GameManager : MonoBehaviour
     
     public void CueNextShot()
     {
+        if (gameOverOnNextShot)
+        {
+            GameEnded();
+            return;
+        }
+        
         angleIndicator.SetActive(true);
         nextButton.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(true);
@@ -452,6 +462,15 @@ public class GameManager : MonoBehaviour
     public void StarCollected(int index)
     {
         starsCollected.Add(index);
+    }
+
+    public void PlayerEliminated(PlayerEliminatedEvent e)
+    {
+        if (numPlayersInGame == 1 ||
+            (RoundDataManager.Instance.EliminationOrder.Count >= numPlayersInGame - 1))
+        {
+            gameOverOnNextShot = true;
+        }
     }
     
     public void GameEnded()
