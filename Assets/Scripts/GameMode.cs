@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class GameMode : MonoBehaviour
+public abstract class GameMode : MonoBehaviour
 {
     public WinCondition winCondition;
     public int pointsRequired;
@@ -24,8 +25,44 @@ public class GameMode : MonoBehaviour
         instance = this;
     }
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
+    }
+
+    public void CollectibleHit(CollectibleHitEvent e)
+    {
+        if (e.Type == CollectibleType.Danger)
+        {
+            int player = GameManager.Instance.CurrentPlayerTurn;
+            RoundDataManager.Instance.EliminatePlayer(player);
+        }
+    }
+
     public virtual WinCondition GetWinCondition()
     {
+        if (ModeSelector.Instance)
+        {
+            if (ModeSelector.Instance.GetNumPlayers() == 1)
+            {
+                winCondition = WinCondition.PointsRequired;
+                pointsRequired = LevelLoader.Instance.GetTargetPoints();
+            }
+            else
+            {
+                winCondition = WinCondition.PointsRanking;
+            }
+        }
+        else
+        {
+            winCondition = WinCondition.PointsRequired;
+            pointsRequired = LevelLoader.Instance.GetTargetPoints();
+        }
         return winCondition;
     }
 
@@ -42,5 +79,35 @@ public class GameMode : MonoBehaviour
     public float GetOptionalTimePerShot()
     {
         return maxTimePerShot - minTimePerShot;
+    }
+    
+    public virtual bool ShouldEndGame()
+    {
+        int numPlayers = GameManager.Instance.NumPlayersInGame;
+        bool isSolo = (numPlayers == 1);
+        int numEliminatedPlayers = RoundDataManager.Instance.EliminationOrder.Count;
+        
+        if (isSolo && GetWinCondition() == WinCondition.PointsRequired)
+        {
+            int pts = RoundDataManager.Instance.GetPointsForPlayer(0);
+            if (pts >= pointsRequired) 
+                return true;
+        }
+
+        if (GameManager.Instance.VolleyNumber > numVolleys)
+            return true;
+
+        if (!isSolo && numEliminatedPlayers >= numPlayers - 1)
+            return true;
+
+        if (isSolo && numEliminatedPlayers == 1)
+            return true;
+
+        return false;
+    }
+    
+    public virtual void OnShotComplete(bool hitNormalPin)
+    {
+        
     }
 }

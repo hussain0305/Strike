@@ -30,6 +30,8 @@ public class RoundDataManager : MonoBehaviour
     private int currentShotPointsAccrued;
     private int currentShotMultipleAccrued = 1;
     
+    private bool hitNormalPinThisShot;
+    
     private static RoundDataManager instance;
     public static RoundDataManager Instance => instance;
 
@@ -113,14 +115,9 @@ public class RoundDataManager : MonoBehaviour
                 gameData.totalPoints += pointsFromThisHit;
                 currentShotPointsAccrued += pointsFromThisHit;
                 scoreboard.TickToScore(gameData.totalPoints, pointsFromThisHit);
+                hitNormalPinThisShot = true;
                 break;
             case CollectibleType.Danger:
-                if (!eliminationOrder.Contains(Game.CurrentPlayerTurn))
-                {
-                    eliminationOrder.Add(Game.CurrentPlayerTurn);
-                    scoreboard.SetEliminated();
-                    EventBus.Publish(new PlayerEliminatedEvent(Game.CurrentPlayerTurn));
-                }
                 break;
         }
 
@@ -200,7 +197,7 @@ public class RoundDataManager : MonoBehaviour
     {
         return playerGameData[Game.CurrentPlayerTurn].shotHistory;
     }
-
+    
     public void StartLoggingShotInfo()
     {
         currentShotPointsAccrued = 0;
@@ -215,7 +212,21 @@ public class RoundDataManager : MonoBehaviour
         currentShotInfo.points = currentShotPointsAccrued;
         currentShotInfo.trajectory = capturedTrajectory;
         AddPlayerShotHistory(currentShotInfo);
+        
+        GameMode.Instance.OnShotComplete(hitNormalPinThisShot);
+        
         currentShotPointsAccrued = 0;
         currentShotMultipleAccrued = 1;
+        hitNormalPinThisShot = false;
+    }
+    
+    public void EliminatePlayer(int playerIndex)
+    {
+        if (!eliminationOrder.Contains(playerIndex))
+        {
+            eliminationOrder.Add(playerIndex);
+            playerScoreboards[playerIndex].SetEliminated();
+            EventBus.Publish(new PlayerEliminatedEvent(playerIndex));
+        }
     }
 }
