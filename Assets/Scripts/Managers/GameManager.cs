@@ -49,8 +49,6 @@ public class GameManager : MonoBehaviour
     
     [Header("Results Screen")]
     public Transform resultScreen;
-
-    public PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     
     private BallState ballState = BallState.OnTee;
     public static BallState BallState
@@ -203,7 +201,7 @@ public class GameManager : MonoBehaviour
         switch (GameMode.Instance.GetWinCondition())
         {
             case WinCondition.PointsRequired:
-                objectiveText.text = $"Target : {GameMode.Instance.pointsRequired}";
+                objectiveText.text = $"Target : {GameMode.Instance.PointsRequired}";
                 break;
             case WinCondition.PointsRanking:
                 objectiveText.text = $"Maximum total points wins";
@@ -275,7 +273,7 @@ public class GameManager : MonoBehaviour
                 volleyNumber++;
                 volleyText.text = $"Volley {volleyNumber}";
 
-                if (volleyNumber > GameMode.Instance.numVolleys)
+                if (volleyNumber > GameMode.Instance.NumVolleys)
                 {
                     GameEnded();
                     return;
@@ -298,7 +296,7 @@ public class GameManager : MonoBehaviour
             volleyNumber++;
             volleyText.text = $"Volley {volleyNumber}";
 
-            if (volleyNumber > GameMode.Instance.numVolleys)
+            if (volleyNumber > GameMode.Instance.NumVolleys)
             {
                 GameEnded();
             }
@@ -356,7 +354,7 @@ public class GameManager : MonoBehaviour
     {
         IEnumerator<WaitForSeconds> MinTimeRoutine()
         {
-            yield return new WaitForSeconds(GameMode.Instance.minTimePerShot);
+            yield return new WaitForSeconds(GameMode.Instance.MinTimePerShot);
             minTimePerShotRoutine = null;
             StartOptionalTimePerShotPeriod();
         }
@@ -419,7 +417,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShowTrajectory()
     {
         showTrajectory = true;
-        int secondsRemaining = GameMode.Instance.projectileViewDuration;
+        int secondsRemaining = GameMode.Instance.ProjectileViewDuration;
         trajectoryButton.SetCountdownText(secondsRemaining);
         while (secondsRemaining >= 0)
         {
@@ -473,7 +471,7 @@ public class GameManager : MonoBehaviour
     public void PostGameStuff()
     {
         bool levelCleared = GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired &&
-                            RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.pointsRequired;
+                            RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.PointsRequired;
         if (levelCleared)
         {
             foreach (int starIndex in starsCollected)

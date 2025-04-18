@@ -76,7 +76,7 @@ public class RoundDataManager : MonoBehaviour
         data.name = $"Player {_index + 1}";
         data.totalPoints = 0;
         data.shotsTaken = 0;
-        data.projectileViewsRemaining = GameMode.Instance.numProjectileViews;
+        data.projectileViewsRemaining = GameMode.Instance.NumProjectileViews;
         data.shotHistory = new List<ShotInfo>();
         
         if (playerGameData == null)

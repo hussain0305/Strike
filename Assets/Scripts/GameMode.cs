@@ -1,16 +1,29 @@
-using System;
 using UnityEngine;
 
 public abstract class GameMode : MonoBehaviour
 {
-    public WinCondition winCondition;
-    public int pointsRequired;
+    protected WinCondition winCondition = WinCondition.PointsRequired;
     
-    public int numVolleys = 5;
-    public float minTimePerShot = 5;
-    public float maxTimePerShot = 10;
-    public int numProjectileViews = 3;
-    public int projectileViewDuration = 10;
+    protected PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
+    public PinBehaviourPerTurn PinBehaviour => pinBehaviour;
+
+    private int pointsRequired;
+    public int PointsRequired => pointsRequired;
+    
+    private int numVolleys = 5;
+    public int NumVolleys => numVolleys;
+    
+    private float minTimePerShot = 5;
+    public float MinTimePerShot => minTimePerShot;
+    
+    private float maxTimePerShot = 10;
+    public float MaxTimePerShot => maxTimePerShot;
+    
+    private int numProjectileViews = 3;
+    public int NumProjectileViews => numProjectileViews;
+    
+    private int projectileViewDuration = 10;
+    public int ProjectileViewDuration => projectileViewDuration;
     
     private static GameMode instance;
     public static GameMode Instance => instance;
@@ -68,17 +81,17 @@ public abstract class GameMode : MonoBehaviour
 
     public float GetMinTimePerShot()
     {
-        return minTimePerShot;
+        return MinTimePerShot;
     }
     
     public float GetMaxTimePerShot()
     {
-        return maxTimePerShot;
+        return MaxTimePerShot;
     }
 
     public float GetOptionalTimePerShot()
     {
-        return maxTimePerShot - minTimePerShot;
+        return MaxTimePerShot - MinTimePerShot;
     }
     
     public virtual bool ShouldEndGame()
@@ -90,11 +103,11 @@ public abstract class GameMode : MonoBehaviour
         if (isSolo && GetWinCondition() == WinCondition.PointsRequired)
         {
             int pts = RoundDataManager.Instance.GetPointsForPlayer(0);
-            if (pts >= pointsRequired) 
+            if (pts >= PointsRequired) 
                 return true;
         }
 
-        if (GameManager.Instance.VolleyNumber > numVolleys)
+        if (GameManager.Instance.VolleyNumber > NumVolleys)
             return true;
 
         if (!isSolo && numEliminatedPlayers >= numPlayers - 1)

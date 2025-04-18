@@ -70,7 +70,7 @@ public class ResultsScreen : MonoBehaviour
     {
         winConditionPointsRequirement.gameObject.SetActive(true);
         int playerPoints = RoundDataManager.Instance.GetPointsForPlayer(0);
-        bool levelCleared = playerPoints >= GameMode.Instance.pointsRequired;
+        bool levelCleared = playerPoints >= GameMode.Instance.PointsRequired;
         wonMessage.gameObject.SetActive(levelCleared);
         lostMessage.gameObject.SetActive(!levelCleared);
         if (levelCleared)

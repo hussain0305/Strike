@@ -31,7 +31,7 @@ public class InGameContext : IContextProvider
 
     public PinBehaviourPerTurn GetPinResetBehaviour()
     {
-        return GameManager.Instance.pinBehaviour;
+        return GameMode.Instance.PinBehaviour;
     }
 
     public Tee GetTee()
