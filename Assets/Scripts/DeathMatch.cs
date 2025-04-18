@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameMode_Death : GameMode
+public class DeathMatch : GameMode
 {
     public override WinCondition GetWinCondition() => winCondition;
 
