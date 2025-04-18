@@ -13,6 +13,15 @@ public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class TrajectoryEnabledEvent { }
 
+public class NewRoundStartedEvent
+{
+    public int RoundNumber;
+    public NewRoundStartedEvent(int roundNumber)
+    {
+        this.RoundNumber = roundNumber;
+    }
+}
+
 [System.Serializable]
 public class TrajectorySegmentVisuals
 {
@@ -271,6 +280,7 @@ public class GameManager : MonoBehaviour
             {
                 currentPlayerTurn = 0;
                 volleyNumber++;
+                EventBus.Publish(new NewRoundStartedEvent(volleyNumber));
                 volleyText.text = $"Volley {volleyNumber}";
 
                 if (volleyNumber > GameMode.Instance.NumVolleys)
@@ -286,24 +296,7 @@ public class GameManager : MonoBehaviour
 
         RoundDataManager.Instance.SetCurrentShotTaker();
     }
-
-    public void TogglePlayerDEL()
-    {
-        currentPlayerTurn++;
-        if (currentPlayerTurn >= numPlayersInGame)
-        {
-            currentPlayerTurn = 0;
-            volleyNumber++;
-            volleyText.text = $"Volley {volleyNumber}";
-
-            if (volleyNumber > GameMode.Instance.NumVolleys)
-            {
-                GameEnded();
-            }
-        }
-        RoundDataManager.Instance.SetCurrentShotTaker();
-    }
-
+    
     public void FireButtonPressed()
     {
         if (BallShootable)

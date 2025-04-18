@@ -17,6 +17,8 @@ public class LevelExporter : MonoBehaviour
         public int numTimesCanBeCollected;
         public CollectibleParent parent;
         public Collectible.PointDisplayType pointDisplayType;
+        public Vector3[] path;
+        public float movementSpeed;
     }
 
     [System.Serializable]
@@ -96,6 +98,14 @@ public class LevelExporter : MonoBehaviour
             Collectible.PointDisplayType displayType = pointTokenScript ? pointTokenScript.pointDisplay :
                 multiplierTokenScript ? multiplierTokenScript.pointDisplay : Collectible.PointDisplayType.None;
 
+            ContinuousMovement moveScript = collectible.GetComponent<ContinuousMovement>();
+            float movementSpeed = 0;
+            Vector3[] path = null;
+            if (moveScript != null)
+            {
+                path = new[] { moveScript.pointATransform.position, moveScript.pointBTransform.position };
+                movementSpeed = moveScript.speed;
+            }
             CollectibleData collectibleData = new CollectibleData
             {
                 type = collectibleScript.type,
@@ -107,7 +117,9 @@ public class LevelExporter : MonoBehaviour
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
                 parent = CollectibleParent.World,
-                pointDisplayType = displayType
+                pointDisplayType = displayType,
+                movementSpeed = movementSpeed,
+                path = path,
             };
 
             levelData.collectibles.Add(collectibleData);
@@ -134,6 +146,15 @@ public class LevelExporter : MonoBehaviour
             Collectible.PointDisplayType displayType = pointTokenScript ? pointTokenScript.pointDisplay :
                 multiplierTokenScript ? multiplierTokenScript.pointDisplay : Collectible.PointDisplayType.None;
             
+            ContinuousMovement moveScript = collectible.GetComponent<ContinuousMovement>();
+            float movementSpeed = 0;
+            Vector3[] path = null;
+            if (moveScript != null)
+            {
+                path = new[] { moveScript.pointATransform.position, moveScript.pointBTransform.position };
+                movementSpeed = moveScript.speed;
+            }
+
             CollectibleData collectibleData = new CollectibleData
             {
                 type = collectibleScript.type,
@@ -145,7 +166,9 @@ public class LevelExporter : MonoBehaviour
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
                 parent = CollectibleParent.UI,
-                pointDisplayType = displayType
+                pointDisplayType = displayType,
+                movementSpeed = movementSpeed,
+                path = path,
             };
 
             levelData.collectibles.Add(collectibleData);

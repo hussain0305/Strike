@@ -93,6 +93,25 @@ public class LevelLoader : MonoBehaviour
             {
                 collectibleScript.InitializeAndSetup(GameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
             }
+            bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
+            ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
+
+            if (collectibleMoves)
+            {
+                if (!cmScript)
+                    cmScript = collectibleObject.AddComponent<ContinuousMovement>();
+
+                cmScript.pointA = collectibleData.path[0];
+                cmScript.pointB = collectibleData.path[1];
+                cmScript.speed  = collectibleData.movementSpeed;
+                
+                Rigidbody rBody = collectibleObject.GetComponent<Rigidbody>();
+                rBody.isKinematic = true;
+            }
+            else if (cmScript)
+            {
+                Destroy(cmScript);
+            }
         }
 
         SaveManager.GetStarsCollectedStatus(ModeSelector.Instance.GetSelectedGameMode(),
@@ -151,6 +170,7 @@ public class LevelLoader : MonoBehaviour
             if (!cmScript) cmScript = portalObject.AddComponent<ContinuousMovement>();
             cmScript.pointA = portalData.path[0];
             cmScript.pointB = portalData.path[1];
+            cmScript.speed  = portalData.movementSpeed;
         }
         else if (cmScript)
         {
