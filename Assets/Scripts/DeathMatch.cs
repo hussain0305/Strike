@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class DeathMatch : GameMode
 {
-    public override WinCondition GetWinCondition() => winCondition;
-
     public override void OnShotComplete(bool hitNormalPin)
     {
         if (!hitNormalPin)
