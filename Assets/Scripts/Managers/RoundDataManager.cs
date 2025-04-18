@@ -26,6 +26,7 @@ public class RoundDataManager : MonoBehaviour
     private List<int> eliminationOrder;
     public List<int> EliminationOrder => eliminationOrder;
 
+    private int currentShotOwnerIndex;
     private ShotInfo currentShotInfo;
     private int currentShotPointsAccrued;
     private int currentShotMultipleAccrued = 1;
@@ -186,11 +187,11 @@ public class RoundDataManager : MonoBehaviour
         playerGameData[Game.CurrentPlayerTurn] = gameData;
     }
 
-    public void AddPlayerShotHistory(ShotInfo shotInfo)
+    public void AddPlayerShotHistory(int playerIndex, ShotInfo shotInfo)
     {
-        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[playerIndex];
         gameData.shotHistory.Add(shotInfo);
-        playerGameData[Game.CurrentPlayerTurn] = gameData;
+        playerGameData[playerIndex] = gameData;
     }
 
     public List<ShotInfo> GetTrajectoryHistory()
@@ -200,6 +201,7 @@ public class RoundDataManager : MonoBehaviour
     
     public void StartLoggingShotInfo()
     {
+        currentShotOwnerIndex = GameManager.Instance.CurrentPlayerTurn;
         currentShotPointsAccrued = 0;
         currentShotInfo = new ShotInfo();
         currentShotInfo.angle = Game.AngleInput.CalculateProjectedAngle();
@@ -211,7 +213,7 @@ public class RoundDataManager : MonoBehaviour
     {
         currentShotInfo.points = currentShotPointsAccrued;
         currentShotInfo.trajectory = capturedTrajectory;
-        AddPlayerShotHistory(currentShotInfo);
+        AddPlayerShotHistory(currentShotOwnerIndex, currentShotInfo);
         
         GameMode.Instance.OnShotComplete(hitNormalPinThisShot);
         

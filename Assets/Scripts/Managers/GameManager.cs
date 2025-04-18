@@ -256,7 +256,7 @@ public class GameManager : MonoBehaviour
         angleIndicator.SetActive(true);
         nextButton.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(true);
-        GameManager.BallState = BallState.OnTee;
+        BallState = BallState.OnTee;
         TogglePlayer();
         EventBus.Publish(new NextShotCuedEvent());
         CheckToShowTrajectoryHistoryButton();
