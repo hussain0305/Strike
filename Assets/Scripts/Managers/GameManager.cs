@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BallShotEvent { }
+public class ShotCompleteEvent { }
+public class CueNextShotEvent { }
 public class NextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
@@ -165,11 +167,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
     }
 
     public void InitGame()
@@ -248,14 +252,21 @@ public class GameManager : MonoBehaviour
         if (optTimePerShotRoutine != null)
         {
             StopCoroutine(optTimePerShotRoutine);
-            CueNextShot();
+            ShotComplete();
         }
     }
+
+    public void ShotComplete()
+    {
+        nextButton.gameObject.SetActive(false);
+        EventBus.Publish(new ShotCompleteEvent());
+    }
     
-    public void CueNextShot()
+    public void CueNextShot(CueNextShotEvent e)
     {
         if (GameMode.Instance.ShouldEndGame())
         {
+            Debug.Log(">>> Received true");
             GameEnded();
             return;
         }
@@ -374,7 +385,7 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
             optTimePerShotRoutine = null;
-            CueNextShot();
+            ShotComplete();
         }
 
         if (optTimePerShotRoutine != null)

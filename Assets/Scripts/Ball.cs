@@ -44,12 +44,14 @@ public class Ball : MonoBehaviour
     {
         EventBus.Subscribe<ResetPreviewEvent>(ResetBall);
         EventBus.Subscribe<NextShotCuedEvent>(ResetBall);
+        EventBus.Subscribe<ShotCompleteEvent>(ShotCompleted);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<ResetPreviewEvent>(ResetBall);
         EventBus.Unsubscribe<NextShotCuedEvent>(ResetBall);
+        EventBus.Unsubscribe<ShotCompleteEvent>(ShotCompleted);
     }
 
     public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier)
@@ -139,6 +141,14 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void ShotCompleted(ShotCompleteEvent e)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
+        RoundDataManager.Instance?.FinishLoggingShotInfo(capturedTrajectoryPoints);
+    }
+    
     public void ResetBall<T>(T e)
     {
         ResetBall();
@@ -147,7 +157,6 @@ public class Ball : MonoBehaviour
     public void ResetBall()
     {
         StopAllCoroutines();
-        RoundDataManager.Instance?.FinishLoggingShotInfo(capturedTrajectoryPoints);
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;

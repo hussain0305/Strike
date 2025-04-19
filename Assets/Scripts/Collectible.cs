@@ -163,7 +163,7 @@ public class Collectible : MonoBehaviour
 
     public void NextShotCued(NextShotCuedEvent e)
     {
-        if (context.GetPinResetBehaviour() == PinBehaviourPerTurn.Reset)
+        if (context?.GetPinResetBehaviour() == PinBehaviourPerTurn.Reset)
         {
             numTimesCollected = 0;
             accountedForInThisShot = false;

@@ -10,7 +10,7 @@ public abstract class GameMode : MonoBehaviour
     private int pointsRequired;
     public int PointsRequired => pointsRequired;
     
-    private int numVolleys = 5;
+    protected int numVolleys = 5;
     public int NumVolleys => numVolleys;
     
     private float minTimePerShot = 5;
@@ -32,8 +32,7 @@ public abstract class GameMode : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(instance.gameObject);
         }
         instance = this;
     }
@@ -96,6 +95,7 @@ public abstract class GameMode : MonoBehaviour
     
     public virtual bool ShouldEndGame()
     {
+        Debug.Log(">>> Evaluating should end game!");
         int numPlayers = GameManager.Instance.NumPlayersInGame;
         bool isSolo = (numPlayers == 1);
         int numEliminatedPlayers = RoundDataManager.Instance.EliminationOrder.Count;
@@ -119,8 +119,8 @@ public abstract class GameMode : MonoBehaviour
         return false;
     }
     
-    public virtual void OnShotComplete(bool hitNormalPin)
+    public virtual void OnShotComplete(bool hitSomething)
     {
-        
+        EventBus.Publish(new CueNextShotEvent());
     }
 }

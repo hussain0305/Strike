@@ -26,12 +26,8 @@ public class RoundDataManager : MonoBehaviour
     private List<int> eliminationOrder;
     public List<int> EliminationOrder => eliminationOrder;
 
-    private int currentShotOwnerIndex;
     private ShotInfo currentShotInfo;
-    private int currentShotPointsAccrued;
-    private int currentShotMultipleAccrued = 1;
-    
-    private bool hitNormalPinThisShot;
+    private ShotData currentShotData;
     
     private static RoundDataManager instance;
     public static RoundDataManager Instance => instance;
@@ -109,16 +105,18 @@ public class RoundDataManager : MonoBehaviour
         switch (e.Type)
         {
             case CollectibleType.Multiple:
-                currentShotMultipleAccrued *= e.Value;
+                currentShotData.multiplierAccrued *= e.Value;
                 break;
             case CollectibleType.Points:
-                int pointsFromThisHit = currentShotMultipleAccrued * e.Value;
+                int pointsFromThisHit = currentShotData.multiplierAccrued * e.Value;
                 gameData.totalPoints += pointsFromThisHit;
-                currentShotPointsAccrued += pointsFromThisHit;
+                currentShotData.pointsAccrued += pointsFromThisHit;
                 scoreboard.TickToScore(gameData.totalPoints, pointsFromThisHit);
-                hitNormalPinThisShot = true;
+                currentShotData.hitNormalPint = true;
                 break;
             case CollectibleType.Danger:
+                currentShotData.hitDangerPin = true;
+                EliminatePlayer(GameManager.Instance.CurrentPlayerTurn);
                 break;
         }
 
@@ -201,8 +199,7 @@ public class RoundDataManager : MonoBehaviour
     
     public void StartLoggingShotInfo()
     {
-        currentShotOwnerIndex = GameManager.Instance.CurrentPlayerTurn;
-        currentShotPointsAccrued = 0;
+        currentShotData.StartLogging(GameManager.Instance.CurrentPlayerTurn);
         currentShotInfo = new ShotInfo();
         currentShotInfo.angle = Game.AngleInput.CalculateProjectedAngle();
         currentShotInfo.spin = Game.SpinInput.SpinVector;
@@ -211,15 +208,13 @@ public class RoundDataManager : MonoBehaviour
 
     public void FinishLoggingShotInfo(List<Vector3> capturedTrajectory)
     {
-        currentShotInfo.points = currentShotPointsAccrued;
+        currentShotInfo.points = currentShotData.pointsAccrued;
         currentShotInfo.trajectory = capturedTrajectory;
-        AddPlayerShotHistory(currentShotOwnerIndex, currentShotInfo);
+        AddPlayerShotHistory(currentShotData.ownerIndex, currentShotInfo);
         
-        GameMode.Instance.OnShotComplete(hitNormalPinThisShot);
+        GameMode.Instance.OnShotComplete(currentShotData.hitDangerPin || currentShotData.hitNormalPint);
         
-        currentShotPointsAccrued = 0;
-        currentShotMultipleAccrued = 1;
-        hitNormalPinThisShot = false;
+        currentShotData.Reset();
     }
     
     public void EliminatePlayer(int playerIndex)

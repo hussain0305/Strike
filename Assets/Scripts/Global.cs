@@ -8,7 +8,7 @@ public enum GameModeType
 {
     Pins,
     Portals,
-    Dartboard
+    Deathmatch
 }
 
 public enum BallState
@@ -140,6 +140,30 @@ public struct ShotInfo
     public Vector2 spin;
     public Vector2 angle;
     public List<Vector3> trajectory;
+}
+
+public struct ShotData
+{
+    public int ownerIndex;
+    public int pointsAccrued;
+    public int multiplierAccrued;
+    public bool hitNormalPint;
+    public bool hitDangerPin;
+
+    public void Reset()
+    {
+        ownerIndex = -1;
+        pointsAccrued = 0;
+        multiplierAccrued = 1;
+        hitNormalPint = false;
+        hitDangerPin = false;
+    }
+
+    public void StartLogging(int playerIndex)
+    {
+        Reset();
+        ownerIndex = playerIndex;
+    }
 }
 
 public struct PlayerGameData
