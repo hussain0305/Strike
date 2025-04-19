@@ -49,6 +49,15 @@ MonoBehaviour:
     prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
     id: shotgunBall
     cost: 500
+  - name: Sticky Ball
+    description: Sticks to the surface of first contact
+    rarity: 2
+    weight: 1
+    spin: 5
+    physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
+    id: stickyBall
+    cost: 150
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3
