@@ -154,6 +154,7 @@ public class Collectible : MonoBehaviour
         accountedForInThisShot = true;
         EventBus.Publish(new CollectibleHitEvent(type, value, other.transform.position));
         header?.gameObject.SetActive(false);
+        hitReaction?.CheckIfHitsExhasuted(numTimesCollected, numTimesCanBeCollected);
     }
 
     public void BallShot(BallShotEvent e)
