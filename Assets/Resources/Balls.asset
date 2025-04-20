@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Balls
   m_EditorClassIdentifier: 
   allBalls:
-  - name: Soccer Ball
-    description: 
+  - name: Football
+    description: Yes, this is what a football is. Not that hand egg thing
     rarity: 0
     weight: 1
     spin: 10
@@ -31,7 +31,7 @@ MonoBehaviour:
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
     id: bowlingBall
     cost: 30
-  - name: Sniper Ball
+  - name: Sniper
     description: Hit exactly where you aim. No Gravity, no spin.
     rarity: 2
     weight: 0.5
@@ -40,7 +40,7 @@ MonoBehaviour:
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
     id: sniperBall
     cost: 90
-  - name: Shotgun Ball
+  - name: Shotgun
     description: A flurry of pellets shoot with the ball, hitting additional targets
     rarity: 3
     weight: 0.5
@@ -49,7 +49,7 @@ MonoBehaviour:
     prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
     id: shotgunBall
     cost: 500
-  - name: Sticky Ball
+  - name: Sticky
     description: Sticks to the surface of first contact
     rarity: 2
     weight: 1
@@ -57,7 +57,16 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
     id: stickyBall
-    cost: 150
+    cost: 1
+  - name: Ghost
+    description: Passes through everything, collects everything. EVERYTHING
+    rarity: 2
+    weight: 1
+    spin: 5
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
+    id: ghostBall
+    cost: 1
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3

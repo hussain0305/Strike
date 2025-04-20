@@ -95,7 +95,6 @@ public abstract class GameMode : MonoBehaviour
     
     public virtual bool ShouldEndGame()
     {
-        Debug.Log(">>> Evaluating should end game!");
         int numPlayers = GameManager.Instance.NumPlayersInGame;
         bool isSolo = (numPlayers == 1);
         int numEliminatedPlayers = RoundDataManager.Instance.EliminationOrder.Count;

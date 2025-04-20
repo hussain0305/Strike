@@ -16,9 +16,9 @@ public class BallPreviewController : MonoBehaviour
     {
         previewStrategies = new Dictionary<string, IBallPreview>
         {
-            { "Soccer Ball", transform.AddComponent<PreviewSoccerBall>() },
-            { "Shotgun Ball", transform.AddComponent<PreviewShotgunBall>() },
-            { "Sniper Ball", transform.AddComponent<PreviewSniperBall>() }
+            { "soccBall", transform.AddComponent<PreviewSoccerBall>() },
+            { "shotgunBall", transform.AddComponent<PreviewShotgunBall>() },
+            { "sniperBall", transform.AddComponent<PreviewSniperBall>() }
         };
 
         InitializeElements();
@@ -32,9 +32,9 @@ public class BallPreviewController : MonoBehaviour
         }
     }
 
-    public void PlayPreview(string ballName, GameObject previewBall)
+    public void PlayPreview(string ballID, GameObject previewBall)
     {
-        if (previewStrategies.TryGetValue(ballName, out IBallPreview preview))
+        if (previewStrategies.TryGetValue(ballID, out IBallPreview preview))
         {
             preview.PlayPreview(previewBall);
         }

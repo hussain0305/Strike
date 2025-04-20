@@ -151,7 +151,7 @@ public class BallSelectionPage : MonoBehaviour
         HighlightSelected(ballID);
         SetupEquipOrUnlockButton();
         
-        previewController.PlayPreview(selectedBallProperties.name, selectedBall);
+        previewController.PlayPreview(selectedBallProperties.id, selectedBall);
     }
     
     public void HighlightSelected(string ballID)
