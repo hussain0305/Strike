@@ -42,6 +42,8 @@ public class TutorialManager : MonoBehaviour
     }
 
     private bool showTrajectory;
+
+    private string tutorialBallID = "soccBall";
     
     private void Start()
     {
@@ -100,7 +102,7 @@ public class TutorialManager : MonoBehaviour
 
     public void InitTutorial()
     {
-        BallProperties selected = Balls.Instance.GetBall(SaveManager.GetEquippedBall());
+        BallProperties selected = Balls.Instance.GetBall(tutorialBallID);
         GameObject spawned = Instantiate(selected.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
         ball = spawned.GetComponent<Ball>();
         CameraController.Instance.cameraFollow.Ball = ball.transform;
