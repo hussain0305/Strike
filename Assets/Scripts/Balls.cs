@@ -26,6 +26,9 @@ public class Balls : ScriptableObject
     public float maxSpin = 15;
     public float maxBounce = 3;
 
+    [Header("Additional")]
+    public GameObject shotgunPellets;
+    
     private Dictionary<string, BallProperties> ballProperties;
     
     public BallProperties GetBall(string id)

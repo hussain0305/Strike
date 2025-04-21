@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class SniperBall : Ball
 {
+    public override void InitAbilityDriver()
+    {
+        AbilityDriver.Configure(this, context, new List<IBallAbilityModule>()
+        {
+            new SniperModule()
+        });
+    }
+
     public override List<Vector3> CalculateTrajectory()
     {
         gravity = 0;

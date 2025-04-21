@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7069517535911163313}
   - component: {fileID: 3798794528407180581}
   - component: {fileID: 1516453715555116339}
-  - component: {fileID: 6740917276115417957}
-  - component: {fileID: 8744155964130014796}
+  - component: {fileID: 4658577375570559377}
+  - component: {fileID: 3553239335272587113}
   m_Layer: 6
   m_Name: ShotgunBall
   m_TagString: Untagged
@@ -144,7 +144,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &6740917276115417957
+--- !u!114 &4658577375570559377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,7 +153,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1089681808455105078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58c0f389146e8b45bcd868669d749d5, type: 3}
+  m_Script: {fileID: 11500000, guid: d949cadcf6db37147a593b977676885f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ball: {fileID: 0}
+--- !u!114 &3553239335272587113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089681808455105078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81423a8b25072c478a3380c9fe900c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 3234842223703551136}
@@ -163,20 +176,6 @@ MonoBehaviour:
   dipClamp: 2
   groundLevel: 0
   collidedWithSomething: 0
---- !u!114 &8744155964130014796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1089681808455105078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b37cee87a866e564d95d58baa102130e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pelletPrefab: {fileID: 1089681808455105078, guid: 0558c6b7cc36509468512abd75aab6a7, type: 3}
-  spread: {x: 0.2, y: 0.1}
 --- !u!1 &1845544683009378101
 GameObject:
   m_ObjectHideFlags: 0
@@ -5521,7 +5520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4690533fe1410ad49939c775b387f6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 6740917276115417957}
+  ball: {fileID: 3553239335272587113}
 --- !u!1 &9138213115521254653
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,7 +5566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e4cef0496911a46ac08ae192f0e74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 6740917276115417957}
+  ball: {fileID: 3553239335272587113}
 --- !u!114 &7610025539870540025
 MonoBehaviour:
   m_ObjectHideFlags: 0

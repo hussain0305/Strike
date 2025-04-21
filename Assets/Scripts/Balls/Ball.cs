@@ -40,6 +40,9 @@ public class Ball : MonoBehaviour
     [HideInInspector]
     public bool collidedWithSomething = false;
 
+    private AbilityDriver abilityDriver;
+    protected AbilityDriver AbilityDriver => abilityDriver ??= GetComponent<AbilityDriver>();
+    
     private void OnEnable()
     {
         EventBus.Subscribe<ResetPreviewEvent>(ResetBall);
@@ -59,16 +62,12 @@ public class Ball : MonoBehaviour
         context = _context;
         trajectoryModifier = _trajectoryModifier;
         
-        foreach (BallAbility ability in GetComponentsInChildren<BallAbility>())
-        {
-            ability.Initialize(this, context);
-        }
-
         trajectoryDefinition = context.GetTrajectoryDefinition();
         tee = context.GetTee();
         startPosition = tee.ballPosition.position;
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
+        InitAbilityDriver();
     }
     
     public void Shoot()
@@ -241,6 +240,8 @@ public class Ball : MonoBehaviour
 
         return trajectoryPoints;
     }
+
+    public virtual void InitAbilityDriver() { }
 }
 
 /*

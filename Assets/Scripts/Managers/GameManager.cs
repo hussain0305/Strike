@@ -15,6 +15,15 @@ public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class TrajectoryEnabledEvent { }
 
+public class ProjectilesSpawnedEvent
+{
+    public GameObject[] projectiles;
+    public ProjectilesSpawnedEvent(GameObject[] _projectiles)
+    {
+        projectiles = _projectiles;
+    }
+}
+
 public class NewRoundStartedEvent
 {
     public int RoundNumber;
