@@ -81,6 +81,7 @@ public enum ButtonLocation
     MainMenu_1,
     MainMenu_2,
     GameHUDAlt,
+    FusionSlotButton,
 };
 
 public enum GameContext

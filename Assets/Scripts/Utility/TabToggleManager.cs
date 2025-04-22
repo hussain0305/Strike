@@ -8,7 +8,7 @@ public struct TabEntry
 {
     public Image buttonOutline;
     public Button button;
-    public GameObject page;
+    public GameObject[] pages;
     public Material outlineSelectedMaterial;
 }
 
@@ -55,7 +55,10 @@ public class TabToggleManager : MonoBehaviour
         {
             bool isSelected = (i == _selectedIndex);
 
-            tabs[i].page.SetActive(isSelected);
+            foreach (var page in tabs[i].pages)
+            {
+                page.SetActive(isSelected);
+            }
             tabs[i].button.transform.parent.localScale = (isSelected ? selectedSize : unSelectedSize) * Vector3.one;
 
             
