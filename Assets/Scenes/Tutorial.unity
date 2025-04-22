@@ -3940,8 +3940,6 @@ MonoBehaviour:
   - trajectory: {fileID: 1303023003}
     segmentEnd: {fileID: 1225936366}
   fireButton: {fileID: 1376957821500136497}
-  nextButton: {fileID: 911498080706486356}
-  nextButtonFill: {fileID: 6315957640618899093}
   angleIndicator: {fileID: 824971010}
 --- !u!114 &642570810
 MonoBehaviour:
@@ -8850,6 +8848,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
   - {fileID: 2100000, guid: fb8a27a776088b644b48eeea6036d31a, type: 2}
   - {fileID: 2100000, guid: 57d353a48b3747945abf07e8c0b3dfd4, type: 2}
+  dangerMaterial: {fileID: 0}
   poolSize: 10
 --- !u!1 &1519807638
 GameObject:
@@ -19006,7 +19005,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &4285580947532723122
 GameObject:
   m_ObjectHideFlags: 0
