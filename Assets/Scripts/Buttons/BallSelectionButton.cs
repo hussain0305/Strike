@@ -17,7 +17,6 @@ public class BallSelectionButton : MonoBehaviour
 {
     public Button button;
     public TextMeshProUGUI ballNameText;
-    public Image[] outlines;
     public Color selectedTextColor;
     public Color unselectedTextColor;
     

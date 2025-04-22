@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public enum AbilityAxis {
+    NoAbility,
     Spawn,
     Trajectory,
     Collision,

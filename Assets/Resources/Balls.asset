@@ -18,6 +18,8 @@ MonoBehaviour:
     rarity: 0
     weight: 1
     spin: 10
+    abilityAxis: 0
+    abilityText: Enhanced Curve
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 1089681808455105078, guid: c3613743306a885429a288d93f20e705, type: 3}
     id: soccBall
@@ -27,6 +29,8 @@ MonoBehaviour:
     rarity: 1
     weight: 5
     spin: 2
+    abilityAxis: 0
+    abilityText: Enhanced Push Force
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
     id: bowlingBall
@@ -36,6 +40,8 @@ MonoBehaviour:
     rarity: 2
     weight: 0.5
     spin: 0
+    abilityAxis: 7
+    abilityText: Red-Dot Aim
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
     id: sniperBall
@@ -45,6 +51,8 @@ MonoBehaviour:
     rarity: 3
     weight: 0.5
     spin: 0
+    abilityAxis: 1
+    abilityText: Spawns additional pellets
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
     id: shotgunBall
@@ -54,6 +62,8 @@ MonoBehaviour:
     rarity: 2
     weight: 1
     spin: 5
+    abilityAxis: 3
+    abilityText: Sticks to point of contact
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
     id: stickyBall
@@ -63,6 +73,8 @@ MonoBehaviour:
     rarity: 2
     weight: 1
     spin: 5
+    abilityAxis: 3
+    abilityText: Passes through objects
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
     id: ghostBall

@@ -213,6 +213,8 @@ public struct BallProperties
     [Header("Properties")]
     public float weight;
     public float spin;
+    public AbilityAxis abilityAxis;
+    public string abilityText;
 
     [Header("Construction")]
     public PhysicsMaterial physicsMaterial;
