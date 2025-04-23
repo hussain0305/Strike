@@ -65,10 +65,17 @@ public class BallFusionController : MonoBehaviour
     [SerializeField] private BallStatRow statSpin;
     [SerializeField] private BallStatRow statBounce;
     
-    [SerializeField] private GameObject addToFavoritesButton;
-    [SerializeField] private GameObject fuseButton;
-    [SerializeField] private GameObject equipButton;
+    [SerializeField] private GameObject addToFavoritesButtonObject;
+    [SerializeField] private GameObject fuseButtonObject;
+    [SerializeField] private GameObject equipButtonObject;
+    [SerializeField] private GameObject equippedObject;
 
+    private Button addToFavoritesButton;
+    private Button AddToFavoritesButton => addToFavoritesButton ??= addToFavoritesButtonObject.GetComponentInChildren<Button>();
+    private Button fuseButton;
+    private Button FuseButton => fuseButton ??= fuseButtonObject.GetComponentInChildren<Button>();
+    private Button equipButton;
+    private Button EquipButton => equipButton ??= equipButtonObject.GetComponentInChildren<Button>();
 
     private string primaryBallID;
     private string secondaryBallID;
