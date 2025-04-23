@@ -298,5 +298,75 @@ public static class SaveManager
         return currentSaveData.sfxVolume;
     }
     
+    private static string MakeFusionKey(string primaryID, string secondaryID)
+    { 
+        return $"{primaryID}+{secondaryID}";
+    }
+        
+    public static void AddUnlockedFusion(string primaryID, string secondaryID)
+    {
+        EnsureDataLoaded();
+        string key = MakeFusionKey(primaryID, secondaryID);
+        if (!currentSaveData.unlockedFusions.Contains(key))
+        {
+            currentSaveData.unlockedFusions.Add(key);
+            SaveData();
+        }
+    }
+    
+    public static bool IsFusionUnlocked(string primaryID, string secondaryID)
+    {
+        EnsureDataLoaded();
+        string key = MakeFusionKey(primaryID, secondaryID);
+        return currentSaveData.unlockedFusions.Contains(key);
+    }
+    
+    public static void AddFusionToFavorites(string primaryID, string secondaryID)
+    {
+        EnsureDataLoaded();
+        string key = MakeFusionKey(primaryID, secondaryID);
+
+        if (currentSaveData.favoriteFusions.Contains(key)) return;
+
+        currentSaveData.favoriteFusions[2] = currentSaveData.favoriteFusions[1];
+        currentSaveData.favoriteFusions[1] = currentSaveData.favoriteFusions[0];
+        currentSaveData.favoriteFusions[0] = key;
+
+        SaveData();
+    }
+    
+    public static bool IsFusionFavorited(string primaryID, string secondaryID)
+    {
+        EnsureDataLoaded();
+        string key = MakeFusionKey(primaryID, secondaryID);
+        return currentSaveData.favoriteFusions.Contains(key);
+    }
+    
+    public static void SetSelectedFusion(string primaryID, string secondaryID)
+    {
+        EnsureDataLoaded();
+        currentSaveData.selectedFusion = MakeFusionKey(primaryID, secondaryID);
+        SaveData();
+    }
+    
+    public static string GetSelectedFusion()
+    {
+        EnsureDataLoaded();
+        return currentSaveData.selectedFusion;
+    }
+    
+    public static void SetFusionEquipped(bool equipFusion)
+    {
+        EnsureDataLoaded();
+        currentSaveData.isFusionEquipped = equipFusion;
+        SaveData();
+    }
+    
+    public static bool IsFusionEquipped()
+    {
+        EnsureDataLoaded();
+        return currentSaveData.isFusionEquipped;
+    }
+    
     #endregion
 }

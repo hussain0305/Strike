@@ -42,6 +42,11 @@ public class SaveData
     public Dictionary<string, int> collectedStars = new Dictionary<string, int>();
     public List<LevelProgress> levelProgress = new List<LevelProgress> { new LevelProgress(0, 0) };
 
+    public List<string> unlockedFusions = new List<string>();
+    public string[] favoriteFusions = new string[3] { "", "", "" };
+    public string selectedFusion = "";
+    public bool isFusionEquipped = false;
+    
     public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
     public void SyncDictionaryToList()
     {
