@@ -26,7 +26,7 @@ public class FavoriteFusionButton : MonoBehaviour
     {
         var parts = key.Split('+');
         if (parts.Length == 2)
-            return $"{parts[0].ToUpper()} - {parts[1].ToUpper()}";
+            return $"{Balls.Instance.GetBall(parts[0]).name.ToUpper()} - {Balls.Instance.GetBall(parts[1]).name.ToUpper()}";
         return key.ToUpper();
     }
 

@@ -57,4 +57,9 @@ public class Balls : ScriptableObject
     {
         return GetBall(id).cost;
     }
+    
+    public int GetFusionCost(string primaryId, string secondaryId)
+    {
+        return (GetBall(primaryId).cost + GetBall(secondaryId).cost) / 5;
+    }
 }

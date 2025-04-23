@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,7 +71,9 @@ public class BallFusionController : MonoBehaviour
     [SerializeField] private GameObject fuseButtonObject;
     [SerializeField] private GameObject equipButtonObject;
     [SerializeField] private GameObject equippedObject;
-
+    [SerializeField] private TextMeshProUGUI fuseCostText;
+    [SerializeField] private GameObject cantUnlockSection;
+    
     [Header("Favorites")]
     [SerializeField] private FavoriteFusionButton[] favoriteButtons;
 
@@ -84,6 +87,7 @@ public class BallFusionController : MonoBehaviour
     private List<FusionBallButton> activePopupButtons = new();
     private List<FusionBallButton> pooledButtons = new List<FusionBallButton>();
     private bool setupComplete = false;
+    private Coroutine cantUnlockMessageCoroutine;
 
     private void Start()
     {
@@ -95,7 +99,7 @@ public class BallFusionController : MonoBehaviour
         primarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(true));
         secondarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(false));
 
-        FuseButton.onClick.AddListener(OnFuse);
+        FuseButton.onClick.AddListener(TryFuseBalls);
         AddToFavoritesButton.onClick.AddListener(OnAddToFavorites);
         EquipButton.onClick.AddListener(OnEquip);
 
@@ -277,6 +281,7 @@ public class BallFusionController : MonoBehaviour
             addToFavoritesButtonObject.SetActive(false);
             equipButtonObject.SetActive(false);
             equippedObject.SetActive(false);
+            cantUnlockSection.SetActive(false);
             return;
         }
 
@@ -288,6 +293,53 @@ public class BallFusionController : MonoBehaviour
         fuseButtonObject.SetActive(!unlocked);
         addToFavoritesButtonObject.SetActive(unlocked && !favorited);
         equipButtonObject.SetActive(unlocked && !equipped);
+        fuseCostText.text = Balls.Instance.GetFusionCost(primaryBallID, secondaryBallID).ToString();
         equippedObject.SetActive(unlocked && equipped);
+        cantUnlockSection.SetActive(false);
     }
+    
+    public void TryFuseBalls()
+    {
+        if (string.IsNullOrEmpty(primaryBallID) || string.IsNullOrEmpty(secondaryBallID))
+            return;
+
+        int cost = Balls.Instance.GetFusionCost(primaryBallID, secondaryBallID);
+        if (cost <= SaveManager.GetStars())
+        {
+            SaveManager.SpendStars(cost);
+            SaveManager.AddUnlockedFusion(primaryBallID, secondaryBallID);
+            UpdateActionButtons();
+            LoadFavorites();
+        }
+        else
+        {
+            CancelOngoingProcesses();
+            cantUnlockMessageCoroutine = StartCoroutine(ShowCannotUnlockMessage());
+        }
+    }
+
+    public void CancelOngoingProcesses()
+    {
+        if (cantUnlockMessageCoroutine != null)
+        {
+            StopCoroutine(cantUnlockMessageCoroutine);
+        }
+    }
+
+    private IEnumerator ShowCannotUnlockMessage()
+    {
+        fuseButtonObject.SetActive(false);
+        addToFavoritesButtonObject.SetActive(false);
+        equipButtonObject.SetActive(false);
+        equippedObject.SetActive(false);
+        cantUnlockSection.gameObject.SetActive(true);
+
+        cantUnlockSection.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2);
+
+        UpdateActionButtons();
+        cantUnlockMessageCoroutine = null;
+    }
+
 }

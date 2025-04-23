@@ -8219,7 +8219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 752428785}
   m_Layer: 5
-  m_Name: UnlockBall
+  m_Name: FuseBalls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21315,6 +21315,8 @@ MonoBehaviour:
   fuseButtonObject: {fileID: 752428784}
   equipButtonObject: {fileID: 1488650007}
   equippedObject: {fileID: 229955742}
+  fuseCostText: {fileID: 18945840}
+  cantUnlockSection: {fileID: 435503553}
   favoriteButtons:
   - {fileID: 1092705084}
   - {fileID: 158145802}

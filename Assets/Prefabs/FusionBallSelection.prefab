@@ -52,6 +52,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 8546174482359823329}
   button: {fileID: 8319749005885086568}
+  ballProperties:
+    name: 
+    description: 
+    rarity: 0
+    weight: 0
+    spin: 0
+    abilityAxis: 0
+    abilityText: 
+    physicsMaterial: {fileID: 0}
+    prefab: {fileID: 0}
+    id: 
+    cost: 0
 --- !u!1 &7442046952331692763
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,8 +201,8 @@ MonoBehaviour:
   groupId: 2
   buttonLocation: 1
   outline: {fileID: 2986721668293111379}
-  backToDefaultOnEnable: 0
-  staysSelected: 1
+  backToDefaultOnEnable: 1
+  staysSelected: 0
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
