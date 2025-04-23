@@ -48,8 +48,8 @@ public struct FusedBallProperties
 public class BallFusionController : MonoBehaviour
 {
     [Header("Slots & Popups")]
-    [SerializeField] private Button primarySlotButton;
-    [SerializeField] private Button secondarySlotButton;
+    [SerializeField] private FusionSlotButton primarySlotButton;
+    [SerializeField] private FusionSlotButton secondarySlotButton;
     [SerializeField] private GameObject fusionPopup;
     [SerializeField] private Transform popupContentParent;
     [SerializeField] private FusionBallButton fusionBallButtonPrefab;
@@ -58,15 +58,17 @@ public class BallFusionController : MonoBehaviour
     [SerializeField] private GameObject primaryStatPanel;
     [SerializeField] private GameObject secondaryStatPanel;
     [SerializeField] private GameObject fusedStatPanel;
-    [SerializeField] private GameObject addToFavoritesButton;
-    [SerializeField] private GameObject fuseButton;
-    [SerializeField] private GameObject equipButton;
     [SerializeField] private FusionBallProperties primaryBallStats;
     [SerializeField] private FusionBallProperties secondaryBallStats;
     [SerializeField] private FusedBallProperties fusedBallStats;
     [SerializeField] private BallStatRow statWeight;
     [SerializeField] private BallStatRow statSpin;
     [SerializeField] private BallStatRow statBounce;
+    
+    [SerializeField] private GameObject addToFavoritesButton;
+    [SerializeField] private GameObject fuseButton;
+    [SerializeField] private GameObject equipButton;
+
 
     private string primaryBallID;
     private string secondaryBallID;
@@ -76,14 +78,14 @@ public class BallFusionController : MonoBehaviour
 
     private void Start()
     {
-        secondarySlotButton.interactable = false;
+        secondarySlotButton.SetInteractable(false);
 
         primaryStatPanel.SetActive(false);
         secondaryStatPanel.SetActive(false);
         fusedStatPanel.SetActive(false);
         
-        primarySlotButton.onClick.AddListener(() => OpenFusionPopup(true));
-        secondarySlotButton.onClick.AddListener(() => OpenFusionPopup(false));
+        primarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(true));
+        secondarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(false));
     }
 
     private void OpenFusionPopup(bool isPrimary)
@@ -153,23 +155,9 @@ public class BallFusionController : MonoBehaviour
         float combinedBounce = (a.physicsMaterial.bounciness
                               + b.physicsMaterial.bounciness) * 0.5f;
 
-        statWeight.propertyTypeText.text  = "WEIGHT";
-        statWeight.propertySlider.value   =
-            Mathf.Clamp01(combinedWeight / Balls.Instance.maxWeight);
-        statWeight.propertyValueText.text =
-            combinedWeight.ToString("F1");
-
-        statSpin.propertyTypeText.text    = "SPIN";
-        statSpin.propertySlider.value     =
-            Mathf.Clamp01(combinedSpin / Balls.Instance.maxSpin);
-        statSpin.propertyValueText.text   =
-            combinedSpin.ToString("F1");
-
-        statBounce.propertyTypeText.text  = "BOUNCE";
-        statBounce.propertySlider.value   =
-            Mathf.Clamp01(combinedBounce / Balls.Instance.maxBounce);
-        statBounce.propertyValueText.text =
-            combinedBounce.ToString("F2");
+        statWeight.SetWeight(combinedWeight);
+        statSpin.SetSpin(combinedSpin);
+        statBounce.SetBounce(combinedBounce);
     }
 
     public void PrimarySelected(string ballID)
@@ -184,8 +172,10 @@ public class BallFusionController : MonoBehaviour
         secondaryBallStats.Reset();
         secondaryStatPanel.SetActive(false);
         fusedStatPanel.SetActive(false);
-
-        secondarySlotButton.interactable = true;
+        secondarySlotButton.SetUnselected();
+        
+        primarySlotButton.SetSelected(primaryBallID);
+        secondarySlotButton.SetInteractable(true);
     }
 
     public void SecondarySelected(string ballID)
@@ -196,6 +186,7 @@ public class BallFusionController : MonoBehaviour
         secondaryBallID = ballID;
         BallProperties secondaryBallProperties = Balls.Instance.GetBall(secondaryBallID);
         secondaryBallStats.Set(secondaryBallProperties, "SECONDARY");
+        secondarySlotButton.SetSelected(secondaryBallID);
         
         BallProperties primaryBallProperties = Balls.Instance.GetBall(primaryBallID);
         fusedBallStats.Set(primaryBallProperties, secondaryBallProperties);

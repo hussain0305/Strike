@@ -13,9 +13,9 @@ public class FusionBallButton : MonoBehaviour
 
     public void Initialize(BallProperties props, Action<string> onChosenCallback)
     {
-        ballID    = props.id;
+        ballID = props.id;
         nameText.text = props.name;
-        onChosen  = onChosenCallback;
+        onChosen = onChosenCallback;
 
         button.onClick.AddListener(HandleClick);
     }
