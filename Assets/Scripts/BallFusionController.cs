@@ -75,13 +75,15 @@ public class BallFusionController : MonoBehaviour
     [SerializeField] private FavoriteFusionButton[] favoriteButtons;
 
     private Button AddToFavoritesButton => addToFavoritesButtonObject.GetComponentInChildren<Button>();
-    private Button FuseButton            => fuseButtonObject.GetComponentInChildren<Button>();
-    private Button EquipButton           => equipButtonObject.GetComponentInChildren<Button>();
+    private Button FuseButton => fuseButtonObject.GetComponentInChildren<Button>();
+    private Button EquipButton => equipButtonObject.GetComponentInChildren<Button>();
 
     private string primaryBallID;
     private string secondaryBallID;
     private bool   selectingPrimary;
     private List<FusionBallButton> activePopupButtons = new();
+    private List<FusionBallButton> pooledButtons = new List<FusionBallButton>();
+    private bool setupComplete = false;
 
     private void Start()
     {
@@ -97,31 +99,45 @@ public class BallFusionController : MonoBehaviour
         AddToFavoritesButton.onClick.AddListener(OnAddToFavorites);
         EquipButton.onClick.AddListener(OnEquip);
 
+        foreach (var props in Balls.Instance.allBalls)
+        {
+            var btn = Instantiate(fusionBallButtonPrefab, popupContentParent);
+            btn.Initialize(props, OnBallSelected);
+            btn.gameObject.SetActive(false);
+            pooledButtons.Add(btn);
+        }
+
+        LoadSelectedFusion();
+        LoadFavorites();
+        UpdateActionButtons();
+        setupComplete = true;
+    }
+
+    private void OnEnable()
+    {
+        if (!SaveManager.IsSaveLoaded || !setupComplete)
+            return;
+
         LoadSelectedFusion();
         LoadFavorites();
         UpdateActionButtons();
     }
-
+    
     private void OpenFusionPopup(bool isPrimary)
     {
         selectingPrimary = isPrimary;
         fusionPopup.SetActive(true);
 
-        foreach (var btn in activePopupButtons) { btn.Cleanup(); Destroy(btn.gameObject); }
-        activePopupButtons.Clear();
-
-        var candidates = Balls.Instance.allBalls.AsEnumerable();
+        AbilityAxis? blockAxis = null;
         if (!isPrimary && !string.IsNullOrEmpty(primaryBallID))
-        {
-            var pa = Balls.Instance.GetBall(primaryBallID).abilityAxis;
-            candidates = candidates.Where(b => b.abilityAxis != pa);
-        }
+            blockAxis = Balls.Instance.GetBall(primaryBallID).abilityAxis;
 
-        foreach (var props in candidates)
+        foreach (var btn in pooledButtons)
         {
-            var entry = Instantiate(fusionBallButtonPrefab, popupContentParent);
-            entry.Initialize(props, OnBallSelected);
-            activePopupButtons.Add(entry);
+            bool allow = isPrimary
+                         || blockAxis == null
+                         || btn.ballProperties.abilityAxis != blockAxis.Value;
+            btn.gameObject.SetActive(allow);
         }
     }
 
@@ -202,7 +218,7 @@ public class BallFusionController : MonoBehaviour
         for (int i = 0; i < favoriteButtons.Length; i++)
         {
             var faveKey = SaveManager.GetFavoriteFusionAt(i);
-            var btn     = favoriteButtons[i];
+            var btn= favoriteButtons[i];
             if (!string.IsNullOrEmpty(faveKey) && SaveManager.IsFusionUnlockedKey(faveKey))
             {
                 btn.gameObject.SetActive(true);

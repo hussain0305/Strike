@@ -10,10 +10,13 @@ public class FusionBallButton : MonoBehaviour
 
     private string ballID;
     private Action<string> onChosen;
+    [HideInInspector]
+    public BallProperties ballProperties;
 
     public void Initialize(BallProperties props, Action<string> onChosenCallback)
     {
         ballID = props.id;
+        ballProperties = props;
         nameText.text = props.name;
         onChosen = onChosenCallback;
 

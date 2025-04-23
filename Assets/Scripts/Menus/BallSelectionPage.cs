@@ -30,6 +30,10 @@ public class BallSelectionPage : MonoBehaviour
     public TextMeshProUGUI unlockCostText;
     public GameObject cantUnlockSection;
 
+    [Header("Info Panel Master Sections")]
+    public GameObject noBallSelectedSection;
+    public GameObject someBallSelectedSection;
+    
     private Dictionary<string, GameObject> previewBalls;
     private Dictionary<string, BallSelectionButton> ballButtons;
 
@@ -61,16 +65,27 @@ public class BallSelectionPage : MonoBehaviour
     {
         EventBus.Subscribe<BallSelectedEvent>(BallSelected);
         
-        equipBallButton.onClick.AddListener(() =>
-        {
-            SaveManager.SetEquippedBall(currentSelectedBall);
-            SetupEquipOrUnlockButton();
-        });
-        
+        equipBallButton.onClick.AddListener(OnEquipBall);        
         unlockBallButton.onClick.AddListener(TryUnlockBall);
 
-        if (SaveManager.IsSaveLoaded && setupComplete && !SaveManager.IsFusionEquipped())
+        if (!SaveManager.IsSaveLoaded || !setupComplete)
+            return;
+
+        if (!setupComplete)
+            SetupBallSelection(null);
+        
+        if (SaveManager.IsFusionEquipped())
         {
+            foreach (var btn in ballButtons.Values)
+                btn.SetUnselected();
+
+            noBallSelectedSection.SetActive(true);
+            someBallSelectedSection.SetActive(false);
+        }
+        else
+        {
+            noBallSelectedSection.SetActive(false);
+            someBallSelectedSection.SetActive(true);
             SetSelectedBall(SaveManager.GetEquippedBall());
         }
     }
@@ -83,15 +98,20 @@ public class BallSelectionPage : MonoBehaviour
         unlockBallButton.onClick.RemoveAllListeners();
     }
 
+    private void OnEquipBall()
+    {
+        SaveManager.SetEquippedBall(currentSelectedBall);
+        SetupEquipOrUnlockButton();
+    }
+    
     public void SetupBallSelection(SaveLoadedEvent e)
     {
         previewBalls = new Dictionary<string, GameObject>();
         ballButtons = new Dictionary<string, BallSelectionButton>();
         SpawnButtonsAndSetSelected();
         EventBus.Unsubscribe<SaveLoadedEvent>(SetupBallSelection);
-        SaveManager.MarkListenerComplete(this);
-        gameObject.SetActive(false);
         setupComplete = true;
+        SaveManager.MarkListenerComplete(this);
     }
 
     public void SpawnButtonsAndSetSelected()
@@ -121,6 +141,10 @@ public class BallSelectionPage : MonoBehaviour
     public void SetSelectedBall(string ballID)
     {
         CancelOngoingProcesses();
+        
+        noBallSelectedSection.SetActive(false);
+        someBallSelectedSection.SetActive(true);
+        
         currentSelectedBall = ballID;
         GameObject selectedBall = SetupBallForPreview(ballID);
 
