@@ -64,35 +64,42 @@ public class BallFusionController : MonoBehaviour
     [SerializeField] private BallStatRow statWeight;
     [SerializeField] private BallStatRow statSpin;
     [SerializeField] private BallStatRow statBounce;
-    
+
+    [Header("Action Buttons")]
     [SerializeField] private GameObject addToFavoritesButtonObject;
     [SerializeField] private GameObject fuseButtonObject;
     [SerializeField] private GameObject equipButtonObject;
     [SerializeField] private GameObject equippedObject;
 
-    private Button addToFavoritesButton;
-    private Button AddToFavoritesButton => addToFavoritesButton ??= addToFavoritesButtonObject.GetComponentInChildren<Button>();
-    private Button fuseButton;
-    private Button FuseButton => fuseButton ??= fuseButtonObject.GetComponentInChildren<Button>();
-    private Button equipButton;
-    private Button EquipButton => equipButton ??= equipButtonObject.GetComponentInChildren<Button>();
+    [Header("Favorites")]
+    [SerializeField] private FavoriteFusionButton[] favoriteButtons;
+
+    private Button AddToFavoritesButton => addToFavoritesButtonObject.GetComponentInChildren<Button>();
+    private Button FuseButton            => fuseButtonObject.GetComponentInChildren<Button>();
+    private Button EquipButton           => equipButtonObject.GetComponentInChildren<Button>();
 
     private string primaryBallID;
     private string secondaryBallID;
-    private bool selectingPrimary;
-
-    private List<FusionBallButton> activePopupButtons = new List<FusionBallButton>();
+    private bool   selectingPrimary;
+    private List<FusionBallButton> activePopupButtons = new();
 
     private void Start()
     {
         secondarySlotButton.SetInteractable(false);
-
         primaryStatPanel.SetActive(false);
         secondaryStatPanel.SetActive(false);
         fusedStatPanel.SetActive(false);
-        
+
         primarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(true));
         secondarySlotButton.button.onClick.AddListener(() => OpenFusionPopup(false));
+
+        FuseButton.onClick.AddListener(OnFuse);
+        AddToFavoritesButton.onClick.AddListener(OnAddToFavorites);
+        EquipButton.onClick.AddListener(OnEquip);
+
+        LoadSelectedFusion();
+        LoadFavorites();
+        UpdateActionButtons();
     }
 
     private void OpenFusionPopup(bool isPrimary)
@@ -100,18 +107,14 @@ public class BallFusionController : MonoBehaviour
         selectingPrimary = isPrimary;
         fusionPopup.SetActive(true);
 
-        foreach (var btn in activePopupButtons)
-        {
-            btn.Cleanup();
-            Destroy(btn.gameObject);
-        }
+        foreach (var btn in activePopupButtons) { btn.Cleanup(); Destroy(btn.gameObject); }
         activePopupButtons.Clear();
 
-        IEnumerable<BallProperties> candidates = Balls.Instance.allBalls;
+        var candidates = Balls.Instance.allBalls.AsEnumerable();
         if (!isPrimary && !string.IsNullOrEmpty(primaryBallID))
         {
-            var primaryAxis = Balls.Instance.GetBall(primaryBallID).abilityAxis;
-            candidates = candidates.Where(b => b.abilityAxis != primaryAxis);
+            var pa = Balls.Instance.GetBall(primaryBallID).abilityAxis;
+            candidates = candidates.Where(b => b.abilityAxis != pa);
         }
 
         foreach (var props in candidates)
@@ -125,31 +128,45 @@ public class BallFusionController : MonoBehaviour
     private void OnBallSelected(string ballID)
     {
         if (selectingPrimary)
-        {
             PrimarySelected(ballID);
-        }
         else
-        {
             SecondarySelected(ballID);
-        }
 
         fusionPopup.SetActive(false);
 
-        if (!string.IsNullOrEmpty(primaryBallID) &&
-            !string.IsNullOrEmpty(secondaryBallID))
-        {
+        if (!string.IsNullOrEmpty(primaryBallID) && !string.IsNullOrEmpty(secondaryBallID))
             UpdateFusionStats();
-        }
+
+        UpdateActionButtons();
     }
 
-    private void ClearStatsDisplay()
+    private void PrimarySelected(string ballID)
     {
-        statWeight.propertyValueText.text = "-";
-        statWeight.propertySlider.value   = 0f;
-        statSpin.propertyValueText.text   = "-";
-        statSpin.propertySlider.value     = 0f;
-        statBounce.propertyValueText.text = "-";
-        statBounce.propertySlider.value   = 0f;
+        primaryBallID = ballID;
+        primarySlotButton.SetSelected(ballID);
+        primaryStatPanel.SetActive(true);
+
+        primaryBallStats.Set(Balls.Instance.GetBall(ballID), "PRIMARY");
+
+        secondaryBallID = null;
+        secondarySlotButton.SetUnselected();
+        secondarySlotButton.SetInteractable(true);
+        secondaryStatPanel.SetActive(false);
+        fusedStatPanel.SetActive(false);
+    }
+
+    private void SecondarySelected(string ballID)
+    {
+        secondaryBallID = ballID;
+        secondarySlotButton.SetSelected(ballID);
+        secondaryStatPanel.SetActive(true);
+        fusedStatPanel.SetActive(true);
+
+        secondaryBallStats.Set(Balls.Instance.GetBall(ballID), "SECONDARY");
+        fusedBallStats.Set(
+            Balls.Instance.GetBall(primaryBallID),
+            Balls.Instance.GetBall(secondaryBallID)
+        );
     }
 
     private void UpdateFusionStats()
@@ -157,45 +174,104 @@ public class BallFusionController : MonoBehaviour
         var a = Balls.Instance.GetBall(primaryBallID);
         var b = Balls.Instance.GetBall(secondaryBallID);
 
-        float combinedWeight = a.weight + b.weight;
-        float combinedSpin   = Mathf.Min(a.spin, b.spin);
-        float combinedBounce = (a.physicsMaterial.bounciness
-                              + b.physicsMaterial.bounciness) * 0.5f;
+        float w = a.weight + b.weight;
+        float s = Mathf.Min(a.spin, b.spin);
+        float c = (a.physicsMaterial.bounciness + b.physicsMaterial.bounciness) * .5f;
 
-        statWeight.SetWeight(combinedWeight);
-        statSpin.SetSpin(combinedSpin);
-        statBounce.SetBounce(combinedBounce);
+        statWeight.SetWeight(w);
+        statSpin.SetSpin(s);
+        statBounce.SetBounce(c);
     }
 
-    public void PrimarySelected(string ballID)
+    private void LoadSelectedFusion()
     {
-        primaryStatPanel.SetActive(true);
-        
-        primaryBallID = ballID;
-        BallProperties primaryBallProperties = Balls.Instance.GetBall(primaryBallID);
-        primaryBallStats.Set(primaryBallProperties, "PRIMARY");
-            
-        secondaryBallID = null;
-        secondaryBallStats.Reset();
-        secondaryStatPanel.SetActive(false);
-        fusedStatPanel.SetActive(false);
-        secondarySlotButton.SetUnselected();
-        
-        primarySlotButton.SetSelected(primaryBallID);
-        secondarySlotButton.SetInteractable(true);
+        string key = SaveManager.GetSelectedFusion();
+        if (string.IsNullOrEmpty(key) || !SaveManager.IsFusionUnlockedKey(key))
+            return;
+
+        var parts = key.Split('+');
+        if (parts.Length != 2) return;
+
+        PrimarySelected(parts[0]);
+        SecondarySelected(parts[1]);
+        UpdateFusionStats();
     }
 
-    public void SecondarySelected(string ballID)
+    private void LoadFavorites()
     {
-        secondaryStatPanel.SetActive(true);
-        fusedStatPanel.SetActive(true);
-        
-        secondaryBallID = ballID;
-        BallProperties secondaryBallProperties = Balls.Instance.GetBall(secondaryBallID);
-        secondaryBallStats.Set(secondaryBallProperties, "SECONDARY");
-        secondarySlotButton.SetSelected(secondaryBallID);
-        
-        BallProperties primaryBallProperties = Balls.Instance.GetBall(primaryBallID);
-        fusedBallStats.Set(primaryBallProperties, secondaryBallProperties);
+        for (int i = 0; i < favoriteButtons.Length; i++)
+        {
+            var faveKey = SaveManager.GetFavoriteFusionAt(i);
+            var btn     = favoriteButtons[i];
+            if (!string.IsNullOrEmpty(faveKey) && SaveManager.IsFusionUnlockedKey(faveKey))
+            {
+                btn.gameObject.SetActive(true);
+                btn.Initialize(faveKey, OnFavoriteClicked);
+            }
+            else
+            {
+                btn.Cleanup();
+                btn.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void OnFavoriteClicked(string fusionKey)
+    {
+        var parts = fusionKey.Split('+');
+        if (parts.Length != 2) return;
+
+        PrimarySelected(parts[0]);
+        SecondarySelected(parts[1]);
+        UpdateFusionStats();
+        UpdateActionButtons();
+    }
+
+    private void OnFuse()
+    {
+        if (string.IsNullOrEmpty(primaryBallID) || string.IsNullOrEmpty(secondaryBallID))
+            return;
+
+        SaveManager.AddUnlockedFusion(primaryBallID, secondaryBallID);
+        UpdateActionButtons();
+        LoadFavorites();
+    }
+
+    private void OnAddToFavorites()
+    {
+        SaveManager.AddFusionToFavorites(primaryBallID, secondaryBallID);
+        UpdateActionButtons();
+        LoadFavorites();
+    }
+
+    private void OnEquip()
+    {
+        SaveManager.SetSelectedFusion(primaryBallID, secondaryBallID);
+        SaveManager.SetFusionEquipped(true);
+        UpdateActionButtons();
+    }
+
+    private void UpdateActionButtons()
+    {
+        bool bothSet = !string.IsNullOrEmpty(primaryBallID) && !string.IsNullOrEmpty(secondaryBallID);
+
+        if (!bothSet)
+        {
+            fuseButtonObject.SetActive(false);
+            addToFavoritesButtonObject.SetActive(false);
+            equipButtonObject.SetActive(false);
+            equippedObject.SetActive(false);
+            return;
+        }
+
+        string key = $"{primaryBallID}+{secondaryBallID}";
+        bool unlocked = SaveManager.IsFusionUnlocked(primaryBallID, secondaryBallID);
+        bool favorited = SaveManager.IsFusionFavorited(primaryBallID, secondaryBallID);
+        bool equipped = SaveManager.IsFusionEquipped() && SaveManager.GetSelectedFusion() == key;
+
+        fuseButtonObject.SetActive(!unlocked);
+        addToFavoritesButtonObject.SetActive(unlocked && !favorited);
+        equipButtonObject.SetActive(unlocked && !equipped);
+        equippedObject.SetActive(unlocked && equipped);
     }
 }

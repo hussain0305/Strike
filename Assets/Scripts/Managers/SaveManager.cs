@@ -149,6 +149,7 @@ public static class SaveManager
     public static void SetEquippedBall(string ballID)
     {
         EnsureDataLoaded();
+        currentSaveData.isFusionEquipped = false;
         currentSaveData.selectedBall = ballID;
         SaveData();
     }
@@ -368,5 +369,15 @@ public static class SaveManager
         return currentSaveData.isFusionEquipped;
     }
     
+    public static bool IsFusionUnlockedKey(string key)
+    {
+        return currentSaveData.unlockedFusions.Contains(key);
+    }
+
+    public static string GetFavoriteFusionAt(int index)
+    {
+        return currentSaveData.favoriteFusions[index];
+    }
+
     #endregion
 }

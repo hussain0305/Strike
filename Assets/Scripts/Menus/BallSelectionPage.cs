@@ -69,7 +69,7 @@ public class BallSelectionPage : MonoBehaviour
         
         unlockBallButton.onClick.AddListener(TryUnlockBall);
 
-        if (SaveManager.IsSaveLoaded && setupComplete)
+        if (SaveManager.IsSaveLoaded && setupComplete && !SaveManager.IsFusionEquipped())
         {
             SetSelectedBall(SaveManager.GetEquippedBall());
         }
@@ -107,7 +107,10 @@ public class BallSelectionPage : MonoBehaviour
             i++;
         }
 
-        SetSelectedBall(SaveManager.GetEquippedBall());
+        if (!SaveManager.IsFusionEquipped())
+        {
+            SetSelectedBall(SaveManager.GetEquippedBall());
+        }
     }
 
     public void BallSelected(BallSelectedEvent e)
@@ -196,7 +199,7 @@ public class BallSelectionPage : MonoBehaviour
 
     public void SetupEquipOrUnlockButton()
     {
-        bool isCurrentBallEquipped = SaveManager.GetEquippedBall() == currentSelectedBall;
+        bool isCurrentBallEquipped = !SaveManager.IsFusionEquipped() && SaveManager.GetEquippedBall() == currentSelectedBall;
         bool isBallUnlocked = SaveManager.IsBallUnlocked(currentSelectedBall);
         equippedSection.gameObject.SetActive(isCurrentBallEquipped);
         equipSection.gameObject.SetActive(isBallUnlocked && !isCurrentBallEquipped);
