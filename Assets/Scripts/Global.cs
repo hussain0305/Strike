@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 //============---- ENUMS ----============
@@ -215,7 +217,8 @@ public struct BallProperties
     public float spin;
     public AbilityAxis abilityAxis;
     public string abilityText;
-
+    public MonoScript abilityModuleScript;
+    
     [Header("Construction")]
     public PhysicsMaterial physicsMaterial;
     public GameObject prefab;
@@ -223,6 +226,16 @@ public struct BallProperties
     [Header("Meta")]
     public string id;
     public int cost;
+    
+    public IBallAbilityModule CreateModuleInstance()
+    {
+        var type = abilityModuleScript.GetClass();
+        if (type == null || !typeof(IBallAbilityModule).IsAssignableFrom(type))
+            throw new InvalidOperationException(
+                $"{name}: {abilityModuleScript.name} is not an IBallAbilityModule");
+
+        return Activator.CreateInstance(type) as IBallAbilityModule;
+    }
 }
 
 [System.Serializable]

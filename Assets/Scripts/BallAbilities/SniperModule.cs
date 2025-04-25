@@ -14,10 +14,10 @@ public class SniperModule : IBallAbilityModule, IBallAbilityUpdateableModule
 
     public void Initialize(Ball _ownerBall, IContextProvider _context)
     {
-        ball             = _ownerBall;
-        context          = _context;
-        aimTransform     = context.GetAimTransform();
-        aimDotLayerMask  = ~(1 << LayerMask.NameToLayer("Ball"));
+        ball = _ownerBall;
+        context = _context;
+        aimTransform = context.GetAimTransform();
+        aimDotLayerMask = ~(1 << LayerMask.NameToLayer("Ball"));
 
         aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         aimDot.transform.parent     = ball.transform;
@@ -103,7 +103,14 @@ public class SniperModule : IBallAbilityModule, IBallAbilityUpdateableModule
         aimDot.transform.localScale =
             size * relativeScale * Vector3.one;
     }
-    
-    public void OnProjectilesSpawned(ProjectilesSpawnedEvent e) { }
+
+    public void OnProjectilesSpawned(ProjectilesSpawnedEvent e)
+    {
+        foreach (GameObject proj in e.projectiles)
+        {
+            Rigidbody rBody = proj.GetComponent<Rigidbody>();
+            rBody.useGravity = false;
+        }
+    }
     public void OnHitSomething(BallHitSomethingEvent e) { }
 }

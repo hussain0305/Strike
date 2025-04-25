@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class StickyBall : Ball
+public class GhostBall : Ball
 {
     public override void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
     {
-        var modules = new List<IBallAbilityModule> { new StickyModule() };
+        var modules = new List<IBallAbilityModule> { new GhostModule() };
 
         if (additionalModules != null)
             modules.AddRange(additionalModules);

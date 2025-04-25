@@ -20,8 +20,9 @@ MonoBehaviour:
     spin: 10
     abilityAxis: 0
     abilityText: Enhanced Curve
+    abilityModuleScript: {fileID: 0}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
-    prefab: {fileID: 1089681808455105078, guid: c3613743306a885429a288d93f20e705, type: 3}
+    prefab: {fileID: 3931144424910952291, guid: c3613743306a885429a288d93f20e705, type: 3}
     id: soccBall
     cost: 0
   - name: Bowling Ball
@@ -31,6 +32,7 @@ MonoBehaviour:
     spin: 2
     abilityAxis: 0
     abilityText: Enhanced Push Force
+    abilityModuleScript: {fileID: 0}
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
     id: bowlingBall
@@ -42,6 +44,7 @@ MonoBehaviour:
     spin: 0
     abilityAxis: 7
     abilityText: Red-Dot Aim
+    abilityModuleScript: {fileID: 11500000, guid: 8ca393309507c7541b74f5ee57020e14, type: 3}
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
     id: sniperBall
@@ -53,6 +56,7 @@ MonoBehaviour:
     spin: 0
     abilityAxis: 1
     abilityText: Spawns additional pellets
+    abilityModuleScript: {fileID: 11500000, guid: 06632a21ed92b1241b9ef5cb0ebb8964, type: 3}
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
     id: shotgunBall
@@ -64,6 +68,7 @@ MonoBehaviour:
     spin: 5
     abilityAxis: 3
     abilityText: Sticks to point of contact
+    abilityModuleScript: {fileID: 11500000, guid: 4d69ea04dadd52c49b1e1b7c7b1b0e60, type: 3}
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
     id: stickyBall
@@ -75,8 +80,9 @@ MonoBehaviour:
     spin: 5
     abilityAxis: 3
     abilityText: Passes through objects
+    abilityModuleScript: {fileID: 11500000, guid: 49fa3cbd94ca7234d86036f10cb1c4ca, type: 3}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
-    prefab: {fileID: 1089681808455105078, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
+    prefab: {fileID: 3514905537347721854, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
     id: ghostBall
     cost: 1
   maxWeight: 10

@@ -52,6 +52,7 @@ public class ShotgunModule : IBallAbilityModule
             pelletPool.Enqueue(pellet);
             yield return null;
         }
+        EventBus.Publish(new ProjectilesSpawnedEvent(pelletPool.ToArray()));
     }
 
     private GameObject GetPelletFromPool()

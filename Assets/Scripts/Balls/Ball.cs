@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour
     public bool collidedWithSomething = false;
 
     private AbilityDriver abilityDriver;
-    protected AbilityDriver AbilityDriver => abilityDriver ??= GetComponent<AbilityDriver>();
+    protected AbilityDriver AbilityDriver => abilityDriver ??= (GetComponent<AbilityDriver>() ?? gameObject.AddComponent<AbilityDriver>());
     
     private void OnEnable()
     {
@@ -57,7 +57,7 @@ public class Ball : MonoBehaviour
         EventBus.Unsubscribe<ShotCompleteEvent>(ShotCompleted);
     }
 
-    public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier)
+    public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier, List<IBallAbilityModule> additionalModules = null)
     {
         context = _context;
         trajectoryModifier = _trajectoryModifier;
@@ -67,7 +67,7 @@ public class Ball : MonoBehaviour
         startPosition = tee.ballPosition.position;
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
-        InitAbilityDriver();
+        InitAbilityDriver(additionalModules);
     }
     
     public void Shoot()
@@ -241,7 +241,10 @@ public class Ball : MonoBehaviour
         return trajectoryPoints;
     }
 
-    public virtual void InitAbilityDriver() { }
+    public virtual void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
+    {
+        AbilityDriver.Configure(this, context, additionalModules);
+    }
 }
 
 /*

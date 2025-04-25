@@ -11,6 +11,10 @@ public class GhostModule : IBallAbilityModule
     {
         ball = _ownerBall;
         context = _context;
+        
+        Collider collider = ball.GetComponent<Collider>();
+        collider.isTrigger = true;
+
     }
 
     public void OnBallShot(BallShotEvent e) { }

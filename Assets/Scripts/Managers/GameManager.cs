@@ -195,12 +195,32 @@ public class GameManager : MonoBehaviour
 
     public void InitBall()
     {
-        BallProperties selectionBall = Balls.Instance.GetBall(SaveManager.GetEquippedBall());
-        GameObject spawnedBall = Instantiate(selectionBall.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
-        ball = spawnedBall.GetComponent<Ball>();
+        string primaryID = SaveManager.GetEquippedBall();
+        List<IBallAbilityModule> extras = null;
+
+        if (SaveManager.IsFusionEquipped())
+        {
+            var parts = SaveManager.GetSelectedFusion().Split('+');
+            primaryID = parts[0];
+            string secID = parts[1];
+
+            var secProps = Balls.Instance.GetBall(secID);
+            if (secProps.abilityModuleScript != null)
+            {
+                extras = new List<IBallAbilityModule> {
+                    secProps.CreateModuleInstance()
+                };
+            }
+        }
+
+        var props = Balls.Instance.GetBall(primaryID);
+        var spawned = Instantiate(props.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
+
+        ball = spawned.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
         ballMass = ball.rb.mass;
-        ball.Initialize(Context, TrajectoryModifier);
+
+        ball.Initialize(Context, TrajectoryModifier, extras);
     }
     
     public void SetupPlayers()

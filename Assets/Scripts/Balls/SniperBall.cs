@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class SniperBall : Ball
 {
-    public override void InitAbilityDriver()
+    public override void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
     {
-        AbilityDriver.Configure(this, context, new List<IBallAbilityModule>()
-        {
-            new SniperModule()
-        });
+        var modules = new List<IBallAbilityModule> { new SniperModule() };
+
+        if (additionalModules != null)
+            modules.AddRange(additionalModules);
+
+        AbilityDriver.Configure(this, context, modules);
     }
 
     public override List<Vector3> CalculateTrajectory()
