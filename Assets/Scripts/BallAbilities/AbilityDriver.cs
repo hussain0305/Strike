@@ -8,8 +8,8 @@ public class AbilityDriver : MonoBehaviour
     public IContextProvider context;
     [HideInInspector]
     public Ball ball;
-    public List<IBallAbilityModule> modules;
-    public List<IBallAbilityUpdateableModule> updateModules;
+    public List<IBallAbilityModule> modules = new List<IBallAbilityModule>();
+    public List<IBallAbilityUpdateableModule> updateModules = new List<IBallAbilityUpdateableModule>();
     
     private bool configured = false;
     
@@ -17,8 +17,8 @@ public class AbilityDriver : MonoBehaviour
     {
         ball = ownerBall;
         context = _context;
-        modules = _modules;
-        updateModules = _modules.OfType<IBallAbilityUpdateableModule>().ToList();
+        modules = _modules ?? new List<IBallAbilityModule>();
+        updateModules = modules.OfType<IBallAbilityUpdateableModule>().ToList();
         
         foreach (var m in modules)
         {

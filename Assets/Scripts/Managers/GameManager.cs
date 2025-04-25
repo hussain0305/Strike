@@ -295,7 +295,6 @@ public class GameManager : MonoBehaviour
     {
         if (GameMode.Instance.ShouldEndGame())
         {
-            Debug.Log(">>> Received true");
             GameEnded();
             return;
         }

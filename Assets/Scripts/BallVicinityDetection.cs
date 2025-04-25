@@ -7,10 +7,12 @@ public class BallVicinityDetection : MonoBehaviour
 {
     public Ball ball;
     private Vector3 lastPosition;
-
+    private int raycastLayerMask;
+    
     private void Start()
     {
         lastPosition = transform.position;
+        raycastLayerMask = ~LayerMask.GetMask("CollideWithBallUnaffected", "OtherCollectingObject");
     }
 
     private void Update()
@@ -29,10 +31,9 @@ public class BallVicinityDetection : MonoBehaviour
         if (motionVector.sqrMagnitude > 0)
         {
             RaycastHit hit;
-            if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength))
+            if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength, raycastLayerMask))
             {
-                if (hit.collider.gameObject.layer != LayerMask.NameToLayer("CollideWithBallUnaffected") &&
-                    hit.collider.gameObject != ball.gameObject)
+                if (hit.collider.gameObject != ball.gameObject)
                 {
                     ball.collidedWithSomething = true;
                 }
