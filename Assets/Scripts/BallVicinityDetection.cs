@@ -8,19 +8,18 @@ public class BallVicinityDetection : MonoBehaviour
     public Ball ball;
     private Vector3 lastPosition;
     private int raycastLayerMask;
+    private int portalLayerMask;
+    private const float portalRayDistance = 1f;
     
     private void Start()
     {
         lastPosition = transform.position;
-        raycastLayerMask = ~LayerMask.GetMask("CollideWithBallUnaffected", "OtherCollectingObject");
-    }
+        raycastLayerMask = ~LayerMask.GetMask("CollideWithBallUnaffected", "OtherCollectingObject", "Portal");
+        portalLayerMask = LayerMask.GetMask("Portal"); }
 
     private void Update()
     {
         if (!GameManager.IsGameplayActive)
-            return;
-        
-        if (ball.collidedWithSomething)
             return;
 
         Vector3 currentPosition = transform.position;
@@ -30,15 +29,51 @@ public class BallVicinityDetection : MonoBehaviour
         
         if (motionVector.sqrMagnitude > 0)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength, raycastLayerMask))
+            if (!ball.collidedWithSomething)
             {
-                if (hit.collider.gameObject != ball.gameObject)
+                RaycastHit hit;
+                if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength, raycastLayerMask))
                 {
-                    ball.collidedWithSomething = true;
+                    if (hit.collider.gameObject != ball.gameObject)
+                    {
+                        ball.collidedWithSomething = true;
+                    }
+                }
+                // Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * rayLength, Color.red, 2f);
+            }
+            
+            RaycastHit portalHit;
+            Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * portalRayDistance, Color.red, 2f);
+            if (Physics.Raycast(lastPosition, motionVector.normalized, out portalHit, portalRayDistance, portalLayerMask))
+            {
+                var portal = portalHit.collider.GetComponentInParent<Portal>();
+                if (portal != null && portal.linkedPortal != null)
+                {
+                    bool enteredFromFront = Vector3.Dot(motionVector, portal.transform.forward) > 0f;
+                    Vector3 localPos = portal.transform.InverseTransformPoint(portalHit.point);
+                    Quaternion localRot = Quaternion.Inverse(portal.transform.rotation) * ball.transform.rotation;
+
+                    if (!enteredFromFront)
+                        localRot = Quaternion.Euler(0f, 180f, 0f) * localRot;
+                    
+                    Transform exitT = portal.linkedPortal.transform;
+                    Vector3 exitPos = exitT.TransformPoint(localPos) + exitT.forward * 0.1f;
+                    Quaternion exitRot = exitT.rotation * localRot;
+
+                    var traveler = ball.GetComponent<PortalTraveler>();
+                    if (traveler != null)
+                    {
+                        traveler.Teleport(exitPos, exitRot);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Ball needs a PortalTraveler component!");
+                    }
+
+                    lastPosition = exitPos;
+                    return;
                 }
             }
-            Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * rayLength, Color.red, 2f);
         }
 
         lastPosition = currentPosition;

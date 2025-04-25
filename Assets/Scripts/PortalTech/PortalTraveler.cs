@@ -2,22 +2,27 @@ using UnityEngine;
 
 public class PortalTraveler : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    private Rigidbody rBody;
 
-    private void Start()
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rBody = GetComponent<Rigidbody>();
     }
 
     public void Teleport(Vector3 newPosition, Quaternion newRotation)
     {
-        transform.position = newPosition;
-        transform.rotation = newRotation;
+        Quaternion oldRot = transform.rotation;
+        Vector3 oldVel = Vector3.zero;
 
-        if (rb)
-        {
-            Vector3 localVelocity = rb.linearVelocity;
-            rb.linearVelocity = newRotation * localVelocity;
-        }
+        if (rBody != null)
+            oldVel = rBody.linearVelocity;
+
+        transform.SetPositionAndRotation(newPosition, newRotation);
+
+        Vector3 localVel = Quaternion.Inverse(oldRot) * oldVel;
+        Vector3 newWorldVel = newRotation * localVel;
+
+        if (rBody != null)
+            rBody.linearVelocity = newWorldVel;
     }
 }
