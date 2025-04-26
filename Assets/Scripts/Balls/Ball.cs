@@ -26,6 +26,7 @@ public class Ball : MonoBehaviour
     public float groundLevel = 0.0f;
 
     protected IContextProvider context;
+    protected ITrajectoryCalculator trajectoryCalculator;
     public ITrajectoryModifier trajectoryModifier;
 
     protected List<Vector3> trajectoryPoints;
@@ -67,12 +68,13 @@ public class Ball : MonoBehaviour
         startPosition = tee.ballPosition.position;
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
+        InitTrajectoryCalcualtor();
         InitAbilityDriver(additionalModules);
     }
     
     public void Shoot()
     {
-        trajectoryPoints = CalculateTrajectory();
+        trajectoryPoints = trajectoryCalculator.CalculateTrajectory(startPosition);
         finalTrajectory = trajectoryModifier.ModifyTrajectory(trajectoryPoints);
 
         rb.isKinematic = true;
@@ -83,7 +85,15 @@ public class Ball : MonoBehaviour
         }
     }
 
-    IEnumerator FollowTrajectory()
+    public List<Vector3> CalculateTrajectory()
+    {
+        if (trajectoryCalculator == null)
+            return null;
+        
+        return trajectoryCalculator.CalculateTrajectory(startPosition);
+    }
+
+    private IEnumerator FollowTrajectory()
     {
         if (finalTrajectory == null || finalTrajectory.Count == 0)
             yield break;
@@ -176,141 +186,14 @@ public class Ball : MonoBehaviour
         }
     }
     
-    public virtual List<Vector3> CalculateTrajectory()
-    {
-        trajectoryPoints = new List<Vector3>();
-        float timeStep = 0.1f;
-
-        Vector2 spin = context.GetSpinVector();
-        float launchForce = context.GetLaunchForce() / rb.mass;
-        Vector3 initialVelocity = context.GetLaunchAngle() * Vector3.forward * launchForce;
-
-        float sideSpin = spin.x;
-        float topSpin = spin.y;
-
-        float curveScale = Mathf.Clamp(spinEffect * Mathf.Abs(sideSpin), 0, curveClamp);
-        float dipScale = -Mathf.Clamp(spinEffect * Mathf.Abs(topSpin), 0, dipClamp);
-
-        float curveDuration = 2.0f;
-
-        bool isCurving = true;
-        Vector3 previousPoint;
-        Vector3 currentPoint = Vector3.zero;
-        Vector3 lastVelocity;
-        float x = 0, y = 0, z = 0;
-
-        for (int i = 0; i < trajectoryDefinition; i++)
-        {
-            float t = i * timeStep;
-            previousPoint = currentPoint;
-            currentPoint = new Vector3(x, y, z);
-            lastVelocity = (currentPoint - previousPoint) / timeStep;
-
-            if (isCurving)
-            {
-                x = startPosition.x + initialVelocity.x * t;
-                z = startPosition.z + initialVelocity.z * t;
-                y = startPosition.y + initialVelocity.y * t - 0.5f * gravity * t * t;
-
-                float curveFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * curveScale * Mathf.Sign(sideSpin);
-                float dipFactor = Mathf.Sin(t * Mathf.PI / curveDuration) * dipScale * Mathf.Sign(topSpin);
-
-                x += curveFactor;
-                y += dipFactor;
-
-                if (t >= curveDuration)
-                {
-                    isCurving = false;
-                }
-            }
-            else
-            {
-                x = currentPoint.x + lastVelocity.x * timeStep;
-                z = currentPoint.z + lastVelocity.z * timeStep;
-                y = currentPoint.y + lastVelocity.y * timeStep - 0.5f * gravity * timeStep * timeStep;
-            }
-
-            trajectoryPoints.Add(new Vector3(x, y, z));
-
-            if (y < 0)
-            {
-                break;
-            }
-        }
-
-        return trajectoryPoints;
-    }
-
     public virtual void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
     {
         AbilityDriver.Configure(this, context, additionalModules);
     }
+    
+    public virtual void InitTrajectoryCalcualtor()
+    {
+        trajectoryCalculator = new GravitationalTrajectory();
+        trajectoryCalculator.Initialize(context, this, gravity, trajectoryDefinition);
+    }
 }
-
-/*
-public float speedMultiplier = 1.0f; // Adjustable speed factor
-IEnumerator FollowTrajectory_ConstantSpeed()
-{
-    if (trajectoryPoints == null || trajectoryPoints.Count < 2)
-        yield break;
-
-    // Compute cumulative squared distances to avoid costly sqrt operations
-    List<float> cumulativeSqrDistances = new List<float> { 0f };
-    float totalSqrDistance = 0f;
-
-    for (int i = 1; i < trajectoryPoints.Count; i++)
-    {
-        totalSqrDistance += (trajectoryPoints[i] - trajectoryPoints[i - 1]).sqrMagnitude;
-        cumulativeSqrDistances.Add(totalSqrDistance);
-    }
-
-    float baseSpeed = totalSqrDistance / (trajectoryPoints.Count * 0.1f); // Base speed
-    float adjustedSpeed = baseSpeed * speedMultiplier; // Apply user-defined speed factor
-    float travelSqrDistance = 0f;
-    int index = 0;
-
-    while (travelSqrDistance < totalSqrDistance)
-    {
-        // Find the segment in which the current distance falls
-        while (index < cumulativeSqrDistances.Count - 1 && travelSqrDistance > cumulativeSqrDistances[index + 1])
-        {
-            index++;
-        }
-
-        if (index >= trajectoryPoints.Count - 1)
-            break;
-
-        float segmentStart = cumulativeSqrDistances[index];
-        float segmentEnd = cumulativeSqrDistances[index + 1];
-        float segmentFraction = Mathf.InverseLerp(segmentStart, segmentEnd, travelSqrDistance);
-
-        // Move the ball smoothly along the segment
-        ball.position = Vector3.Lerp(trajectoryPoints[index], trajectoryPoints[index + 1], segmentFraction);
-
-        // Stop if we hit something or touch the ground
-        if (collidedWithSomething || ball.position.y <= groundLevel)
-        {
-            rb.isKinematic = false;
-            Vector3 finalVelocity = (trajectoryPoints[index + 1] - trajectoryPoints[index]) / 0.1f;
-            rb.velocity = finalVelocity;
-            GameManager.BallState = BallState.InPhysicsMotion;
-            yield break;
-        }
-
-        // Advance along the trajectory using squared distance for efficiency
-        travelSqrDistance += adjustedSpeed * Time.deltaTime;
-        yield return null;
-    }
-
-    rb.isKinematic = false;
-
-    // Set final velocity when transitioning to physics motion
-    if (trajectoryPoints.Count >= 2)
-    {
-        Vector3 finalVelocity = (trajectoryPoints[^1] - trajectoryPoints[^2]) / 0.1f;
-        rb.velocity = finalVelocity;
-    }
-
-    GameManager.BallState = BallState.InPhysicsMotion;
-}
-*/
