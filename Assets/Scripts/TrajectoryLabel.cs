@@ -17,8 +17,8 @@ public class TrajectoryLabel : MonoBehaviour
     {
         background.color = backgroundColor;
         identifier.material = _identifier;
-        angleText.text = $"{_angle.x:F2}, {_angle.y:F2}";
-        spinText.text = $"{_spin.x:F2}, {_spin.y:F2}";
+        angleText.text = $"{_angle.x * 100:F0}, {_angle.y * 100:F0}";
+        spinText.text = $"{_spin.x * 100:F0}, {_spin.y * 100:F0}";
         powerText.text = _power.ToString();
         pointsText.text = _points.ToString();
     }
