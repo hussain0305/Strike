@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BallHitSomethingEvent
@@ -68,8 +69,8 @@ public class Ball : MonoBehaviour
         startPosition = tee.ballPosition.position;
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
-        InitTrajectoryCalcualtor();
         InitAbilityDriver(additionalModules);
+        InitTrajectoryCalcualtor();
     }
     
     public void Shoot()
@@ -193,7 +194,8 @@ public class Ball : MonoBehaviour
     
     public virtual void InitTrajectoryCalcualtor()
     {
-        trajectoryCalculator = new GravitationalTrajectory();
+        bool hasSniper = AbilityDriver.modules.Any(m => m is SniperModule);
+        trajectoryCalculator = hasSniper ? new NonGravitationalTrajectory() : new GravitationalTrajectory();
         trajectoryCalculator.Initialize(context, this, gravity, trajectoryDefinition);
     }
 }
