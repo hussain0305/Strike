@@ -61,7 +61,7 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     }
 
     private Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
-    private Color defaultTextColor = new Color(0.2f, 0.2f, 0.2f);
+    private Color defaultTextColor = Color.white;
     
     private void Awake()
     {
