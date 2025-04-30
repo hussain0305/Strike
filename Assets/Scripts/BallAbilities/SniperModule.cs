@@ -12,6 +12,13 @@ public class SniperModule : IBallAbilityModule, IBallAbilityUpdateableModule
     private int aimDotLayerMask;
     private bool isActive;
 
+    private Material aimDotMaterial;
+
+    public SniperModule(Material material)
+    {
+        aimDotMaterial = material;
+    }
+    
     public void Initialize(Ball _ownerBall, IContextProvider _context)
     {
         ball = _ownerBall;
@@ -19,16 +26,14 @@ public class SniperModule : IBallAbilityModule, IBallAbilityUpdateableModule
         aimTransform = context.GetAimTransform();
         aimDotLayerMask = ~(1 << LayerMask.NameToLayer("Ball"));
 
+        if (aimDot != null)
+            Object.Destroy(aimDot);
         aimDot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        aimDot.transform.parent     = ball.transform;
+        aimDot.name = "SniperAimDot";
+        aimDot.transform.parent = ball.transform;
         aimDot.transform.localScale = Vector3.one;
+        aimDot.GetComponent<Renderer>().sharedMaterial = aimDotMaterial;
         Object.Destroy(aimDot.GetComponent<Collider>());
-
-        unlitMaterial = new Material(
-            Shader.Find("Universal Render Pipeline/Unlit"));
-        unlitMaterial.color =
-            Color.red;
-        aimDot.GetComponent<Renderer>().material = unlitMaterial;
 
         isActive = true;
     }

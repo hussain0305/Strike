@@ -5,7 +5,9 @@ public class SniperBall : Ball
 {
     public override void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
     {
-        var modules = new List<IBallAbilityModule> { new SniperModule() };
+        var ballProperty = Balls.Instance.GetBall("sniperBall");
+        var moduleInstance = ballProperty.CreateModuleInstance();
+        var modules = new List<IBallAbilityModule> { moduleInstance };
 
         if (additionalModules != null)
             modules.AddRange(additionalModules);
