@@ -205,12 +205,9 @@ public class GameManager : MonoBehaviour
             string secID = parts[1];
 
             var secProps = Balls.Instance.GetBall(secID);
-            if (secProps.abilityModuleScript != null)
-            {
-                extras = new List<IBallAbilityModule> {
-                    secProps.CreateModuleInstance()
-                };
-            }
+            var secModule = secProps.CreateModuleInstance();
+            if (secModule != null)
+                extras = new List<IBallAbilityModule> { secModule };
         }
 
         var props = Balls.Instance.GetBall(primaryID);

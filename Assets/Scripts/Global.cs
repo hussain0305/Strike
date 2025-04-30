@@ -217,7 +217,7 @@ public struct BallProperties
     public float spin;
     public AbilityAxis abilityAxis;
     public string abilityText;
-    public MonoScript abilityModuleScript;
+    public AbilityModuleDefinition moduleDefinition;
     
     [Header("Construction")]
     public PhysicsMaterial physicsMaterial;
@@ -229,12 +229,7 @@ public struct BallProperties
     
     public IBallAbilityModule CreateModuleInstance()
     {
-        var type = abilityModuleScript.GetClass();
-        if (type == null || !typeof(IBallAbilityModule).IsAssignableFrom(type))
-            throw new InvalidOperationException(
-                $"{name}: {abilityModuleScript.name} is not an IBallAbilityModule");
-
-        return Activator.CreateInstance(type) as IBallAbilityModule;
+        return moduleDefinition?.CreateInstance();
     }
 }
 
