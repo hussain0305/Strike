@@ -41,6 +41,15 @@ public class ButtonFeedbackEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("clickClipOverride"));
         }
 
+        SerializedProperty overrideNormalTextColorProp = 
+            serializedObject.FindProperty("overrideNormalTextColor");
+        EditorGUILayout.PropertyField(overrideNormalTextColorProp);
+        if (overrideNormalTextColorProp.boolValue)
+        {
+            EditorGUILayout.PropertyField(
+                serializedObject.FindProperty("normalTextColor"));
+        }
+        
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Hover Pop Animation", EditorStyles.boldLabel);
 

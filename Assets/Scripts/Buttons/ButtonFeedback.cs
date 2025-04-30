@@ -31,6 +31,8 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public AudioClip hoverClipOverride;
     public bool overrideClickSound = false;
     public AudioClip clickClipOverride;
+    public bool overrideNormalTextColor;
+    public Color normalTextColor;
     
     [Header("Hover Pop Animation")]
     public Transform popTarget;
@@ -58,7 +60,8 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
     }
 
-    Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
+    private Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
+    private Color defaultTextColor = new Color(0.2f, 0.2f, 0.2f);
     
     private void Awake()
     {
@@ -67,6 +70,12 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             popTarget = transform.parent;
         }
     }
+
+    private void Start()
+    {
+        defaultTextColor = overrideNormalTextColor ? normalTextColor : Color.white;
+    }
+
     private void OnEnable()
     {
         if (backToDefaultOnEnable)
@@ -130,7 +139,7 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void SetToDefault()
     {
-        SetTextComponentColor(Color.white);
+        SetTextComponentColor(defaultTextColor);
         SetMaterial(isEnabled 
             ? GlobalAssets.Instance.GetDefaultMaterial(buttonLocation) 
             : GlobalAssets.Instance.GetLockedMaterial(buttonLocation));

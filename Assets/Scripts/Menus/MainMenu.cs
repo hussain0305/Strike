@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public Button gameModeSelectionButton;
     public Button settingsPageButton;
     public Button tuorialButton;
+    public Button exitButton;
 
     private static MenuContext context;
     public static MenuContext Context
@@ -61,6 +62,9 @@ public class MainMenu : MonoBehaviour
         {
             SceneManager.LoadScene(ModeSelector.Instance.GetTutorialLevel());
         });
+        
+        exitButton.onClick.RemoveAllListeners();
+        exitButton.onClick.AddListener(Application.Quit);
     }
 
     private void OnDisable()
