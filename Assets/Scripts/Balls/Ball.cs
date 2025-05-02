@@ -72,6 +72,7 @@ public class Ball : MonoBehaviour
         gameObject.AddComponent<PortalTraveler>();
         InitAbilityDriver(additionalModules);
         InitTrajectoryCalcualtor();
+        AdjustEffectsIfNeeded();
     }
     
     public void Shoot()
@@ -198,5 +199,14 @@ public class Ball : MonoBehaviour
         bool hasSniper = AbilityDriver.modules.Any(m => m is SniperModule);
         trajectoryCalculator = hasSniper ? new NonGravitationalTrajectory() : new GravitationalTrajectory();
         trajectoryCalculator.Initialize(context, this, gravity, trajectoryDefinition);
+    }
+
+    public void AdjustEffectsIfNeeded()
+    {
+        if (context is MenuContext menuCtx)
+        {
+            GetComponentInChildren<TrailRenderer>()?.gameObject.SetActive(false);
+            GetComponentInChildren<ParticleSystem>()?.gameObject.SetActive(false);
+        }
     }
 }
