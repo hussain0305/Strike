@@ -67,6 +67,7 @@ public class Ball : MonoBehaviour
         trajectoryDefinition = context.GetTrajectoryDefinition();
         tee = context.GetTee();
         startPosition = tee.ballPosition.position;
+        ball.rotation = Quaternion.Euler(GlobalConsts.BallTeeRotation);
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
         InitAbilityDriver(additionalModules);
@@ -171,7 +172,7 @@ public class Ball : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
         ball.position = startPosition;
-        ball.rotation = Quaternion.identity;
+        ball.rotation = Quaternion.Euler(GlobalConsts.BallTeeRotation);
         collidedWithSomething = false;
     }
 
