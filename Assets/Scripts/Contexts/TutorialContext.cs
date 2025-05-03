@@ -16,7 +16,12 @@ public class TutorialContext : IContextProvider
     {
         return aimTransform;
     }
-    
+
+    public Transform GetBallParent()
+    {
+        return tee?.transform;
+    }
+
     public Vector2 GetSpinVector()
     {
         return ballParameterController.spinInput.SpinVector;

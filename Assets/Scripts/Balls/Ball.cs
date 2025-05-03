@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class BallHitSomethingEvent
 {
+    public Vector3 ImpactVelocity;
     public Collision Collision { get; }
     public HashSet<PFXType> PfxTypes { get; }
 
-    public BallHitSomethingEvent(Collision collision, HashSet<PFXType> pfxTypes)
+    public BallHitSomethingEvent(Collision collision, HashSet<PFXType> pfxTypes, Vector3 impactVelocity)
     {
         Collision = collision;
         PfxTypes = pfxTypes;
+        ImpactVelocity = impactVelocity;
     }
 }
 
@@ -41,9 +43,12 @@ public class Ball : MonoBehaviour
     
     [HideInInspector]
     public bool collidedWithSomething = false;
+    [HideInInspector]
+    public bool shouldResumePhysics = true;
 
     private AbilityDriver abilityDriver;
     protected AbilityDriver AbilityDriver => abilityDriver ??= (GetComponent<AbilityDriver>() ?? gameObject.AddComponent<AbilityDriver>());
+    private Vector3 lastKnownVelocity;
     
     private void OnEnable()
     {
@@ -109,13 +114,17 @@ public class Ball : MonoBehaviour
             {
                 Vector3 currentPoint = trajectoryPart[i];
                 Vector3 nextPoint = trajectoryPart[i + 1];
+                lastKnownVelocity = (nextPoint - currentPoint) / timeStep;
 
                 if (collidedWithSomething || currentPoint.y <= groundLevel || nextPoint.y <= groundLevel)
                 {
-                    rb.isKinematic = false;
-                    Vector3 finalVelocity = (nextPoint - currentPoint) / timeStep;
-                    rb.linearVelocity = finalVelocity;
-                    context.SetBallState(BallState.InPhysicsMotion);
+                    if (shouldResumePhysics)
+                    {
+                        rb.isKinematic = false;
+                        lastKnownVelocity = (nextPoint - currentPoint) / timeStep;
+                        rb.linearVelocity = lastKnownVelocity;
+                        context.SetBallState(BallState.InPhysicsMotion);
+                    }
                     yield break;
                 }
 
@@ -175,17 +184,23 @@ public class Ball : MonoBehaviour
         ball.position = startPosition;
         ball.rotation = Quaternion.Euler(GlobalConsts.BallTeeRotation);
         collidedWithSomething = false;
+        shouldResumePhysics = true;
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (((1 << other.gameObject.layer) & Global.levelSurfaces) != 0)
         {
-            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}));
+            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}, lastKnownVelocity));
         }
         else if(other.gameObject.GetComponent<Collectible>())
         {
-            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}));
+            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
+        }       
+        else if (((1 << other.gameObject.layer) & Global.stickySurfaces) != 0)
+        {
+            collidedWithSomething = true;
+            EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
         }
     }
     

@@ -18,7 +18,8 @@ public class BallPreviewController : MonoBehaviour
         {
             { "soccBall", transform.AddComponent<PreviewSoccerBall>() },
             { "shotgunBall", transform.AddComponent<PreviewShotgunBall>() },
-            { "sniperBall", transform.AddComponent<PreviewSniperBall>() }
+            { "sniperBall", transform.AddComponent<PreviewSniperBall>() },
+            { "stickyBall", transform.AddComponent<PreviewStickyBall>() }
         };
 
         InitializeElements();

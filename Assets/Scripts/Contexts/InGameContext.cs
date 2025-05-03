@@ -9,6 +9,11 @@ public class InGameContext : IContextProvider
         return GameManager.Instance.AngleInput.cylinderPivot;
     }
 
+    public Transform GetBallParent()
+    {
+        return GameManager.Instance.tee.transform;
+    }
+
     public float GetLaunchForce()
     {
         return GameManager.Instance.LaunchForce;

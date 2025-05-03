@@ -19,7 +19,12 @@ public class MenuContext : IContextProvider
     {
         return aimTransform;
     }
-    
+
+    public Transform GetBallParent()
+    {
+        return tee.transform;
+    }
+
     public Vector2 GetSpinVector()
     {
         return spoofedSpinVector;

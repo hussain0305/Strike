@@ -275,4 +275,5 @@ public struct MinMaxFloat
 public static class Global
 {
     public static LayerMask levelSurfaces = LayerMask.GetMask("Wall", "Ground");
+    public static LayerMask stickySurfaces = LayerMask.GetMask("CollideWithBall");
 }

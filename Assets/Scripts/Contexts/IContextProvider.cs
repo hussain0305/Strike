@@ -10,6 +10,7 @@ public interface IContextProvider
     Tee GetTee();
     Vector2 GetSpinVector();
     Transform GetAimTransform();
+    Transform GetBallParent();
     Quaternion GetLaunchAngle();
     PinBehaviourPerTurn GetPinResetBehaviour();
 }
