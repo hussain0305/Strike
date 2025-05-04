@@ -64,6 +64,7 @@ public class LevelSelectionButton : MonoBehaviour
         levelNumber = _level;
         SetText(_level);
         SetStars();
+        ButtonBehaviour.SetUnselected();
     }
 
     public void SetStars()
