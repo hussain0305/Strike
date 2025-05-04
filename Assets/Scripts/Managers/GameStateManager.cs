@@ -121,7 +121,7 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    private void ReturnCollectible(Transform obj)
+    public void ReturnCollectible(Transform obj)
     {
         MultiplierToken multiplierCollectible = obj.GetComponent<MultiplierToken>();
         PointToken pointCollectible = obj.GetComponent<PointToken>();

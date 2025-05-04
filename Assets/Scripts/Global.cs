@@ -10,7 +10,8 @@ public enum GameModeType
 {
     Pins,
     Portals,
-    Deathmatch
+    Deathmatch,
+    DisappearingTokens
 }
 
 public enum BallState
@@ -64,7 +65,8 @@ public enum DangerTokenType
 public enum PinBehaviourPerTurn
 {
     StayAsIs,
-    Reset
+    Reset,
+    DisappearUponCollection
 }
 
 [System.Serializable]

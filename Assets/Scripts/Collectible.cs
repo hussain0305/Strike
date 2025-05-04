@@ -104,6 +104,9 @@ public class Collectible : MonoBehaviour
         pointDisplay = _displayType;
         context = _contextProvider;
         
+        numTimesCollected = 0;
+        accountedForInThisShot = false;
+
         SaveDefaults();
         InitAppearance();
     }
@@ -164,16 +167,24 @@ public class Collectible : MonoBehaviour
 
     public void NextShotCued(NextShotCuedEvent e)
     {
-        if (context?.GetPinResetBehaviour() == PinBehaviourPerTurn.Reset)
-        {
-            numTimesCollected = 0;
-            accountedForInThisShot = false;
-            // rBody.linearVelocity = Vector3.zero;
-            // rBody.angularVelocity = Vector3.zero;
-            transform.position = defaultPosition;
-            transform.rotation = defaultRotation;
-        }
         header?.gameObject.SetActive(true);
+
+        if (context == null)
+            return;
+
+        switch (context?.GetPinResetBehaviour())
+        {
+            case PinBehaviourPerTurn.Reset:
+                ResetPin();
+                break;
+
+            case PinBehaviourPerTurn.DisappearUponCollection:
+                if (accountedForInThisShot)
+                    GameStateManager.Instance.ReturnCollectible(transform);
+                else
+                    ResetPin();
+                break;
+        }
     }
 
     public void SetupPointBoard()
@@ -196,5 +207,13 @@ public class Collectible : MonoBehaviour
             inBodyPointDisplay.fontMaterial = RegularFontColor;
             hitReaction?.UpdatePoints(value);
         }
+    }
+    
+    void ResetPin()
+    {
+        numTimesCollected = 0;
+        accountedForInThisShot = false;
+        transform.position = defaultPosition;
+        transform.rotation = defaultRotation;
     }
 }
