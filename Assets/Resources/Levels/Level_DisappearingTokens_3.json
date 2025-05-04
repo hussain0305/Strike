@@ -1,0 +1,1782 @@
+{
+    "gameMode": 3,
+    "levelNumber": 3,
+    "targetPoints": 300,
+    "collectibles": [
+        {
+            "type": 0,
+            "pointTokenType": 4,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.5199999809265137,
+                "z": 65.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 150,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 2,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.5199999809265137,
+                "z": 55.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 50,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 6,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.47999998927116396,
+                "z": 45.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 50,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 20.059999465942384,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 22.299999237060548,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 14.059999465942383,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 16.299999237060548,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 8.059999465942383,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 10.300000190734864,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 2.059999465942383,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 4.300000190734863,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -3.940000534057617,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -1.6999998092651368,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -9.940000534057618,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -7.699999809265137,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -15.940000534057618,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -13.699999809265137,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -21.940000534057618,
+                "y": 0.16500000655651093,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -19.700000762939454,
+                "y": 0.16500000655651093,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 17.059999465942384,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 19.299999237060548,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 11.059999465942383,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 13.300000190734864,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 5.059999465942383,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 7.300000190734863,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -0.9400005340576172,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 1.3000001907348633,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -6.940000534057617,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -4.699999809265137,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -12.940000534057618,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -10.699999809265137,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -18.940000534057618,
+                "y": 2.299999952316284,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -16.700000762939454,
+                "y": 2.299999952316284,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 14.059999465942383,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 16.299999237060548,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 8.059999465942383,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 10.300000190734864,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 2.059999465942383,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 4.300000190734863,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -3.940000534057617,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -1.6999998092651368,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -9.940000534057618,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -7.699999809265137,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -15.940000534057618,
+                "y": 4.434999942779541,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -13.699999809265137,
+                "y": 4.434999942779541,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 11.059999465942383,
+                "y": 6.570000171661377,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 13.300000190734864,
+                "y": 6.570000171661377,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 5.059999465942383,
+                "y": 6.570000171661377,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 7.300000190734863,
+                "y": 6.570000171661377,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -0.9400005340576172,
+                "y": 6.570000171661377,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 1.3000001907348633,
+                "y": 6.570000171661377,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -6.940000534057617,
+                "y": 6.570000171661377,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -4.699999809265137,
+                "y": 6.570000171661377,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -12.940000534057618,
+                "y": 6.570000171661377,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -10.699999809265137,
+                "y": 6.570000171661377,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 8.059999465942383,
+                "y": 8.704999923706055,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 10.300000190734864,
+                "y": 8.704999923706055,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 2.059999465942383,
+                "y": 8.704999923706055,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 4.300000190734863,
+                "y": 8.704999923706055,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -3.940000534057617,
+                "y": 8.704999923706055,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -1.6999998092651368,
+                "y": 8.704999923706055,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -9.940000534057618,
+                "y": 8.704999923706055,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -7.699999809265137,
+                "y": 8.704999923706055,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 5.059999465942383,
+                "y": 10.84000015258789,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 7.300000190734863,
+                "y": 10.84000015258789,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -0.9400005340576172,
+                "y": 10.84000015258789,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 1.3000001907348633,
+                "y": 10.84000015258789,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -6.940000534057617,
+                "y": 10.84000015258789,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -4.699999809265137,
+                "y": 10.84000015258789,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 2.059999465942383,
+                "y": 12.975000381469727,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 4.300000190734863,
+                "y": 12.975000381469727,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -3.940000534057617,
+                "y": 12.975000381469727,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -1.6999998092651368,
+                "y": 12.975000381469727,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": -0.9400005340576172,
+                "y": 15.109999656677246,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 0,
+            "pointTokenType": 7,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 1.3000001907348633,
+                "y": 15.109999656677246,
+                "z": 33.66999816894531
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 0,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0
+        },
+        {
+            "type": 1,
+            "pointTokenType": 0,
+            "multiplierTokenType": 1,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 5.289999961853027,
+                "y": 8.350000381469727,
+                "z": 17.440000534057618
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 2,
+            "numTimesCanBeCollected": 1,
+            "parent": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0
+        }
+    ],
+    "stars": [
+        {
+            "index": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.7200000286102295,
+                "z": 48.91999816894531
+            }
+        },
+        {
+            "index": 1,
+            "position": {
+                "x": 8.65999984741211,
+                "y": 5.920000076293945,
+                "z": 49.3599967956543
+            }
+        },
+        {
+            "index": 2,
+            "position": {
+                "x": -7.570000171661377,
+                "y": 5.920000076293945,
+                "z": 49.349998474121097
+            }
+        }
+    ],
+    "portals": []
+}

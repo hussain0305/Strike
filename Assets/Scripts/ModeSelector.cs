@@ -170,7 +170,7 @@ public class ModeSelector : MonoBehaviour
         ResetSelectedLevel();
         currentSelectedMode = currentSelected;
         currentSelectedModeInfo = gameModeInfo.GetGameModeInfo(currentSelected);
-        selectedGameModeNameText.text = currentSelectedModeInfo.displayName;
+        selectedGameModeNameText.text = currentSelectedModeInfo.displayName.ToUpper();
         selectedGameModeDescriptionText.text = currentSelectedModeInfo.description;
 
         if (SaveManager.GetIsGameModeUnlocked((int)currentSelected))

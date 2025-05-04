@@ -43,7 +43,8 @@ public enum PointTokenType
     Cuboid_4x2,
     Pin_1x,
     Pin_2x,
-    Pin_4x
+    Pin_4x,
+    Brick
 };
 
 [System.Serializable]
