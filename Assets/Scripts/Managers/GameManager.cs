@@ -523,9 +523,16 @@ public class GameManager : MonoBehaviour
         context = null;
         trajectoryModifier = null;
     }
+
+    public void DestroyRemnants()
+    {
+        if (ball)
+            Destroy(ball.gameObject);
+    }
     
     private void OnDestroy()
     {
+        DestroyRemnants();
         DiscardGameContext();
     }
 }

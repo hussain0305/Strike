@@ -86,7 +86,7 @@ public class StickyModule : IBallAbilityModule
         ball.transform.position = contactPoint;
         
         var hitRb = e.Collision.rigidbody;
-        if (hitRb != null)
+        if (hitRb != null && context is InGameContext gameCtx)
         {
             hitRb.AddForceAtPosition( e.ImpactVelocity * body.mass * 10, contactPoint, ForceMode.Impulse);
         }
