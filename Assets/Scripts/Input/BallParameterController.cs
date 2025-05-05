@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,10 +38,27 @@ public class BallParameterController : MonoBehaviour
     public AngleInput angleInput;
     public PowerInput powerInput;
 
+    private bool isCurrentlyAtAimCamPosition = false;
+    private Coroutine movingButtonsCoroutine;
+    private const float SPIN_BUTTON_DEFAULT_POSITION = -140f;
+    private const float ANGLE_BUTTON_DEFAULT_POSITION = -180f;
+    private const float POWER_BUTTON_DEFAULT_POSITION = 175f;
+    private const float SPIN_BUTTON_AIM_CAM_POSITION = -280f;
+    private const float ANGLE_BUTTON_AIM_CAM_POSITION = -360f;
+    private const float POWER_BUTTON_AIM_CAM_POSITION = 350f;
+    private RectTransform spinButtonRect;
+    private RectTransform SpinButtonRect => spinButtonRect ??= spinButton.GetComponent<RectTransform>();
+    private RectTransform angleButtonRect;
+    private RectTransform AngleButtonRect => angleButtonRect ??= angleButton.GetComponent<RectTransform>();
+    private RectTransform powerButtonRect;
+    private RectTransform PowerButtonRect => powerButtonRect ??= powerButton.GetComponent<RectTransform>();
+
     private void OnEnable()
     {
         EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
         EventBus.Subscribe<BallParameterInputSwitchedEvent>(ShotParameterInputSwitched);
+        EventBus.Subscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
+        EventBus.Subscribe<CameraSwitchCompletedEvent>(CameraSwitchCompleted);
         
         spinButton.onClick.AddListener(() =>
         {
@@ -62,7 +80,9 @@ public class BallParameterController : MonoBehaviour
     {
         EventBus.Unsubscribe<BallParameterInputSwitchedEvent>(ShotParameterInputSwitched);
         EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
-        
+        EventBus.Unsubscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
+        EventBus.Unsubscribe<CameraSwitchCompletedEvent>(CameraSwitchCompleted);
+
         spinButton.onClick.RemoveAllListeners();
         angleButton.onClick.RemoveAllListeners();
         powerButton.onClick.RemoveAllListeners();
@@ -134,5 +154,72 @@ public class BallParameterController : MonoBehaviour
                 powerTextGlowy.gameObject.SetActive(true);
                 break;
         }
+    }
+    
+    public void CameraSwitchProcessed(CameraSwitchProcessedEvent e)
+    {
+        if (movingButtonsCoroutine != null)
+        {
+            StopCoroutine(movingButtonsCoroutine);
+        }
+        bool newAtAimPositionVal = e.NewCameraPos.cameraNumber == 1;
+        if (newAtAimPositionVal == isCurrentlyAtAimCamPosition)
+        {
+            return;
+        }
+        isCurrentlyAtAimCamPosition = newAtAimPositionVal;
+        movingButtonsCoroutine = StartCoroutine(MoveButtonsCoroutine(e.SwitchTime - 0.05f, isCurrentlyAtAimCamPosition));
+    }
+    
+    public void CameraSwitchCompleted(CameraSwitchCompletedEvent e)
+    {
+        if (movingButtonsCoroutine != null)
+        {
+            StopCoroutine(movingButtonsCoroutine);
+        }
+        movingButtonsCoroutine = null;
+
+        bool aimPositions = e.NewCameraPos.cameraNumber == 1;
+        isCurrentlyAtAimCamPosition = aimPositions;
+
+        SpinButtonRect.anchoredPosition3D = new Vector3(
+            aimPositions ? SPIN_BUTTON_AIM_CAM_POSITION : SPIN_BUTTON_DEFAULT_POSITION,
+            SpinButtonRect.anchoredPosition3D.y, SpinButtonRect.anchoredPosition3D.z);
+        
+        AngleButtonRect.anchoredPosition3D = new Vector3(
+            aimPositions ? ANGLE_BUTTON_AIM_CAM_POSITION : ANGLE_BUTTON_DEFAULT_POSITION,
+            AngleButtonRect.anchoredPosition3D.y, AngleButtonRect.anchoredPosition3D.z);
+        
+        PowerButtonRect.anchoredPosition3D = new Vector3(
+            aimPositions ? POWER_BUTTON_AIM_CAM_POSITION : POWER_BUTTON_DEFAULT_POSITION,
+            PowerButtonRect.anchoredPosition3D.y, PowerButtonRect.anchoredPosition3D.z);
+    }
+
+    private IEnumerator MoveButtonsCoroutine(float time, bool targetIsAimCam)
+    {
+        float timePassed = 0;
+        float spinStartX = targetIsAimCam ? SPIN_BUTTON_DEFAULT_POSITION : SPIN_BUTTON_AIM_CAM_POSITION;
+        float spinEndX = targetIsAimCam ? SPIN_BUTTON_AIM_CAM_POSITION : SPIN_BUTTON_DEFAULT_POSITION;
+        float angleStartX = targetIsAimCam ? ANGLE_BUTTON_DEFAULT_POSITION : ANGLE_BUTTON_AIM_CAM_POSITION;
+        float angleEndX = targetIsAimCam ? ANGLE_BUTTON_AIM_CAM_POSITION : ANGLE_BUTTON_DEFAULT_POSITION;
+        float powerStartX = targetIsAimCam ? POWER_BUTTON_DEFAULT_POSITION : POWER_BUTTON_AIM_CAM_POSITION;
+        float powerEndX = targetIsAimCam ? POWER_BUTTON_AIM_CAM_POSITION : POWER_BUTTON_DEFAULT_POSITION;
+        isCurrentlyAtAimCamPosition = targetIsAimCam;
+
+        while (timePassed <= time)
+        {
+            float lerpVal = timePassed / time;
+            SpinButtonRect.anchoredPosition3D = new Vector3(Mathf.Lerp(spinStartX, spinEndX, lerpVal), 
+                SpinButtonRect.anchoredPosition3D.y, SpinButtonRect.anchoredPosition3D.z);
+            AngleButtonRect.anchoredPosition3D = new Vector3(Mathf.Lerp(angleStartX, angleEndX, lerpVal), 
+                AngleButtonRect.anchoredPosition3D.y, AngleButtonRect.anchoredPosition3D.z);
+            PowerButtonRect.anchoredPosition3D = new Vector3(Mathf.Lerp(powerStartX, powerEndX, lerpVal), 
+                PowerButtonRect.anchoredPosition3D.y, PowerButtonRect.anchoredPosition3D.z);
+            
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+
+        movingButtonsCoroutine = null;
     }
 }

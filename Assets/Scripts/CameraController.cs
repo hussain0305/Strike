@@ -5,8 +5,20 @@ using UnityEngine.UI;
 public class CameraSwitchProcessedEvent
 {
     public CameraHoistLocation NewCameraPos { get; }
+    public float SwitchTime { get; }
+    
+    public CameraSwitchProcessedEvent(CameraHoistLocation newCameraPos, float time)
+    {
+        NewCameraPos = newCameraPos;
+        SwitchTime = time;
+    }
+}
 
-    public CameraSwitchProcessedEvent(CameraHoistLocation newCameraPos)
+public class CameraSwitchCompletedEvent
+{
+    public CameraHoistLocation NewCameraPos { get; }
+
+    public CameraSwitchCompletedEvent(CameraHoistLocation newCameraPos)
     {
         NewCameraPos = newCameraPos;
     }
@@ -159,6 +171,8 @@ public class CameraController : MonoBehaviour
         mainCam.transform.rotation = targetTransform.rotation;
         currentCameraHoistedAt = targetCameraHoistAt;
         
+        EventBus.Publish(new CameraSwitchCompletedEvent(currentCameraHoistedAt));
+        yield return null;
         cameraMovementCoroutine = null;
     }
 
@@ -188,7 +202,7 @@ public class CameraController : MonoBehaviour
         {
             return;
         }
-        EventBus.Publish(new CameraSwitchProcessedEvent(e.NewCameraPos));
+        EventBus.Publish(new CameraSwitchProcessedEvent(e.NewCameraPos, timeToMoveCamera));
         MoveToCameraPosition(e.NewCameraPos);
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
     }
@@ -227,6 +241,6 @@ public class CameraController : MonoBehaviour
         currentCameraHoistedAt = defaultCameraHoistAt;
         Camera.main.transform.parent = null;
         Camera.main.transform.position = currentCameraHoistedAt.transform.position;
-
+        EventBus.Publish(new CameraSwitchCompletedEvent(currentCameraHoistedAt));
     }
 }
