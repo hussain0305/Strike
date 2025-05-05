@@ -1723,6 +1723,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -1944,6 +1946,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -2419,6 +2423,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -2695,6 +2701,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -3530,6 +3538,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -4075,6 +4085,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -4263,6 +4275,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -5502,6 +5516,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -6494,6 +6510,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -6961,6 +6979,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -7844,6 +7864,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -9434,6 +9456,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
   popScale: 1.1
   popDuration: 0.15
@@ -9863,10 +9887,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8755180104214312863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 16}
-  m_SizeDelta: {x: 600, y: 100}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3789240620029335525
 CanvasRenderer:
@@ -13228,6 +13252,8 @@ MonoBehaviour:
   hoverClipOverride: {fileID: 0}
   overrideClickSound: 0
   clickClipOverride: {fileID: 0}
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 6525637974869303952}
   popScale: 1.1
   popDuration: 0.15
