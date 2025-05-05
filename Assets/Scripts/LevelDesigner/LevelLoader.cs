@@ -152,6 +152,11 @@ public class LevelLoader : MonoBehaviour
         {
             allPortalPairs[i].gameObject.SetActive(false);
         }
+
+        if (levelData.platformRotationSpeed != 0f)
+        {
+            EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));
+        }
         
         Debug.Log($"Level {levelNumber} loaded successfully!");
     }

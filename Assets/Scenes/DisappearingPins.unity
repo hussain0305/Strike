@@ -3297,15 +3297,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856693393}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.35, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 549877463}
   - {fileID: 1922110261}
   - {fileID: 378263160}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1384111840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856693395
 MonoBehaviour:
@@ -3536,6 +3536,7 @@ MonoBehaviour:
   portalsParent: {fileID: 378263160}
   collectibleParentUI: {fileID: 1782344019}
   collectibleParentWorld: {fileID: 549877463}
+  platformRotationSpeed: 0
 --- !u!4 &953383090
 Transform:
   m_ObjectHideFlags: 0
@@ -5668,6 +5669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1384111840}
+  - component: {fileID: 1384111841}
   m_Layer: 0
   m_Name: CenterPlatform_Haxagon
   m_TagString: Untagged
@@ -5691,8 +5693,21 @@ Transform:
   - {fileID: 33700358}
   - {fileID: 393927040}
   - {fileID: 619757743}
+  - {fileID: 856693394}
   m_Father: {fileID: 281953149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1384111841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384111839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310581763238e5640b7b30d90e35740b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1402322065
 GameObject:
   m_ObjectHideFlags: 0
@@ -9468,7 +9483,6 @@ SceneRoots:
   - {fileID: 1046823793}
   - {fileID: 705507995}
   - {fileID: 281953149}
-  - {fileID: 856693394}
   - {fileID: 1586351919010768099}
   - {fileID: 1315147195}
   - {fileID: 1229953147}

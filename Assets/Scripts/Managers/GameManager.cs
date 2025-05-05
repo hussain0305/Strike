@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class BallShotEvent { }
 public class ShotCompleteEvent { }
 public class CueNextShotEvent { }
+public class PreNextShotCuedEvent { }
 public class NextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
@@ -301,8 +302,15 @@ public class GameManager : MonoBehaviour
         fireButton.gameObject.SetActive(true);
         BallState = BallState.OnTee;
         TogglePlayer();
-        EventBus.Publish(new NextShotCuedEvent());
+        StartCoroutine(StaggeredCueNextShot());
         CheckToShowTrajectoryHistoryButton();
+    }
+
+    private IEnumerator StaggeredCueNextShot()
+    {
+        EventBus.Publish(new PreNextShotCuedEvent());
+        yield return null;
+        EventBus.Publish(new NextShotCuedEvent());
     }
 
     public void TogglePlayer()

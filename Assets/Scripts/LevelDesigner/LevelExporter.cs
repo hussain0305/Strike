@@ -55,6 +55,7 @@ public class LevelExporter : MonoBehaviour
         public List<CollectibleData> collectibles;
         public List<StarData> stars;
         public List<PortalSet> portals;
+        public float platformRotationSpeed;
     }
 
     public int level;
@@ -64,6 +65,7 @@ public class LevelExporter : MonoBehaviour
     public Transform portalsParent;
     public Transform collectibleParentUI;
     public Transform collectibleParentWorld;
+    public float platformRotationSpeed;
 
     public void ExportLevel()
     {
@@ -74,7 +76,8 @@ public class LevelExporter : MonoBehaviour
             gameMode = this.gameMode,
             collectibles = new List<CollectibleData>(),
             stars = new List<StarData>(),
-            portals = new List<PortalSet>()
+            portals = new List<PortalSet>(),
+            platformRotationSpeed = this.platformRotationSpeed,
         };
 
         foreach (Transform collectible in collectibleParentWorld)
