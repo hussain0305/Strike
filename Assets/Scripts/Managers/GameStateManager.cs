@@ -89,7 +89,9 @@ public class GameStateManager : MonoBehaviour
         Transform worldCollectibles = LevelManager.Instance.collectiblesWorldParent;
         Transform worldCollectiblesCanvas = LevelManager.Instance.collectiblesWorldCanvasParent;
         Transform stars = LevelManager.Instance.starsParent;
-
+        Transform worldObstacles = LevelManager.Instance.worldObstaclesParent;
+        Transform platformObstacles = LevelManager.Instance.platformObstaclesParent;
+        
         List<Transform> collectibles = new List<Transform>(worldCollectibles.childCount);
         foreach (Transform child in worldCollectibles)
         {
@@ -118,6 +120,34 @@ public class GameStateManager : MonoBehaviour
         foreach (Transform star in starList)
         {
             PoolingManager.Instance.ReturnStar(star.gameObject);
+        }
+
+        if (worldObstacles.childCount > 0)
+        {
+            List<Transform> worldObstaclesList = new List<Transform>(worldObstacles.childCount);
+            foreach (Transform child in worldObstacles)
+            {
+                worldObstaclesList.Add(child);
+            }
+            foreach (Transform child in worldObstaclesList)
+            {
+                Obstacle obstacle = child.GetComponent<Obstacle>();
+                PoolingManager.Instance.ReturnObject(obstacle.type, obstacle.gameObject);
+            }
+        }
+
+        if (platformObstacles.childCount > 0)
+        {
+            List<Transform> platformObstaclesList = new List<Transform>(platformObstacles.childCount);
+            foreach (Transform child in platformObstacles)
+            {
+                platformObstaclesList.Add(child);
+            }
+            foreach (Transform child in platformObstaclesList)
+            {
+                Obstacle obstacle = child.GetComponent<Obstacle>();
+                PoolingManager.Instance.ReturnObject(obstacle.type, obstacle.gameObject);
+            }
         }
     }
 

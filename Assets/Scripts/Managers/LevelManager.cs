@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     public Transform portalsParent;
     public Transform collectiblesWorldParent;
     public Transform collectiblesWorldCanvasParent;
+    public Transform worldObstaclesParent;
+    public Transform platformObstaclesParent;
 
     private void Awake()
     {

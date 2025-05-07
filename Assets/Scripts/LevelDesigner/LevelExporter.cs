@@ -47,6 +47,19 @@ public class LevelExporter : MonoBehaviour
     }
     
     [System.Serializable]
+    public class ObstacleData
+    {
+        public ObstacleType type;
+        public Positioning positioning;
+        public float movementSpeed;
+        public float rotationSpeed;
+        public Vector3 position;
+        public Vector3 rotationAxis;
+        public Quaternion rotation;
+        public Vector3[] path;
+    }
+
+    [System.Serializable]
     public class LevelData
     {
         public GameModeType gameMode; 
@@ -55,6 +68,7 @@ public class LevelExporter : MonoBehaviour
         public List<CollectibleData> collectibles;
         public List<StarData> stars;
         public List<PortalSet> portals;
+        public List<ObstacleData> obstacles;
         public float platformRotationSpeed;
     }
 
@@ -63,6 +77,8 @@ public class LevelExporter : MonoBehaviour
     public GameModeType gameMode;
     public Transform starsParent;
     public Transform portalsParent;
+    public Transform obstaclesParentPlatform;
+    public Transform obstaclesParentWorld;
     public Transform collectibleParentUI;
     public Transform collectibleParentWorld;
     public float platformRotationSpeed;
@@ -77,6 +93,7 @@ public class LevelExporter : MonoBehaviour
             collectibles = new List<CollectibleData>(),
             stars = new List<StarData>(),
             portals = new List<PortalSet>(),
+            obstacles = new List<ObstacleData>(),
             platformRotationSpeed = this.platformRotationSpeed,
         };
 
@@ -194,7 +211,6 @@ public class LevelExporter : MonoBehaviour
 
             levelData.stars.Add(starData);
         }
-
         
         foreach (PortalPair portalPair in portalsParent.GetComponentsInChildren<PortalPair>())
         {
@@ -212,6 +228,16 @@ public class LevelExporter : MonoBehaviour
             levelData.portals.Add(portalSet);
         }
 
+        foreach (Transform obstacle in obstaclesParentPlatform)
+        {
+            levelData.obstacles.Add(ExtractObstacleData(obstacle, Positioning.OnPlatform));
+        }
+        
+        foreach (Transform obstacle in obstaclesParentWorld)
+        {
+            levelData.obstacles.Add(ExtractObstacleData(obstacle, Positioning.InWorld));
+        }
+        
         string json = JsonUtility.ToJson(levelData, true);
         Directory.CreateDirectory("Assets/Resources/Levels");
         File.WriteAllText($"Assets/Resources/Levels/Level_{gameMode.ToString()}_{level}.json", json);
@@ -275,5 +301,38 @@ public class LevelExporter : MonoBehaviour
         }
 
         return portalData;
+    }
+
+    public ObstacleData ExtractObstacleData(Transform obstacle, Positioning _positioning)
+    {
+        Obstacle obstacleScript = obstacle.GetComponent<Obstacle>();
+
+        ObstacleData obstacleData = new ObstacleData()
+        {
+            type = obstacleScript.type,
+            positioning = _positioning,
+            movementSpeed = 0,
+            rotationSpeed = 0,
+            rotationAxis = Vector3.zero,
+            position = obstacle.position,
+            rotation = obstacle.rotation,
+            path = null
+        };
+            
+        ContinuousMovement movementScript = obstacle.GetComponent<ContinuousMovement>();
+        if (movementScript)
+        {
+            obstacleData.path = new[] { movementScript.pointATransform.position, movementScript.pointBTransform.position };
+            obstacleData.movementSpeed = movementScript.speed;
+        }
+
+        ContinuousRotation rotationScript = obstacle.GetComponent<ContinuousRotation>();
+        if (rotationScript)
+        {
+            obstacleData.rotationAxis = rotationScript.rotationAxis;
+            obstacleData.rotationSpeed = rotationScript.rotationSpeed;
+        }
+
+        return obstacleData;
     }
 }

@@ -25,9 +25,17 @@ public class CollectiblePrefabMapping : ScriptableObject
         public GameObject prefab;
     }
 
+    [System.Serializable]
+    public class ObstaclePrefab
+    {
+        public ObstacleType obstacleType;
+        public GameObject prefab;
+    }
+
     public PointTokenPrefab[] pointTokenPrefabs;
     public MultiplierTokenPrefab[] multiplierTokenPrefabs;
     public DangerTokenPrefab[] dangerTokenPrefabs;
+    public ObstaclePrefab[] obstaclePrefabs;
     public GameObject starPrefab;
     
     public GameObject GetPointTokenPrefab(PointTokenType pointTokenType)
@@ -60,6 +68,17 @@ public class CollectiblePrefabMapping : ScriptableObject
                 return entry.prefab;
         }
         Debug.LogError($"Prefab not found for DangerTokenType: {dangerTokenType}");
+        return null;
+    }
+    
+    public GameObject GetObstaclePrefab(ObstacleType obstacleType)
+    {
+        foreach (var entry in obstaclePrefabs)
+        {
+            if (entry.obstacleType == obstacleType)
+                return entry.prefab;
+        }
+        Debug.LogError($"Prefab not found for DangerTokenType: {obstacleType}");
         return null;
     }
     

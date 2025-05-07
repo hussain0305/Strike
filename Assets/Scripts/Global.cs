@@ -28,6 +28,18 @@ public enum CollectibleType
     Danger
 };
 
+public enum ObstacleType
+{
+    Fan,
+    Window,
+};
+
+public enum Positioning
+{
+    OnPlatform,
+    InWorld,
+};
+
 public enum CollectibleParent
 {
     World,

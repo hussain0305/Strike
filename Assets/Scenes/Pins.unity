@@ -1966,6 +1966,8 @@ MonoBehaviour:
   portalsParent: {fileID: 378263160}
   colletiblesParentUI: {fileID: 1782344019}
   colletiblesParentWorld: {fileID: 549877463}
+  obstaclesParentPlatform: {fileID: 627701349}
+  obstaclesParentWorld: {fileID: 1337229640}
 --- !u!1 &538504953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2765,6 +2767,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620277325}
   m_CullTransparentMesh: 1
+--- !u!1 &627701348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627701349}
+  m_Layer: 0
+  m_Name: ObstaclesParentPlatform
+  m_TagString: StarsInWorld
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &627701349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627701348}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 856693394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &631790244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3305,6 +3338,7 @@ Transform:
   - {fileID: 549877463}
   - {fileID: 1922110261}
   - {fileID: 378263160}
+  - {fileID: 627701349}
   m_Father: {fileID: 1384111840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856693395
@@ -3323,6 +3357,8 @@ MonoBehaviour:
   portalsParent: {fileID: 378263160}
   collectiblesWorldParent: {fileID: 549877463}
   collectiblesWorldCanvasParent: {fileID: 1782344019}
+  worldObstaclesParent: {fileID: 1337229640}
+  platformObstaclesParent: {fileID: 627701349}
 --- !u!1 &890859703
 GameObject:
   m_ObjectHideFlags: 0
@@ -3534,6 +3570,8 @@ MonoBehaviour:
   gameMode: 0
   starsParent: {fileID: 1922110261}
   portalsParent: {fileID: 378263160}
+  obstaclesParentPlatform: {fileID: 627701349}
+  obstaclesParentWorld: {fileID: 1337229640}
   collectibleParentUI: {fileID: 1782344019}
   collectibleParentWorld: {fileID: 549877463}
   platformRotationSpeed: 0
@@ -3546,7 +3584,7 @@ Transform:
   m_GameObject: {fileID: 953383088}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1051.2063, y: 668.55865, z: 176.02568}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3951,6 +3989,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002722539}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1010786712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1010786713}
+  m_Layer: 0
+  m_Name: World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1010786713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010786712}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1337229640}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1023542890
 GameObject:
   m_ObjectHideFlags: 0
@@ -5320,7 +5390,7 @@ Transform:
   m_GameObject: {fileID: 1324001287}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5325348, y: 26.232563, z: 16.521616}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5469,6 +5539,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4905941263219065164, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
   m_PrefabInstance: {fileID: 1586351919010768099}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1337229639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1337229640}
+  m_Layer: 0
+  m_Name: WorldObstacles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1337229640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337229639}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1010786713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1341680216
 GameObject:
   m_ObjectHideFlags: 0
@@ -9483,6 +9584,7 @@ SceneRoots:
   - {fileID: 2680063173639786852}
   - {fileID: 705507995}
   - {fileID: 281953149}
+  - {fileID: 1010786713}
   - {fileID: 1586351919010768099}
   - {fileID: 1315147195}
   - {fileID: 1229953147}

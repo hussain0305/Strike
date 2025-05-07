@@ -9,6 +9,8 @@ public class LevelLoader : MonoBehaviour
     public Transform portalsParent;
     public Transform colletiblesParentUI;
     public Transform colletiblesParentWorld;
+    public Transform obstaclesParentPlatform;
+    public Transform obstaclesParentWorld;
 
     private int targetPoints;
     
@@ -153,6 +155,27 @@ public class LevelLoader : MonoBehaviour
             allPortalPairs[i].gameObject.SetActive(false);
         }
 
+        foreach (LevelExporter.ObstacleData obstacleData in levelData.obstacles)
+        {
+            GameObject obstacleObject = PoolingManager.Instance.GetObject(obstacleData.type);
+
+            if (obstacleObject == null)
+            {
+                Debug.LogWarning($"Failed to load collectible of type {obstacleData.type}");
+                continue;
+            }
+
+            obstacleObject.transform.SetParent(obstacleData.positioning == Positioning.OnPlatform ? obstaclesParentPlatform : obstaclesParentWorld);
+            obstacleObject.transform.position = obstacleData.position;
+            obstacleObject.transform.rotation = obstacleData.rotation;
+
+            Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
+            if (obstacleScript != null)
+            {
+                obstacleScript.InitializeAndSetup(GameManager.Context, obstacleData);
+            }
+        }
+        
         if (levelData.platformRotationSpeed != 0f)
         {
             EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));

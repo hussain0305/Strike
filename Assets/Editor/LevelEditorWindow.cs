@@ -10,6 +10,8 @@ public class LevelEditorWindow : EditorWindow
     private Transform portalsParent;
     private Transform collectibleParentUI;
     private Transform collectibleParentWorld;
+    private Transform obstaclesParentWorld;
+    private Transform obstaclesParentPlatform;
     private LevelExporter.LevelData loadedLevelData;
 
     [MenuItem("Tools/Level Editor")]
@@ -63,6 +65,8 @@ public class LevelEditorWindow : EditorWindow
         collectibleParentUI = levelExporter.collectibleParentUI;
         starParent = levelExporter.starsParent;
         portalsParent = levelExporter.portalsParent;
+        obstaclesParentPlatform = levelExporter.obstaclesParentPlatform;
+        obstaclesParentWorld = levelExporter.obstaclesParentWorld;
         
         CollectiblePrefabMapping prefabMapping = Resources.Load<CollectiblePrefabMapping>("CollectiblePrefabMapping");
         if (prefabMapping == null)
@@ -146,6 +150,27 @@ public class LevelEditorWindow : EditorWindow
             for (; i < allPortalPairs.Length; i++)
             {
                 allPortalPairs[i].gameObject.SetActive(false);
+            }
+        }
+        
+        foreach (LevelExporter.ObstacleData obstacleData in loadedLevelData.obstacles)
+        {
+            GameObject obstacleObject = PoolingManager.Instance.GetObject(obstacleData.type);
+
+            if (obstacleObject == null)
+            {
+                Debug.LogWarning($"Failed to load collectible of type {obstacleData.type}");
+                continue;
+            }
+
+            obstacleObject.transform.SetParent(obstacleData.positioning == Positioning.OnPlatform ? obstaclesParentPlatform : obstaclesParentWorld);
+            obstacleObject.transform.position = obstacleData.position;
+            obstacleObject.transform.rotation = obstacleData.rotation;
+
+            Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
+            if (obstacleScript != null)
+            {
+                obstacleScript.InitializeAndSetup(GameManager.Context, obstacleData);
             }
         }
         
