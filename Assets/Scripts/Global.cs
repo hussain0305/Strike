@@ -40,6 +40,12 @@ public enum Positioning
     InWorld,
 };
 
+public enum CollectibleParent
+{
+    World,
+    UI
+};
+
 [System.Serializable]
 public enum PointTokenType
 {
