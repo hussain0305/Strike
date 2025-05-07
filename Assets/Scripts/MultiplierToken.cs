@@ -1,9 +1,11 @@
 using TMPro;
+using UnityEngine;
 
 public class MultiplierToken : Collectible
 {
+    [Header("Multiplier Section")]
     public MultiplierTokenType multiplierTokenType;
-    public TextMeshProUGUI multipleText;
+    public TextMeshPro multipleText;
 
     public void Start()
     {

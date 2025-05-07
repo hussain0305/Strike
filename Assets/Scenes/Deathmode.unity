@@ -4026,6 +4026,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269834224}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &274801260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 274801261}
+  m_Layer: 0
+  m_Name: PlatformObstaclesParent
+  m_TagString: CollectiblesInWorld
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &274801261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274801260}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 856693394}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &281953148
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,6 +4277,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1425301145}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &289519320
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7545,8 +7577,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starsParent: {fileID: 1922110261}
   portalsParent: {fileID: 378263160}
-  colletiblesParentUI: {fileID: 1782344019}
-  colletiblesParentWorld: {fileID: 549877463}
+  collectiblesParent: {fileID: 549877463}
+  obstaclesParentPlatform: {fileID: 274801261}
+  obstaclesParentWorld: {fileID: 1181003495}
 --- !u!1 &524080857
 GameObject:
   m_ObjectHideFlags: 0
@@ -10937,6 +10970,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1229595476}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &642881847
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12411,6 +12445,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1439738846}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &742265494
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12653,6 +12688,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 549877463}
+  - {fileID: 274801261}
   - {fileID: 1922110261}
   - {fileID: 378263160}
   m_Father: {fileID: 1384111840}
@@ -12671,8 +12707,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starsParent: {fileID: 1922110261}
   portalsParent: {fileID: 378263160}
-  collectiblesWorldParent: {fileID: 549877463}
-  collectiblesWorldCanvasParent: {fileID: 1782344019}
+  collectiblesParent: {fileID: 549877463}
+  worldObstaclesParent: {fileID: 1181003495}
+  platformObstaclesParent: {fileID: 274801261}
 --- !u!1 &871630350
 GameObject:
   m_ObjectHideFlags: 0
@@ -12783,6 +12820,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1147148655}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &886460089
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13326,6 +13364,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1522222040}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &922170722
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13971,8 +14010,9 @@ MonoBehaviour:
   gameMode: 0
   starsParent: {fileID: 1922110261}
   portalsParent: {fileID: 378263160}
-  collectibleParentUI: {fileID: 1782344019}
-  collectibleParentWorld: {fileID: 549877463}
+  obstaclesParentPlatform: {fileID: 274801261}
+  obstaclesParentWorld: {fileID: 1181003495}
+  collectibleParent: {fileID: 549877463}
   platformRotationSpeed: 0
 --- !u!4 &953383090
 Transform:
@@ -15049,6 +15089,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 13480069}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1002120702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17099,6 +17140,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 108128573}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1105269139
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18420,6 +18462,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180823078}
   m_CullTransparentMesh: 1
+--- !u!1 &1181003494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1181003495}
+  m_Layer: 0
+  m_Name: WorldObstacles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1181003495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181003494}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1724890705}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1191149295
 GameObject:
   m_ObjectHideFlags: 0
@@ -19004,6 +19077,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 535779274}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1227321126
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20484,6 +20558,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 254167759}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1299903901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20728,7 +20803,6 @@ RectTransform:
   m_Children:
   - {fileID: 475929225}
   - {fileID: 413565520}
-  - {fileID: 1782344019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -23708,6 +23782,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 1784285927}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1486654160
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27124,6 +27199,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 970911856}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!65 &1715005078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27669,6 +27745,38 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &1724890704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724890705}
+  m_Layer: 0
+  m_Name: World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1724890705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724890704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1181003495}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730257456
 GameObject:
   m_ObjectHideFlags: 0
@@ -28098,41 +28206,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778286776}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1782344018
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1782344019}
-  m_Layer: 5
-  m_Name: Collectibles
-  m_TagString: CollectiblesInWorldCanvas
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1782344019
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782344018}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1315147195}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1784285925
 GameObject:
   m_ObjectHideFlags: 0
@@ -35871,6 +35944,7 @@ MonoBehaviour:
   inBodyPointDisplay: {fileID: 5831478756703484885}
   pointDisplay: 0
   dangerTokenType: 1
+  activeFromTheBeginning: 0
 --- !u!114 &7434251451183788858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36476,6 +36550,7 @@ SceneRoots:
   - {fileID: 11369530}
   - {fileID: 705507995}
   - {fileID: 281953149}
+  - {fileID: 1724890705}
   - {fileID: 1586351919010768099}
   - {fileID: 1315147195}
   - {fileID: 1229953147}

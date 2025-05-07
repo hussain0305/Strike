@@ -7,8 +7,7 @@ public class LevelLoader : MonoBehaviour
 {
     public Transform starsParent;
     public Transform portalsParent;
-    public Transform colletiblesParentUI;
-    public Transform colletiblesParentWorld;
+    public Transform collectiblesParent;
     public Transform obstaclesParentPlatform;
     public Transform obstaclesParentWorld;
 
@@ -86,7 +85,7 @@ public class LevelLoader : MonoBehaviour
                 continue;
             }
             
-            collectibleObject.transform.SetParent(collectibleData.parent == CollectibleParent.UI ? colletiblesParentUI : colletiblesParentWorld);
+            collectibleObject.transform.SetParent(collectiblesParent);
             collectibleObject.transform.position = collectibleData.position;
             collectibleObject.transform.rotation = collectibleData.rotation;
 

@@ -86,14 +86,13 @@ public class GameStateManager : MonoBehaviour
 
     public void ReturnEverythingToPool()
     {
-        Transform worldCollectibles = LevelManager.Instance.collectiblesWorldParent;
-        Transform worldCollectiblesCanvas = LevelManager.Instance.collectiblesWorldCanvasParent;
+        Transform collectiblesParent = LevelManager.Instance.collectiblesParent;
         Transform stars = LevelManager.Instance.starsParent;
         Transform worldObstacles = LevelManager.Instance.worldObstaclesParent;
         Transform platformObstacles = LevelManager.Instance.platformObstaclesParent;
         
-        List<Transform> collectibles = new List<Transform>(worldCollectibles.childCount);
-        foreach (Transform child in worldCollectibles)
+        List<Transform> collectibles = new List<Transform>(collectiblesParent.childCount);
+        foreach (Transform child in collectiblesParent)
         {
             collectibles.Add(child);
         }
@@ -101,17 +100,7 @@ public class GameStateManager : MonoBehaviour
         {
             ReturnCollectible(child);
         }
-
-        List<Transform> canvasCollectibles = new List<Transform>(worldCollectiblesCanvas.childCount);
-        foreach (Transform child in worldCollectiblesCanvas)
-        {
-            canvasCollectibles.Add(child);
-        }
-        foreach (Transform child in canvasCollectibles)
-        {
-            ReturnCollectible(child);
-        }
-
+        
         List<Transform> starList = new List<Transform>(stars.childCount);
         foreach (Transform star in stars)
         {

@@ -15,7 +15,6 @@ public class LevelExporter : MonoBehaviour
         public Quaternion rotation;
         public int value;
         public int numTimesCanBeCollected;
-        public CollectibleParent parent;
         public Collectible.PointDisplayType pointDisplayType;
         public Vector3[] path;
         public float movementSpeed;
@@ -79,8 +78,7 @@ public class LevelExporter : MonoBehaviour
     public Transform portalsParent;
     public Transform obstaclesParentPlatform;
     public Transform obstaclesParentWorld;
-    public Transform collectibleParentUI;
-    public Transform collectibleParentWorld;
+    public Transform collectibleParent;
     public float platformRotationSpeed;
 
     public void ExportLevel()
@@ -97,7 +95,7 @@ public class LevelExporter : MonoBehaviour
             platformRotationSpeed = this.platformRotationSpeed,
         };
 
-        foreach (Transform collectible in collectibleParentWorld)
+        foreach (Transform collectible in collectibleParent)
         {
             Collectible collectibleScript = collectible.GetComponent<Collectible>();
             if (collectibleScript == null)
@@ -136,7 +134,6 @@ public class LevelExporter : MonoBehaviour
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.World,
                 pointDisplayType = displayType,
                 movementSpeed = movementSpeed,
                 path = path,
@@ -145,55 +142,6 @@ public class LevelExporter : MonoBehaviour
             levelData.collectibles.Add(collectibleData);
         }
         
-        foreach (Transform collectible in collectibleParentUI)
-        {
-            Collectible collectibleScript = collectible.GetComponent<Collectible>();
-            if (collectibleScript == null)
-            {
-                Debug.LogWarning($"Collectible script missing on object {collectible.name}, skipping.");
-                continue;
-            }
-
-            DangerToken dangerTokenScript = collectible.GetComponent<DangerToken>();
-            DangerTokenType dtt = dangerTokenScript != null ? dangerTokenScript.dangerTokenType : DangerTokenType.None;
-            
-            MultiplierToken multiplierTokenScript = collectible.GetComponent<MultiplierToken>();
-            MultiplierTokenType mtt = multiplierTokenScript != null ? multiplierTokenScript.multiplierTokenType : MultiplierTokenType.None;
-            
-            PointToken pointTokenScript = collectible.GetComponent<PointToken>();
-            PointTokenType ptt = pointTokenScript != null ? pointTokenScript.pointTokenType : PointTokenType.None;
-
-            Collectible.PointDisplayType displayType = pointTokenScript ? pointTokenScript.pointDisplay :
-                multiplierTokenScript ? multiplierTokenScript.pointDisplay : Collectible.PointDisplayType.None;
-            
-            ContinuousMovement moveScript = collectible.GetComponent<ContinuousMovement>();
-            float movementSpeed = 0;
-            Vector3[] path = null;
-            if (moveScript != null)
-            {
-                path = new[] { moveScript.pointATransform.position, moveScript.pointBTransform.position };
-                movementSpeed = moveScript.speed;
-            }
-
-            CollectibleData collectibleData = new CollectibleData
-            {
-                type = collectibleScript.type,
-                pointTokenType = ptt,
-                multiplierTokenType = mtt,
-                dangerTokenType = dtt,
-                position = collectible.position,
-                rotation = collectible.rotation,
-                value = collectibleScript.value,
-                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.UI,
-                pointDisplayType = displayType,
-                movementSpeed = movementSpeed,
-                path = path,
-            };
-
-            levelData.collectibles.Add(collectibleData);
-        }
-
         foreach (Transform star in starsParent)
         {
             Star starScript = star.GetComponent<Star>();

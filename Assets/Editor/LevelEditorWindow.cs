@@ -8,8 +8,7 @@ public class LevelEditorWindow : EditorWindow
     private GameModeType gameMode = GameModeType.Pins;
     private Transform starParent;
     private Transform portalsParent;
-    private Transform collectibleParentUI;
-    private Transform collectibleParentWorld;
+    private Transform collectibleParent;
     private Transform obstaclesParentWorld;
     private Transform obstaclesParentPlatform;
     private LevelExporter.LevelData loadedLevelData;
@@ -61,8 +60,7 @@ public class LevelEditorWindow : EditorWindow
             return;
         }
 
-        collectibleParentWorld = levelExporter.collectibleParentWorld;
-        collectibleParentUI = levelExporter.collectibleParentUI;
+        collectibleParent = levelExporter.collectibleParent;
         starParent = levelExporter.starsParent;
         portalsParent = levelExporter.portalsParent;
         obstaclesParentPlatform = levelExporter.obstaclesParentPlatform;
@@ -97,8 +95,7 @@ public class LevelEditorWindow : EditorWindow
                 return;
             }
 
-            GameObject collectibleObject = Instantiate(prefab,
-                collectibleData.parent == CollectibleParent.World ? collectibleParentWorld : collectibleParentUI);
+            GameObject collectibleObject = Instantiate(prefab, collectibleParent);
             collectibleObject.transform.position = collectibleData.position;
             collectibleObject.transform.rotation = collectibleData.rotation;
 
@@ -112,7 +109,7 @@ public class LevelEditorWindow : EditorWindow
             collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
             collectibleScript.pointDisplay = collectibleData.pointDisplayType;
             
-            collectibleObject.transform.SetParent(collectibleData.parent == CollectibleParent.UI ? collectibleParentUI : collectibleParentWorld);
+            collectibleObject.transform.SetParent(collectibleParent);
         }
 
         foreach (var starData in loadedLevelData.stars)
@@ -155,14 +152,14 @@ public class LevelEditorWindow : EditorWindow
         
         foreach (LevelExporter.ObstacleData obstacleData in loadedLevelData.obstacles)
         {
-            GameObject obstacleObject = PoolingManager.Instance.GetObject(obstacleData.type);
+            GameObject obstaclePrefab = prefabMapping.GetObstaclePrefab(obstacleData.type);
 
-            if (obstacleObject == null)
+            if (obstaclePrefab == null)
             {
-                Debug.LogWarning($"Failed to load collectible of type {obstacleData.type}");
+                Debug.LogWarning($"Failed to load obstacle of type {obstacleData.type}");
                 continue;
             }
-
+            GameObject obstacleObject = Instantiate(obstaclePrefab, collectibleParent);
             obstacleObject.transform.SetParent(obstacleData.positioning == Positioning.OnPlatform ? obstaclesParentPlatform : obstaclesParentWorld);
             obstacleObject.transform.position = obstacleData.position;
             obstacleObject.transform.rotation = obstacleData.rotation;
@@ -227,7 +224,7 @@ public class LevelEditorWindow : EditorWindow
 
         loadedLevelData.collectibles.Clear();
 
-        foreach (Transform collectible in collectibleParentWorld)
+        foreach (Transform collectible in collectibleParent)
         {
             Collectible collectibleScript = collectible.GetComponent<Collectible>();
             if (collectibleScript == null) continue;
@@ -238,31 +235,12 @@ public class LevelEditorWindow : EditorWindow
                 position = collectible.position,
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
-                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.World
+                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected
             };
 
             loadedLevelData.collectibles.Add(data);
         }
-
-        foreach (Transform collectible in collectibleParentUI)
-        {
-            Collectible collectibleScript = collectible.GetComponent<Collectible>();
-            if (collectibleScript == null) continue;
-
-            LevelExporter.CollectibleData data = new LevelExporter.CollectibleData
-            {
-                type = collectibleScript.type,
-                position = collectible.position,
-                rotation = collectible.rotation,
-                value = collectibleScript.value,
-                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                parent = CollectibleParent.UI
-            };
-
-            loadedLevelData.collectibles.Add(data);
-        }
-
+        
         string json = JsonUtility.ToJson(loadedLevelData, true);
         string path = $"Assets/Resources/Levels/Level_{gameMode}_{levelNumber}.json";
         File.WriteAllText(path, json);
@@ -272,23 +250,12 @@ public class LevelEditorWindow : EditorWindow
 
     private void ClearExistingCollectibles()
     {
-        if (collectibleParentWorld != null)
+        if (collectibleParent != null)
         {
-            Debug.Log($"Deleting everything under {collectibleParentWorld.gameObject.name}!");
-            while (collectibleParentWorld.childCount > 0)
+            Debug.Log($"Deleting everything under {collectibleParent.gameObject.name}!");
+            while (collectibleParent.childCount > 0)
             {
-                Transform child = collectibleParentWorld.GetChild(0);
-                Debug.Log($"Deleting {child.gameObject.name}!");
-                DestroyImmediate(child.gameObject);
-            }
-        }
-
-        if (collectibleParentUI != null)
-        {
-            Debug.Log($"Deleting everything under {collectibleParentUI.gameObject.name}!");
-            while (collectibleParentUI.childCount > 0)
-            {
-                Transform child = collectibleParentUI.GetChild(0);
+                Transform child = collectibleParent.GetChild(0);
                 Debug.Log($"Deleting {child.gameObject.name}!");
                 DestroyImmediate(child.gameObject);
             }
