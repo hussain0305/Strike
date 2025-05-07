@@ -8,8 +8,7 @@ public class LevelEditorWindow : EditorWindow
     private GameModeType gameMode = GameModeType.Pins;
     private Transform starParent;
     private Transform portalsParent;
-    private Transform collectibleParentUI;
-    private Transform collectibleParentWorld;
+    private Transform collectibleParent;
     private Transform obstaclesParentWorld;
     private Transform obstaclesParentPlatform;
     private LevelExporter.LevelData loadedLevelData;
