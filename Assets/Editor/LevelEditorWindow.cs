@@ -107,6 +107,7 @@ public class LevelEditorWindow : EditorWindow
             collectibleScript.type = collectibleData.type;
             collectibleScript.value = collectibleData.value;
             collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
+            collectibleScript.activeOnStart = collectibleData.activeOnStart;
             collectibleScript.pointDisplay = collectibleData.pointDisplayType;
             
             collectibleObject.transform.SetParent(collectibleParent);
@@ -235,7 +236,8 @@ public class LevelEditorWindow : EditorWindow
                 position = collectible.position,
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
-                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected
+                numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
+                activeOnStart = collectibleScript.activeOnStart
             };
 
             loadedLevelData.collectibles.Add(data);

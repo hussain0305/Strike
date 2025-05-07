@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class DangerToken : Collectible
 {
+    [Header("Danger Token")]
     public DangerTokenType dangerTokenType;
-    public bool activeFromTheBeginning = false;
+    
+    [HideInInspector]
+    public int dangerTokenIndex;
+
 }

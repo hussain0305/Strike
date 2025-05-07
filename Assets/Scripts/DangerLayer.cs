@@ -15,8 +15,7 @@ public class InitializeDangerTokens
 
 public class DangerLayer : MonoBehaviour
 {
-    public GameObject[] dangerTokens;
-    
+    private GameObject[] dangerTokens;
     private int nextTokenToActivate = 0;
     
     private void OnEnable()

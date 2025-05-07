@@ -62,6 +62,10 @@ public class LevelLoader : MonoBehaviour
 
         targetPoints = levelData.targetPoints;
 
+        List<GameObject> spawnedDangerObjects = new List<GameObject>();
+        int highestActiveDangerPinIndex = -1;
+        int currentDangerPinIndex = 0;
+        
         foreach (LevelExporter.CollectibleData collectibleData in levelData.collectibles)
         {
             GameObject collectibleObject = null;
@@ -112,6 +116,18 @@ public class LevelLoader : MonoBehaviour
             else if (cmScript)
             {
                 Destroy(cmScript);
+            }
+            
+            DangerToken dangerScript = collectibleObject.GetComponent<DangerToken>();
+            if (dangerScript)
+            {
+                dangerScript.dangerTokenIndex = currentDangerPinIndex;
+                spawnedDangerObjects.Add(collectibleObject);
+                if (collectibleData.activeOnStart && currentDangerPinIndex > highestActiveDangerPinIndex)
+                {
+                    highestActiveDangerPinIndex = currentDangerPinIndex;
+                }
+                currentDangerPinIndex++;
             }
         }
 
@@ -180,6 +196,7 @@ public class LevelLoader : MonoBehaviour
             EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));
         }
         
+        EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex));
         Debug.Log($"Level {levelNumber} loaded successfully!");
     }
 

@@ -18,6 +18,7 @@ public class LevelExporter : MonoBehaviour
         public Collectible.PointDisplayType pointDisplayType;
         public Vector3[] path;
         public float movementSpeed;
+        public bool activeOnStart;
     }
 
     [System.Serializable]
@@ -137,6 +138,7 @@ public class LevelExporter : MonoBehaviour
                 pointDisplayType = displayType,
                 movementSpeed = movementSpeed,
                 path = path,
+                activeOnStart = collectibleScript.activeOnStart
             };
 
             levelData.collectibles.Add(collectibleData);
