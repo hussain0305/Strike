@@ -23,7 +23,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -45,7 +46,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -67,7 +69,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -89,7 +92,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -111,7 +115,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -133,7 +138,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 0,
@@ -155,7 +161,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 2,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 1,
@@ -177,7 +184,8 @@
             "numTimesCanBeCollected": 1,
             "pointDisplayType": 0,
             "path": [],
-            "movementSpeed": 0.0
+            "movementSpeed": 0.0,
+            "activeOnStart": false
         },
         {
             "type": 2,
@@ -186,7 +194,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": -4.949999809265137,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 81.63999938964844
             },
             "rotation": {
@@ -201,12 +209,12 @@
             "path": [
                 {
                     "x": -4.949999809265137,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 81.63999938964844
                 },
                 {
                     "x": -24.35000228881836,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 70.44000244140625
                 }
             ],
@@ -219,7 +227,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": 24.8700008392334,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 70.12000274658203
             },
             "rotation": {
@@ -234,12 +242,12 @@
             "path": [
                 {
                     "x": 24.8700008392334,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 70.12000274658203
                 },
                 {
                     "x": 5.470518112182617,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 81.3208999633789
                 }
             ],
@@ -252,7 +260,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": -29.829999923706056,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 61.54999923706055
             },
             "rotation": {
@@ -267,12 +275,12 @@
             "path": [
                 {
                     "x": -29.829999923706056,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 61.54999923706055
                 },
                 {
                     "x": -29.830514907836915,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 39.14910125732422
                 }
             ],
@@ -285,7 +293,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": 29.8799991607666,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 38.439998626708987
             },
             "rotation": {
@@ -300,12 +308,12 @@
             "path": [
                 {
                     "x": 29.8799991607666,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 38.439998626708987
                 },
                 {
                     "x": 29.880517959594728,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 60.84089660644531
                 }
             ],
@@ -318,7 +326,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": 4.929999828338623,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 18.3700008392334
             },
             "rotation": {
@@ -333,12 +341,12 @@
             "path": [
                 {
                     "x": 4.929999828338623,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 18.3700008392334
                 },
                 {
                     "x": 24.32948112487793,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 29.570892333984376
                 }
             ],
@@ -351,7 +359,7 @@
             "dangerTokenType": 1,
             "position": {
                 "x": -24.899999618530275,
-                "y": 0.09999847412109375,
+                "y": 0.20000001788139344,
                 "z": 29.90999984741211
             },
             "rotation": {
@@ -366,12 +374,12 @@
             "path": [
                 {
                     "x": -24.899999618530275,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 29.90999984741211
                 },
                 {
                     "x": -5.500001907348633,
-                    "y": 0.09999847412109375,
+                    "y": 0.2,
                     "z": 18.709999084472658
                 }
             ],
