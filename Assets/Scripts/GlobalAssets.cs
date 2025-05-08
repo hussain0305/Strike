@@ -48,6 +48,10 @@ public class GlobalAssets : ScriptableObject
     [Header("Rarity")]
     public RarityAppearance[] rarityAppearance;
 
+    [Header("Others")]
+    public Material switchedOffMaterial;
+    public Material switchedOnMaterial;
+    
     private Dictionary<ButtonLocation, Material> lockedMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> defaultMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> selectedMaterialsDictionary;
