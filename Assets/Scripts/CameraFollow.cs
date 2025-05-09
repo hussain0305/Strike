@@ -10,14 +10,29 @@ public class CameraFollow : MonoBehaviour
     [HideInInspector]
     public bool followBall = false;
 
-    private Transform ball;
-    public Transform Ball
+    private Transform ballTransform;
+    public Transform BallTransform
+    {
+        get
+        {
+            if (ballTransform == null)
+            {
+                ballTransform = GameManager.Instance.ball.transform;
+            }
+
+            return ballTransform;
+        }
+        set => ballTransform = value;
+    }
+    
+    private Ball ball;
+    public Ball Ball
     {
         get
         {
             if (ball == null)
             {
-                ball = GameManager.Instance.ball.transform;
+                ball = GameManager.Instance.ball;
             }
 
             return ball;
@@ -41,18 +56,18 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Ball == null || BallRigidbody == null || !followBall) return;
+        if (BallTransform == null || BallRigidbody == null || !followBall) return;
 
         Vector3 velocity = BallRigidbody.linearVelocity;
 
         if (velocity.sqrMagnitude < 0.01f)
         {
-            velocity = Ball.forward;
+            velocity = Ball.LastKnownVelocity;
         }
         Vector3 direction = velocity.normalized;
-        Vector3 targetPosition = Ball.position - direction * followDistance + Vector3.up * followHeight;
+        Vector3 targetPosition = BallTransform.position - direction * followDistance + Vector3.up * followHeight;
         transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
-        Quaternion targetRotation = Quaternion.LookRotation(Ball.position - transform.position);
+        Quaternion targetRotation = Quaternion.LookRotation(BallTransform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 }

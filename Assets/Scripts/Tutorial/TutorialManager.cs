@@ -105,7 +105,7 @@ public class TutorialManager : MonoBehaviour
         BallProperties selected = Balls.Instance.GetBall(tutorialBallID);
         GameObject spawned = Instantiate(selected.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
         ball = spawned.GetComponent<Ball>();
-        CameraController.Instance.cameraFollow.Ball = ball.transform;
+        CameraController.Instance.cameraFollow.BallTransform = ball.transform;
         
         GameStateManager.Instance.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());

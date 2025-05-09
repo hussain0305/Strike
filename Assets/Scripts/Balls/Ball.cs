@@ -49,6 +49,7 @@ public class Ball : MonoBehaviour
     private AbilityDriver abilityDriver;
     protected AbilityDriver AbilityDriver => abilityDriver ??= (GetComponent<AbilityDriver>() ?? gameObject.AddComponent<AbilityDriver>());
     private Vector3 lastKnownVelocity;
+    public Vector3 LastKnownVelocity => lastKnownVelocity;
     
     private void OnEnable()
     {
