@@ -119,6 +119,22 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    private BallLandingIndicator ballLandingIndicator;
+    private BallLandingIndicator BallLandingIndicator
+    {
+        get
+        {
+            if (ballLandingIndicator == null)
+            {
+                GameObject go = Instantiate(GlobalAssets.Instance.ballLandingIndicatorPrefab);
+                ballLandingIndicator = go.GetComponent<BallLandingIndicator>();
+                ballLandingIndicator.transform.forward = Vector3.up;
+                go.SetActive(false);
+            }
+            return ballLandingIndicator;
+        }
+    }
+    
     public PowerInput PowerInput => ballParameterController.powerInput;
     public SpinInput SpinInput => ballParameterController.spinInput;
     public AngleInput AngleInput => ballParameterController.angleInput;
@@ -145,6 +161,12 @@ public class GameManager : MonoBehaviour
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
     
+    private bool showBallLandingOverride = false;
+    private bool showBallLanding => ballParameterController.powerInput.Power > 10 && 
+        (showBallLandingOverride || (!showTrajectory && Time.time > lastBallLandingShownAt + BALL_LANDING_INDICATOR_INTERVAL));
+    private float lastBallLandingShownAt = 0;
+    private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -178,12 +200,14 @@ public class GameManager : MonoBehaviour
     {
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
+        EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
+        EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
     }
 
     public void InitGame()
@@ -271,6 +295,10 @@ public class GameManager : MonoBehaviour
                 List<List<Vector3>> finalizedTrajectory = ball.trajectoryModifier.ModifyTrajectory(trajectoryPoints);
                 DrawTrajectory(finalizedTrajectory);
             }
+            else if (showBallLanding)
+            {
+                ShowBallLanding();
+            }
         }
     }
 
@@ -352,6 +380,7 @@ public class GameManager : MonoBehaviour
 
     public void ShootBall()
     {
+        BallLandingIndicator.gameObject.SetActive(false);
         ball.Shoot();
         EventBus.Publish(new BallShotEvent());
         DisableRelevantElementsDuringShot();
@@ -385,6 +414,52 @@ public class GameManager : MonoBehaviour
         {
             trajectories[i].segmentEnd.enabled = false;
             trajectories[i].trajectory.enabled = false;
+        }
+    }
+
+    public void StoppedInputtingBallParameter(StoppedBallParameterInput e)
+    {
+        BallLandingIndicator.ResetAnimation();
+        showBallLandingOverride = true;
+    }
+    
+    public void ShowBallLanding()
+    {
+        showBallLandingOverride = false;
+        lastBallLandingShownAt = Time.time;
+        List<Vector3> trajectory = ball.CalculateTrajectory();
+
+        BallLandingIndicator.gameObject.SetActive(false);
+
+        for (int i = 1; i < trajectory.Count; i++)
+        {
+            Vector3 prev = trajectory[i - 1];
+            Vector3 curr = trajectory[i];
+
+            if (!(prev.y > 0f && curr.y <= 0f))
+                continue;
+
+            Vector3 dir = curr - prev;
+            float dist = dir.magnitude;
+            Ray ray = new Ray(prev, dir.normalized);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, dist, Global.GroundSurface))
+            {
+                BallLandingIndicator.transform.position = hit.point;
+            }
+            else
+            {
+                float t = prev.y / (prev.y - curr.y);
+                Vector3 landingPos = Vector3.Lerp(prev, curr, t);
+                BallLandingIndicator.transform.position = landingPos;
+            }
+
+            // BallLandingIndicator.transform.position = new Vector3(BallLandingIndicator.transform.position.x, 
+            //     BallLandingIndicator.transform.position.y + 0.02f, BallLandingIndicator.transform.position.z);
+            BallLandingIndicator.gameObject.SetActive(true);
+            BallLandingIndicator.Animate();
+            return;
         }
     }
     

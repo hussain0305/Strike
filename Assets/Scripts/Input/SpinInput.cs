@@ -48,6 +48,12 @@ public class SpinInput : MonoBehaviour
             startTouchPosition = Input.mousePosition;
         }
 
+        if (Input.GetMouseButtonUp(0))
+        {
+            isInteracting = false;
+            EventBus.Publish(new StoppedBallParameterInput());
+        }
+
         if (Input.GetMouseButton(0) && isInteracting)
         {
             Vector2 currentTouchPosition = Input.mousePosition;

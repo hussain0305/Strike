@@ -80,6 +80,7 @@ public class PowerInput : MonoBehaviour
 
     void EndSwipe()
     {
+        EventBus.Publish(new StoppedBallParameterInput());
         isDragging = false;
     }
 

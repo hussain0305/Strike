@@ -35,7 +35,7 @@ public class StickyModule : IBallAbilityModule
 
     public void OnHitSomething(BallHitSomethingEvent e)
     {
-        int stickyMask = Global.stickySurfaces.value;
+        int stickyMask = Global.StickySurfaces.value;
         int hitLayer = e.Collision.gameObject.layer;
         if ((stickyMask & (1 << hitLayer)) == 0)
             return;

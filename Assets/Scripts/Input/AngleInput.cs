@@ -11,7 +11,6 @@ public class AngleInput : MonoBehaviour
 
     private Vector3 RestingPosition => new(0, 0, -0.1f);
 
-    private bool isInteracting;
     private Vector2 startTouch;
     private bool isDragging = false;
     private Vector2 accumulatedAngles;
@@ -96,6 +95,7 @@ public class AngleInput : MonoBehaviour
 
     void EndSwipe()
     {
+        EventBus.Publish(new StoppedBallParameterInput());
         isDragging = false;
     }
 

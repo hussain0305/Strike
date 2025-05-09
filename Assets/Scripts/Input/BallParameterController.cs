@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class StoppedBallParameterInput { }
+
 public class BallParameterInputSwitchedEvent
 {
     public BallParameterController.ShotParameter ShotParameter;

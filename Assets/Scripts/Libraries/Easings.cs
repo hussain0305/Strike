@@ -100,6 +100,12 @@ public static class Easings
         return 1f - Mathf.Pow(1f - t, 5f);
     }
     
+    public static float EaseInQuart(float t)
+    {
+        float tt = t * t;
+        return tt * tt;
+    }
+    
     private static float Punch(float t, float amplitude, int vibrato, float elasticity)
     {
         if (t <= 0f || t >= 1f)

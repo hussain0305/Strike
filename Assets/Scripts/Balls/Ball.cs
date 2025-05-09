@@ -193,7 +193,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (((1 << other.gameObject.layer) & Global.levelSurfaces) != 0)
+        if (((1 << other.gameObject.layer) & Global.LevelSurfaces) != 0)
         {
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}, lastKnownVelocity));
         }
@@ -202,7 +202,7 @@ public class Ball : MonoBehaviour
             // collisionForce?.AddForceOnCollectibleHit(other.gameObject.GetComponent<Rigidbody>(), other.GetContact(0).point, lastKnownVelocity);
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
         }       
-        else if (((1 << other.gameObject.layer) & Global.stickySurfaces) != 0)
+        else if (((1 << other.gameObject.layer) & Global.StickySurfaces) != 0)
         {
             collidedWithSomething = true;
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
