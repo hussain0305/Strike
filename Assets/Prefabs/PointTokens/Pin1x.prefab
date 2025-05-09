@@ -291,9 +291,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5940289607546129480}
   serializedVersion: 4
-  m_Mass: 50
+  m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 1
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -322,11 +322,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe381cfde8355674d91aba62cea20dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rBody: {fileID: 2954699665254431922}
   type: 0
   value: 25
   numTimesCanBeCollected: 1
-  activeOnStart: 0
+  activeOnStart: 1
   heightMultipleForOffsetCalculation: 2
   body: {fileID: 1861416091964994729}
   inBodyPointDisplay: {fileID: 5834824851321849911}

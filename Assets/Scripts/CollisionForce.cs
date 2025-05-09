@@ -9,7 +9,7 @@ public class CollisionForce : MonoBehaviour
     public void Initialize(Ball _ball, bool impartForce)
     {
         ball = _ball;
-        forceByMass = ball.rb.mass * 10;
+        forceByMass = ball.rb.mass;
         if (!impartForce)
             Destroy(this);
     }

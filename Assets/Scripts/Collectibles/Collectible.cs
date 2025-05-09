@@ -28,7 +28,7 @@ public class Collectible : MonoBehaviour
     public CollectibleType type;
     public int value;
     public int numTimesCanBeCollected = 1;
-    public bool activeOnStart = false;
+    public bool activeOnStart = true;
 
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;

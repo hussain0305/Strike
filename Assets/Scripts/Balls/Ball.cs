@@ -199,7 +199,7 @@ public class Ball : MonoBehaviour
         }
         else if(other.gameObject.GetComponent<Collectible>())
         {
-            collisionForce?.AddForceOnCollectibleHit(other.gameObject.GetComponent<Rigidbody>(), other.GetContact(0).point, lastKnownVelocity);
+            // collisionForce?.AddForceOnCollectibleHit(other.gameObject.GetComponent<Rigidbody>(), other.GetContact(0).point, lastKnownVelocity);
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
         }       
         else if (((1 << other.gameObject.layer) & Global.stickySurfaces) != 0)
