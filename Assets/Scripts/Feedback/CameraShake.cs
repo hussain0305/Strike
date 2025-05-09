@@ -45,8 +45,8 @@ public class CameraShake : MonoBehaviour
     {
         if (type == CollectibleType.Multiple)
         {
-            duration = 0;
-            power = 0;
+            duration = 0.2f;
+            power = 0.25f;
             return;
         }
 

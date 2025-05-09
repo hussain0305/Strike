@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 {
+    public ParticleSystem hitPFX;
     private Collectible collectible;
     private Collectible Collectible => collectible ??= GetComponent<Collectible>();
 
@@ -35,6 +36,7 @@ public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
         if (numTimesCollected > numTimesCanBeCollected)
             return;
 
+        hitPFX.Play();
         StartCoroutine(ScaleAndDisappear());
     }
 
@@ -45,8 +47,9 @@ public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 
     private IEnumerator ScaleAndDisappear()
     {
+        float disableAfter = hitPFX.main.duration;
         float timePassed = 0f;
-        float effectDuration = 0.5f;
+        float effectDuration = disableAfter;
         while (timePassed < effectDuration)
         {
             float scale = Easings.EaseScaleUpAndVanish(Mathf.Clamp01(timePassed / effectDuration));
@@ -55,7 +58,7 @@ public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
             timePassed += Time.deltaTime;
             yield return null;
         }
-        
+
         transform.position += new Vector3(0, 1000, 0);
     }
 }
