@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class CollectibleHitReaction : MonoBehaviour
+public class PointTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 {
     public Transform edges;
     public TextMeshPro hitPointsDisplay;

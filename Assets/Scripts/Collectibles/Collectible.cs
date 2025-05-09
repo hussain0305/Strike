@@ -68,14 +68,14 @@ public class Collectible : MonoBehaviour
     private Vector3 defaultPosition;
     private Quaternion defaultRotation;
 
-    private CollectibleHitReaction hitReaction;
+    private ICollectibleHitReaction hitReaction;
 
     private IContextProvider context;
     
     public void Awake()
     {
         SaveDefaults();
-        hitReaction = GetComponent<CollectibleHitReaction>();
+        hitReaction = GetComponent<ICollectibleHitReaction>();
     }
 
     public void Start()
@@ -109,6 +109,7 @@ public class Collectible : MonoBehaviour
         
         numTimesCollected = 0;
         accountedForInThisShot = false;
+        hitReaction = GetComponent<ICollectibleHitReaction>();
 
         SaveDefaults();
         InitAppearance();
@@ -124,7 +125,7 @@ public class Collectible : MonoBehaviour
     {
         if (HasPointBoard) SetupPointBoard();
         
-        GetComponent<CollectibleHitReaction>()?.SetDefaultVisuals(null);
+        hitReaction?.SetDefaultVisuals(null);
     }
 
     public void OnCollisionEnter(Collision other)

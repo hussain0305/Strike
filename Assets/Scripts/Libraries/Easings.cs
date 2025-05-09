@@ -99,4 +99,40 @@ public static class Easings
     {
         return 1f - Mathf.Pow(1f - t, 5f);
     }
+    
+    private static float Punch(float t, float amplitude, int vibrato, float elasticity)
+    {
+        if (t <= 0f || t >= 1f)
+            return 0f;
+        
+        float sine = Mathf.Sin(t * Mathf.PI * vibrato);
+        float decay = Mathf.Pow(1f - t, elasticity);
+        return amplitude * sine * decay;
+    }
+    
+    public static float EasePunchScale(float tNormalized, float amplitude = 0.2f, int vibrato = 1, float elasticity = 1f)
+    {
+        return Punch(tNormalized, amplitude, vibrato, elasticity);
+    }
+    
+    public static float EasePunchRotation(float tNormalized, float amplitude = 15f, int vibrato = 1, float elasticity = 1f)
+    {
+        return Punch(tNormalized, amplitude, vibrato, elasticity);
+    }
+    
+    public static float EaseScaleUpAndVanish(float tNormalized, float peakScale = 1.5f)
+    {
+        if (tNormalized < 0.5f)
+        {
+            float u = tNormalized * 2f;
+            u = u * u * u;
+            return Mathf.Lerp(1f, peakScale, u);
+        }
+        else
+        {
+            float u = (tNormalized - 0.5f) * 2f;
+            u = 1f - Mathf.Pow(1f - u, 3f);
+            return Mathf.Lerp(peakScale, 0f, u);
+        }
+    }
 }
