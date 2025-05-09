@@ -58,7 +58,5 @@ public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
             timePassed += Time.deltaTime;
             yield return null;
         }
-
-        transform.position += new Vector3(0, 1000, 0);
     }
 }
