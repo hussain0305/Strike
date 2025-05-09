@@ -252,7 +252,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        showTrajectory = true;
+        // showTrajectory = true;
 #endif
         if (BallShootable)
         {
@@ -297,6 +297,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         
+        showTrajectory = false;
         angleIndicator.SetActive(true);
         nextButton.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(true);
