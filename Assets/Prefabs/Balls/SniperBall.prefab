@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1516453715555116339}
   - component: {fileID: 67386951401660019}
   - component: {fileID: -8676077785978836874}
+  - component: {fileID: 2093435365896956096}
   m_Layer: 6
   m_Name: SniperBall
   m_TagString: Untagged
@@ -161,6 +162,7 @@ MonoBehaviour:
   dipClamp: 0
   groundLevel: 0
   collidedWithSomething: 0
+  shouldResumePhysics: 1
 --- !u!114 &-8676077785978836874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +176,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 0}
+--- !u!114 &2093435365896956096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089681808455105078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fc5a36486bb6a45b0df9f403f224b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5662915289657281146
 GameObject:
   m_ObjectHideFlags: 0

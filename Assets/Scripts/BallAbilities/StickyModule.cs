@@ -88,7 +88,7 @@ public class StickyModule : IBallAbilityModule
         var hitRb = e.Collision.rigidbody;
         if (hitRb != null && context is InGameContext gameCtx)
         {
-            hitRb.AddForceAtPosition( e.ImpactVelocity * body.mass * 10, contactPoint, ForceMode.Impulse);
+            hitRb.AddForceAtPosition(e.ImpactVelocity * body.mass * 10, contactPoint, ForceMode.Impulse);
         }
 
         ball.transform.SetParent(e.Collision.transform, true);

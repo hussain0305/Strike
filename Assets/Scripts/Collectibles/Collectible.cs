@@ -24,9 +24,6 @@ public class Collectible : MonoBehaviour
         InBody
     };
     
-    [Header("Components")]
-    public Rigidbody rBody;
-    
     [Header("Info")]
     public CollectibleType type;
     public int value;
@@ -59,6 +56,11 @@ public class Collectible : MonoBehaviour
     
     private CollectibleHeader header;
 
+    private Rigidbody rBody;
+    [HideInInspector]
+    public Rigidbody RBody => rBody ??= GetComponent<Rigidbody>();
+
+    
     private int collectingLayer;
     private int numTimesCollected = 0;
     private bool accountedForInThisShot = false;
@@ -212,6 +214,11 @@ public class Collectible : MonoBehaviour
     
     void ResetPin()
     {
+        if (!RBody.isKinematic)
+        {
+            RBody.angularVelocity = Vector3.zero;
+            RBody.linearVelocity = Vector3.zero;
+        }
         numTimesCollected = 0;
         accountedForInThisShot = false;
         transform.position = defaultPosition;

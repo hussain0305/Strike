@@ -47,6 +47,7 @@ public class Ball : MonoBehaviour
     public bool shouldResumePhysics = true;
 
     private AbilityDriver abilityDriver;
+    private CollisionForce collisionForce;
     protected AbilityDriver AbilityDriver => abilityDriver ??= (GetComponent<AbilityDriver>() ?? gameObject.AddComponent<AbilityDriver>());
     private Vector3 lastKnownVelocity;
     public Vector3 LastKnownVelocity => lastKnownVelocity;
@@ -76,6 +77,8 @@ public class Ball : MonoBehaviour
         ball.rotation = Quaternion.Euler(GlobalConsts.BallTeeRotation);
         gravity = context.GetGravity();
         gameObject.AddComponent<PortalTraveler>();
+        collisionForce = GetComponent<CollisionForce>();
+        collisionForce?.Initialize(this, _context is InGameContext);
         InitAbilityDriver(additionalModules);
         InitTrajectoryCalcualtor();
         AdjustEffectsIfNeeded();
@@ -196,6 +199,7 @@ public class Ball : MonoBehaviour
         }
         else if(other.gameObject.GetComponent<Collectible>())
         {
+            collisionForce?.AddForceOnCollectibleHit(other.gameObject.GetComponent<Rigidbody>(), other.GetContact(0).point, lastKnownVelocity);
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFX3D}, lastKnownVelocity));
         }       
         else if (((1 << other.gameObject.layer) & Global.stickySurfaces) != 0)

@@ -4914,6 +4914,7 @@ GameObject:
   - component: {fileID: 6959484110207663717}
   - component: {fileID: 5703397933703037229}
   - component: {fileID: 1492437123448554915}
+  - component: {fileID: 4371849295087807450}
   m_Layer: 6
   m_Name: GhostBall
   m_TagString: Untagged
@@ -5007,6 +5008,7 @@ MonoBehaviour:
   dipClamp: 10
   groundLevel: 0
   collidedWithSomething: 0
+  shouldResumePhysics: 1
 --- !u!114 &1492437123448554915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5020,6 +5022,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 0}
+--- !u!114 &4371849295087807450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514905537347721854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fc5a36486bb6a45b0df9f403f224b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3577979704748067258
 GameObject:
   m_ObjectHideFlags: 0

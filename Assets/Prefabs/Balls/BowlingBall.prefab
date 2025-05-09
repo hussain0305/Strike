@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3798794528407180581}
   - component: {fileID: 1516453715555116339}
   - component: {fileID: 6740917276115417957}
+  - component: {fileID: 201435787250473937}
   m_Layer: 6
   m_Name: BowlingBall
   m_TagString: Untagged
@@ -160,6 +161,19 @@ MonoBehaviour:
   dipClamp: 2
   groundLevel: 0
   collidedWithSomething: 0
+  shouldResumePhysics: 1
+--- !u!114 &201435787250473937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089681808455105078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fc5a36486bb6a45b0df9f403f224b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2509017211425399609
 GameObject:
   m_ObjectHideFlags: 0
