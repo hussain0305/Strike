@@ -15,7 +15,7 @@ public class Step_AdjustAngle : TutorialStep
         {
             TutorialHUD.TutorialScreenElements.AngleButton
         };
-        successfulText = "Now let’s turn on trajectory view to preview your shot.";
+        successfulText = "Now let's talk about how to figure out where the ball is going to land.";
 
         base.Begin(tutorialController);
 
