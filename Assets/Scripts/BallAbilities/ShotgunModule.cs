@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class ShotgunModule : IBallAbilityModule
 {
-    //Interface stuff
+    Ball ball;
+    IContextProvider context;
+    
+    private Vector2 spread = new Vector2(0.5f, 0.5f);
+    private Queue<GameObject> pelletPool = new Queue<GameObject>();
+    private List<GameObject> activePellets = new List<GameObject>();
+    private const int pelletCount = 50;
+
     public AbilityAxis Axis => AbilityAxis.Spawn;
     public void Initialize(Ball ownerBall, IContextProvider _context)
     {
@@ -32,15 +39,6 @@ public class ShotgunModule : IBallAbilityModule
         activePellets.Clear();
     }
     
-    //Own stuff
-    Ball ball;
-    IContextProvider context;
-    
-    private Vector2 spread = new Vector2(0.5f, 0.5f);
-    private Queue<GameObject> pelletPool = new Queue<GameObject>();
-    private List<GameObject> activePellets = new List<GameObject>();
-    private const int pelletCount = 50;
-
     private IEnumerator InitializePelletPool()
     {
         GameObject pelletPrefab = Balls.Instance.shotgunPellets;

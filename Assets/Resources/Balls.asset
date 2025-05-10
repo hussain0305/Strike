@@ -85,6 +85,18 @@ MonoBehaviour:
     prefab: {fileID: 3514905537347721854, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
     id: ghostBall
     cost: 1
+  - name: Ricochet
+    description: Bounces between eligible targets
+    rarity: 3
+    weight: 1
+    spin: 0
+    abilityAxis: 3
+    abilityText: Passes through objects
+    moduleDefinition: {fileID: 11400000, guid: 2f2e56beac84be643b5f3303a9167695, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 3931144424910952291, guid: c1b6920855a75e045935f1a9c50bad30, type: 3}
+    id: ricoBall
+    cost: 1
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3

@@ -213,7 +213,7 @@ public class Collectible : MonoBehaviour
         }
     }
     
-    void ResetPin()
+    public void ResetPin()
     {
         if (!RBody.isKinematic)
         {
@@ -224,5 +224,10 @@ public class Collectible : MonoBehaviour
         accountedForInThisShot = false;
         transform.position = defaultPosition;
         transform.rotation = defaultRotation;
+    }
+
+    public bool CanBeCollected()
+    {
+        return numTimesCollected < numTimesCanBeCollected;
     }
 }

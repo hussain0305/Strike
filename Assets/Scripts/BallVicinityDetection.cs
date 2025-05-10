@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BallVicinityDetection : MonoBehaviour
 {
-    public Ball ball;
+    private Ball ball;
+    private Ball Ball => ball ??= GetComponentInParent<Ball>();
     private Vector3 lastPosition;
     private int raycastLayerMask;
     private int portalLayerMask;
@@ -29,14 +30,14 @@ public class BallVicinityDetection : MonoBehaviour
         
         if (motionVector.sqrMagnitude > 0)
         {
-            if (!ball.collidedWithSomething)
+            if (!Ball.collidedWithSomething)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength, raycastLayerMask))
                 {
-                    if (hit.collider.gameObject != ball.gameObject)
+                    if (hit.collider.gameObject != Ball.gameObject)
                     {
-                        ball.collidedWithSomething = true;
+                        Ball.collidedWithSomething = true;
                     }
                 }
                 // Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * rayLength, Color.red, 2f);
@@ -51,7 +52,7 @@ public class BallVicinityDetection : MonoBehaviour
                 {
                     bool enteredFromFront = Vector3.Dot(motionVector, portal.transform.forward) > 0f;
                     Vector3 localPos = portal.transform.InverseTransformPoint(portalHit.point);
-                    Quaternion localRot = Quaternion.Inverse(portal.transform.rotation) * ball.transform.rotation;
+                    Quaternion localRot = Quaternion.Inverse(portal.transform.rotation) * Ball.transform.rotation;
 
                     if (!enteredFromFront)
                         localRot = Quaternion.Euler(0f, 180f, 0f) * localRot;
@@ -60,7 +61,7 @@ public class BallVicinityDetection : MonoBehaviour
                     Vector3 exitPos = exitT.TransformPoint(localPos) + exitT.forward * 0.1f;
                     Quaternion exitRot = exitT.rotation * localRot;
 
-                    var traveler = ball.GetComponent<PortalTraveler>();
+                    var traveler = Ball.GetComponent<PortalTraveler>();
                     if (traveler != null)
                     {
                         traveler.Teleport(exitPos, exitRot);

@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WallChecker : MonoBehaviour
 {
-    public Ball ball;
+    private Ball ball;
+    private Ball Ball => ball ??= GetComponentInParent<Ball>();
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ball.collidedWithSomething)
+        if (Ball.collidedWithSomething)
         {
             return;
         }
@@ -14,6 +16,6 @@ public class WallChecker : MonoBehaviour
         {
             return;
         }
-        ball.collidedWithSomething = true;
+        Ball.collidedWithSomething = true;
     }
 }
