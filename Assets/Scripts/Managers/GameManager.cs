@@ -128,7 +128,6 @@ public class GameManager : MonoBehaviour
             {
                 GameObject go = Instantiate(GlobalAssets.Instance.ballLandingIndicatorPrefab);
                 ballLandingIndicator = go.GetComponent<BallLandingIndicator>();
-                ballLandingIndicator.transform.forward = Vector3.up;
                 go.SetActive(false);
             }
             return ballLandingIndicator;
