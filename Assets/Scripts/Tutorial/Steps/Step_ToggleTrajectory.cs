@@ -52,7 +52,6 @@ public class Step_ToggleTrajectory : TutorialStep
 
         if (phase == Phase.WaitForFirstTap)
         {
-            Debug.Log(">>> dsgfhgf");
             elementsToActivate = new[]
             {
                 TutorialHUD.TutorialScreenElements.TrajectoryButton,

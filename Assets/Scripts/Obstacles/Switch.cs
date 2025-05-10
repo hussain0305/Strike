@@ -24,11 +24,9 @@ public class Switch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(">>> 1");
         if (switchedThisTurn)
             return;
 
-        Debug.Log(">>> 2");
         switchedThisTurn = true;
         SwitchPressed();
     }

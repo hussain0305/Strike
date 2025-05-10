@@ -66,13 +66,11 @@ public class StickyModule : IBallAbilityModule
 
         if (didHit)
         {
-            Debug.Log(">>> Detected hit");
             contactPoint = hitInfo.point;
             hitTransform = hitInfo.collider.transform;
         }
         else
         {
-            Debug.Log(">>> Unity's hit");
             contactPoint = e.Collision.contacts[0].point;
             hitTransform = e.Collision.transform;
         }
