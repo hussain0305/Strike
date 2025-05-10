@@ -32,7 +32,8 @@ public enum ObstacleType
 {
     Fan,
     Window,
-    SwitchDoor
+    SwitchDoor,
+    Wall
 };
 
 public enum Positioning
