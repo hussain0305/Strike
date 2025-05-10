@@ -9,7 +9,7 @@ public class RicochetModule : IBallAbilityModule
     
     private readonly float sweepAngle = 60f;
     private readonly float angleStep = 15f;
-    private readonly float ricochetLength = 25f;
+    private readonly float ricochetLength = 40f;
     private LayerMask collideWithBallLayer;
     private const int NUM_RICOCHETS = 2;
     private int numTimesRicocheted = 0;
