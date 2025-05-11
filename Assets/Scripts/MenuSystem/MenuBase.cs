@@ -11,7 +11,8 @@ public class MenuBase : MonoBehaviour
         BallSelectionPage,
         QuitGameScreen,
         PauseMenu,
-        SettingsPage
+        SettingsPage,
+        RandomizerPage
     };
     
     [System.Serializable]

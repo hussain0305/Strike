@@ -2206,7 +2206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 516508930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10075ed443932ad4f9fe287930d5f1cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 30711dcf27683d942b97c84b408aceb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   starsParent: {fileID: 1922110261}
@@ -3148,6 +3148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eaa88ef7bc57fa479275bab482be4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelLoader: {fileID: 516508932}
   tee: {fileID: 382225552}
   ball: {fileID: 0}
   ballParameterController: {fileID: 1671959285}

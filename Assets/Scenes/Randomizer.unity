@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 301384756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc96c020f2aac2d458d6d68f0f469323, type: 3}
+  m_Script: {fileID: 11500000, guid: 157375774af19ca4dbdf3df714fd5bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &303052948
@@ -2008,7 +2008,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 516508931}
-  - component: {fileID: 516508933}
+  - component: {fileID: 516508932}
   m_Layer: 0
   m_Name: LevelLoader
   m_TagString: Untagged
@@ -2031,7 +2031,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1324001288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &516508933
+--- !u!114 &516508932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2040,7 +2040,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 516508930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30711dcf27683d942b97c84b408aceb4, type: 3}
+  m_Script: {fileID: 11500000, guid: ab82a2594bbd6174081f51561d65fa73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   starsParent: {fileID: 1922110261}
@@ -2932,7 +2932,6 @@ GameObject:
   m_Component:
   - component: {fileID: 642570808}
   - component: {fileID: 642570807}
-  - component: {fileID: 642570809}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2952,7 +2951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eaa88ef7bc57fa479275bab482be4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLoader: {fileID: 516508933}
+  levelLoader: {fileID: 516508932}
   tee: {fileID: 382225552}
   ball: {fileID: 0}
   ballParameterController: {fileID: 1671959285}
@@ -2988,18 +2987,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1298743690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &642570809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642570806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86e62ca2fb8e4c3498d8c571424ee367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &647627651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3492,59 +3479,6 @@ RectTransform:
   m_AnchoredPosition: {x: -85, y: 6.5}
   m_SizeDelta: {x: 2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &953383088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 953383090}
-  - component: {fileID: 953383089}
-  m_Layer: 0
-  m_Name: LevelExporter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &953383089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953383088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3930af498c0ef8f4ba37d586bc3192e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: 3
-  targetPoints: 100
-  gameMode: 0
-  starsParent: {fileID: 1922110261}
-  portalsParent: {fileID: 378263160}
-  obstaclesParentPlatform: {fileID: 274801261}
-  obstaclesParentWorld: {fileID: 1181003495}
-  collectibleParent: {fileID: 549877463}
-  platformRotationSpeed: 0
---- !u!4 &953383090
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953383088}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1051.2063, y: 668.55865, z: 176.02568}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1324001288}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &957088809 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6501053110589269832, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
@@ -5347,7 +5281,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 953383090}
   - {fileID: 516508931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

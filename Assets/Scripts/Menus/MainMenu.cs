@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     public Button ballSelectionButton;
-    public Button gameModeSelectionButton;
+    public Button gauntletModeButton;
+    public Button randomizerModeButton;
     public Button settingsPageButton;
     public Button tuorialButton;
     public Button exitButton;
@@ -45,10 +47,16 @@ public class MainMenu : MonoBehaviour
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.BallSelectionPage);
         });
         
-        gameModeSelectionButton.onClick.RemoveAllListeners();
-        gameModeSelectionButton.onClick.AddListener(() =>
+        gauntletModeButton.onClick.RemoveAllListeners();
+        gauntletModeButton.onClick.AddListener(() =>
         {
             MenuManager.Instance.OpenMenu(MenuBase.MenuType.GameModeScreen);
+        });
+        
+        randomizerModeButton.onClick.RemoveAllListeners();
+        randomizerModeButton.onClick.AddListener(() =>
+        {
+            MenuManager.Instance.OpenMenu(MenuBase.MenuType.RandomizerPage);
         });
         
         settingsPageButton.onClick.RemoveAllListeners();
@@ -71,7 +79,8 @@ public class MainMenu : MonoBehaviour
     {
         settingsPageButton.onClick.RemoveAllListeners();
         ballSelectionButton.onClick.RemoveAllListeners();
-        gameModeSelectionButton.onClick.RemoveAllListeners();
+        gauntletModeButton.onClick.RemoveAllListeners();
+        randomizerModeButton.onClick.RemoveAllListeners();
     }
 
     public static void ClearContext()

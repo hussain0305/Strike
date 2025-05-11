@@ -63,7 +63,7 @@ public abstract class GameMode : MonoBehaviour
             if (ModeSelector.Instance.GetNumPlayers() == 1)
             {
                 winCondition = WinCondition.PointsRequired;
-                pointsRequired = LevelLoader.Instance.GetTargetPoints();
+                pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
             }
             else
             {
@@ -73,7 +73,7 @@ public abstract class GameMode : MonoBehaviour
         else
         {
             winCondition = WinCondition.PointsRequired;
-            pointsRequired = LevelLoader.Instance.GetTargetPoints();
+            pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
         }
         return winCondition;
     }

@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
 
     public static bool IsGameplayActive => Instance != null;
     
+    [Header("Level Setup")]
+    public LevelLoader levelLoader;
+    
     [Header("Level Objects")]
     public Tee tee;
     [HideInInspector]
@@ -188,7 +191,7 @@ public class GameManager : MonoBehaviour
         fireButton.onClick.RemoveAllListeners();
         fireButton.onClick.AddListener(FireButtonPressed);
         
-        LevelLoader.Instance.LoadLevel();
+        levelLoader.LoadLevel();
         SetupPlayers();
         ShowLevelInfo();
         currentPlayerTurn = 0;
@@ -275,7 +278,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        // showTrajectory = true;
+        showTrajectory = true;
 #endif
         if (BallShootable)
         {

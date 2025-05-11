@@ -319,6 +319,11 @@ public class ModeSelector : MonoBehaviour
         return IsNextLevelAvailable() && IsNextLevelUnlocked();
     }
 
+    public int GetRandomizerLevel()
+    {
+        return gameModeInfo.GetRandomizerLevel();
+    }
+
     public int GetTutorialLevel()
     {
         return gameModeInfo.GetTutorialLevel();
