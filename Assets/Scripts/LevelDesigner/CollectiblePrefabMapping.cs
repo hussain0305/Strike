@@ -9,6 +9,7 @@ public class CollectiblePrefabMapping : ScriptableObject
     {
         public PointTokenType pointTokenType;
         public GameObject prefab;
+        public Vector3 dimensions;
     }
 
     [System.Serializable]
@@ -16,6 +17,7 @@ public class CollectiblePrefabMapping : ScriptableObject
     {
         public MultiplierTokenType multiplierTokenType;
         public GameObject prefab;
+        public Vector3 dimensions;
     }
 
     [System.Serializable]
@@ -23,6 +25,7 @@ public class CollectiblePrefabMapping : ScriptableObject
     {
         public DangerTokenType dangerTokenType;
         public GameObject prefab;
+        public Vector3 dimensions;
     }
 
     [System.Serializable]
@@ -30,6 +33,7 @@ public class CollectiblePrefabMapping : ScriptableObject
     {
         public ObstacleType obstacleType;
         public GameObject prefab;
+        public Vector3 dimensions;
     }
 
     public PointTokenPrefab[] pointTokenPrefabs;
@@ -90,4 +94,45 @@ public class CollectiblePrefabMapping : ScriptableObject
         Debug.LogError("Star prefab not assigned!");
         return null;
     }
+    
+    public Vector3 GetPointTokenDimension(PointTokenType pointTokenType)
+    {
+        foreach (var entry in pointTokenPrefabs)
+        {
+            if (entry.pointTokenType == pointTokenType)
+                return entry.dimensions;
+        }
+        return Vector3.zero;
+    }
+
+    public Vector3 GetMultiplierTokenDimension(MultiplierTokenType multiplierTokenType)
+    {
+        foreach (var entry in multiplierTokenPrefabs)
+        {
+            if (entry.multiplierTokenType == multiplierTokenType)
+                return entry.dimensions;
+        }
+        return Vector3.zero;
+    }
+    
+    public Vector3 GetDangerTokenDimension(DangerTokenType dangerTokenType)
+    {
+        foreach (var entry in dangerTokenPrefabs)
+        {
+            if (entry.dangerTokenType == dangerTokenType)
+                return entry.dimensions;
+        }
+        return Vector3.zero;
+    }
+    
+    public Vector3 GetObstacleDimension(ObstacleType obstacleType)
+    {
+        foreach (var entry in obstaclePrefabs)
+        {
+            if (entry.obstacleType == obstacleType)
+                return entry.dimensions;
+        }
+        return Vector3.zero;
+    }
+
 }

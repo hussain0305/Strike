@@ -15,35 +15,53 @@ MonoBehaviour:
   pointTokenPrefabs:
   - pointTokenType: 1
     prefab: {fileID: 5940289607546129480, guid: da6ec0b464c662f4797af6ad30642357, type: 3}
+    dimensions: {x: 8, y: 8, z: 2}
   - pointTokenType: 2
     prefab: {fileID: 5940289607546129480, guid: d520d3a81b2a21443bd274b5576b818d, type: 3}
+    dimensions: {x: 12, y: 12, z: 4}
   - pointTokenType: 3
     prefab: {fileID: 5940289607546129480, guid: d8298df8ed256094bb38b9a19e5b84c0, type: 3}
+    dimensions: {x: 8, y: 4, z: 2}
   - pointTokenType: 4
     prefab: {fileID: 5940289607546129480, guid: 64127e61d9003744c9acb2aeb762844f, type: 3}
+    dimensions: {x: 4.5, y: 3.6, z: 4.5}
   - pointTokenType: 5
     prefab: {fileID: 5940289607546129480, guid: 4a18fe3dfc710c840b7cfb89353e3cb9, type: 3}
+    dimensions: {x: 4.5, y: 7.2, z: 4.5}
   - pointTokenType: 6
     prefab: {fileID: 5940289607546129480, guid: 6a53b65725288ed4a88d96608ccce481, type: 3}
+    dimensions: {x: 4.5, y: 14.4, z: 4.5}
   - pointTokenType: 7
     prefab: {fileID: 5940289607546129480, guid: c3900ba78b843b54584fb91369d44e82, type: 3}
+    dimensions: {x: 4, y: 2, z: 1}
+  - pointTokenType: 8
+    prefab: {fileID: 5940289607546129480, guid: 0f3a4d35291333b419a545bf43f19c51, type: 3}
+    dimensions: {x: 12, y: 6, z: 1.5}
   multiplierTokenPrefabs:
   - multiplierTokenType: 1
     prefab: {fileID: 9046486109000134736, guid: 0cf86eef85226084991f274ab9317344, type: 3}
+    dimensions: {x: 4.5, y: 4.5, z: 4.5}
   dangerTokenPrefabs:
   - dangerTokenType: 1
     prefab: {fileID: 5940289607546129480, guid: a98707483a206e04e97250e1d23fed75, type: 3}
+    dimensions: {x: 12, y: 6, z: 1.5}
   - dangerTokenType: 2
     prefab: {fileID: 5940289607546129480, guid: ef3690bf01818d4448afa4a0b3667fd5, type: 3}
+    dimensions: {x: 4.5, y: 7.2, z: 4.5}
   obstaclePrefabs:
   - obstacleType: 0
     prefab: {fileID: 5940289607546129480, guid: e0a54d12887dc514baac9fe32be874e0, type: 3}
+    dimensions: {x: 20, y: 20, z: 1.5}
   - obstacleType: 1
     prefab: {fileID: 5940289607546129480, guid: c34a51bdd2013824ba18b9e68fac4b0e, type: 3}
+    dimensions: {x: 25, y: 25, z: 1.5}
   - obstacleType: 2
     prefab: {fileID: 5940289607546129480, guid: 66207ae9b60ea6e469a48d82dd8d2c19, type: 3}
+    dimensions: {x: 25, y: 24, z: 4}
   - obstacleType: 3
     prefab: {fileID: 5940289607546129480, guid: 1e1bbbce39ce8fc458fd3f9a0ae89895, type: 3}
+    dimensions: {x: 20, y: 30, z: 1.5}
   - obstacleType: 4
     prefab: {fileID: 5940289607546129480, guid: 795ab3d9efafa4c48bc27f08d6a214a0, type: 3}
+    dimensions: {x: 10, y: 10, z: 1.5}
   starPrefab: {fileID: 5118622374533007032, guid: dc56e85319b698844bcc2ebdb7dcddb5, type: 3}
