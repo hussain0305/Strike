@@ -18,6 +18,7 @@ public class RandomizerModePage : MonoBehaviour
         randomizerButton.onClick.AddListener(OnGeneratePressed);
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
         numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
+        ModeSelector.Instance.GauntletModeOpened();
     }
 
     private void OnDisable()
@@ -35,7 +36,7 @@ public class RandomizerModePage : MonoBehaviour
     public void OnGeneratePressed()
     {
         ModeSelector.Instance.SetRandomizerGenerationSettings(hub.ToSettings());
-        SceneManager.LoadScene(ModeSelector.Instance.GetRandomizerLevel());
+        SceneManager.LoadScene(ModeSelector.Instance.GetEndlessLevel());
     }
 
     public void NumPlayersChanged(NumPlayersChangedEvent e)

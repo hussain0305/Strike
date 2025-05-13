@@ -379,5 +379,18 @@ public static class SaveManager
         return currentSaveData.favoriteFusions[index];
     }
 
+    public static void SetLastPlayedGauntletMode(int mode)
+    {
+        EnsureDataLoaded();
+        currentSaveData.lastPlayedGauntletMode = mode;
+        SaveData();
+    }
+    
+    public static int GetLastPlayedGauntletMode()
+    {
+        EnsureDataLoaded();
+        return currentSaveData.lastPlayedGauntletMode;
+    }
+
     #endregion
 }

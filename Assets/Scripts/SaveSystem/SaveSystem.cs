@@ -46,6 +46,7 @@ public class SaveData
     public string[] favoriteFusions = new string[3] { "", "", "" };
     public string selectedFusion = "";
     public bool isFusionEquipped = false;
+    public int lastPlayedGauntletMode = 0;
     
     public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
     public void SyncDictionaryToList()

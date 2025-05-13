@@ -117,7 +117,7 @@ public class ResultsScreen : MonoBehaviour
 
     public void CheckIsNextLevelAvailable()
     {
-        bool showNextLevelButton = ModeSelector.Instance.IsNextLevelAvailableAndUnlocked();
+        bool showNextLevelButton = ModeSelector.Instance.IsNextLevelAvailableAndUnlocked() && !ModeSelector.Instance.IsGauntletMode();
         nextLevelButton.transform.parent.gameObject.SetActive(showNextLevelButton);
     }
 }

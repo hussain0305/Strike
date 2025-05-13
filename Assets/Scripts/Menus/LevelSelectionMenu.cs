@@ -42,7 +42,7 @@ public class LevelSelectionMenu : MonoBehaviour
     private void OnEnable()
     {
         PromptGameObject.SetActive(false);
-        ModeSelector.Instance.ResetSelectedLevel();
+        ModeSelector.Instance.LevelSelectionMenuOpened();
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
         numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
     }

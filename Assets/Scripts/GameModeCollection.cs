@@ -18,7 +18,7 @@ public class GameModeCollection : ScriptableObject
         return gameModes[0];
     }
 
-    public int GetRandomizerLevel()
+    public int GetEndlessLevel()
     {
         int highestGameModeSceneIndex = 0;
         foreach (GameModeInfo modeInfo in gameModes)

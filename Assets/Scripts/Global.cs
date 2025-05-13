@@ -11,7 +11,8 @@ public enum GameModeType
     Pins,
     Portals,
     Deathmatch,
-    DisappearingTokens
+    DisappearingTokens,
+    Endless //Always keep this last
 }
 
 public enum BallState

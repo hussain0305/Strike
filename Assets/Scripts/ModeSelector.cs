@@ -58,6 +58,8 @@ public class ModeSelector : MonoBehaviour
 
     private static ModeSelector instance;
     public static ModeSelector Instance => instance;
+
+    private GameModeInfo endlessGameMode;
     
     private void Awake()
     {
@@ -98,7 +100,12 @@ public class ModeSelector : MonoBehaviour
 
     public void Init()
     {
-        GameModeSelected((GameModeType)0);
+        endlessGameMode = new GameModeInfo();
+        endlessGameMode.gameMode = GameModeType.Endless;
+        endlessGameMode.scene = GetEndlessLevel();
+        endlessGameMode.displayName = "Endless";
+        
+        GameModeSelected((GameModeType)SaveManager.GetLastPlayedGauntletMode());
     }
 
     public void AddPlayer()
@@ -132,14 +139,14 @@ public class ModeSelector : MonoBehaviour
 
     public void NextGameMode()
     {
-        currentSelectedMode = (GameModeType)(((int)currentSelectedMode + 1) % System.Enum.GetValues(typeof(GameModeType)).Length);
+        currentSelectedMode = (GameModeType)(((int)currentSelectedMode + 1) % gameModeInfo.gameModes.Length);
         Debug.Log("Next Game Mode: " + currentSelectedMode);
         GameModeSelected(currentSelectedMode);
     }
 
     public void PreviousGameMode()
     {
-        int totalModes = System.Enum.GetValues(typeof(GameModeType)).Length;
+        int totalModes = gameModeInfo.gameModes.Length;
         currentSelectedMode = (GameModeType)(((int)currentSelectedMode - 1 + totalModes) % totalModes);
         Debug.Log("Previous Game Mode: " + currentSelectedMode);
         GameModeSelected(currentSelectedMode);
@@ -235,6 +242,14 @@ public class ModeSelector : MonoBehaviour
             levelButtonsPool[i].gameObject.SetActive(false);
         }
     }
+
+    public void SaveLastPlayedGauntletMode()
+    {
+        if ((int)CurrentSelectedModeInfo.gameMode < gameModeInfo.gameModes.Length)
+        {
+            SaveManager.SetLastPlayedGauntletMode((int)CurrentSelectedModeInfo.gameMode);
+        }
+    }
     
     public void StartGame()
     {
@@ -244,6 +259,7 @@ public class ModeSelector : MonoBehaviour
             return;
         }
 
+        SaveLastPlayedGauntletMode();
         SceneManager.LoadScene(currentSelectedModeInfo.scene);
     }
 
@@ -300,14 +316,33 @@ public class ModeSelector : MonoBehaviour
         return IsNextLevelAvailable() && IsNextLevelUnlocked();
     }
 
-    public int GetRandomizerLevel()
+    public int GetEndlessLevel()
     {
-        return gameModeInfo.GetRandomizerLevel();
+        return gameModeInfo.GetEndlessLevel();
     }
 
     public int GetTutorialLevel()
     {
         return gameModeInfo.GetTutorialLevel();
+    }
+
+    public void GauntletModeOpened()
+    {
+        currentSelectedModeInfo = endlessGameMode;
+    }
+
+    public bool IsGauntletMode()
+    {
+        return CurrentSelectedModeInfo.gameMode == GameModeType.Endless;
+    }
+
+    public void LevelSelectionMenuOpened()
+    {
+        if (SaveManager.IsSaveLoaded)
+        {
+            GameModeSelected((GameModeType)SaveManager.GetLastPlayedGauntletMode());
+        }
+        ResetSelectedLevel();
     }
     
 #region Randomizer
