@@ -7,9 +7,8 @@ public class RandomizerRangedParameter : MonoBehaviour, IRandomizerParameter
     public TextMeshProUGUI text;
     public RandomizerParameterType id;
     public RandomizerParameterType Id => id;
-    public int min = 1;
-    public int max = 5;
-    public int step = 1;
+    private int min = 1;
+    private int max = 10;
 
     private int value;
     public int ValueInt => value;
@@ -20,9 +19,9 @@ public class RandomizerRangedParameter : MonoBehaviour, IRandomizerParameter
     
     public void Increment()
     {
-        if (value + step <= max)
+        if (value + 1 <= max)
         {
-            value += step;
+            value++;
             text.text = value.ToString();
             OnValueChanged?.Invoke(value);
         }
@@ -30,9 +29,9 @@ public class RandomizerRangedParameter : MonoBehaviour, IRandomizerParameter
 
     public void Decrement()
     {
-        if (value - step >= min)
+        if (value - 1 >= min)
         {
-            value -= step;
+            value--;
             text.text = value.ToString();
             OnValueChanged?.Invoke(value);
         }

@@ -34,12 +34,12 @@ public class Obstacle : MonoBehaviour
         }
 
         bool obstacleRotates = _obstacleData.rotationAxis != Vector3.zero && _obstacleData.rotationSpeed != 0;
-        ContinuousRotation crScript = GetComponent<ContinuousRotation>();
+        ContinuousRotation crScript = GetComponentInChildren<ContinuousRotation>();
 
         if (obstacleRotates)
         {
             if (!crScript)
-                crScript = gameObject.AddComponent<ContinuousRotation>();
+                crScript = transform.GetChild(0).gameObject.AddComponent<ContinuousRotation>();
 
             crScript.rotationAxis = _obstacleData.rotationAxis;
             crScript.rotationSpeed = _obstacleData.rotationSpeed;

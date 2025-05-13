@@ -13718,8 +13718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 540999833}
   id: 0
-  min: 1
-  max: 5
+  max: 10
   step: 1
 --- !u!1001 &899186553
 PrefabInstance:
@@ -20420,7 +20419,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: INCLUDE X TOKENS
+  m_text: ELIMINATION TOKENS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 4263622553628564913, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
