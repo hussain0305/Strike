@@ -38,10 +38,7 @@ public class ModeSelector : MonoBehaviour
     private List<LevelSelectionButton> levelButtonsPool = new List<LevelSelectionButton>();
     
     [Header("Players and Play")]
-    public Button addPlayerButton;
-    public Button removePlayerButton;
     public Button playButton;    
-    public TextMeshProUGUI currentNumPlayersText;
 
     [Header("DEBUG")]
     public Button addStars;
@@ -76,9 +73,6 @@ public class ModeSelector : MonoBehaviour
         nextGameModeButton?.onClick.AddListener(NextGameMode);
         prevGameModeButton?.onClick.AddListener(PreviousGameMode);
         
-        addPlayerButton?.onClick.AddListener(AddPlayer);
-        removePlayerButton?.onClick.AddListener(RemovePlayer);
-        
         playButton.onClick?.AddListener(StartGame);
         
         EventBus.Subscribe<ButtonClickedEvent>(SomeButtonClicked);
@@ -97,8 +91,6 @@ public class ModeSelector : MonoBehaviour
 
     private void OnDisable()
     {
-        addPlayerButton?.onClick.RemoveAllListeners();
-        removePlayerButton?.onClick.RemoveAllListeners();
         playButton?.onClick.RemoveAllListeners();
         EventBus.Unsubscribe<ButtonClickedEvent>(SomeButtonClicked);
     }
@@ -134,18 +126,6 @@ public class ModeSelector : MonoBehaviour
     public void NumPlayersChanged()
     {
         currentNumPlayers = Mathf.Clamp(currentNumPlayers, 1, maxPlayers);
-        currentNumPlayersText.text = currentNumPlayers.ToString();
-        addPlayerButton.enabled = true;
-        removePlayerButton.enabled = true;
-        
-        if (currentNumPlayers <= 1)
-        {
-            removePlayerButton.enabled = false;
-        }
-        if (currentNumPlayers >= maxPlayers)
-        {
-            addPlayerButton.enabled = false;
-        }
         EventBus.Publish(new NumPlayersChangedEvent(currentNumPlayers));
     }
 
@@ -328,4 +308,18 @@ public class ModeSelector : MonoBehaviour
     {
         return gameModeInfo.GetTutorialLevel();
     }
+    
+#region Randomizer
+
+    public RandomizerGenerationSettings randomizerGenerationSettings;
+    public void SetRandomizerGenerationSettings(RandomizerGenerationSettings settings)
+    {
+        randomizerGenerationSettings = settings;
+        foreach (var key in randomizerGenerationSettings.Keys)
+        {
+            Debug.Log($">>> [{key}] = {randomizerGenerationSettings[key]}");
+        }
+    }
+
+#endregion
 }

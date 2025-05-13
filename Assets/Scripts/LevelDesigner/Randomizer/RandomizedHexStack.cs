@@ -69,13 +69,11 @@ public class RandomizedHexStack : RandomizerSpawner
         for (int lvl = 0; lvl < levels; lvl++)
         {
             float heightY = lvl * yOffset;
-            float angleDeg = lvl * 30f;
-            Quaternion levelRot = Quaternion.Euler(0f, angleDeg, 0f);
             Vector3 levelCenter = new Vector3(center.x, center.y + heightY, center.z);
 
             // Spawn center hex at this level
-            var centerObj = PoolingManager.Instance.GetObject(PointTokenType.Pin_1x);
-            SpawnObject(centerObj, levelCenter, levelRot, parent);
+            var centerObj = PoolingManager.Instance.GetObject(PointTokenType.Pin_2x);
+            SpawnObject(centerObj, levelCenter, Quaternion.identity, parent);
 
             // Spawn each ring around
             for (int ring = 1; ring <= rings - (lvl + 1); ring++)
@@ -84,24 +82,20 @@ public class RandomizedHexStack : RandomizerSpawner
                 foreach (var ax in coords)
                 {
                     Vector3 relOffset = AxialToOffset(ax, R, d);
-                    Vector3 rotatedOffset = levelRot * relOffset;
-                    Vector3 spawnPos = levelCenter + rotatedOffset;
+                    Vector3 spawnPos = levelCenter + relOffset;
 
                     // Face each hex's Z-axis toward the central column axis
                     Vector3 dirToCenter = (new Vector3(center.x, spawnPos.y, center.z) - spawnPos).normalized;
                     Quaternion faceCenter = Quaternion.LookRotation(dirToCenter, Vector3.up);
-                    Quaternion finalRot = levelRot * faceCenter;
+                    Quaternion finalRot = faceCenter;
 
-                    var obj = PoolingManager.Instance.GetObject(PointTokenType.Pin_1x);
+                    var obj = PoolingManager.Instance.GetObject(PointTokenType.Pin_2x);
                     SpawnObject(obj, spawnPos, finalRot, parent);
                 }
             }
         }
     }
 
-    /// <summary>
-    /// Helper to position and initialize a pooled collectible object.
-    /// </summary>
     private void SpawnObject(GameObject obj, Vector3 position, Quaternion rotation, Transform parent)
     {
         obj.transform.SetParent(parent, false);

@@ -11,6 +11,7 @@ public class LevelSelectionMenu : MonoBehaviour
     public GameObject PromptGameObject;
     public Image[] promptImages;
     public TextMeshProUGUI promptMessage;
+    public TextMeshProUGUI numPlayersText;
     private Color promptLineColor;
     private Color promptTextColor;
     private Color transparentColor;
@@ -43,6 +44,7 @@ public class LevelSelectionMenu : MonoBehaviour
         PromptGameObject.SetActive(false);
         ModeSelector.Instance.ResetSelectedLevel();
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
+        numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
     }
 
     private void OnDisable()
@@ -96,6 +98,7 @@ public class LevelSelectionMenu : MonoBehaviour
 
     public void NumPlayersChanged(NumPlayersChangedEvent e)
     {
+        numPlayersText.text = e.numPlayers.ToString();
         soloModeSection.SetActive(e.numPlayers == 1);
         passplaySection.SetActive(e.numPlayers != 1);
     }

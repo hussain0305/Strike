@@ -1,24 +1,45 @@
-using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RandomizerModePage : MonoBehaviour
 {
+    public TextMeshProUGUI numPlayersText;
+
     public Button randomizerButton;
+    public RandomizerRangedParameter difficulty;
+    public RandomizerBoolParameter  hasDangerPins;
     
+    private readonly RandomizerParameterHub hub = new();
+
     private void OnEnable()
     {
-        randomizerButton.onClick.AddListener(LoadRandomizerLevel);
+        randomizerButton.onClick.AddListener(OnGeneratePressed);
+        EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
+        numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
     }
 
     private void OnDisable()
     {
         randomizerButton.onClick.RemoveAllListeners();
+        EventBus.Unsubscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }
 
-    public void LoadRandomizerLevel()
+    void Awake()
     {
+        hub.Register(difficulty);
+        hub.Register(hasDangerPins);
+    }
+
+    public void OnGeneratePressed()
+    {
+        ModeSelector.Instance.SetRandomizerGenerationSettings(hub.ToSettings());
         SceneManager.LoadScene(ModeSelector.Instance.GetRandomizerLevel());
+    }
+
+    public void NumPlayersChanged(NumPlayersChangedEvent e)
+    {
+        numPlayersText.text = e.numPlayers.ToString();
     }
 }
