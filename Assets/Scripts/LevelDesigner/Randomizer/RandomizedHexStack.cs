@@ -13,9 +13,6 @@ public class RandomizedHexStack : RandomizerSpawner
         new Vector2Int(0, 1)
     };
 
-    /// <summary>
-    /// Generates axial coordinates for a single hex ring at the given radius.
-    /// </summary>
     public List<Vector2Int> GetRingCoords(int radius)
     {
         var results = new List<Vector2Int>(6 * radius);
@@ -32,11 +29,6 @@ public class RandomizedHexStack : RandomizerSpawner
         return results;
     }
 
-    /// <summary>
-    /// Converts axial coords (q,r) into world-space offsets so that adjacent
-    /// hex centers are spaced by distance (2*R + d).
-    /// Returns a vector relative to the origin (0,0,0).
-    /// </summary>
     private Vector3 AxialToOffset(Vector2Int hex, float R, float d)
     {
         float centerDist = 2f * R + d;
@@ -46,50 +38,29 @@ public class RandomizedHexStack : RandomizerSpawner
         return new Vector3(x, 0f, z);
     }
 
-    /// <summary>
-    /// Spawns a stack of hex rings around a central point, with multiple vertical levels.
-    /// Each level is rotated by 30° * levelIndex to interlock.
-    /// </summary>
-    /// <param name="center">World-space center of the base hex.</param>
-    /// <param name="R">Inscribed circle radius (apothem).</param>
-    /// <param name="d">Gap between adjacent hex sides.</param>
-    /// <param name="rings">Number of radial rings around the center.</param>
-    /// <param name="levels">Number of vertical levels (<= rings).</param>
-    /// <param name="yOffset">Vertical distance between each level.</param>
-    /// <param name="parent">Parent transform for spawned hexes.</param>
-    public void SpawnHexStacksWithCenter(
-        Vector3 center,
-        float R,
-        float d,
-        int rings,
-        int levels,
-        float yOffset,
-        Transform parent)
+    public void SpawnHexStacksWithCenter(PointTokenType tokenType, Vector3 center, float radius, float height, float d, int rings, int levels, Transform parent)
     {
         for (int lvl = 0; lvl < levels; lvl++)
         {
-            float heightY = lvl * yOffset;
+            float heightY = lvl * height;
             Vector3 levelCenter = new Vector3(center.x, center.y + heightY, center.z);
 
-            // Spawn center hex at this level
-            var centerObj = PoolingManager.Instance.GetObject(PointTokenType.Pin_2x);
+            var centerObj = PoolingManager.Instance.GetObject(tokenType);
             SpawnObject(centerObj, levelCenter, Quaternion.identity, parent);
 
-            // Spawn each ring around
             for (int ring = 1; ring <= rings - (lvl + 1); ring++)
             {
                 var coords = GetRingCoords(ring);
                 foreach (var ax in coords)
                 {
-                    Vector3 relOffset = AxialToOffset(ax, R, d);
+                    Vector3 relOffset = AxialToOffset(ax, radius, d);
                     Vector3 spawnPos = levelCenter + relOffset;
 
-                    // Face each hex's Z-axis toward the central column axis
                     Vector3 dirToCenter = (new Vector3(center.x, spawnPos.y, center.z) - spawnPos).normalized;
                     Quaternion faceCenter = Quaternion.LookRotation(dirToCenter, Vector3.up);
                     Quaternion finalRot = faceCenter;
 
-                    var obj = PoolingManager.Instance.GetObject(PointTokenType.Pin_2x);
+                    var obj = PoolingManager.Instance.GetObject(tokenType);
                     SpawnObject(obj, spawnPos, finalRot, parent);
                 }
             }
@@ -107,8 +78,8 @@ public class RandomizedHexStack : RandomizerSpawner
         {
             collectible.InitializeAndSetup(
                 GameManager.Context,
-                5, // example score/value
-                1, // example multiplier
+                5,
+                1,
                 Collectible.PointDisplayType.InBody);
         }
     }

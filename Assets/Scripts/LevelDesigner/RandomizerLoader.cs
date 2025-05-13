@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable]
 public struct EdgeDefinition
@@ -44,111 +41,41 @@ public class RandomizerLoader : LevelLoader
 
     override public void LoadLevel()
     {
-        // randomizedHexStack.SpawnHexStacksWithCenter(platformCenter + ySpacing, 2, xSpacing.x, 5, 3,3.5f, collectiblesParent);
+        //Make Decisions here
+        bool spawnHexStack = true;
+        if (spawnHexStack)
+        {
+            SpawnHexStack(Vector3.zero);
+        }
         randomizedGutterWall.SpawnOnSides(4, 3, RandomizedMovementOptions.SomeMoving, new IncludeTypesInRandomization(true, true));
     }
 
+    public void SpawnHexStack(Vector3 offsetFromCenter)
+    {
+        PointTokenType[] allHexTokens = new PointTokenType[] { PointTokenType.Pin_1x , PointTokenType.Pin_2x, PointTokenType.Pin_4x};
+        PointTokenType randomHexToken = allHexTokens[Random.Range(0, allHexTokens.Length)];
+        Vector3 dimensions = PoolingManager.Instance.GetPointTokenDimension(randomHexToken);
+
+        int numRings = 2;
+        int numLevels = 3;
+
+        switch (randomHexToken)
+        {
+            case PointTokenType.Pin_1x:
+                numRings = Random.Range(3,5);
+                numLevels = Mathf.Min(Random.Range(3,5), numRings);
+                break;
+            case PointTokenType.Pin_2x:
+                numRings = Random.Range(2,4);
+                numLevels = Mathf.Min(Random.Range(2,4), numRings);
+                break;
+            case PointTokenType.Pin_4x:
+                numRings = 2;
+                numLevels = Mathf.Min(Random.Range(1,2), numRings);
+                break;
+        }
+        
+        randomizedHexStack.SpawnHexStacksWithCenter(randomHexToken, platformCenter + ySpacing, dimensions.x / 2, dimensions.y, 
+            xSpacing.x, numRings, numLevels, collectiblesParent);
+    }
 }
-
-//Decide what to do
-//Objects in the gutter? yes or no?
-//how many levels
-//
-//if yes, moving or not
-//
-
-/*
-    void SpawnRings(Vector3 center, float R, float d, int ringCount)
-    {
-        SpawnObject(PoolingManager.Instance.GetObject(PointTokenType.Pin_1x), center, Quaternion.identity);
-        float D = 2*R + d;
-        float startOffset = Mathf.PI / 6f;  
-
-        for (int ring = 1; ring <= ringCount; ring++)
-        {
-            float radius = ring * D;
-            for (int i = 0; i < 6; i++)
-            {
-                float angle = startOffset + i * (Mathf.PI / 3f);
-                Vector3 offset = new Vector3(
-                    radius * Mathf.Cos(angle),
-                    0,
-                    radius * Mathf.Sin(angle)
-                );
-                Vector3 hexPos = center + offset;
-
-                Vector3 dirToCenter = (center - hexPos).normalized;
-                Quaternion rot = Quaternion.LookRotation(dirToCenter, Vector3.up);
-
-                SpawnObject(PoolingManager.Instance.GetObject(PointTokenType.Pin_1x), hexPos, rot);
-            }
-        }
-    }
-
-    public void SpawnRing(Vector3 center, float R, float d)
-    {
-        SpawnObject(PoolingManager.Instance.GetObject(PointTokenType.Pin_1x), center, Quaternion.identity);
-        float D = 2*R + d;
-        float startOffset = Mathf.PI / 6f;
-        for(int i = 0; i < 6; i++)
-        {
-            float angle = startOffset + i * (Mathf.PI / 3f);
-            Vector3 offset = new Vector3(
-                D * Mathf.Cos(angle),
-                0,
-                D * Mathf.Sin(angle)
-            );
-            Vector3 hexPos = center + offset;
-            
-            Vector3 dirToCenter = (center - hexPos).normalized;
-            Quaternion rot = Quaternion.LookRotation(dirToCenter, Vector3.up);
-            
-            SpawnObject(PoolingManager.Instance.GetObject(PointTokenType.Pin_1x), hexPos, rot);
-        }
-    }
-
-    public void SpawnObject(GameObject collectibleObject, Vector3 hexPos, Quaternion rot)
-    {
-        collectibleObject.transform.SetParent(collectiblesParent);
-        collectibleObject.transform.position = hexPos;
-        collectibleObject.transform.rotation = rot;
-
-        Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
-        if (collectibleScript != null)
-        {
-            collectibleScript.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
-        }
-    }
- */
-
-// bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
-// ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
-//
-// if (collectibleMoves)
-// {
-//     if (!cmScript)
-//         cmScript = collectibleObject.AddComponent<ContinuousMovement>();
-//
-//     cmScript.pointA = collectibleData.path[0];
-//     cmScript.pointB = collectibleData.path[1];
-//     cmScript.speed  = collectibleData.movementSpeed;
-//         
-//     Rigidbody rBody = collectibleObject.GetComponent<Rigidbody>();
-//     rBody.isKinematic = true;
-// }
-// else if (cmScript)
-// {
-//     Destroy(cmScript);
-// }
-//     
-// DangerToken dangerScript = collectibleObject.GetComponent<DangerToken>();
-// if (dangerScript)
-// {
-//     dangerScript.dangerTokenIndex = currentDangerPinIndex;
-//     spawnedDangerObjects.Add(collectibleObject);
-//     if (collectibleData.activeOnStart && currentDangerPinIndex > highestActiveDangerPinIndex)
-//     {
-//         highestActiveDangerPinIndex = currentDangerPinIndex;
-//     }
-//     currentDangerPinIndex++;
-// }
