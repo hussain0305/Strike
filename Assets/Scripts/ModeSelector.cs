@@ -45,6 +45,7 @@ public class ModeSelector : MonoBehaviour
     public Button deductStars;
     
     private int maxPlayers = 8;
+    public int MaxPlayers => maxPlayers;
     
     private int currentNumPlayers = 1;
     private int selectedLevel = 1;

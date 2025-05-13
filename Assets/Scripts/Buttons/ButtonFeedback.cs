@@ -60,6 +60,20 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         }
     }
 
+    private Button button;
+    private Button Button
+    {
+        get
+        {
+            if (button == null)
+                button = GetComponent<Button>();
+            if (button == null)
+                button = GetComponentInParent<Button>();
+            
+            return button;
+        }
+    }
+    
     private Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
     private Color defaultTextColor = Color.white;
     
@@ -86,6 +100,11 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!Button.enabled)
+        {
+            return;
+        }
+
         if (!isEnabled)
         {
             return;
@@ -102,6 +121,11 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (!Button.enabled)
+        {
+            return;
+        }
+
         if (!staysSelected)
         {
             SetToDefault();
@@ -113,6 +137,11 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!Button.enabled)
+        {
+            return;
+        }
+
         if (isEnabled && !isSelected)
         {
             SetToHover();
@@ -131,6 +160,10 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!Button.enabled)
+        {
+            return;
+        }
         if (isEnabled && (!staysSelected || !isSelected))
         {
             SetToDefault();

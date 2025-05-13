@@ -14,6 +14,18 @@ public class AddPlayerButton : MonoBehaviour
             return button;
         }
     }
+
+    private int maxPlayers = -1;
+    private int MaxPlayers
+    {
+        get
+        {
+            if (maxPlayers == -1)
+                maxPlayers = ModeSelector.Instance.MaxPlayers;
+
+            return maxPlayers;
+        }    
+    }
     
     private void OnEnable()
     {
@@ -21,10 +33,19 @@ public class AddPlayerButton : MonoBehaviour
         {
             ModeSelector.Instance.AddPlayer();
         });
+        
+        EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }
 
     private void OnDisable()
     {
         Button.onClick.RemoveAllListeners();
+        EventBus.Unsubscribe<NumPlayersChangedEvent>(NumPlayersChanged);
+    }
+
+    public void NumPlayersChanged(NumPlayersChangedEvent e)
+    {
+        Button.interactable = e.numPlayers < MaxPlayers;
+        Button.enabled = e.numPlayers < MaxPlayers;
     }
 }
