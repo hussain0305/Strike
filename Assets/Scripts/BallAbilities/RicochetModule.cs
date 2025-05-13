@@ -78,7 +78,6 @@ public class RicochetModule : IBallAbilityModule
                 if (collectible != null && collectible.CanBeCollected())
                 {
                     numTimesRicocheted++;
-                    Debug.Log(">>> R number " + numTimesRicocheted);
                     Debug.DrawLine(hitPoint, hitPoint + dir * ricochetLength, Color.green, 5f);
                     ball.rb.linearVelocity = dir * speed;
                     break;
