@@ -1,12 +1,20 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
+[System.Serializable]
+public struct EdgeDefinition
+{
+    public Transform end1;
+    public Transform end2;
+}
 public class RandomizerLoader : LevelLoader
 {
     [Header("Randomized Level")]
-    public Transform[] hexGutter;
-    public Transform[] hexEdges;
+    public Transform[] hexGutterVertices;
+    public EdgeDefinition[] hexGutterCupSides;
+    public Transform[] hexVertices;
     
     public int maxObjects = 50;
 
@@ -36,7 +44,7 @@ public class RandomizerLoader : LevelLoader
 
     override public void LoadLevel()
     {
-        randomizedHexStack.SpawnHexStacksWithCenter(platformCenter + ySpacing, 2, xSpacing.x, 5, 3,3.5f, collectiblesParent);
+        // randomizedHexStack.SpawnHexStacksWithCenter(platformCenter + ySpacing, 2, xSpacing.x, 5, 3,3.5f, collectiblesParent);
         randomizedGutterWall.SpawnOnSides(4, 3, RandomizedMovementOptions.SomeMoving, new IncludeTypesInRandomization(true, true));
     }
 

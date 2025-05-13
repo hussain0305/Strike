@@ -31,27 +31,21 @@ public class RandomizedGutterWall : RandomizerSpawner
         {
             if (hexSideLength < 0f)
             {
-                var e0 = randomizer.hexGutter[0].position;
-                var e1 = randomizer.hexGutter[1].position;
+                EdgeDefinition edge = randomizer.hexGutterCupSides[0];
+                var e0 = edge.end1.position;
+                var e1 = edge.end2.position;
                 hexSideLength = Vector3.Distance(e0, e1);
             }
             return hexSideLength;
         }
     }
 
-    public void SpawnOnSides(
-        int numSides,
-        int numLevels,
-        RandomizedMovementOptions movementOptions,
-        IncludeTypesInRandomization types)
+    public void SpawnOnSides(int numSides, int numLevels, RandomizedMovementOptions movementOptions, IncludeTypesInRandomization types)
     {
         StartCoroutine(SpawnCoroutine(numSides, numLevels, movementOptions, types));
     }
 
-    private IEnumerator SpawnCoroutine(int numSides,
-        int numLevels,
-        RandomizedMovementOptions movementOptions,
-        IncludeTypesInRandomization types)
+    private IEnumerator SpawnCoroutine(int numSides, int numLevels, RandomizedMovementOptions movementOptions, IncludeTypesInRandomization types)
     {
         var objDimension = PoolingManager.Instance.GetPointTokenDimension(PointTokenType.Cuboid_Gutter);
         
@@ -59,14 +53,14 @@ public class RandomizedGutterWall : RandomizerSpawner
         float tokenLength = objDimension.x;
         float halftokenLength = tokenLength / 2;
 
-        var sides = new List<int> {0,1,2,3,4,5};
+        var sides = new List<int> {0,1,2,3};
         Shuffle(sides);
         sides = sides.GetRange(0, Mathf.Min(numSides, sides.Count));
 
         foreach (var side in sides)
         {
-            var end1 = randomizer.hexGutter[side].position;
-            var end2 = randomizer.hexGutter[(side + 1) % 6].position;
+            var end1 = randomizer.hexGutterCupSides[side].end1.position;
+            var end2 = randomizer.hexGutterCupSides[side].end2.position;
             var End1to2 = end2 - end1;
             var End2to1 = end1 - end2;
             end1 += (0.05f * End1to2);
@@ -124,13 +118,13 @@ public class RandomizedGutterWall : RandomizerSpawner
                     Vector3 outward = (centerPointOfEdge - randomizer.platformCenter).normalized;  
                     Quaternion rotEdge = Quaternion.LookRotation(outward, Vector3.up);
 
-                    bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.5f);
+                    bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.76f);
                     bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 2;
 
                     SpawnObject(spawnPoint, pos, rotEdge, randomizer.collectiblesParent, shouldMove, endPoints);
                 }
 
-                yield return new WaitForSeconds(1);
+                yield return null;
             }
         }
     }
@@ -151,7 +145,7 @@ public class RandomizedGutterWall : RandomizerSpawner
         if (spawnPoint)
         {
             PointToken pointToken = obj.GetComponent<PointToken>();
-            pointToken.InitializeAndSetup(GameManager.Context, 10, 1, Collectible.PointDisplayType.InBody);
+            pointToken.InitializeAndSetup(GameManager.Context, 2, 1, Collectible.PointDisplayType.InBody);
         }
         
         var cm = obj.GetComponent<ContinuousMovement>();

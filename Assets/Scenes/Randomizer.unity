@@ -2079,14 +2079,23 @@ MonoBehaviour:
   collectiblesParent: {fileID: 549877463}
   obstaclesParentPlatform: {fileID: 274801261}
   obstaclesParentWorld: {fileID: 1181003495}
-  hexGutter:
+  hexGutterVertices:
   - {fileID: 1320320602}
   - {fileID: 1090541091}
   - {fileID: 1445742613}
   - {fileID: 1564884340}
   - {fileID: 374554071}
   - {fileID: 1036345293}
-  hexEdges:
+  hexGutterCupSides:
+  - end1: {fileID: 374554071}
+    end2: {fileID: 1036345293}
+  - end1: {fileID: 1036345293}
+    end2: {fileID: 1320320602}
+  - end1: {fileID: 1320320602}
+    end2: {fileID: 1090541091}
+  - end1: {fileID: 1090541091}
+    end2: {fileID: 1445742613}
+  hexVertices:
   - {fileID: 1462558389}
   - {fileID: 1865736813}
   - {fileID: 1440066626}
@@ -2311,7 +2320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 552240016}
   m_Layer: 0
-  m_Name: HexEdge_Bottom
+  m_Name: HexVertex_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2762,7 +2771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 606330633}
   m_Layer: 0
-  m_Name: HexEdge_TopLeft
+  m_Name: HexVertex_TopLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6035,7 +6044,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1440066626}
   m_Layer: 0
-  m_Name: HexEdge_BottomRight
+  m_Name: HexVertex_BottomRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6108,7 +6117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1462558389}
   m_Layer: 0
-  m_Name: HexEdge_Top
+  m_Name: HexVertex_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6139,7 +6148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1475209648}
   m_Layer: 0
-  m_Name: HexEdge_BottomLeft
+  m_Name: HexVertex_BottomLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8162,7 +8171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1865736813}
   m_Layer: 0
-  m_Name: HexEdge_TopRight
+  m_Name: HexVertex_TopRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
