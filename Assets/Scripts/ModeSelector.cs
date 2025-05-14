@@ -345,7 +345,7 @@ public class ModeSelector : MonoBehaviour
         ResetSelectedLevel();
     }
     
-#region Randomizer
+#region Endless Mode
 
     public RandomizerGenerationSettings randomizerGenerationSettings;
     public void SetRandomizerGenerationSettings(RandomizerGenerationSettings settings)
