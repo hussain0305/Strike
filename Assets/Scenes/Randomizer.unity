@@ -2578,6 +2578,7 @@ MonoBehaviour:
   collectiblesParent: {fileID: 549877463}
   obstaclesParentPlatform: {fileID: 274801261}
   obstaclesParentWorld: {fileID: 1181003495}
+  platformCenter: {fileID: 1384111840}
   hexGutterCupSides:
   - end1: {fileID: 374554071}
     end2: {fileID: 1036345293}
@@ -2621,7 +2622,6 @@ MonoBehaviour:
     - {fileID: 1749394001}
     RightSlat: {fileID: 289147016}
   maxObjects: 50
-  platformCenter: {x: 0, y: 0, z: 50}
 --- !u!1 &538504953
 GameObject:
   m_ObjectHideFlags: 0
@@ -10532,7 +10532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6559565028027183058, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7210752704203409029, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
       propertyPath: m_Camera

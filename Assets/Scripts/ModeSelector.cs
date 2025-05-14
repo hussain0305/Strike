@@ -347,13 +347,13 @@ public class ModeSelector : MonoBehaviour
     
 #region Endless Mode
 
-    public RandomizerGenerationSettings randomizerGenerationSettings;
-    public void SetRandomizerGenerationSettings(RandomizerGenerationSettings settings)
+    public EndlessGenerationSettings EndlessGenerationSettings;
+    public void SetRandomizerGenerationSettings(EndlessGenerationSettings settings)
     {
-        randomizerGenerationSettings = settings;
-        foreach (var key in randomizerGenerationSettings.Keys)
+        EndlessGenerationSettings = settings;
+        foreach (var key in EndlessGenerationSettings.Keys)
         {
-            Debug.Log($">>> [{key}] = {randomizerGenerationSettings[key]}");
+            Debug.Log($">>> [{key}] = {EndlessGenerationSettings[key]}");
         }
     }
 

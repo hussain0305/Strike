@@ -15,9 +15,9 @@ public class RandomizerParameterHub
         return map;
     }
 
-    public RandomizerGenerationSettings ToSettings()
+    public EndlessGenerationSettings ToSettings()
     {
-        var settings = new RandomizerGenerationSettings();
+        var settings = new EndlessGenerationSettings();
         foreach (var kvp in map)
         {
             settings[kvp.Key] = kvp.Value.Value;
@@ -25,5 +25,5 @@ public class RandomizerParameterHub
         return settings;
     }
 }
-public sealed class RandomizerGenerationSettings 
+public sealed class EndlessGenerationSettings 
     : Dictionary<RandomizerParameterType, object> { }

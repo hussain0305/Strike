@@ -99,27 +99,31 @@ public class RandomizedGutterWall : RandomizerSpawner
                     var pos = end1Level + dir * dist;
                     spawnPoints.Push(pos);
                 }
-                else if (count == 2)
+                else
                 {
-                    movementEndPoints.Push(new Vector3[] { end1Level + (dir * halftokenLength), centerPointOfLevel - (dir * halftokenLength) });
-                    movementEndPoints.Push(new Vector3[] { centerPointOfLevel + (dir * halftokenLength), end2Level - (dir * halftokenLength) });
-                    float dist = spacing + halftokenLength;
-                    var pos = end1Level + dir * dist;
-                    spawnPoints.Push(pos);
-                    dist = spacing + tokenLength + spacing + halftokenLength;
-                    pos = end1Level + dir * dist;
-                    spawnPoints.Push(pos);
+                    var boundaries = new Vector3[count + 1];
+                    for (int b = 0; b <= count; b++)
+                    {
+                        float t = b / (float)count;
+                        boundaries[b] = Vector3.Lerp(end1Level, end2Level, t);
+                    }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        movementEndPoints.Push(new Vector3[] {boundaries[i] + dir * halftokenLength, boundaries[i + 1] - dir * halftokenLength});
+                        spawnPoints.Push((boundaries[i] + boundaries[i + 1]) * 0.5f);
+                    }
                 }
 
                 for (int i = 0; i < count; i++)
                 {
                     var pos = spawnPoints.Pop();
                     Vector3[] endPoints = movementEndPoints.Pop();
-                    Vector3 outward = (centerPointOfEdge - EndlessMode.platformCenter).normalized;  
+                    Vector3 outward = (centerPointOfEdge - EndlessMode.platformCenter.position).normalized;  
                     Quaternion rotEdge = Quaternion.LookRotation(outward, Vector3.up);
 
                     bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.76f);
-                    bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 2;
+                    bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 4;
 
                     SpawnObject(spawnPoint, pos, rotEdge, EndlessMode.collectiblesParent, shouldMove, endPoints);
                 }
