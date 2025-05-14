@@ -47,7 +47,7 @@ public class RandomizedGutterWall : RandomizerSpawner
 
     private IEnumerator SpawnCoroutine(int numSides, int numLevels, RandomizedMovementOptions movementOptions, IncludeTypesInRandomization types)
     {
-        var objDimension = PoolingManager.Instance.GetPointTokenDimension(PointTokenType.Cuboid_Gutter);
+        var objDimension = CollectiblePrefabMapping.Instance.GetPointTokenDimension(PointTokenType.Cuboid_Gutter);
         
         float tokenHeight = objDimension.y;
         float tokenLength = objDimension.x;

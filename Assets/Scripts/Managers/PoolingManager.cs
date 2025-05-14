@@ -6,7 +6,7 @@ public class PoolingManager : MonoBehaviour
     private static PoolingManager instance;
     public static PoolingManager Instance => instance;
     
-    public CollectiblePrefabMapping prefabMapping;
+    private CollectiblePrefabMapping prefabMapping => CollectiblePrefabMapping.Instance;
 
     private Dictionary<PointTokenType, Queue<GameObject>> pointTokensDictionary = new Dictionary<PointTokenType, Queue<GameObject>>();
     private Dictionary<MultiplierTokenType, Queue<GameObject>> multiplierTokensDictionary = new Dictionary<MultiplierTokenType, Queue<GameObject>>();
@@ -107,25 +107,5 @@ public class PoolingManager : MonoBehaviour
         star.transform.SetParent(transform);
         star.SetActive(false);
         starPool.Enqueue(star);
-    }
-    
-    public Vector3 GetPointTokenDimension(PointTokenType pointTokenType)
-    {
-        return prefabMapping.GetPointTokenDimension(pointTokenType);
-    }
-
-    public Vector3 GetMultiplierTokenDimension(MultiplierTokenType multiplierTokenType)
-    {
-        return prefabMapping.GetMultiplierTokenDimension(multiplierTokenType);
-    }
-    
-    public Vector3 GetDangerTokenDimension(DangerTokenType dangerTokenType)
-    {
-        return prefabMapping.GetDangerTokenDimension(dangerTokenType);
-    }
-    
-    public Vector3 GetObstacleDimension(ObstacleType obstacleType)
-    {
-        return prefabMapping.GetObstacleDimension(obstacleType);
     }
 }

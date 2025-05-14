@@ -4,6 +4,23 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "CollectiblePrefabMapping", menuName = "Game/Collectible Prefab Mapping")]
 public class CollectiblePrefabMapping : ScriptableObject
 {
+    private static CollectiblePrefabMapping _instance;
+    public static CollectiblePrefabMapping Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = Resources.Load<CollectiblePrefabMapping>("CollectiblePrefabMapping");
+                if (_instance == null)
+                {
+                    Debug.LogError("CollectiblePrefabMapping instance not found. Please create one in the Resources folder.");
+                }
+            }
+            return _instance;
+        }
+    }
+
     [System.Serializable]
     public class PointTokenPrefab
     {
