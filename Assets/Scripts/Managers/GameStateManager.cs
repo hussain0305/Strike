@@ -144,6 +144,7 @@ public class GameStateManager : MonoBehaviour
     {
         MultiplierToken multiplierCollectible = obj.GetComponent<MultiplierToken>();
         PointToken pointCollectible = obj.GetComponent<PointToken>();
+        DangerToken dangerCollectible = obj.GetComponent<DangerToken>();
 
         if (multiplierCollectible)
         {
@@ -152,6 +153,10 @@ public class GameStateManager : MonoBehaviour
         else if (pointCollectible)
         {
             PoolingManager.Instance.ReturnObject(pointCollectible.pointTokenType, pointCollectible.gameObject);
+        }
+        else if (dangerCollectible)
+        {
+            PoolingManager.Instance.ReturnObject(dangerCollectible.dangerTokenType, dangerCollectible.gameObject);
         }
     }
     public void GameEnded(GameEndedEvent e)
