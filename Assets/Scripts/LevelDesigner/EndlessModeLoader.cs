@@ -48,7 +48,7 @@ public struct EndlessLevelWalls
     public Transform RightSlat;
 }
 
-public class RandomizerLoader : LevelLoader
+public class EndlessModeLoader : LevelLoader
 {
     [Header("Randomized Level")]
     public EdgeDefinition[] hexGutterCupSides;

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class RandomizerSpawner : MonoBehaviour
 {
-    protected RandomizerLoader randomizer;
+    protected EndlessModeLoader EndlessMode;
     
-    public void Initialize(RandomizerLoader _randomizerloader)
+    public void Initialize(EndlessModeLoader _randomizerloader)
     {
-        randomizer = _randomizerloader;
+        EndlessMode = _randomizerloader;
     }
 }

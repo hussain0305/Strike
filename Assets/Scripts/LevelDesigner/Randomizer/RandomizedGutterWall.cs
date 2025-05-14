@@ -31,7 +31,7 @@ public class RandomizedGutterWall : RandomizerSpawner
         {
             if (hexSideLength < 0f)
             {
-                EdgeDefinition edge = randomizer.hexGutterCupSides[0];
+                EdgeDefinition edge = EndlessMode.hexGutterCupSides[0];
                 var e0 = edge.end1.position;
                 var e1 = edge.end2.position;
                 hexSideLength = Vector3.Distance(e0, e1);
@@ -59,8 +59,8 @@ public class RandomizedGutterWall : RandomizerSpawner
 
         foreach (var side in sides)
         {
-            var end1 = randomizer.hexGutterCupSides[side].end1.position;
-            var end2 = randomizer.hexGutterCupSides[side].end2.position;
+            var end1 = EndlessMode.hexGutterCupSides[side].end1.position;
+            var end2 = EndlessMode.hexGutterCupSides[side].end2.position;
             var End1to2 = end2 - end1;
             var End2to1 = end1 - end2;
             end1 += (0.05f * End1to2);
@@ -115,13 +115,13 @@ public class RandomizedGutterWall : RandomizerSpawner
                 {
                     var pos = spawnPoints.Pop();
                     Vector3[] endPoints = movementEndPoints.Pop();
-                    Vector3 outward = (centerPointOfEdge - randomizer.platformCenter).normalized;  
+                    Vector3 outward = (centerPointOfEdge - EndlessMode.platformCenter).normalized;  
                     Quaternion rotEdge = Quaternion.LookRotation(outward, Vector3.up);
 
                     bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.76f);
                     bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 2;
 
-                    SpawnObject(spawnPoint, pos, rotEdge, randomizer.collectiblesParent, shouldMove, endPoints);
+                    SpawnObject(spawnPoint, pos, rotEdge, EndlessMode.collectiblesParent, shouldMove, endPoints);
                 }
 
                 yield return null;
