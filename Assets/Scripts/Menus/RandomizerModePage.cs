@@ -16,6 +16,11 @@ public class RandomizerModePage : MonoBehaviour
     public TextMeshProUGUI numPlayedValue;
     public TextMeshProUGUI winPercentageValue;
     
+    [Header("Star Info")]
+    public GameObject lowerDifficultySection;
+    public GameObject higherDifficultySection;
+    public TextMeshProUGUI higherDifficultyText;
+    
     private readonly RandomizerParameterHub hub = new();
 
     private void OnEnable()
@@ -78,5 +83,15 @@ public class RandomizerModePage : MonoBehaviour
             winPct = pct.ToString("F1");
         }
         winPercentageValue.text = winPct;
+
+        bool isEasy = difficultyTier <= 5;
+        lowerDifficultySection.SetActive(isEasy);
+        higherDifficultySection.SetActive(!isEasy);
+        if (!isEasy)
+        {
+            int stars = Mathf.Clamp((difficultyTier - 6) / 2 + 1, 1, 3);
+            string starWord = stars == 1 ? "star" : "stars";
+            higherDifficultyText.text = $"{stars} {starWord} available for collection";
+        }
     }
 }
