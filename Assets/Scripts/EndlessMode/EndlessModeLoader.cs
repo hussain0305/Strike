@@ -146,7 +146,6 @@ public class EndlessModeLoader : LevelLoader
     private SectorCoord sectorGridSize;
     private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
-    private Dictionary<PointTokenType, Vector3> hexPins;
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
@@ -157,11 +156,6 @@ public class EndlessModeLoader : LevelLoader
             new SectorCoord(sectorGridSize.x - 1, sectorGridSize.z - 1),
             new SectorCoord(sectorGridSize.x - 1, 0),
         };
-        
-        hexPins = new Dictionary<PointTokenType, Vector3>();
-        hexPins.Add(PointTokenType.Pin_1x, CollectiblePrefabMapping.Instance.GetPointTokenDimension(PointTokenType.Pin_1x));
-        hexPins.Add(PointTokenType.Pin_2x, CollectiblePrefabMapping.Instance.GetPointTokenDimension(PointTokenType.Pin_2x));
-        hexPins.Add(PointTokenType.Pin_4x, CollectiblePrefabMapping.Instance.GetPointTokenDimension(PointTokenType.Pin_4x));
     }
 
     public override int GetTargetPoints()
@@ -243,35 +237,20 @@ public class EndlessModeLoader : LevelLoader
             Debug.Log(s + " | center of this area is " + area.Center());
         }
         
-        List<PointTokenType> possibleTokens = new List<PointTokenType>();
-            
-        float xLength = area.xMax - area.xMin;
-        float zLength = area.zMax - area.zMin;
-
-        foreach (PointTokenType token in hexPins.Keys)
-        {
-            if (hexPins[token].x < xLength && hexPins[token].z < zLength)
-            {
-                possibleTokens.Add(token);
-            }
-        }
-
-        if (possibleTokens.Count == 0)
-        {
-            Debug.Log($"!>! No possible tokens to spawn in area ({xLength}, {zLength})");
-            return;
-        }
-
-        PointTokenType selectedToken = possibleTokens[Random.Range(0, possibleTokens.Count)];
-
-        Vector3 dimensions = hexPins[selectedToken];
-
-        int numRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z)));
-        int numLevels = Random.Range(Mathf.Max(1, numRings - 2), numRings);
         
         WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
         HexStackShape selectedStackShape = hexShapePicker.Pick();
         Debug.Log($"!>! selectedStackShape {selectedStackShape}");
+        
+        WeightedRandomPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
+        PointTokenType selectedToken = tokenPicker.Pick();
+        Vector3 dimensions = CollectiblePrefabMapping.Instance.GetPointTokenDimension(selectedToken);
+
+        float xLength = area.xMax - area.xMin;
+        float zLength = area.zMax - area.zMin;
+
+        WeightedRandomPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
+        (int numRings, int numLevels) = dimensionsPicker.Pick();
         
         RandomizedHexStack.SpawnHexStack(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
             xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape);
