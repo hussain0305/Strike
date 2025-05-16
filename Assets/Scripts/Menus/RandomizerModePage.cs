@@ -10,6 +10,7 @@ public class RandomizerModePage : MonoBehaviour
     public Button randomizerButton;
     public RandomizerRangedParameter difficulty;
     public RandomizerBoolParameter  hasDangerPins;
+    public RandomizerEnumParameter  pinBehaviour;
     
     private readonly RandomizerParameterHub hub = new();
 
@@ -31,6 +32,7 @@ public class RandomizerModePage : MonoBehaviour
     {
         hub.Register(difficulty);
         hub.Register(hasDangerPins);
+        hub.Register(pinBehaviour);
     }
 
     public void OnGeneratePressed()

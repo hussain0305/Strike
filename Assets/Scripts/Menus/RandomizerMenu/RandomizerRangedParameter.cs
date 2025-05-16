@@ -7,17 +7,23 @@ public class RandomizerRangedParameter : MonoBehaviour, IRandomizerParameter
     public TextMeshProUGUI text;
     public RandomizerParameterType id;
     public RandomizerParameterType Id => id;
-    private int min = 1;
-    private int max = 10;
+    protected int min;
+    protected int max;
 
-    private int value;
+    protected int value;
     public int ValueInt => value;
 
     object IRandomizerParameter.Value => value;
 
     public event Action<object> OnValueChanged;
-    
-    public void Increment()
+
+    private void Awake()
+    {
+        min = 1;
+        max = 10;
+    }
+
+    public virtual void Increment()
     {
         if (value + 1 <= max)
         {

@@ -4,7 +4,8 @@ using UnityEngine;
 public enum RandomizerParameterType
 {
     Dificulty,
-    HasDangerPins
+    HasDangerPins,
+    PinBehavior
 }
 
 public interface IRandomizerParameter
