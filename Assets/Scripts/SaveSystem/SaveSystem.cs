@@ -31,6 +31,23 @@ public class CollectedStarEntry
 }
 
 [System.Serializable]
+public class EndlessModeRecord
+{
+    public int difficulty;
+    public int numPlayed;
+    public int numWon;
+    public int numLost;
+
+    public EndlessModeRecord(int difficulty)
+    {
+        this.difficulty = difficulty;
+        this.numPlayed = 0;
+        this.numWon = 0;
+        this.numLost = 0;
+    }
+}
+
+[System.Serializable]
 public class SaveData
 {
     public int stars = 0;
@@ -47,15 +64,19 @@ public class SaveData
     public string selectedFusion = "";
     public bool isFusionEquipped = false;
     public int lastPlayedGauntletMode = 0;
+    public Dictionary<int, EndlessModeRecord> endlessRecords = new Dictionary<int, EndlessModeRecord>();
     
+    public List<EndlessModeRecord> endlessRecordsList = new List<EndlessModeRecord>();
     public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
     public void SyncDictionaryToList()
     {
         collectedStarsList = collectedStars.Select(kvp => new CollectedStarEntry(kvp.Key, kvp.Value)).ToList();
+        endlessRecordsList = endlessRecords.Values.ToList();
     }
     public void SyncListToDictionary()
     {
         collectedStars = collectedStarsList.ToDictionary(entry => entry.key, entry => entry.value);
+        endlessRecords = endlessRecordsList.ToDictionary(record => record.difficulty, record => record);
     }
 }
 

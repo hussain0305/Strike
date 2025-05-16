@@ -174,7 +174,7 @@ public class EndlessModeLoader : LevelLoader
         if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object diffSetting))
         {
             difficulty = (int)diffSetting;
-            Debug.Log("!>! Difficulty retrieved to be " + difficulty);
+            SaveManager.RecordEndlessPlayed(difficulty);
         }
 
         SetupPinBehaviour();

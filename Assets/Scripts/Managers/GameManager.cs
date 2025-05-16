@@ -595,6 +595,15 @@ public class GameManager : MonoBehaviour
             }
             SaveManager.AddStars(starsCollected.Count);
         }
+
+        if (ModeSelector.Instance.IsGauntletMode())
+        {
+            int difficulty = ModeSelector.Instance.GetEndlessModeDifficulty();
+            if (levelCleared)
+                SaveManager.RecordEndlessWin(difficulty);
+            else
+                SaveManager.RecordEndlessLoss(difficulty);
+        }
     }
 
     public void SetupResults()

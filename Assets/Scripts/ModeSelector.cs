@@ -326,7 +326,7 @@ public class ModeSelector : MonoBehaviour
         return gameModeInfo.GetTutorialLevel();
     }
 
-    public void GauntletModeOpened()
+    public void EndlessModeOpened()
     {
         currentSelectedModeInfo = endlessGameMode;
     }
@@ -355,6 +355,11 @@ public class ModeSelector : MonoBehaviour
         {
             Debug.Log($">>> [{key}] = {EndlessGenerationSettings[key]}");
         }
+    }
+
+    public int GetEndlessModeDifficulty()
+    {
+        return (int)EndlessGenerationSettings[RandomizerParameterType.Dificulty];
     }
 
 #endregion

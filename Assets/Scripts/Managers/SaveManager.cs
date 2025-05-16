@@ -391,6 +391,42 @@ public static class SaveManager
         EnsureDataLoaded();
         return currentSaveData.lastPlayedGauntletMode;
     }
+    
+    public static void RecordEndlessPlayed(int difficulty)
+    {
+        EnsureDataLoaded();
+        var rec = GetEndlessRecord(difficulty);
+        rec.numPlayed++;
+        SaveData();
+    }
+
+    public static void RecordEndlessWin(int difficulty)
+    {
+        EnsureDataLoaded();
+        var rec = GetEndlessRecord(difficulty);
+        rec.numWon++;
+        SaveData();
+    }
+
+    public static void RecordEndlessLoss(int difficulty)
+    {
+        EnsureDataLoaded();
+        var rec = GetEndlessRecord(difficulty);
+        rec.numLost++;
+        SaveData();
+    }
+
+    public static EndlessModeRecord GetEndlessRecord(int difficulty)
+    {
+        EnsureDataLoaded();
+        if (!currentSaveData.endlessRecords.TryGetValue(difficulty, out var rec))
+        {
+            rec = new EndlessModeRecord(difficulty);
+            currentSaveData.endlessRecords[difficulty] = rec;
+            SaveData();
+        }
+        return rec;
+    }
 
     #endregion
 }
