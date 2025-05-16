@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HexStackShape
+{
+    Uniform,            // Full solid stack
+    Pyramid,            // Pyramid shape (shrinking each level)
+    PeripheryWithInner  // Hollow outer wall + inner small stack
+}
+
 public class RandomizedHexStack : RandomizerSpawner
 {
     private float sqrt3 = Mathf.Sqrt(3f);
@@ -38,51 +45,84 @@ public class RandomizedHexStack : RandomizerSpawner
         return new Vector3(x, 0f, z);
     }
 
-    public void SpawnHexStacksWithCenter(PointTokenType tokenType, Vector3 center, float radius, float height, float d, int rings, int levels, Transform parent)
+    public void SpawnHexStack(PointTokenType tokenType, Vector3 center, float radius, float height, float spacing, int rings, int levels, Transform parent, HexStackShape shape = HexStackShape.Uniform)
     {
         for (int lvl = 0; lvl < levels; lvl++)
         {
-            float heightY = lvl * height;
-            Vector3 levelCenter = new Vector3(center.x, center.y + heightY, center.z);
+            float levelY = center.y + lvl * height;
+            Vector3 levelCenter = new Vector3(center.x, levelY, center.z);
 
-            var centerObj = PoolingManager.Instance.GetObject(tokenType);
-            SpawnObject(centerObj, levelCenter, Quaternion.identity, parent);
-
-            bool pyramidShapedStack = Random.value < 0.5f;
-            Debug.Log($"!>! pyramidShapedStack ({pyramidShapedStack})");
-
-            int currentNumRings = rings;
-            
-            for (int ring = 1; ring <= currentNumRings; ring++)
+            // Always spawn the center column for uniform/pyramid
+            if (shape != HexStackShape.PeripheryWithInner)
             {
-                var coords = GetRingCoords(ring);
-                foreach (var ax in coords)
-                {
-                    Vector3 relOffset = AxialToOffset(ax, radius, d);
-                    Vector3 spawnPos = levelCenter + relOffset;
+                SpawnAt(levelCenter, tokenType, parent);
+            }
 
-                    Vector3 dirToCenter = (new Vector3(center.x, spawnPos.y, center.z) - spawnPos).normalized;
-                    Quaternion faceCenter = Quaternion.LookRotation(dirToCenter, Vector3.up);
-                    Quaternion finalRot = faceCenter;
+            // Determine current max ring based on shape
+            switch (shape)
+            {
+                case HexStackShape.Uniform:
+                    SpawnRingsUpTo(rings, levelCenter, radius, spacing, tokenType, parent);
+                    break;
 
-                    var obj = PoolingManager.Instance.GetObject(tokenType);
-                    SpawnObject(obj, spawnPos, finalRot, parent);
-                }
+                case HexStackShape.Pyramid:
+                    int maxRing = Mathf.Max(rings - lvl, 0);
+                    if (maxRing > 0)
+                        SpawnRingsUpTo(maxRing, levelCenter, radius, spacing, tokenType, parent);
+                    break;
 
-                if (pyramidShapedStack)
-                    currentNumRings = rings - (lvl + 1);
+                case HexStackShape.PeripheryWithInner:
+                    // Outer wall only at the outermost ring
+                    SpawnRing(rings, levelCenter, radius, spacing, tokenType, parent);
+                    // Inner small stack of radius 2
+                    if (lvl == 0)
+                    {
+                        SpawnRingsUpTo(1, levelCenter, radius, spacing, tokenType, parent);
+                    }
+                    break;
             }
         }
     }
 
-    private void SpawnObject(GameObject obj, Vector3 position, Quaternion rotation, Transform parent)
+    private void SpawnRingsUpTo(int maxRings, Vector3 levelCenter, float R, float d, PointTokenType tokenType, Transform parent)
     {
-        obj.transform.SetParent(parent, false);
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
+        for (int ring = 0; ring <= maxRings; ring++)
+        {
+            // ring=0 is the center
+            if (ring == 0)
+            {
+                SpawnAt(levelCenter, tokenType, parent);
+            }
+            else
+            {
+                SpawnRing(ring, levelCenter, R, d, tokenType, parent);
+            }
+        }
+    }
 
-        var collectible = obj.GetComponent<Collectible>();
-        if (collectible != null)
+    private void SpawnRing(int ring, Vector3 levelCenter, float R, float d, PointTokenType tokenType, Transform parent)
+    {
+        var coords = GetRingCoords(ring);
+        foreach (var ax in coords)
+        {
+            Vector3 relOffset = AxialToOffset(ax, R, d);
+            Vector3 spawnPos = levelCenter + relOffset;
+
+            Vector3 dirToCenter = (new Vector3(levelCenter.x, spawnPos.y, levelCenter.z) - spawnPos).normalized;
+            Quaternion faceCenter = Quaternion.LookRotation(dirToCenter, Vector3.up);
+
+            SpawnAt(spawnPos, tokenType, parent, faceCenter);
+        }
+    }
+
+    private void SpawnAt(Vector3 pos, PointTokenType tokenType, Transform parent, Quaternion? rot = null)
+    {
+        var obj = PoolingManager.Instance.GetObject(tokenType);
+        obj.transform.SetParent(parent, false);
+        obj.transform.position    = pos;
+        obj.transform.rotation    = rot ?? Quaternion.identity;
+
+        if (obj.TryGetComponent<Collectible>(out var collectible))
         {
             collectible.InitializeAndSetup(
                 GameManager.Context,

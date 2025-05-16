@@ -269,8 +269,25 @@ public class EndlessModeLoader : LevelLoader
         int numRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z)));
         int numLevels = Random.Range(Mathf.Max(1, numRings - 2), numRings);
             
-        RandomizedHexStack.SpawnHexStacksWithCenter(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
-            xSpacing.x, numRings, numLevels, collectiblesParent);
+        List<HexStackShape> possibleStackShapes = new List<HexStackShape>();
+        possibleStackShapes.Add(HexStackShape.Uniform);
+        if (selectedToken != PointTokenType.Pin_4x)
+        {
+            possibleStackShapes.Add(HexStackShape.Pyramid);
+        }
+        if (sectors.Length >= 4)
+        {
+            possibleStackShapes.Add(HexStackShape.PeripheryWithInner);
+        }
+        HexStackShape selectedStackShape = possibleStackShapes[Random.Range(0, possibleStackShapes.Count)];
+        if (sectors.Length >= 4)
+        {
+            selectedStackShape = HexStackShape.PeripheryWithInner;
+        }
+        Debug.Log($"!>! selectedStackShape {selectedStackShape}");
+
+        RandomizedHexStack.SpawnHexStack(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
+            xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape);
     }
     
     public void GetSectorsToFill(out SectorCoord[] loneSectors, out SectorCoord[][] areas)
