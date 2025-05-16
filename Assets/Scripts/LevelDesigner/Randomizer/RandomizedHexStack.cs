@@ -48,7 +48,12 @@ public class RandomizedHexStack : RandomizerSpawner
             var centerObj = PoolingManager.Instance.GetObject(tokenType);
             SpawnObject(centerObj, levelCenter, Quaternion.identity, parent);
 
-            for (int ring = 1; ring <= rings - (lvl + 1); ring++)
+            bool pyramidShapedStack = Random.value < 0.5f;
+            Debug.Log($"!>! pyramidShapedStack ({pyramidShapedStack})");
+
+            int currentNumRings = rings;
+            
+            for (int ring = 1; ring <= currentNumRings; ring++)
             {
                 var coords = GetRingCoords(ring);
                 foreach (var ax in coords)
@@ -63,6 +68,9 @@ public class RandomizedHexStack : RandomizerSpawner
                     var obj = PoolingManager.Instance.GetObject(tokenType);
                     SpawnObject(obj, spawnPos, finalRot, parent);
                 }
+
+                if (pyramidShapedStack)
+                    currentNumRings = rings - (lvl + 1);
             }
         }
     }

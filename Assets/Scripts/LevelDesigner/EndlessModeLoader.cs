@@ -40,6 +40,16 @@ public struct SectorCoord
         x = _x;
         z = _z;
     }
+    
+    public bool Equals(SectorCoord other) => x == other.x && z == other.z;
+
+    public override bool Equals(object obj)=> obj is SectorCoord other && Equals(other);
+
+    public override int GetHashCode() => System.HashCode.Combine(x, z);
+
+    public static bool operator ==(SectorCoord a, SectorCoord b) => a.Equals(b);
+
+    public static bool operator !=(SectorCoord a, SectorCoord b) => !a.Equals(b);
 }
 
 public struct AreaBoundingCoord
@@ -134,13 +144,13 @@ public class EndlessModeLoader : LevelLoader
     }
 
     private SectorCoord sectorGridSize;
-    private List<SectorCoord> blacklistedSectors;
+    private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
     private Dictionary<PointTokenType, Vector3> hexPins;
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
-        blacklistedSectors = new List<SectorCoord>()
+        blacklistedSectors = new HashSet<SectorCoord>()
         {
             new SectorCoord(0, 0),
             new SectorCoord(0, sectorGridSize.z - 1),
@@ -165,13 +175,21 @@ public class EndlessModeLoader : LevelLoader
         if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object setting))
         {
             difficulty = (int)setting;
-            Debug.Log(">>> Difficulty retrieved to be " + difficulty);
+            Debug.Log("!>! Difficulty retrieved to be " + difficulty);
         }
         
         GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
         foreach (var loneSector in loneSectorsToFill)
         {
             PopulateSector(loneSector);
+        }
+        {
+            string s = "Spawning in lone sectors ";
+            foreach (var ss in loneSectorsToFill)
+            {
+                s += $" ({ss.x},{ss.z}),";
+            }
+            Debug.Log(s);
         }
 
         foreach (SectorCoord[] areaToFill in areasToFill)
@@ -240,7 +258,7 @@ public class EndlessModeLoader : LevelLoader
 
         if (possibleTokens.Count == 0)
         {
-            Debug.Log($">>> No possible tokens to spawn in area ({xLength}, {zLength})");
+            Debug.Log($"!>! No possible tokens to spawn in area ({xLength}, {zLength})");
             return;
         }
 
@@ -249,7 +267,7 @@ public class EndlessModeLoader : LevelLoader
         Vector3 dimensions = hexPins[selectedToken];
 
         int numRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z)));
-        int numLevels = Random.Range(0, numRings);
+        int numLevels = Random.Range(Mathf.Max(1, numRings - 2), numRings);
             
         RandomizedHexStack.SpawnHexStacksWithCenter(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
             xSpacing.x, numRings, numLevels, collectiblesParent);
@@ -261,74 +279,109 @@ public class EndlessModeLoader : LevelLoader
         int gridZ = sectorGridSize.z;
         int totalSectors = gridX * gridZ;
 
-        var blacklist = new HashSet<(int x, int z)>(
-            blacklistedSectors.Select(b => (b.x, b.z))
-        );
-        int availableCount = totalSectors - blacklist.Count;
+        int availableCount = totalSectors - blacklistedSectors.Count;
 
-        float t = (difficulty - 1) / 9f;
-        float fillPct = Mathf.Lerp(0.10f, 0.90f, t);
-        int targetCount = Mathf.RoundToInt(availableCount * fillPct);
+        float difficultyFactor = difficulty / 10f;
+        float fillPercent = Mathf.Lerp(0.10f, 0.90f, difficultyFactor);
+        int targetCount = Mathf.RoundToInt(availableCount * fillPercent);
 
-        var chosen = new HashSet<(int x, int z)>();
+        Debug.Log("!>!Target count is " + targetCount);
+        var occupied = new HashSet<SectorCoord>();
         var loneList = new List<SectorCoord>();
         var areaList = new List<SectorCoord[]>();
 
         int attempts = 0;
         int maxAttempts = availableCount * 5;
 
-        while (chosen.Count < targetCount && attempts++ < maxAttempts)
+        for (int secCoordX = 0; secCoordX < sectorGridSize.x; secCoordX++)
         {
-            if (Random.value < t && chosen.Count < targetCount)
+            if (occupied.Count >= targetCount)
+                break;
+            
+            for (int secCoordZ = 0; secCoordZ < sectorGridSize.z; secCoordZ++)
             {
-                int w = Random.Range(2, gridX + 1);
-                int h = Random.Range(2, gridZ + 1);
+                if (occupied.Count >= targetCount)
+                    break;
                 
-                if (w == gridX && h == gridZ)
-                    continue;
-
-                int rectSize = w * h;
-                if (chosen.Count + rectSize > targetCount)
-                    continue;
-
-                int ox = Random.Range(0, gridX - w + 1);
-                int oz = Random.Range(0, gridZ - h + 1);
-
-                var cells = new List<(int x, int z)>(rectSize);
-                bool bad = false;
-                for (int dx = 0; dx < w && !bad; dx++)
+                SectorCoord thisSector = new SectorCoord(secCoordX, secCoordZ);
+                if (blacklistedSectors.Contains(thisSector))
                 {
-                    for (int dz = 0; dz < h; dz++)
+                    continue;
+                }
+
+                bool tryToSpawnArea = Random.value < (difficultyFactor / 2);
+                if (tryToSpawnArea)
+                {
+                    Debug.Log($"!>! Trying to spawn area at ({secCoordX},{secCoordZ})");
+                    int w = Random.Range(1, 3);
+                    int h = Random.Range(1, 3);
+                    
+                    int rectSize = w * h;
+                    if (occupied.Count + rectSize <= targetCount)
                     {
-                        var c = (ox + dx, oz + dz);
-                        if (blacklist.Contains(c) || chosen.Contains(c))
+                        SectorCoord[] thisArea = new SectorCoord[rectSize];
+                        bool bad = false;
+                        int index = 0;
+                        for (int dx = 0; dx < w && !bad; dx++)
                         {
-                            bad = true;
-                            break;
+                            for (int dz = 0; dz < h; dz++)
+                            {
+                                SectorCoord areaSector = new SectorCoord(secCoordX + dx, secCoordZ + dz);
+                                // if (blacklistedSectors.Contains(areaSector) || occupied.Contains(areaSector))
+                                // {
+                                //     Debug.Log("!>!Blacklisted or already assigned sector encountered while creating area, breaking out, not adding ");
+                                //     bad = true;
+                                //     break;
+                                // }
+                                if (blacklistedSectors.Contains(areaSector))
+                                {
+                                    Debug.Log("!>!Blacklisted sector encountered while creating area, breaking out, not adding ");
+                                    bad = true;
+                                    break;
+                                }
+                                if (occupied.Contains(areaSector))
+                                {
+                                    Debug.Log("!>! already assigned sector encountered while creating area, breaking out, not adding ");
+                                    bad = true;
+                                    break;
+                                }
+                                thisArea[index] = areaSector;
+                                index++;
+                            }
                         }
-                        cells.Add(c);
+                        if (!bad)
+                        {
+                            foreach (var c in thisArea)
+                                occupied.Add(c);
+                            areaList.Add(thisArea.ToArray());
+                            Debug.Log($"!>!Added an area of {(w*h)} at ({secCoordX},{secCoordZ})");
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("!>!Randomly created area was too big, abandoning the idea ");
                     }
                 }
 
-                if (!bad)
+                Debug.Log("!>! Just trying to add add a lone sector");
+                
+                bool tryToGetLoneSector = Random.value < difficultyFactor && occupied.Count < targetCount;
+                if (!tryToGetLoneSector)
                 {
-                    foreach (var c in cells)
-                        chosen.Add(c);
-                    areaList.Add(cells.Select(c => new SectorCoord(c.x, c.z)).ToArray());
                     continue;
                 }
-            }
 
-            int x = Random.Range(0, gridX);
-            int z = Random.Range(0, gridZ);
-            var coord = (x, z);
-            if (!blacklist.Contains(coord) && !chosen.Contains(coord))
-            {
-                chosen.Add(coord);
-                loneList.Add(new SectorCoord(x, z));
+                SectorCoord loneSector = new SectorCoord(secCoordX, secCoordZ);
+                if (!blacklistedSectors.Contains(loneSector) && !occupied.Contains(loneSector))
+                {
+                    occupied.Add(loneSector);
+                    loneList.Add(loneSector);
+                    Debug.Log($"!>! Added lone sector ({secCoordX},{secCoordZ})");
+                }
             }
         }
-
+        
         loneSectors = loneList.ToArray();
         areas = areaList.ToArray();
     }

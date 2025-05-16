@@ -52,7 +52,7 @@ public class RandomizedGutterWall : RandomizerSpawner
         float tokenHeight = objDimension.y;
         float tokenLength = objDimension.x;
         float halftokenLength = tokenLength / 2;
-
+        float baseElevation = EndlessMode.hexGutterCupSides[0].end1.position.y;
         var sides = new List<int> {0,1,2,3};
         Shuffle(sides);
         sides = sides.GetRange(0, Mathf.Min(numSides, sides.Count));
@@ -77,7 +77,7 @@ public class RandomizedGutterWall : RandomizerSpawner
                 if (count < 1)
                     continue;
 
-                float yOff = lvl * (tokenHeight + 0.2f);
+                float yOff = baseElevation + (lvl * (tokenHeight + 0.2f));
                 Vector3 end1Level = new Vector3(end1.x, yOff, end1.z);
                 Vector3 end2Level = new Vector3(end2.x, yOff, end2.z);
                 Vector3 centerPointOfEdge = (end1 + end2) * 0.5f;
