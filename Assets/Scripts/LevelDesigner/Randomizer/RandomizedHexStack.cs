@@ -3,9 +3,10 @@ using UnityEngine;
 
 public enum HexStackShape
 {
-    Uniform,            // Full solid stack
-    Pyramid,            // Pyramid shape (shrinking each level)
-    PeripheryWithInner  // Hollow outer wall + inner small stack
+    None,
+    Uniform,
+    Pyramid,
+    PeripheryWithInner
 }
 
 public class RandomizedHexStack : RandomizerSpawner
@@ -45,19 +46,17 @@ public class RandomizedHexStack : RandomizerSpawner
         return new Vector3(x, 0f, z);
     }
 
+    //While spawning hex stacks, we receive the area -
+    //Based on that, first choose the shape to draw
+    //Then the token
+    
     public void SpawnHexStack(PointTokenType tokenType, Vector3 center, float radius, float height, float spacing, int rings, int levels, Transform parent, HexStackShape shape = HexStackShape.Uniform)
     {
         for (int lvl = 0; lvl < levels; lvl++)
         {
             float levelY = center.y + lvl * height;
             Vector3 levelCenter = new Vector3(center.x, levelY, center.z);
-
-            // Always spawn the center column for uniform/pyramid
-            if (shape != HexStackShape.PeripheryWithInner)
-            {
-                SpawnAt(levelCenter, tokenType, parent);
-            }
-
+            
             // Determine current max ring based on shape
             switch (shape)
             {

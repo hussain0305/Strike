@@ -268,24 +268,11 @@ public class EndlessModeLoader : LevelLoader
 
         int numRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z)));
         int numLevels = Random.Range(Mathf.Max(1, numRings - 2), numRings);
-            
-        List<HexStackShape> possibleStackShapes = new List<HexStackShape>();
-        possibleStackShapes.Add(HexStackShape.Uniform);
-        if (selectedToken != PointTokenType.Pin_4x)
-        {
-            possibleStackShapes.Add(HexStackShape.Pyramid);
-        }
-        if (sectors.Length >= 4)
-        {
-            possibleStackShapes.Add(HexStackShape.PeripheryWithInner);
-        }
-        HexStackShape selectedStackShape = possibleStackShapes[Random.Range(0, possibleStackShapes.Count)];
-        if (sectors.Length >= 4)
-        {
-            selectedStackShape = HexStackShape.PeripheryWithInner;
-        }
+        
+        WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
+        HexStackShape selectedStackShape = hexShapePicker.Pick();
         Debug.Log($"!>! selectedStackShape {selectedStackShape}");
-
+        
         RandomizedHexStack.SpawnHexStack(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
             xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape);
     }
@@ -306,10 +293,7 @@ public class EndlessModeLoader : LevelLoader
         var occupied = new HashSet<SectorCoord>();
         var loneList = new List<SectorCoord>();
         var areaList = new List<SectorCoord[]>();
-
-        int attempts = 0;
-        int maxAttempts = availableCount * 5;
-
+        
         for (int secCoordX = 0; secCoordX < sectorGridSize.x; secCoordX++)
         {
             if (occupied.Count >= targetCount)
