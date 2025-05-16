@@ -1691,7 +1691,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 301384758}
-  - component: {fileID: 301384759}
   m_Layer: 0
   m_Name: GameMode
   m_TagString: Untagged
@@ -1714,18 +1713,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1298743690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &301384759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 301384756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157375774af19ca4dbdf3df714fd5bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &303052948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2622,6 +2609,7 @@ MonoBehaviour:
     - {fileID: 1749394001}
     RightSlat: {fileID: 289147016}
   maxObjects: 50
+  gameModeObject: {fileID: 301384756}
 --- !u!1 &538504953
 GameObject:
   m_ObjectHideFlags: 0

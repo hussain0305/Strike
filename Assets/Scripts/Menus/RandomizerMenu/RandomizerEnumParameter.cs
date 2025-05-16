@@ -9,10 +9,12 @@ public struct RandomizerEnum
 
 public class RandomizerEnumParameter : RandomizerRangedParameter, IRandomizerParameter
 {
-    public RandomizerEnum[] pinBehaviours;
     
+    private RandomizerEnum[] pinBehaviours;
+
     private void Awake()
     {
+        pinBehaviours = EndlessModePinBehaviour.Instance.pinBehaviours;
         min = 0;
         max = pinBehaviours.Length - 1;
         value = 0;

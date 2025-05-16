@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public struct EdgeDefinition
@@ -110,6 +112,7 @@ public class EndlessModeLoader : LevelLoader
     public Transform[] SectorLinesZ;
     public EndlessLevelWalls wallLocations;
     public int maxObjects = 50;
+    public GameObject gameModeObject;
 
     private Vector3 xSpacing = new Vector3(0.2f, 0, 0);
     private Vector3 ySpacing = new Vector3(0, 0.2f, 0);
@@ -146,6 +149,8 @@ public class EndlessModeLoader : LevelLoader
     private SectorCoord sectorGridSize;
     private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
+    private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
+    
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
@@ -166,11 +171,13 @@ public class EndlessModeLoader : LevelLoader
     override public void LoadLevel()
     {
         EndlessGenerationSettings settings = ModeSelector.Instance.EndlessGenerationSettings;
-        if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object setting))
+        if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object diffSetting))
         {
-            difficulty = (int)setting;
+            difficulty = (int)diffSetting;
             Debug.Log("!>! Difficulty retrieved to be " + difficulty);
         }
+
+        SetupPinBehaviour();
         
         GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
         foreach (var loneSector in loneSectorsToFill)
@@ -194,6 +201,29 @@ public class EndlessModeLoader : LevelLoader
         RandomizedGutterWall.SpawnOnSides(4, 3, RandomizedMovementOptions.SomeMoving, new IncludeTypesInRandomization(true, true));
     }
 
+    public void SetupPinBehaviour()
+    {
+        EndlessGenerationSettings settings = ModeSelector.Instance.EndlessGenerationSettings;
+        if (settings.TryGetValue(RandomizerParameterType.PinBehavior, out object pbSetting))
+        {
+            int pinBehaviourIndex = (int)pbSetting;
+            Debug.Log("!>! pinBehaviour retrieved to be " + pinBehaviour);
+            RandomizerEnum[] pinBehaviours = EndlessModePinBehaviour.Instance.pinBehaviours;
+            pinBehaviour = pinBehaviours[pinBehaviourIndex].pinBehaviour;
+            
+            switch (pinBehaviour)
+            {
+                case PinBehaviourPerTurn.Reset:
+                    gameModeObject.AddComponent<RegularMode>();
+                    break;
+                case PinBehaviourPerTurn.DisappearUponCollection:
+                    gameModeObject.AddComponent<DisappearingMode>();
+                    break;
+            }
+        }
+
+    }
+    
     public void PopulateSector(SectorCoord sector)
     {
         //Re-instate check if needed, commenting it out right now because the info coming through current channels is pre-vetted
