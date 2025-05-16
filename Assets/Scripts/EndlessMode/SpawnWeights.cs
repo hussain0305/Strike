@@ -47,8 +47,7 @@ public static class SpawnWeights
     public static WeightedRandomPicker<(int, int)> HexStackDimensionsPicker(float xLength, float zLength, PointTokenType selectedToken)
     {
         Vector3 dimensions = CollectiblePrefabMapping.Instance.GetPointTokenDimension(selectedToken);
-        int maxRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z)));
-        
+        int maxRings = Mathf.FloorToInt(Mathf.Min(xLength / (2 * dimensions.x), zLength / (2 * dimensions.z))) - 1;
         float midRows = (maxRings + 1) / 2f;
         
         var picker = new WeightedRandomPicker<(int, int)>();
