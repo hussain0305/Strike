@@ -9,12 +9,12 @@ public static class SpawnWeights
         
         picker.AddChoice(HexStackShape.Pyramid, 1);
         picker.AddChoice(HexStackShape.Uniform, 1);
-        picker.AddChoice(HexStackShape.PeripheryWithInner, 1);
+        picker.AddChoice(HexStackShape.PeripheryWithInner, 0);
 
         if (numSectors > 4)
         {
             picker.AddOrUpdateChoice(HexStackShape.Pyramid, 3);
-            picker.AddOrUpdateChoice(HexStackShape.PeripheryWithInner, 6);
+            picker.AddOrUpdateChoice(HexStackShape.PeripheryWithInner, 8);
         }
         
         else if (numSectors > 1)
