@@ -31,6 +31,7 @@ public enum CollectibleType
 
 public enum ObstacleType
 {
+    None,
     Fan,
     Window,
     SwitchDoor,

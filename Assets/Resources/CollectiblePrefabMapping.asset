@@ -49,19 +49,19 @@ MonoBehaviour:
     prefab: {fileID: 5940289607546129480, guid: ef3690bf01818d4448afa4a0b3667fd5, type: 3}
     dimensions: {x: 4.5, y: 7.2, z: 4.5}
   obstaclePrefabs:
-  - obstacleType: 0
+  - obstacleType: 1
     prefab: {fileID: 5940289607546129480, guid: e0a54d12887dc514baac9fe32be874e0, type: 3}
     dimensions: {x: 20, y: 20, z: 1.5}
-  - obstacleType: 1
+  - obstacleType: 2
     prefab: {fileID: 5940289607546129480, guid: c34a51bdd2013824ba18b9e68fac4b0e, type: 3}
     dimensions: {x: 25, y: 25, z: 1.5}
-  - obstacleType: 2
+  - obstacleType: 3
     prefab: {fileID: 5940289607546129480, guid: 66207ae9b60ea6e469a48d82dd8d2c19, type: 3}
     dimensions: {x: 25, y: 24, z: 4}
-  - obstacleType: 3
+  - obstacleType: 4
     prefab: {fileID: 5940289607546129480, guid: 1e1bbbce39ce8fc458fd3f9a0ae89895, type: 3}
     dimensions: {x: 20, y: 30, z: 1.5}
-  - obstacleType: 4
+  - obstacleType: 5
     prefab: {fileID: 5940289607546129480, guid: 795ab3d9efafa4c48bc27f08d6a214a0, type: 3}
     dimensions: {x: 10, y: 10, z: 1.5}
   starPrefab: {fileID: 5118622374533007032, guid: dc56e85319b698844bcc2ebdb7dcddb5, type: 3}
