@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class RandomizerModePage : MonoBehaviour
+public class EndlessModePage : MonoBehaviour
 {
     public TextMeshProUGUI numPlayersText;
 
@@ -90,8 +90,8 @@ public class RandomizerModePage : MonoBehaviour
         if (!isEasy)
         {
             int stars = Mathf.Clamp((difficultyTier - 6) / 2 + 1, 1, 3);
-            string starWord = stars == 1 ? "star" : "stars";
-            higherDifficultyText.text = $"{stars} {starWord} available for collection";
+            // string starWord = stars == 1 ? "star" : "stars";
+            higherDifficultyText.text = $"{stars}";// {starWord} available for collection
         }
     }
 }
