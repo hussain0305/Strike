@@ -67,5 +67,4 @@ public static class SpawnWeights
 
         return picker;
     }
-
 }

@@ -231,9 +231,54 @@ public class EndlessModeLoader : LevelLoader
         // {
         //     return;
         // }
-        
+        GetSectorBounds(sector, out AreaWorldBound worldBound);
+        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, worldBound, difficulty, sectorGridSize.x, sectorGridSize.z);
+        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound);
+
+        foreach (var inst in instructions)
+        {
+            if (inst.Entry.obstacleType != ObstacleType.None)
+                SpawnObstacle(inst.Entry.obstacleType, inst.Position, inst.Rotation);
+            else
+                SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
+        }    }
+
+    private void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot)
+    {
+        var obj = PoolingManager.Instance.GetObject(tokenType);
+        obj.transform.SetParent(collectiblesParent, false);
+        obj.transform.position = pos;
+        obj.transform.rotation = rot;
+
+        if (obj.TryGetComponent<Collectible>(out var collectible))
+        {
+            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
+        }
     }
-    
+
+    private void SpawnObstacle(ObstacleType obstacleType, Vector3 pos, Quaternion rot)
+    {
+        var obj = PoolingManager.Instance.GetObject(obstacleType);
+        obj.transform.SetParent(obstaclesParentPlatform, false);
+        obj.transform.position = pos;
+        obj.transform.rotation = rot;
+
+        if (obj.TryGetComponent<Obstacle>(out var obstacle))
+        {
+            LevelExporter.ObstacleData obstacleData = new LevelExporter.ObstacleData();
+            obstacleData.movementSpeed = 0;
+            obstacleData.position = pos;
+            obstacleData.rotation = rot;
+            obstacleData.type = obstacleType;
+            if (obstacleType == ObstacleType.SmallFan || obstacleType == ObstacleType.Fan)
+            {
+                obstacleData.rotationAxis = new Vector3(0, 0, 1);
+                obstacleData.rotationSpeed = 360;
+            }
+            obstacle.InitializeAndSetup(GameManager.Context, obstacleData);
+        }
+    }
+
     public void PopulateArea(SectorCoord[] sectors)
     {
         //Re-instate check if needed, commenting it out right now because the info coming through current channels is pre-vetted
@@ -243,14 +288,23 @@ public class EndlessModeLoader : LevelLoader
         // }
 
         AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
-        bool spawnHexStack = areaBoundingCoord.IsSquare(); //and other conditions
-        if (spawnHexStack)
+        if (areaBoundingCoord.IsSquare())
         {
-            SpawnHexStack(sectors);
+            bool spawnHexStack = true; //and other conditions
+            if (spawnHexStack)
+            {
+                //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed. Not needed further down the pipeline
+                SpawnHexStack(sectors, areaBoundingCoord);
+            }
+        }
+        else
+        {
+            Debug.Log("!!! This is not a square area");
+            FillRectangularArea(sectors);
         }
     }
     
-    public void SpawnHexStack(SectorCoord[] sectors)
+    public void SpawnHexStack(SectorCoord[] sectors, AreaBoundingCoord areaBoundingCoord)
     {
         AreaWorldBound area;
         if (!GetAreaBounds(sectors, out area))
@@ -270,7 +324,6 @@ public class EndlessModeLoader : LevelLoader
         
         WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
         HexStackShape selectedStackShape = hexShapePicker.Pick();
-        Debug.Log($"!>! selectedStackShape {selectedStackShape}");
         
         WeightedRandomPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
         PointTokenType selectedToken = tokenPicker.Pick();
@@ -282,8 +335,15 @@ public class EndlessModeLoader : LevelLoader
         WeightedRandomPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
         (int numRings, int numLevels) = dimensionsPicker.Pick();
         
+        //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed
         RandomizedHexStack.SpawnHexStack(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
-            xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape);
+            xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape, areaBoundingCoord);
+    }
+
+    public void FillRectangularArea(SectorCoord[] sectors)
+    {
+        AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
+        
     }
     
     public void GetSectorsToFill(out SectorCoord[] loneSectors, out SectorCoord[][] areas)
@@ -323,8 +383,8 @@ public class EndlessModeLoader : LevelLoader
                 if (tryToSpawnArea)
                 {
                     Debug.Log($"!>! Trying to spawn area at ({secCoordX},{secCoordZ})");
-                    int w = Random.Range(1, 3);
-                    int h = Random.Range(1, 3);
+                    int w = Random.Range(1, 4);
+                    int h = Random.Range(w == 1 ? 2 : 1, 4);
                     
                     int rectSize = w * h;
                     if (occupied.Count + rectSize <= targetCount)

@@ -351,10 +351,6 @@ public class ModeSelector : MonoBehaviour
     public void SetRandomizerGenerationSettings(EndlessGenerationSettings settings)
     {
         EndlessGenerationSettings = settings;
-        foreach (var key in EndlessGenerationSettings.Keys)
-        {
-            Debug.Log($">>> [{key}] = {EndlessGenerationSettings[key]}");
-        }
     }
 
     public int GetEndlessModeDifficulty()
