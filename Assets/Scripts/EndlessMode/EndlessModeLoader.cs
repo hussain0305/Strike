@@ -280,12 +280,18 @@ public class EndlessModeLoader : LevelLoader
                     continue;
                 }
 
-                bool tryToSpawnArea = Random.value < (difficultyFactor / 2);
+                int maxW = sectorGridSize.x - secCoordX;
+                int maxH = sectorGridSize.z - secCoordZ;
+                bool canSpawnArea = maxW > 1 || maxH > 1;
+                bool tryToSpawnArea = canSpawnArea && Random.value < (difficultyFactor / 2);
+                
                 if (tryToSpawnArea)
                 {
                     Debug.Log($"!>! Trying to spawn area at ({secCoordX},{secCoordZ})");
-                    int w = Random.Range(1, 4);
-                    int h = Random.Range(w == 1 ? 2 : 1, 4);
+                    
+                    int w = Random.Range(1, maxW + 1);
+                    int hMin = (w == 1) ? 2 : 1;
+                    int h = Random.Range(hMin, maxH + 1);
                     
                     int rectSize = w * h;
                     if (occupied.Count + rectSize <= targetCount)
@@ -316,6 +322,12 @@ public class EndlessModeLoader : LevelLoader
                         }
                         if (!bad)
                         {
+                            //Re-instate if needed. current logic prevents this from happening
+                            // if (!SectorGridHelper.IsValidArea(thisArea) || !SectorGridHelper.IsAreaContainedOnGrid(thisArea))
+                            // {
+                            //     Debug.Log($"!>!Prepared an INVALID area, not adding");
+                            //     continue;
+                            // }
                             foreach (var c in thisArea)
                                 occupied.Add(c);
                             areaList.Add(thisArea.ToArray());
