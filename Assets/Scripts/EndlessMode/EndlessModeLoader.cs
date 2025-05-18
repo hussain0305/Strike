@@ -113,13 +113,9 @@ public class EndlessModeLoader : LevelLoader
     public EndlessLevelWalls wallLocations;
     public int maxObjects = 50;
     public GameObject gameModeObject;
-
-    private Vector3 xSpacing = new Vector3(0.2f, 0, 0);
-    private Vector3 ySpacing = new Vector3(0, 0.2f, 0);
-    private Vector3 zSpacing = new Vector3(0, 0, 0.2f);
-
+    
     private RandomizedHexStack randomizedHexStack;
-    private RandomizedHexStack RandomizedHexStack
+    public RandomizedHexStack RandomizedHexStack
     {
         get
         {
@@ -145,10 +141,42 @@ public class EndlessModeLoader : LevelLoader
             return randomizedGutterWall;
         }
     }
+    
+    private SectorGridHelper sectorGridHelper;
+    public SectorGridHelper SectorGridHelper => sectorGridHelper;
 
+    private EndlessSectorPopulator endlessSectorPopulator;
+    private EndlessSectorPopulator EndlessSectorPopulator
+    {
+        get
+        {
+            if (endlessSectorPopulator == null)
+            {
+                endlessSectorPopulator = new EndlessSectorPopulator();
+                endlessSectorPopulator.Initialize(this, SectorGridHelper);
+            }
+            return endlessSectorPopulator;
+        }
+    }
+    
+    private EndlessAreaPopulator endlessAreaPopulator;
+    private EndlessAreaPopulator EndlessAreaPopulator
+    {
+        get
+        {
+            if (endlessAreaPopulator == null)
+            {
+                endlessAreaPopulator = new EndlessAreaPopulator();
+                endlessAreaPopulator.Initialize(this, SectorGridHelper);
+            }
+            return endlessAreaPopulator;
+        }
+    }
+    
     private SectorCoord sectorGridSize;
     private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
+    public int Difficulty => difficulty;
     private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     
     private void Awake()
@@ -161,6 +189,8 @@ public class EndlessModeLoader : LevelLoader
             new SectorCoord(sectorGridSize.x - 1, sectorGridSize.z - 1),
             new SectorCoord(sectorGridSize.x - 1, 0),
         };
+        
+        sectorGridHelper = new SectorGridHelper(SectorLinesX, SectorLinesZ, sectorGridSize, blacklistedSectors);
     }
 
     public override int GetTargetPoints()
@@ -168,7 +198,7 @@ public class EndlessModeLoader : LevelLoader
         return 10;
     }
 
-    override public void LoadLevel()
+    public override void LoadLevel()
     {
         EndlessGenerationSettings settings = ModeSelector.Instance.EndlessGenerationSettings;
         if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object diffSetting))
@@ -178,12 +208,12 @@ public class EndlessModeLoader : LevelLoader
         }
 
         SetupPinBehaviour();
-        
         GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
-        foreach (var loneSector in loneSectorsToFill)
-        {
-            PopulateSector(loneSector);
-        }
+        
+        EndlessSectorPopulator.PopulateSectors(loneSectorsToFill);
+        EndlessAreaPopulator.PopulateAreas(areasToFill);
+        RandomizedGutterWall.Setup(Difficulty);
+
         {
             string s = "Spawning in lone sectors ";
             foreach (var ss in loneSectorsToFill)
@@ -192,13 +222,6 @@ public class EndlessModeLoader : LevelLoader
             }
             Debug.Log(s);
         }
-
-        foreach (SectorCoord[] areaToFill in areasToFill)
-        {
-            PopulateArea(areaToFill);
-        }
-        
-        RandomizedGutterWall.SpawnOnSides(4, 3, RandomizedMovementOptions.SomeMoving, new IncludeTypesInRandomization(true, true));
     }
 
     public void SetupPinBehaviour()
@@ -223,129 +246,7 @@ public class EndlessModeLoader : LevelLoader
         }
 
     }
-    
-    public void PopulateSector(SectorCoord sector)
-    {
-        //Re-instate check if needed, commenting it out right now because the info coming through current channels is pre-vetted
-        // if (!IsSectorContainedOnGrid(sector))
-        // {
-        //     return;
-        // }
-        GetSectorBounds(sector, out AreaWorldBound worldBound);
-        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, worldBound, difficulty, sectorGridSize.x, sectorGridSize.z);
-        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound);
 
-        foreach (var inst in instructions)
-        {
-            if (inst.Entry.obstacleType != ObstacleType.None)
-                SpawnObstacle(inst.Entry.obstacleType, inst.Position, inst.Rotation);
-            else
-                SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
-        }    }
-
-    private void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot)
-    {
-        var obj = PoolingManager.Instance.GetObject(tokenType);
-        obj.transform.SetParent(collectiblesParent, false);
-        obj.transform.position = pos;
-        obj.transform.rotation = rot;
-
-        if (obj.TryGetComponent<Collectible>(out var collectible))
-        {
-            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
-        }
-    }
-
-    private void SpawnObstacle(ObstacleType obstacleType, Vector3 pos, Quaternion rot)
-    {
-        var obj = PoolingManager.Instance.GetObject(obstacleType);
-        obj.transform.SetParent(obstaclesParentPlatform, false);
-        obj.transform.position = pos;
-        obj.transform.rotation = rot;
-
-        if (obj.TryGetComponent<Obstacle>(out var obstacle))
-        {
-            LevelExporter.ObstacleData obstacleData = new LevelExporter.ObstacleData();
-            obstacleData.movementSpeed = 0;
-            obstacleData.position = pos;
-            obstacleData.rotation = rot;
-            obstacleData.type = obstacleType;
-            if (obstacleType == ObstacleType.SmallFan || obstacleType == ObstacleType.Fan)
-            {
-                obstacleData.rotationAxis = new Vector3(0, 0, 1);
-                obstacleData.rotationSpeed = 360;
-            }
-            obstacle.InitializeAndSetup(GameManager.Context, obstacleData);
-        }
-    }
-
-    public void PopulateArea(SectorCoord[] sectors)
-    {
-        //Re-instate check if needed, commenting it out right now because the info coming through current channels is pre-vetted
-        // if (!IsAreaContainedOnGrid(area))
-        // {
-        //     return;
-        // }
-
-        AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
-        if (areaBoundingCoord.IsSquare())
-        {
-            bool spawnHexStack = true; //and other conditions
-            if (spawnHexStack)
-            {
-                //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed. Not needed further down the pipeline
-                SpawnHexStack(sectors, areaBoundingCoord);
-            }
-        }
-        else
-        {
-            Debug.Log("!!! This is not a square area");
-            FillRectangularArea(sectors);
-        }
-    }
-    
-    public void SpawnHexStack(SectorCoord[] sectors, AreaBoundingCoord areaBoundingCoord)
-    {
-        AreaWorldBound area;
-        if (!GetAreaBounds(sectors, out area))
-        {
-            return;
-        }
-
-        {
-            string s = "Spawning Hex Stacks in area of sectors ";
-            foreach (var ss in sectors)
-            {
-                s += $" ({ss.x},{ss.z}),";
-            }
-            Debug.Log(s + " | center of this area is " + area.Center());
-        }
-        
-        
-        WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
-        HexStackShape selectedStackShape = hexShapePicker.Pick();
-        
-        WeightedRandomPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
-        PointTokenType selectedToken = tokenPicker.Pick();
-        Vector3 dimensions = CollectiblePrefabMapping.Instance.GetPointTokenDimension(selectedToken);
-
-        float xLength = area.xMax - area.xMin;
-        float zLength = area.zMax - area.zMin;
-
-        WeightedRandomPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
-        (int numRings, int numLevels) = dimensionsPicker.Pick();
-        
-        //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed
-        RandomizedHexStack.SpawnHexStack(selectedToken, area.Center() + ySpacing, dimensions.x / 2, dimensions.y, 
-            xSpacing.x, numRings, numLevels, collectiblesParent, selectedStackShape, areaBoundingCoord);
-    }
-
-    public void FillRectangularArea(SectorCoord[] sectors)
-    {
-        AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
-        
-    }
-    
     public void GetSectorsToFill(out SectorCoord[] loneSectors, out SectorCoord[][] areas)
     {
         int gridX = sectorGridSize.x;
@@ -397,12 +298,6 @@ public class EndlessModeLoader : LevelLoader
                             for (int dz = 0; dz < h; dz++)
                             {
                                 SectorCoord areaSector = new SectorCoord(secCoordX + dx, secCoordZ + dz);
-                                // if (blacklistedSectors.Contains(areaSector) || occupied.Contains(areaSector))
-                                // {
-                                //     Debug.Log("!>!Blacklisted or already assigned sector encountered while creating area, breaking out, not adding ");
-                                //     bad = true;
-                                //     break;
-                                // }
                                 if (blacklistedSectors.Contains(areaSector))
                                 {
                                     Debug.Log("!>!Blacklisted sector encountered while creating area, breaking out, not adding ");
@@ -455,91 +350,40 @@ public class EndlessModeLoader : LevelLoader
         loneSectors = loneList.ToArray();
         areas = areaList.ToArray();
     }
-    
-    public bool GetSectorBounds(SectorCoord sector, out AreaWorldBound areaWorldBound)
+
+    public void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot)
     {
-        if (!IsSectorContainedOnGrid(sector))
+        var obj = PoolingManager.Instance.GetObject(tokenType);
+        obj.transform.SetParent(collectiblesParent, false);
+        obj.transform.position = pos;
+        obj.transform.rotation = rot;
+
+        if (obj.TryGetComponent<Collectible>(out var collectible))
         {
-            areaWorldBound = new AreaWorldBound();
-            return false;
+            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
         }
-        
-        areaWorldBound = new AreaWorldBound(
-            SectorLinesX[sector.x].transform.position.x,
-            SectorLinesX[sector.x + 1].transform.position.x,
-            SectorLinesZ[sector.z].transform.position.z,
-            SectorLinesZ[sector.z + 1].transform.position.z
-            );
-        return true;
     }
-    
-    public bool GetAreaBounds(SectorCoord[] sectors, out AreaWorldBound areaWorldBound)
+
+    public void SpawnObstacle(ObstacleType obstacleType, Vector3 pos, Quaternion rot)
     {
-        if (!IsValidArea(sectors) || !IsAreaContainedOnGrid(sectors))
+        var obj = PoolingManager.Instance.GetObject(obstacleType);
+        obj.transform.SetParent(obstaclesParentPlatform, false);
+        obj.transform.position = pos;
+        obj.transform.rotation = rot;
+
+        if (obj.TryGetComponent<Obstacle>(out var obstacle))
         {
-            areaWorldBound = new AreaWorldBound();
-            return false;
-        }
-
-        AreaBoundingCoord area = new AreaBoundingCoord(sectors);
-        
-        areaWorldBound = new AreaWorldBound(
-            SectorLinesX[area.xMin].transform.position.x,
-            SectorLinesX[area.xMax + 1].transform.position.x,
-            SectorLinesZ[area.zMin].transform.position.z,
-            SectorLinesZ[area.zMax + 1].transform.position.z
-        );
-        return true;
-    }
-
-    public bool IsSectorContainedOnGrid(SectorCoord sector)
-    {
-        if (sector.x < 0 || sector.x >= sectorGridSize.x) 
-            return false;
-        if (sector.z < 0 || sector.z >= sectorGridSize.z)
-            return false;
-        return true;
-    }
-
-    public bool IsAreaContainedOnGrid(SectorCoord[] sectors)
-    {
-        foreach (var sector in sectors)
-        {
-            if (!IsSectorContainedOnGrid(sector))
+            LevelExporter.ObstacleData obstacleData = new LevelExporter.ObstacleData();
+            obstacleData.movementSpeed = 0;
+            obstacleData.position = pos;
+            obstacleData.rotation = rot;
+            obstacleData.type = obstacleType;
+            if (obstacleType == ObstacleType.SmallFan || obstacleType == ObstacleType.Fan)
             {
-                return false;
-            } 
-        }
-        return true;
-    }
-    
-    public bool IsValidArea(SectorCoord[] sectors)
-    {
-        if (sectors == null || sectors.Length == 0)
-            return false;
-
-        AreaBoundingCoord area = new AreaBoundingCoord(sectors);
-
-        int width  = area.xMax - area.xMin + 1;
-        int height = area.zMax - area.zMin + 1;
-        int expectedCount = width * height;
-
-        if (sectors.Length != expectedCount)
-            return false;
-
-        var lookup = new HashSet<(int x, int z)>(
-            sectors.Select(s => (s.x, s.z))
-        );
-
-        for (int x = area.xMin; x <= area.xMax; x++)
-        {
-            for (int z = area.zMin; z <= area.zMax; z++)
-            {
-                if (!lookup.Contains((x, z)))
-                    return false;
+                obstacleData.rotationAxis = new Vector3(0, 0, 1);
+                obstacleData.rotationSpeed = 360;
             }
+            obstacle.InitializeAndSetup(GameManager.Context, obstacleData);
         }
-
-        return true;
     }
 }

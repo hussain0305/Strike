@@ -83,38 +83,37 @@ public class SpawnPayloadEngine : MonoBehaviour
 
         return payload;
     }
-    public static SectorSpawnPayload AreaSpawnPayloadPicker(SectorCoord[] sectors, int difficulty, int maxXCoord, int maxZCoord)
+    public static SectorSpawnPayload AreaSpawnPayloadPicker(SectorCoord[] sectors, AreaWorldBound area, int difficulty, int maxXCoord, int maxZCoord)
     {
         var payload = new SectorSpawnPayload();
-        var bounds  = new AreaBoundingCoord(sectors);
+        payload.Entries = new List<SectorSpawnPayload.Entry>();
 
-        difficultyFactor = difficulty / 10f;
+        float difficultyFactor = difficulty / 10f;
+        bool isBackSector = (area.zMax > (maxZCoord * 0.5f));
 
-        // decide total count based on area size
-        // int areaSize = (bounds.xMax - bounds.xMin + 1) * (bounds.zMax - bounds.zMin + 1);
-        int areaSize = (bounds.xMax - bounds.xMin) * (bounds.zMax - bounds.zMin);
-        int totalCount = Mathf.Clamp(
-            Mathf.RoundToInt(areaSize * 0.3f * difficultyFactor),
-            3,
-            areaSize
-        );
+        int sectorCount = sectors.Length;
+        var totalObjectsPicker = new WeightedRandomPicker<int>();
+        totalObjectsPicker.AddChoice(1 * sectorCount, 1);
+        totalObjectsPicker.AddChoice(2 * sectorCount, 2);
+        totalObjectsPicker.AddChoice(3 * sectorCount, 3);
+        totalObjectsPicker.AddChoice(4 * sectorCount, 3);
+        totalObjectsPicker.AddChoice(5 * sectorCount, 1.5f);
+        int totalObjects = totalObjectsPicker.Pick();
 
-        // e.g. 60% chance per slot to be an obstacle at high diff
         var kindPicker = new WeightedRandomPicker<bool>();
-        kindPicker.AddChoice(true,  1f - difficultyFactor);
-        kindPicker.AddChoice(false, difficultyFactor);
+        kindPicker.AddChoice(true,  2f - difficultyFactor + (isBackSector ? 1f : 0f));
+        kindPicker.AddChoice(false, difficultyFactor + (isBackSector ? 0f : 0.5f));
 
-        // prepare token‐type picker, now allowing everything
+        // 3) Pre‐build your token and obstacle pickers
         var tokenPicker = new WeightedRandomPicker<PointTokenType>();
         tokenPicker.AddChoice(PointTokenType.Brick,      GetPickerWeight(2f, +3f));
         tokenPicker.AddChoice(PointTokenType.Cube_2x2,   GetPickerWeight(2f, +2f));
         tokenPicker.AddChoice(PointTokenType.Cube_3x3,   GetPickerWeight(2f, -1f));
-        tokenPicker.AddChoice(PointTokenType.Cuboid_4x2, GetPickerWeight(2f, -0f));
+        tokenPicker.AddChoice(PointTokenType.Cuboid_4x2, GetPickerWeight(2f, +0f));
         tokenPicker.AddChoice(PointTokenType.Pin_1x,     GetPickerWeight(3f, -1f));
         tokenPicker.AddChoice(PointTokenType.Pin_2x,     GetPickerWeight(3f, -2f));
         tokenPicker.AddChoice(PointTokenType.Pin_4x,     GetPickerWeight(3f, -2f));
 
-        // obstacle picker now includes Window/Fan
         var obsPicker = new WeightedRandomPicker<ObstacleType>();
         obsPicker.AddChoice(ObstacleType.SmallFan,   GetPickerWeight(1f, +1.25f));
         obsPicker.AddChoice(ObstacleType.Wall,       GetPickerWeight(1f, +1.25f));
@@ -122,7 +121,7 @@ public class SpawnPayloadEngine : MonoBehaviour
         obsPicker.AddChoice(ObstacleType.Fan,        GetPickerWeight(1f, +0.25f));
         obsPicker.AddChoice(ObstacleType.SwitchDoor, GetPickerWeight(1f, +0.50f));
 
-        for (int i = 0; i < totalCount; i++)
+        for (int i = 0; i < totalObjects; i++)
         {
             bool spawnPoint = kindPicker.Pick();
             if (spawnPoint)

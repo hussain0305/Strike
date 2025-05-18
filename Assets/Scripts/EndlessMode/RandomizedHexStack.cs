@@ -46,10 +46,42 @@ public class RandomizedHexStack : RandomizerSpawner
         return new Vector3(x, 0f, z);
     }
 
-    //While spawning hex stacks, we receive the area -
-    //Based on that, first choose the shape to draw
-    //Then the token
-    
+    public void PrepareHexStack(SectorCoord[] sectors, AreaBoundingCoord areaBoundingCoord)
+    {
+        AreaWorldBound area;
+        if (!sectorGridHelper.GetAreaBounds(sectors, out area))
+        {
+            return;
+        }
+
+        {
+            string s = "Spawning Hex Stacks in area of sectors ";
+            foreach (var ss in sectors)
+            {
+                s += $" ({ss.x},{ss.z}),";
+            }
+            Debug.Log(s + " | center of this area is " + area.Center());
+        }
+        
+        
+        WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
+        HexStackShape selectedStackShape = hexShapePicker.Pick();
+        
+        WeightedRandomPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
+        PointTokenType selectedToken = tokenPicker.Pick();
+        Vector3 dimensions = CollectiblePrefabMapping.Instance.GetPointTokenDimension(selectedToken);
+
+        float xLength = area.xMax - area.xMin;
+        float zLength = area.zMax - area.zMin;
+
+        WeightedRandomPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
+        (int numRings, int numLevels) = dimensionsPicker.Pick();
+        
+        //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed
+        SpawnHexStack(selectedToken, area.Center() + sectorGridHelper.ySpacing, dimensions.x / 2, dimensions.y, 
+            sectorGridHelper.xSpacing.x, numRings, numLevels, endlessMode.collectiblesParent, selectedStackShape, areaBoundingCoord);
+    }
+
     public void SpawnHexStack(PointTokenType tokenType, Vector3 center, float radius, float height, float spacing, int rings, int levels, Transform parent, HexStackShape shape, AreaBoundingCoord areaBoundingCoord)
     {
         for (int lvl = 0; lvl < levels; lvl++)
@@ -124,11 +156,7 @@ public class RandomizedHexStack : RandomizerSpawner
 
         if (obj.TryGetComponent<Collectible>(out var collectible))
         {
-            collectible.InitializeAndSetup(
-                GameManager.Context,
-                5,
-                1,
-                Collectible.PointDisplayType.InBody);
+            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
         }
     }
 }

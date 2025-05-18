@@ -14,11 +14,13 @@ public struct IncludeTypesInRandomization
 {
     public bool pointTokens;
     public bool dangerPins;
+    public float pointTokenProbability;
 
-    public IncludeTypesInRandomization(bool pointTokens, bool dangerPins)
+    public IncludeTypesInRandomization(bool _pointTokens, bool _dangerPins, float _pointTokenProbability)
     {
-        this.pointTokens = pointTokens;
-        this.dangerPins = dangerPins;
+        pointTokens = _pointTokens;
+        dangerPins = _dangerPins;
+        pointTokenProbability = _pointTokenProbability;
     }
 }
 
@@ -31,7 +33,7 @@ public class RandomizedGutterWall : RandomizerSpawner
         {
             if (hexSideLength < 0f)
             {
-                EdgeDefinition edge = EndlessMode.hexGutterCupSides[0];
+                EdgeDefinition edge = endlessMode.hexGutterCupSides[0];
                 var e0 = edge.end1.position;
                 var e1 = edge.end2.position;
                 hexSideLength = Vector3.Distance(e0, e1);
@@ -40,6 +42,30 @@ public class RandomizedGutterWall : RandomizerSpawner
         }
     }
 
+    public void Setup(int difficulty)
+    {
+        float difficultyFactor = difficulty / 10f;
+        int numSides = (int)Mathf.Lerp(1, 4, difficultyFactor);
+        int numLevels = (int)Mathf.Lerp(1, 4, difficultyFactor);
+        RandomizedMovementOptions options = RandomizedMovementOptions.NoMovement;
+        if (difficulty > 5 && difficulty < 8)
+        {
+            options = RandomizedMovementOptions.SomeMoving;
+        }
+        else if (difficulty >= 8)
+        {
+            options = RandomizedMovementOptions.AllMoving;
+        }
+
+        float pointTokenProb = 1f;
+        if (difficulty > 5)
+        {
+            float t = (difficulty - 5) / 5f;
+            pointTokenProb = Mathf.Lerp(1f, 0.5f, t);
+        }
+        SpawnOnSides(numSides, numLevels, options, new IncludeTypesInRandomization(true, true, pointTokenProb));
+    }
+    
     public void SpawnOnSides(int numSides, int numLevels, RandomizedMovementOptions movementOptions, IncludeTypesInRandomization types)
     {
         StartCoroutine(SpawnCoroutine(numSides, numLevels, movementOptions, types));
@@ -52,15 +78,15 @@ public class RandomizedGutterWall : RandomizerSpawner
         float tokenHeight = objDimension.y;
         float tokenLength = objDimension.x;
         float halftokenLength = tokenLength / 2;
-        float baseElevation = EndlessMode.hexGutterCupSides[0].end1.position.y;
+        float baseElevation = endlessMode.hexGutterCupSides[0].end1.position.y;
         var sides = new List<int> {0,1,2,3};
         Shuffle(sides);
         sides = sides.GetRange(0, Mathf.Min(numSides, sides.Count));
 
         foreach (var side in sides)
         {
-            var end1 = EndlessMode.hexGutterCupSides[side].end1.position;
-            var end2 = EndlessMode.hexGutterCupSides[side].end2.position;
+            var end1 = endlessMode.hexGutterCupSides[side].end1.position;
+            var end2 = endlessMode.hexGutterCupSides[side].end2.position;
             var End1to2 = end2 - end1;
             var End2to1 = end1 - end2;
             end1 += (0.05f * End1to2);
@@ -119,13 +145,13 @@ public class RandomizedGutterWall : RandomizerSpawner
                 {
                     var pos = spawnPoints.Pop();
                     Vector3[] endPoints = movementEndPoints.Pop();
-                    Vector3 outward = (centerPointOfEdge - EndlessMode.platformCenter.position).normalized;  
+                    Vector3 outward = (centerPointOfEdge - endlessMode.platformCenter.position).normalized;  
                     Quaternion rotEdge = Quaternion.LookRotation(outward, Vector3.up);
 
                     bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.76f);
                     bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 4;
 
-                    SpawnObject(spawnPoint, pos, rotEdge, EndlessMode.collectiblesParent, shouldMove, endPoints);
+                    SpawnObject(spawnPoint, pos, rotEdge, endlessMode.collectiblesParent, shouldMove, endPoints);
                 }
 
                 yield return null;

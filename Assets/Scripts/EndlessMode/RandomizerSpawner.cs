@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class RandomizerSpawner : MonoBehaviour
 {
-    protected EndlessModeLoader EndlessMode;
+    protected EndlessModeLoader endlessMode;
+    protected SectorGridHelper sectorGridHelper;
     
     public void Initialize(EndlessModeLoader _randomizerloader)
     {
-        EndlessMode = _randomizerloader;
+        endlessMode = _randomizerloader;
+        sectorGridHelper = endlessMode.SectorGridHelper;
     }
 }
