@@ -322,17 +322,15 @@ public class EndlessModeLoader : LevelLoader
                         }
                         if (!bad)
                         {
-                            //Re-instate if needed. current logic prevents this from happening
-                            // if (!SectorGridHelper.IsValidArea(thisArea) || !SectorGridHelper.IsAreaContainedOnGrid(thisArea))
-                            // {
-                            //     Debug.Log($"!>!Prepared an INVALID area, not adding");
-                            //     continue;
-                            // }
-                            foreach (var c in thisArea)
-                                occupied.Add(c);
-                            areaList.Add(thisArea.ToArray());
-                            Debug.Log($"!>!Added an area of {(w*h)} at ({secCoordX},{secCoordZ})");
-                            continue;
+                             if (SectorGridHelper.IsValidArea(thisArea) && SectorGridHelper.IsAreaContainedOnGrid(thisArea))
+                             {
+                                 foreach (var c in thisArea)
+                                     occupied.Add(c);
+                                 areaList.Add(thisArea.ToArray());
+                                 Debug.Log($"!>!Added an area of {(w*h)} at ({secCoordX},{secCoordZ})");
+                                 continue;
+                             }
+                             Debug.Log($"!>!Prepared an INVALID area, not adding");
                         }
                     }
                     else
