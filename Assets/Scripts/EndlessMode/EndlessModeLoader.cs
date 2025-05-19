@@ -195,7 +195,7 @@ public class EndlessModeLoader : LevelLoader
 
     public override int GetTargetPoints()
     {
-        return 10;
+        return difficulty * 50;
     }
 
     public override void LoadLevel()
