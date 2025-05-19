@@ -51,7 +51,7 @@ public static class SectorLayoutEngine
             // Decide front vs back based on row relative to grid middle:
             bool towardFront = z < gridSize.z / 2;
             float xMin = bounds.xMin, xMax = bounds.xMax;
-            float zLine = towardFront ? bounds.zMin : bounds.zMax;
+            float zLine = towardFront ? bounds.zMax : bounds.zMin;
             Vector3 pos = new Vector3((xMin + xMax) * 0.5f, 0, zLine);
             // Big obstacles face into the sector:
             Vector3 dir = towardFront ? Vector3.forward : Vector3.back;

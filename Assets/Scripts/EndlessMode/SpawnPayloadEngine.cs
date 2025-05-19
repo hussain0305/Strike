@@ -105,8 +105,8 @@ public static class SpawnPayloadEngine
             var kindPicker = new WeightedRandomPicker<bool>();
             // true → point, false → obstacle
             // easier → favor points; harder → favor obstacles; back → favor obstacles too
-            kindPicker.AddChoice(true, Mathf.Max(0.1f, 2f - difficultyFactor + (isBackSector ? 1f : 0f)) + imbalance);
-            float obsBase = Mathf.Max(0.1f, difficultyFactor + (isBackSector ? 0f : 0.5f)) - imbalance;
+            kindPicker.AddChoice(true, Mathf.Max(0.1f, (2f - difficultyFactor + (isBackSector ? 1f : 0f)) + imbalance));
+            float obsBase = Mathf.Max(0.1f, (difficultyFactor + (isBackSector ? 0f : 0.5f) - imbalance));
             kindPicker.AddChoice(false, (localObsCount >= maxLocalObs) ? 0f : obsBase);
             bool spawnPoint = kindPicker.Pick();
             

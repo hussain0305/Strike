@@ -258,19 +258,27 @@ public class EndlessModeLoader : LevelLoader
         int availableCount = totalSectors - blacklistedSectors.Count;
 
         float difficultyFactor = difficulty / 10f;
-        float fillPercent = Mathf.Lerp(0.10f, 0.90f, difficultyFactor);
+        float minLoneChance = 0.4f;
+        float loneChance    = Mathf.Lerp(minLoneChance, 1f, difficultyFactor);
+        float fillPercent = Mathf.Lerp(0.25f, 0.95f, difficultyFactor);
         int targetCount = Mathf.RoundToInt(availableCount * fillPercent);
 
         var occupied = new HashSet<SectorCoord>();
         var loneList = new List<SectorCoord>();
         var areaList = new List<SectorCoord[]>();
         
-        for (int secCoordX = 0; secCoordX < sectorGridSize.x; secCoordX++)
+        int spanZ = Mathf.Max(2, Mathf.Min(gridZ, Mathf.CeilToInt(Mathf.Sqrt(targetCount))));
+        int spanX = Mathf.Max(2, Mathf.Min(gridX, Mathf.CeilToInt((float)targetCount / spanZ)));
+
+        int startX = (gridX - spanX) / 2;
+        int startZ = (gridZ - spanZ) / 2;
+        
+        for (int secCoordX = startX; secCoordX < startX + spanX; secCoordX++)
         {
             if (occupied.Count >= targetCount)
                 break;
             
-            for (int secCoordZ = 0; secCoordZ < sectorGridSize.z; secCoordZ++)
+            for (int secCoordZ = startZ; secCoordZ < startZ + spanZ; secCoordZ++)
             {
                 if (occupied.Count >= targetCount)
                     break;
@@ -325,7 +333,7 @@ public class EndlessModeLoader : LevelLoader
                     }
                 }
                 
-                bool tryToGetLoneSector = Random.value < difficultyFactor && occupied.Count < targetCount;
+                bool tryToGetLoneSector = Random.value < loneChance && occupied.Count < targetCount;
                 if (!tryToGetLoneSector)
                 {
                     continue;
