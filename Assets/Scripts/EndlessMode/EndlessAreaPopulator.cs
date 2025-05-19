@@ -46,15 +46,36 @@ public class EndlessAreaPopulator
                 return;
             }
         }
-        Debug.Log("!!! Didn't spawn Hex stack so doing regular rectangular area spawn");
         FillRectangularArea(sectors);
     }
     
     public void FillRectangularArea(SectorCoord[] sectors)
     {
+        foreach (var sector in sectors)
+        {
+            if (!sectorGridHelper.GetSectorBounds(sector, out var worldBound))
+                continue;
+
+            var payload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, difficulty, sectorGridSize.x, sectorGridSize.z);
+
+            var instructions = SectorLayoutEngine.LayoutSector(payload.Entries, worldBound, sector, sectorGridSize);
+
+            foreach (var inst in instructions)
+            {
+                if (inst.Entry.obstacleType != ObstacleType.None)
+                    endlessModeLoader.SpawnObstacle(inst.Entry.obstacleType, inst.Position, inst.Rotation);
+                else
+                    endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
+            }
+        }
+    }
+
+    /*
+    public void FillRectangularAreaOld(SectorCoord[] sectors)
+    {
         sectorGridHelper.GetAreaBounds(sectors, out AreaWorldBound worldBound);
-        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.AreaSpawnPayloadPicker(sectors, worldBound, difficulty, sectorGridSize.x, sectorGridSize.z);
-        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound);
+        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.AreaSpawnPayloadPicker(sectors, difficulty, sectorGridSize.x, sectorGridSize.z);
+        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound, sectors, sectorGridHelper.sectorGridSize);
 
         foreach (var inst in instructions)
         {
@@ -64,7 +85,6 @@ public class EndlessAreaPopulator
             else
                 endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
         }
-
     }
-
+    */
 }

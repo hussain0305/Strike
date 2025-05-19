@@ -90,7 +90,6 @@ public class RandomizedHexStack : RandomizerSpawner
             Vector3 levelCenter = new Vector3(center.x, levelY, center.z);
             
             // Determine current max ring based on shape
-            Debug.Log($"!>!> Spawning {shape} at ({areaBoundingCoord.xMin},{areaBoundingCoord.zMin})-({areaBoundingCoord.xMax},{areaBoundingCoord.zMax})");
             switch (shape)
             {
                 case HexStackShape.Uniform:

@@ -208,6 +208,9 @@ public class EndlessModeLoader : LevelLoader
         }
 
         SetupPinBehaviour();
+        SpawnPayloadEngine.Refresh();
+        SectorLayoutEngine.Refresh();
+
         GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
         
         EndlessSectorPopulator.PopulateSectors(loneSectorsToFill);
@@ -230,7 +233,6 @@ public class EndlessModeLoader : LevelLoader
         if (settings.TryGetValue(RandomizerParameterType.PinBehavior, out object pbSetting))
         {
             int pinBehaviourIndex = (int)pbSetting;
-            Debug.Log("!>! pinBehaviour retrieved to be " + pinBehaviour);
             RandomizerEnum[] pinBehaviours = EndlessModePinBehaviour.Instance.pinBehaviours;
             pinBehaviour = pinBehaviours[pinBehaviourIndex].pinBehaviour;
             
@@ -259,7 +261,6 @@ public class EndlessModeLoader : LevelLoader
         float fillPercent = Mathf.Lerp(0.10f, 0.90f, difficultyFactor);
         int targetCount = Mathf.RoundToInt(availableCount * fillPercent);
 
-        Debug.Log("!>!Target count is " + targetCount);
         var occupied = new HashSet<SectorCoord>();
         var loneList = new List<SectorCoord>();
         var areaList = new List<SectorCoord[]>();
@@ -287,8 +288,6 @@ public class EndlessModeLoader : LevelLoader
                 
                 if (tryToSpawnArea)
                 {
-                    Debug.Log($"!>! Trying to spawn area at ({secCoordX},{secCoordZ})");
-                    
                     int w = Random.Range(1, maxW + 1);
                     int hMin = (w == 1) ? 2 : 1;
                     int h = Random.Range(hMin, maxH + 1);
@@ -304,15 +303,8 @@ public class EndlessModeLoader : LevelLoader
                             for (int dz = 0; dz < h; dz++)
                             {
                                 SectorCoord areaSector = new SectorCoord(secCoordX + dx, secCoordZ + dz);
-                                if (blacklistedSectors.Contains(areaSector))
+                                if (blacklistedSectors.Contains(areaSector) || occupied.Contains(areaSector))
                                 {
-                                    Debug.Log("!>!Blacklisted sector encountered while creating area, breaking out, not adding ");
-                                    bad = true;
-                                    break;
-                                }
-                                if (occupied.Contains(areaSector))
-                                {
-                                    Debug.Log("!>! already assigned sector encountered while creating area, breaking out, not adding ");
                                     bad = true;
                                     break;
                                 }
@@ -327,19 +319,11 @@ public class EndlessModeLoader : LevelLoader
                                  foreach (var c in thisArea)
                                      occupied.Add(c);
                                  areaList.Add(thisArea.ToArray());
-                                 Debug.Log($"!>!Added an area of {(w*h)} at ({secCoordX},{secCoordZ})");
                                  continue;
                              }
-                             Debug.Log($"!>!Prepared an INVALID area, not adding");
                         }
                     }
-                    else
-                    {
-                        Debug.Log("!>!Randomly created area was too big, abandoning the idea ");
-                    }
                 }
-
-                Debug.Log("!>! Just trying to add add a lone sector");
                 
                 bool tryToGetLoneSector = Random.value < difficultyFactor && occupied.Count < targetCount;
                 if (!tryToGetLoneSector)
@@ -352,7 +336,6 @@ public class EndlessModeLoader : LevelLoader
                 {
                     occupied.Add(loneSector);
                     loneList.Add(loneSector);
-                    Debug.Log($"!>! Added lone sector ({secCoordX},{secCoordZ})");
                 }
             }
         }

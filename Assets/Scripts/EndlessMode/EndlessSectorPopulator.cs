@@ -31,8 +31,8 @@ public class EndlessSectorPopulator
         //     return;
         // }
         sectorGridHelper.GetSectorBounds(sector, out AreaWorldBound worldBound);
-        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, worldBound, difficulty, sectorGridSize.x, sectorGridSize.z);
-        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound);
+        SectorSpawnPayload spawnPayload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, difficulty, sectorGridSize.x, sectorGridSize.z);
+        var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound, sector, sectorGridHelper.sectorGridSize);
 
         foreach (var inst in instructions)
         {

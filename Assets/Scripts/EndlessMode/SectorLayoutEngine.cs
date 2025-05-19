@@ -18,35 +18,47 @@ public class SpawnInstruction
 
 public static class SectorLayoutEngine
 {
-    public static IList<SpawnInstruction> LayoutSector(IList<SectorSpawnPayload.Entry> entries, AreaWorldBound bounds)
+    private static readonly HashSet<int> bigRowsUsed = new();
+    
+    public static IList<SpawnInstruction> LayoutSector(IList<SectorSpawnPayload.Entry> entries, AreaWorldBound bounds, SectorCoord sectorCoord, SectorCoord gridSize)
     {
         var instructions = new List<SpawnInstruction>(entries.Count);
         
         foreach (var e in entries.Where(e => e.obstacleType != ObstacleType.None))
         {
-            for (int i = 0; i < e.count; i++)
-            {
-                var inst = PlaceSingleObstacle(e, bounds, instructions);
-                if (inst != null)
-                    instructions.Add(inst);
-            }
+            var inst = PlaceSingleObstacle(e, bounds, instructions, sectorCoord, gridSize);
+            if (inst != null)
+                instructions.Add(inst);
         }
         
         foreach (var e in entries.Where(e => e.pointTokenType != PointTokenType.None))
         {
-            for (int i = 0; i < e.count; i++)
-            {
-                var inst = PlaceSingleToken(e, bounds, instructions);
-                if (inst != null)
-                    instructions.Add(inst);
-            }
+            var inst = PlaceSingleToken(e, bounds, instructions);
+            if (inst != null)
+                instructions.Add(inst);
         }
         
         return instructions;
     }
 
-    private static SpawnInstruction PlaceSingleObstacle(SectorSpawnPayload.Entry entry, AreaWorldBound bounds, IList<SpawnInstruction> existing)
+    private static SpawnInstruction PlaceSingleObstacle(SectorSpawnPayload.Entry entry, AreaWorldBound bounds, IList<SpawnInstruction> existing, 
+        SectorCoord sectorCoord, SectorCoord gridSize)
     {
+        bool isBig = SpawnPayloadEngine.BigObstacles.Contains(entry.obstacleType);
+        int z = sectorCoord.z;
+        if (isBig && !bigRowsUsed.Contains(z))
+        {
+            // Decide front vs back based on row relative to grid middle:
+            bool towardFront = z < gridSize.z / 2;
+            float xMin = bounds.xMin, xMax = bounds.xMax;
+            float zLine = towardFront ? bounds.zMin : bounds.zMax;
+            Vector3 pos = new Vector3((xMin + xMax) * 0.5f, 0, zLine);
+            // Big obstacles face into the sector:
+            Vector3 dir = towardFront ? Vector3.forward : Vector3.back;
+            Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
+            bigRowsUsed.Add(z);
+            return new SpawnInstruction(pos, rot, entry);
+        }
         Vector3 dim = CollectiblePrefabMapping.Instance.GetObstacleDimension(entry.obstacleType);
         var sizeXZ = new Vector2(dim.x, dim.z);
 
@@ -136,5 +148,10 @@ public static class SectorLayoutEngine
                 return false;
         }
         return true;
+    }
+
+    public static void Refresh()
+    {
+        bigRowsUsed.Clear();
     }
 }
