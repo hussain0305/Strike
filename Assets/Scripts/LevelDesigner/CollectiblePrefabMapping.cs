@@ -99,7 +99,7 @@ public class CollectiblePrefabMapping : ScriptableObject
             if (entry.obstacleType == obstacleType)
                 return entry.prefab;
         }
-        Debug.LogError($"Prefab not found for DangerTokenType: {obstacleType}");
+        Debug.LogError($"Prefab not found for ObstacleType: {obstacleType}");
         return null;
     }
     
