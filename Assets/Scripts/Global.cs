@@ -39,7 +39,7 @@ public enum ObstacleType
     SmallFan,
     SmallWall,
     SmallWallSeeThrough,
-    WallSeeThrough
+    WallSeeThrough //8
 };
 
 public enum Positioning
