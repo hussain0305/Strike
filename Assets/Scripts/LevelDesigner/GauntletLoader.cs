@@ -69,10 +69,12 @@ public class GauntletLoader : LevelLoader
             collectibleObject.transform.SetParent(collectiblesParent);
             collectibleObject.transform.position = collectibleData.position;
             collectibleObject.transform.rotation = collectibleData.rotation;
+            collectibleObject.transform.localScale = Vector3.one;
 
             Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
             if (collectibleScript != null)
             {
+                collectibleScript.OverrideDefaultLocalScale(Vector3.one);
                 collectibleScript.InitializeAndSetup(GameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
             }
             bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;

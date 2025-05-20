@@ -106,4 +106,40 @@ public class SectorGridHelper
 
         return true;
     }
+    
+    public List<Vector3> GetRandomIntersections(int difficulty, Vector3 offset)
+    {
+        int n = Mathf.Max(0, difficulty - 5);
+        var result = new List<Vector3>(n);
+        if (n == 0 || SectorLinesX.Length < 3 || SectorLinesZ.Length < 3)
+            return result;
+
+        int midZ = (SectorLinesZ.Length - 1) / 2;
+        float yArchOffset = -2;
+        
+        var coords = new List<Vector2Int>();
+        for (int i = 1; i < SectorLinesX.Length - 1; i++)
+            for (int j = 0; j < SectorLinesZ.Length - 2; j++)
+                coords.Add(new Vector2Int(i, j));
+
+        for (int k = coords.Count - 1; k > 0; k--)
+        {
+            int r = Random.Range(0, k + 1);
+            (coords[k], coords[r]) = (coords[r], coords[k]);
+        }
+
+        int take = Mathf.Min(n, coords.Count);
+        for (int k = 0; k < take; k++)
+        {
+            var intersection = coords[k];
+            int xIndex = intersection.x;
+            int zIndex = intersection.y;
+            float x = SectorLinesX[xIndex].position.x;
+            float z = SectorLinesZ[zIndex].position.z + offset.z;
+            float y = offset.y + (Mathf.Abs(midZ - zIndex) * yArchOffset);
+            result.Add(new Vector3(x, y, z));
+        }
+
+        return result;
+    }
 }

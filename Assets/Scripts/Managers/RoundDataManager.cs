@@ -28,6 +28,7 @@ public class RoundDataManager : MonoBehaviour
 
     private ShotInfo currentShotInfo;
     private ShotData currentShotData;
+    public  ShotData CurrentShotData => currentShotData;
     
     private static RoundDataManager instance;
     public static RoundDataManager Instance => instance;

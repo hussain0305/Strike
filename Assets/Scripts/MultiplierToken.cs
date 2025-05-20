@@ -7,9 +7,8 @@ public class MultiplierToken : Collectible
     public MultiplierTokenType multiplierTokenType;
     public TextMeshPro multipleText;
 
-    public void Start()
+    protected override void SetupPointBoard()
     {
-        base.Start();
         multipleText.text = $"{value}x";
     }
 }

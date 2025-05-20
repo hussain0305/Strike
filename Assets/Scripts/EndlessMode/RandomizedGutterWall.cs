@@ -44,8 +44,8 @@ public class RandomizedGutterWall : RandomizerSpawner
 
     private float difficultyFactor;
     private int difficulty;
-    private int minGutterWallPointsFactor = 2;
-    private int maxGutterWallPointsFactor = 5;
+    private readonly int minGutterWallPointsFactor = 2;
+    private readonly int maxGutterWallPointsFactor = 3;
     
     public void Setup(int _difficulty)
     {

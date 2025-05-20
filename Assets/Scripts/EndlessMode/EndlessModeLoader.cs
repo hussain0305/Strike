@@ -270,6 +270,7 @@ public class EndlessModeLoader : LevelLoader
         }
         
         AssignPointsToTokens();
+        SpawnMultipliers();
     }
 
     public void SetupPinBehaviour()
@@ -466,6 +467,42 @@ public class EndlessModeLoader : LevelLoader
 
             var collectible = scoredByDifficultyToCollectList[i].collectible;
             collectible.InitializeAndSetup(GameManager.Context, points, 1, Collectible.PointDisplayType.InBody);
+        }
+    }
+
+    public void SpawnMultipliers()
+    {
+        float zMin = SectorLinesZ[1].position.z;
+        float zMax = SectorLinesZ[SectorLinesZ.Length - 2].position.z;
+        float difficultyFactor = difficulty / 10f;
+
+        List<Vector3> multiplierPositions = SectorGridHelper.GetRandomIntersections(difficulty, new Vector3(0, 20, 5));
+        foreach (var multiplierPosition in multiplierPositions)
+        {
+            GameObject collectibleObject = PoolingManager.Instance.GetObject(MultiplierTokenType.CircularTrigger);
+            collectibleObject.transform.SetParent(collectiblesParent);
+            collectibleObject.transform.position = multiplierPosition;
+            collectibleObject.transform.rotation = Quaternion.identity;
+            collectibleObject.transform.localScale = 2 * Vector3.one;
+
+            Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
+            if (collectibleScript != null)
+            {
+                collectibleScript.OverrideDefaultLocalScale(2 * Vector3.one);
+                float zNorm = Mathf.InverseLerp(zMin, zMax, multiplierPosition.z);
+                float frontness = 1f - zNorm;
+                float w2 = 1f + difficultyFactor * (1f - frontness);
+                float w3 = 1f + difficultyFactor * 0.5f;
+                float w4 = 1f + difficultyFactor * frontness * 0.3f;
+                var picker = new WeightedRandomPicker<int>();
+                picker.AddChoice(2, w2);
+                picker.AddChoice(3, w3);
+                // picker.AddChoice(4, w4);
+                int multiple = picker.Pick();
+
+                collectibleScript.InitializeAndSetup(GameManager.Context, multiple, 1, Collectible.PointDisplayType.InBody);
+            }
+
         }
     }
 }

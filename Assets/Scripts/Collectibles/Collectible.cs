@@ -65,8 +65,10 @@ public class Collectible : MonoBehaviour
     private int numTimesCollected = 0;
     private bool accountedForInThisShot = false;
 
-    private Vector3 defaultPosition;
     private Quaternion defaultRotation;
+    private Vector3 defaultPosition;
+    private Vector3 defaultLocalScale = Vector3.one;
+    public  Vector3 DefaultLocalScale => defaultLocalScale;
 
     private ICollectibleHitReaction hitReaction;
 
@@ -123,7 +125,8 @@ public class Collectible : MonoBehaviour
 
     public void InitAppearance()
     {
-        if (HasPointBoard) SetupPointBoard();
+        if (HasPointBoard)
+            SetupPointBoard();
         
         hitReaction?.SetDefaultVisuals(null);
     }
@@ -191,7 +194,7 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    public void SetupPointBoard()
+    protected virtual void SetupPointBoard()
     {
         if (SetupFloatingBoard)
         {
@@ -229,5 +232,10 @@ public class Collectible : MonoBehaviour
     public bool CanBeCollected()
     {
         return numTimesCollected < numTimesCanBeCollected;
+    }
+
+    public void OverrideDefaultLocalScale(Vector3 scale)
+    {
+        defaultLocalScale = scale;
     }
 }

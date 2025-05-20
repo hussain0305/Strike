@@ -52,7 +52,7 @@ public class NotableEventsManager : MonoBehaviour
         switch (e.Type)
         {
             case CollectibleType.Multiple:
-                ShowMultiplierText(e.Value);
+                ShowMultiplierText();
                 break;
             case CollectibleType.Points:
                 numberHitsInThisShot++;
@@ -157,18 +157,22 @@ public class NotableEventsManager : MonoBehaviour
         }
     }
 
-    public void ShowMultiplierText(int value)
+    public void ShowMultiplierText()
     {
         if (multiplierAnimationRoutine != null)
         {
             StopCoroutine(multiplierAnimationRoutine);
         }
 
-        multiplierAnimationRoutine = StartCoroutine(AnimateMultiplierText(value));
+        multiplierAnimationRoutine = StartCoroutine(AnimateMultiplierText());
     }
     
-    IEnumerator AnimateMultiplierText(int value)
+    IEnumerator AnimateMultiplierText()
     {
+        yield return null;
+
+        int value = RoundDataManager.Instance.CurrentShotData.multiplierAccrued;
+        
         multiplierText.textGO.SetActive(true);
         multiplierText.textComponent.text = $"{value}x";
         

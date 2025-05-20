@@ -45,6 +45,7 @@ public class PointTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 
     public void SetDefaultVisuals(NextShotCuedEvent e)
     {
+        transform.localScale = Collectible.DefaultLocalScale;
         foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
         {
             mr.sharedMaterial = Collectible.type == CollectibleType.Danger

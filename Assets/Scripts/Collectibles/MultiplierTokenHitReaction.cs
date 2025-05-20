@@ -42,7 +42,7 @@ public class MultiplierTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 
     public void SetDefaultVisuals(NextShotCuedEvent e)
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = Collectible.DefaultLocalScale;
     }
 
     private IEnumerator ScaleAndDisappear()
