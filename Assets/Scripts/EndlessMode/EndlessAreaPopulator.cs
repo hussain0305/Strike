@@ -38,13 +38,8 @@ public class EndlessAreaPopulator
         AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
         if (areaBoundingCoord.IsSquare())
         {
-            bool spawnHexStack = true; //and other conditions
-            if (spawnHexStack)
-            {
-                //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed. Not needed further down the pipeline
-                randomizedHexStack.PrepareHexStack(sectors, areaBoundingCoord);
-                return;
-            }
+            randomizedHexStack.PrepareHexStack(sectors);
+            return;
         }
         FillRectangularArea(sectors);
     }
@@ -60,12 +55,13 @@ public class EndlessAreaPopulator
 
             var instructions = SectorLayoutEngine.LayoutSector(payload.Entries, worldBound, sector, sectorGridSize);
 
+            SectorInfo sectorInfo = new SectorInfo(sector, payload);
             foreach (var inst in instructions)
             {
                 if (inst.Entry.obstacleType != ObstacleType.None)
                     endlessModeLoader.SpawnObstacle(inst.Entry.obstacleType, inst.Position, inst.Rotation);
                 else
-                    endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
+                    endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation, sectorInfo);
             }
         }
     }

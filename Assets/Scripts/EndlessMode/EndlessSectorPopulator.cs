@@ -34,12 +34,13 @@ public class EndlessSectorPopulator
         SectorSpawnPayload spawnPayload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, difficulty, sectorGridSize.x, sectorGridSize.z);
         var instructions = SectorLayoutEngine.LayoutSector(spawnPayload.Entries, worldBound, sector, sectorGridHelper.sectorGridSize);
 
+        SectorInfo sectorInfo = new SectorInfo(sector, spawnPayload);
         foreach (var inst in instructions)
         {
             if (inst.Entry.obstacleType != ObstacleType.None)
                 endlessModeLoader.SpawnObstacle(inst.Entry.obstacleType, inst.Position, inst.Rotation);
             else
-                endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation);
+                endlessModeLoader.SpawnPointToken(inst.Entry.pointTokenType, inst.Position, inst.Rotation, sectorInfo);
         }
     }
 

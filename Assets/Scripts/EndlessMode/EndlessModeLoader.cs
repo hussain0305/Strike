@@ -32,6 +32,35 @@ public struct AreaWorldBound
     }
 }
 
+public struct SectorInfo
+{
+    SectorCoord sectorCoord;
+    public int numPointTokens;
+    public int numObstacles;
+
+    public SectorInfo(SectorCoord _sectorCoord, SectorSpawnPayload payload)
+    {
+        sectorCoord = _sectorCoord;
+        numPointTokens = 0;
+        numObstacles = 0;
+        
+        if (payload == null)
+            return;
+        
+        foreach (var entry in payload.Entries)
+        {
+            if (entry.pointTokenType != PointTokenType.None)
+            {
+                numPointTokens++;
+            }
+            if (entry.obstacleType != ObstacleType.None)
+            {
+                numObstacles++;
+            }
+        }
+    }
+}
+
 public struct SectorCoord
 {
     public int x;
@@ -90,6 +119,11 @@ public struct AreaBoundingCoord
     {
         return xDimension == zDimension;
     }
+
+    public SectorCoord CenterCoord()
+    {
+        return new SectorCoord((xMin + xMax) / 2, (zMin + zMax) / 2);
+    }
 }
 
 [System.Serializable]
@@ -101,6 +135,13 @@ public struct EndlessLevelWalls
     public Transform[] RightCap;
     public Transform[] RightWall;
     public Transform RightSlat;
+}
+
+class SpawnedToken
+{
+    public Collectible collectible;
+    public SectorInfo sectorInfo;
+    public Vector3 position;
 }
 
 public class EndlessModeLoader : LevelLoader
@@ -178,6 +219,7 @@ public class EndlessModeLoader : LevelLoader
     private int difficulty = 1;
     public int Difficulty => difficulty;
     private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
+    private readonly List<SpawnedToken> tokenCache = new List<SpawnedToken>();
     
     private void Awake()
     {
@@ -195,7 +237,8 @@ public class EndlessModeLoader : LevelLoader
 
     public override int GetTargetPoints()
     {
-        return difficulty * 50;
+        targetPoints = difficulty * 50;
+        return targetPoints;
     }
 
     public override void LoadLevel()
@@ -225,6 +268,8 @@ public class EndlessModeLoader : LevelLoader
             }
             Debug.Log(s);
         }
+        
+        AssignPointsToTokens();
     }
 
     public void SetupPinBehaviour()
@@ -352,16 +397,28 @@ public class EndlessModeLoader : LevelLoader
         areas = areaList.ToArray();
     }
 
-    public void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot)
+    public void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot, SectorInfo sectorInfo)
     {
         var obj = PoolingManager.Instance.GetObject(tokenType);
         obj.transform.SetParent(collectiblesParent, false);
         obj.transform.position = pos;
         obj.transform.rotation = rot;
 
+        targetPoints = difficulty * 50;
+        /*
+        This mode will have 5 shots. at difficulty 10, we should aim that the player has to hit max level pins at least 4 times.
+        So there will be 4 pins with value of difficulty * 50 / 4. For difficulty = 10, this will compute to 125.
+        So, the maximum value for a pin must be 125 in this example, and it should be assigned to the token which is either all the way at the back, or surrounded by the most
+        obstacles. and then, it drastically drops off to lets say a fifth of the value if it's in an easy place (towards the front or not sorrounded by obstacles).
+        Now this will require to have knowledge of ALL tokens in level so we can evaluate each relatively and then decide which are the ones deemed toughest-to-get.
+        So, maybe we spawn the point tokens as they come but keep caching them and their info, and when everything is spawned, an event is fired that evalautes and assigns points.
+        Or this function is further expanded to carry all the data of the entire grid each time, but I think that's a heavier operation and makes the system more rigid
+        */
+
         if (obj.TryGetComponent<Collectible>(out var collectible))
         {
-            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
+            tokenCache.Add(new SpawnedToken { collectible = collectible, sectorInfo = sectorInfo, position = pos });
+            // collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
         }
     }
 
@@ -385,6 +442,39 @@ public class EndlessModeLoader : LevelLoader
                 obstacleData.rotationSpeed = 360;
             }
             obstacle.InitializeAndSetup(GameManager.Context, obstacleData);
+        }
+    }
+
+    public void AssignPointsToTokens()
+    {
+        float obstacleWeight = 1f;
+        float backWeight = 1f;
+        int platformDepth = sectorGridSize.z - 1;
+        
+        var scoredByDifficultyToCollectList = tokenCache.Select(st => new {
+                st.collectible,
+                Score = (st.sectorInfo.numObstacles * obstacleWeight) + ((st.position.z / platformDepth) * backWeight)})
+            .OrderByDescending(x => x.Score)
+            .ToList();
+        
+        int maxHighestValueHits = Mathf.Clamp(difficulty, 1, 4);
+        int highValueCount = Mathf.Min(maxHighestValueHits, scoredByDifficultyToCollectList.Count);
+        int highValuePerHit = targetPoints / highValueCount;
+        
+        int n = scoredByDifficultyToCollectList.Count;
+        if (n == 0) return;
+
+        float minVal = highValuePerHit / 5f;
+        float maxVal = highValuePerHit;
+
+        for (int i = 0; i < n; i++)
+        {
+            float t = (n == 1) ? 1f : (1f - (float)i / (n - 1));
+            float raw = Mathf.Lerp(minVal, maxVal, t);
+            int points = Mathf.CeilToInt(raw / 5f) * 5;
+
+            var collectible = scoredByDifficultyToCollectList[i].collectible;
+            collectible.InitializeAndSetup(GameManager.Context, points, 1, Collectible.PointDisplayType.InBody);
         }
     }
 }

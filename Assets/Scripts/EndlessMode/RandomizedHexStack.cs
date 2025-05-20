@@ -46,9 +46,10 @@ public class RandomizedHexStack : RandomizerSpawner
         return new Vector3(x, 0f, z);
     }
 
-    public void PrepareHexStack(SectorCoord[] sectors, AreaBoundingCoord areaBoundingCoord)
+    public void PrepareHexStack(SectorCoord[] sectors)
     {
         AreaWorldBound area;
+        AreaBoundingCoord areaBoundingCoord = new AreaBoundingCoord(sectors);
         if (!sectorGridHelper.GetAreaBounds(sectors, out area))
         {
             return;
@@ -93,45 +94,45 @@ public class RandomizedHexStack : RandomizerSpawner
             switch (shape)
             {
                 case HexStackShape.Uniform:
-                    SpawnRingsUpTo(rings, levelCenter, radius, spacing, tokenType, parent);
+                    SpawnRingsUpTo(rings, levelCenter, radius, spacing, tokenType, areaBoundingCoord);
                     break;
 
                 case HexStackShape.Pyramid:
                     int maxRing = Mathf.Max(rings - lvl, 0);
                     if (maxRing > 0)
-                        SpawnRingsUpTo(maxRing, levelCenter, radius, spacing, tokenType, parent);
+                        SpawnRingsUpTo(maxRing, levelCenter, radius, spacing, tokenType, areaBoundingCoord);
                     break;
 
                 case HexStackShape.PeripheryWithInner:
                     // Outer wall only at the outermost ring
-                    SpawnRing(rings, levelCenter, radius, spacing, tokenType, parent);
+                    SpawnRing(rings, levelCenter, radius, spacing, tokenType, areaBoundingCoord);
                     // Inner small stack of radius 2
                     if (lvl == 0)
                     {
-                        SpawnRingsUpTo(1, levelCenter, radius, spacing, tokenType, parent);
+                        SpawnRingsUpTo(1, levelCenter, radius, spacing, tokenType, areaBoundingCoord);
                     }
                     break;
             }
         }
     }
 
-    private void SpawnRingsUpTo(int maxRings, Vector3 levelCenter, float R, float d, PointTokenType tokenType, Transform parent)
+    private void SpawnRingsUpTo(int maxRings, Vector3 levelCenter, float R, float d, PointTokenType tokenType, AreaBoundingCoord areaBoundingCoord)
     {
         for (int ring = 0; ring <= maxRings; ring++)
         {
             // ring=0 is the center
             if (ring == 0)
             {
-                SpawnAt(levelCenter, tokenType, parent);
+                endlessMode.SpawnPointToken(tokenType, levelCenter, Quaternion.identity, new SectorInfo(areaBoundingCoord.CenterCoord(), null));
             }
             else
             {
-                SpawnRing(ring, levelCenter, R, d, tokenType, parent);
+                SpawnRing(ring, levelCenter, R, d, tokenType, areaBoundingCoord);
             }
         }
     }
 
-    private void SpawnRing(int ring, Vector3 levelCenter, float R, float d, PointTokenType tokenType, Transform parent)
+    private void SpawnRing(int ring, Vector3 levelCenter, float R, float d, PointTokenType tokenType, AreaBoundingCoord areaBoundingCoord)
     {
         var coords = GetRingCoords(ring);
         foreach (var ax in coords)
@@ -142,20 +143,7 @@ public class RandomizedHexStack : RandomizerSpawner
             Vector3 dirToCenter = (new Vector3(levelCenter.x, spawnPos.y, levelCenter.z) - spawnPos).normalized;
             Quaternion faceCenter = Quaternion.LookRotation(dirToCenter, Vector3.up);
 
-            SpawnAt(spawnPos, tokenType, parent, faceCenter);
-        }
-    }
-
-    private void SpawnAt(Vector3 pos, PointTokenType tokenType, Transform parent, Quaternion? rot = null)
-    {
-        var obj = PoolingManager.Instance.GetObject(tokenType);
-        obj.transform.SetParent(parent, false);
-        obj.transform.position    = pos;
-        obj.transform.rotation    = rot ?? Quaternion.identity;
-
-        if (obj.TryGetComponent<Collectible>(out var collectible))
-        {
-            collectible.InitializeAndSetup(GameManager.Context, 5, 1, Collectible.PointDisplayType.InBody);
+            endlessMode.SpawnPointToken(tokenType, spawnPos, faceCenter, new SectorInfo());
         }
     }
 }
