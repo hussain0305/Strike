@@ -314,7 +314,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a0cbbf58764a00542ae4e1fdf88fe988, type: 2}
+  - {fileID: 2100000, guid: d5fe9ba33a9fa9d40940d94c985d56e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -478,7 +478,7 @@ GameObject:
   - component: {fileID: 6312716893198824281}
   - component: {fileID: 8455695762299202334}
   m_Layer: 8
-  m_Name: SmallWall
+  m_Name: SmallWallSeeThrough
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,4 +561,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dedcb85233d2e3498a90b9c71f6df56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 6
+  type: 7
