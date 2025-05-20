@@ -405,16 +405,7 @@ public class EndlessModeLoader : LevelLoader
         obj.transform.rotation = rot;
 
         targetPoints = difficulty * 50;
-        /*
-        This mode will have 5 shots. at difficulty 10, we should aim that the player has to hit max level pins at least 4 times.
-        So there will be 4 pins with value of difficulty * 50 / 4. For difficulty = 10, this will compute to 125.
-        So, the maximum value for a pin must be 125 in this example, and it should be assigned to the token which is either all the way at the back, or surrounded by the most
-        obstacles. and then, it drastically drops off to lets say a fifth of the value if it's in an easy place (towards the front or not sorrounded by obstacles).
-        Now this will require to have knowledge of ALL tokens in level so we can evaluate each relatively and then decide which are the ones deemed toughest-to-get.
-        So, maybe we spawn the point tokens as they come but keep caching them and their info, and when everything is spawned, an event is fired that evalautes and assigns points.
-        Or this function is further expanded to carry all the data of the entire grid each time, but I think that's a heavier operation and makes the system more rigid
-        */
-
+        
         if (obj.TryGetComponent<Collectible>(out var collectible))
         {
             tokenCache.Add(new SpawnedToken { collectible = collectible, sectorInfo = sectorInfo, position = pos });

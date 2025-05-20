@@ -42,9 +42,15 @@ public class RandomizedGutterWall : RandomizerSpawner
         }
     }
 
-    public void Setup(int difficulty)
+    private float difficultyFactor;
+    private int difficulty;
+    private int minGutterWallPointsFactor = 2;
+    private int maxGutterWallPointsFactor = 5;
+    
+    public void Setup(int _difficulty)
     {
-        float difficultyFactor = difficulty / 10f;
+        difficulty = _difficulty;
+        difficultyFactor = difficulty / 10f;
         int numSides = (int)Mathf.Lerp(1, 4, difficultyFactor);
         int numLevels = (int)Mathf.Lerp(1, 4, difficultyFactor);
         RandomizedMovementOptions options = RandomizedMovementOptions.NoMovement;
@@ -148,7 +154,7 @@ public class RandomizedGutterWall : RandomizerSpawner
                     Vector3 outward = (centerPointOfEdge - endlessMode.platformCenter.position).normalized;  
                     Quaternion rotEdge = Quaternion.LookRotation(outward, Vector3.up);
 
-                    bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 0.76f);
+                    bool spawnPoint = types.pointTokens && (!types.dangerPins || Random.value < 1 - (difficultyFactor * 0.35f));
                     bool shouldMove = movesAll || (movesSome && Random.value < 0.5f) && count <= 4;
 
                     SpawnObject(spawnPoint, pos, rotEdge, endlessMode.collectiblesParent, shouldMove, endPoints);
@@ -175,7 +181,13 @@ public class RandomizedGutterWall : RandomizerSpawner
         if (spawnPoint)
         {
             PointToken pointToken = obj.GetComponent<PointToken>();
-            pointToken.InitializeAndSetup(GameManager.Context, 2, 1, Collectible.PointDisplayType.InBody);
+            int minPoints = difficulty * minGutterWallPointsFactor;
+            int maxPoints = difficulty * maxGutterWallPointsFactor;
+            
+            float points = Mathf.Lerp(minPoints, maxPoints, Random.value);
+            int roundedOffPoints = Mathf.CeilToInt(points / 5f) * 5;
+            
+            pointToken.InitializeAndSetup(GameManager.Context, roundedOffPoints, 1, Collectible.PointDisplayType.InBody);
         }
         
         var cm = obj.GetComponent<ContinuousMovement>();
