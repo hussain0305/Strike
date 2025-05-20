@@ -270,7 +270,7 @@ public class EndlessModeLoader : LevelLoader
         }
         
         AssignPointsToTokens();
-        SpawnMultipliers();
+        SpawnMultipliersAndStars();
     }
 
     public void SetupPinBehaviour()
@@ -470,13 +470,39 @@ public class EndlessModeLoader : LevelLoader
         }
     }
 
-    public void SpawnMultipliers()
+    public void SpawnMultipliersAndStars()
     {
         float zMin = SectorLinesZ[1].position.z;
         float zMax = SectorLinesZ[SectorLinesZ.Length - 2].position.z;
         float difficultyFactor = difficulty / 10f;
 
-        List<Vector3> multiplierPositions = SectorGridHelper.GetRandomIntersections(difficulty, new Vector3(0, 20, 5));
+        int numMultipliers = Mathf.Max(0, difficulty - 5);
+        int numStars = Mathf.Clamp((difficulty - 6) / 2 + 1, 1, 3);
+        int totalPositionsRequired = numStars + numMultipliers;
+        if (totalPositionsRequired <= 0)
+            return;
+        
+        List<Vector3> allPositions = SectorGridHelper.GetRandomIntersections(totalPositionsRequired, new Vector3(0, 20, 5));
+        List<Vector3> starPositions = allPositions.GetRange(0, numStars);
+        List<Vector3> multiplierPositions = allPositions.GetRange(numStars, allPositions.Count - numStars);
+
+        int starIndex = 0;
+        foreach (var starPosition in starPositions)
+        {
+            GameObject starObject = PoolingManager.Instance.GetStar();
+            if (starObject == null)
+            {
+                Debug.LogWarning($"Failed to load star");
+                continue;
+            }
+            
+            starObject.transform.SetParent(starsParent);
+            starObject.transform.position = starPosition;
+            Star starScript = starObject.GetComponent<Star>();
+            starScript.index = starIndex;
+            starIndex++;
+        }
+        
         foreach (var multiplierPosition in multiplierPositions)
         {
             GameObject collectibleObject = PoolingManager.Instance.GetObject(MultiplierTokenType.CircularTrigger);

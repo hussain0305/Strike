@@ -107,11 +107,10 @@ public class SectorGridHelper
         return true;
     }
     
-    public List<Vector3> GetRandomIntersections(int difficulty, Vector3 offset)
+    public List<Vector3> GetRandomIntersections(int numRequired, Vector3 offset)
     {
-        int n = Mathf.Max(0, difficulty - 5);
-        var result = new List<Vector3>(n);
-        if (n == 0 || SectorLinesX.Length < 3 || SectorLinesZ.Length < 3)
+        var result = new List<Vector3>(numRequired);
+        if (numRequired == 0 || SectorLinesX.Length < 3 || SectorLinesZ.Length < 3)
             return result;
 
         int midZ = (SectorLinesZ.Length - 1) / 2;
@@ -128,7 +127,7 @@ public class SectorGridHelper
             (coords[k], coords[r]) = (coords[r], coords[k]);
         }
 
-        int take = Mathf.Min(n, coords.Count);
+        int take = Mathf.Min(numRequired, coords.Count);
         for (int k = 0; k < take; k++)
         {
             var intersection = coords[k];
