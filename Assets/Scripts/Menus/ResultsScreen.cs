@@ -56,30 +56,27 @@ public class ResultsScreen : MonoBehaviour
         switch (GameMode.Instance.GetWinCondition())
         {
             case WinCondition.PointsRanking:
-                ShowPointsRankingResultScreen();
+                ShowMultiplayerResultScreen();
                 break;
             case WinCondition.PointsRequired:
-                ShowPointsRequiredResultScreen();
+            case WinCondition.Survival:
+                ShowSoloRulesResultScreen();
                 break;
         }
 
         CheckIsNextLevelAvailable();
     }
 
-    public void ShowPointsRequiredResultScreen()
+    public void ShowSoloRulesResultScreen()
     {
         winConditionPointsRequirement.gameObject.SetActive(true);
         int playerPoints = RoundDataManager.Instance.GetPointsForPlayer(0);
         bool levelCleared = playerPoints >= GameMode.Instance.PointsRequired;
         wonMessage.gameObject.SetActive(levelCleared);
         lostMessage.gameObject.SetActive(!levelCleared);
-        if (levelCleared)
-        {
-            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
-        }
     }
 
-    public void ShowPointsRankingResultScreen()
+    public void ShowMultiplayerResultScreen()
     {
         winConditionPointsRanking.gameObject.SetActive(true);
         List<PlayerGameData> playerRanks = RoundDataManager.Instance.GetPlayerRankings();

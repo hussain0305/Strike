@@ -588,10 +588,11 @@ public class GameManager : MonoBehaviour
 
     public void PostGameStuff()
     {
-        bool levelCleared = GameMode.Instance.GetWinCondition() == WinCondition.PointsRequired &&
+        bool levelCleared = ModeSelector.Instance.IsPlayingSolo() &&
                             RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.PointsRequired;
         if (levelCleared)
         {
+            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
             foreach (int starIndex in starsCollected)
             {
                 SaveManager.SetStarCollected((int)ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel(), starIndex);

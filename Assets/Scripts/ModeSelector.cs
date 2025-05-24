@@ -344,6 +344,11 @@ public class ModeSelector : MonoBehaviour
         }
         ResetSelectedLevel();
     }
+
+    public bool IsPlayingSolo()
+    {
+        return currentNumPlayers == 1;
+    }
     
 #region Endless Mode
 

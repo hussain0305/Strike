@@ -44,6 +44,7 @@ public class DeathMatch : GameMode
 
     public override WinCondition GetWinCondition()
     {
+        base.GetWinCondition();
         return WinCondition.Survival;
     }
 }

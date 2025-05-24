@@ -215,7 +215,7 @@ public class GauntletLoader : LevelLoader
         }
     }
     
-    public int GetTargetPoints()
+    public override int GetTargetPoints()
     {
         return targetPoints;
     }
