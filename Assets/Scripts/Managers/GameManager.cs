@@ -588,7 +588,7 @@ public class GameManager : MonoBehaviour
 
     public void PostGameStuff()
     {
-        bool levelCleared = ModeSelector.Instance.IsPlayingSolo() &&
+        bool levelCleared = ModeSelector.Instance.IsPlayingSolo &&
                             RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.PointsRequired;
         if (levelCleared)
         {

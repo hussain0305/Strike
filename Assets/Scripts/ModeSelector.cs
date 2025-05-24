@@ -50,6 +50,8 @@ public class ModeSelector : MonoBehaviour
     private int currentNumPlayers = 1;
     private int selectedLevel = 1;
     
+    public bool IsPlayingSolo => currentNumPlayers == 1;
+
     private GameModeInfo currentSelectedModeInfo;
     public GameModeInfo CurrentSelectedModeInfo => currentSelectedModeInfo;
 
@@ -343,11 +345,6 @@ public class ModeSelector : MonoBehaviour
             GameModeSelected((GameModeType)SaveManager.GetLastPlayedGauntletMode());
         }
         ResetSelectedLevel();
-    }
-
-    public bool IsPlayingSolo()
-    {
-        return currentNumPlayers == 1;
     }
     
 #region Endless Mode

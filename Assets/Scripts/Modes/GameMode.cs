@@ -2,7 +2,8 @@ using UnityEngine;
 
 public abstract class GameMode : MonoBehaviour
 {
-    protected WinCondition winCondition = WinCondition.PointsRequired;
+    protected WinCondition defaultWinCondition = WinCondition.PointsRequired;
+    protected WinCondition multiplayerWinCondition = WinCondition.PointsRanking;
     
     protected PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     public PinBehaviourPerTurn PinBehaviour => pinBehaviour;
@@ -58,24 +59,8 @@ public abstract class GameMode : MonoBehaviour
 
     public virtual WinCondition GetWinCondition()
     {
-        if (ModeSelector.Instance)
-        {
-            if (ModeSelector.Instance.GetNumPlayers() == 1)
-            {
-                winCondition = WinCondition.PointsRequired;
-                pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
-            }
-            else
-            {
-                winCondition = WinCondition.PointsRanking;
-            }
-        }
-        else
-        {
-            winCondition = WinCondition.PointsRequired;
-            pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
-        }
-        return winCondition;
+        pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
+        return ModeSelector.Instance.IsPlayingSolo ? defaultWinCondition : multiplayerWinCondition;
     }
 
     public float GetMinTimePerShot()

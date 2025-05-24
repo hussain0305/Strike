@@ -8,6 +8,7 @@ public class DeathMatch : GameMode
     
     private void Start()
     {
+        defaultWinCondition = WinCondition.Survival;
         pinBehaviour = PinBehaviourPerTurn.DisappearUponCollection;
     }
 
@@ -44,7 +45,7 @@ public class DeathMatch : GameMode
 
     public override WinCondition GetWinCondition()
     {
-        base.GetWinCondition();
-        return WinCondition.Survival;
+        defaultWinCondition = WinCondition.Survival;
+        return base.GetWinCondition();
     }
 }
