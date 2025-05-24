@@ -8,7 +8,7 @@ public class DeathMatch : GameMode
     
     private void Start()
     {
-        numVolleys = 50;
+        pinBehaviour = PinBehaviourPerTurn.DisappearUponCollection;
     }
 
     public override void OnShotComplete(bool hitSomething)
@@ -40,5 +40,10 @@ public class DeathMatch : GameMode
         yield return new WaitForSeconds(delay);
             
         EventBus.Publish(new CueNextShotEvent());
+    }
+
+    public override WinCondition GetWinCondition()
+    {
+        return WinCondition.Survival;
     }
 }

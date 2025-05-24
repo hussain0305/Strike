@@ -89,7 +89,8 @@ public enum PinBehaviourPerTurn
 public enum WinCondition
 {
     PointsRequired,
-    PointsRanking
+    PointsRanking,
+    Survival
 }
 
 [System.Serializable]

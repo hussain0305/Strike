@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class BallPreviewController : MonoBehaviour
 {
@@ -16,10 +15,10 @@ public class BallPreviewController : MonoBehaviour
     {
         previewStrategies = new Dictionary<string, IBallPreview>
         {
-            { "soccBall", transform.AddComponent<PreviewSoccerBall>() },
-            { "shotgunBall", transform.AddComponent<PreviewShotgunBall>() },
-            { "sniperBall", transform.AddComponent<PreviewSniperBall>() },
-            { "stickyBall", transform.AddComponent<PreviewStickyBall>() }
+            { "soccBall", gameObject.AddComponent<PreviewSoccerBall>() },
+            { "shotgunBall", gameObject.AddComponent<PreviewShotgunBall>() },
+            { "sniperBall", gameObject.AddComponent<PreviewSniperBall>() },
+            { "stickyBall", gameObject.AddComponent<PreviewStickyBall>() }
         };
 
         InitializeElements();

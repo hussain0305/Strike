@@ -26,7 +26,7 @@ public static class SpawnPayloadEngine
     private static readonly List<ObstacleType> loneSectorObstacleTypes = new()
     {
         ObstacleType.SmallFan,
-        ObstacleType.SmallWall,
+        ObstacleType.SmallWallSeeThrough,
         ObstacleType.Window,
     };
 
@@ -57,7 +57,7 @@ public static class SpawnPayloadEngine
         return o switch
         {
             ObstacleType.SmallFan    => (1.0f, +1.00f),
-            ObstacleType.SmallWall   => (1.0f, +1.00f),
+            ObstacleType.SmallWallSeeThrough   => (1.0f, +1.00f),
             ObstacleType.Window      => (0.5f, +0.25f),
             ObstacleType.Fan         => (1.0f, +0.50f),
             ObstacleType.SwitchDoor  => (1.7f, +0.50f),

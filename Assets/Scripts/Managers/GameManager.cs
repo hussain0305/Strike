@@ -272,13 +272,16 @@ public class GameManager : MonoBehaviour
             case WinCondition.PointsRanking:
                 objectiveText.text = $"Maximum total points wins";
                 break;
+            case WinCondition.Survival:
+                objectiveText.text = $"Survive All Volleys";
+                break;
         }
     }
 
     void Update()
     {
 #if UNITY_EDITOR
-        showTrajectory = true;
+        // showTrajectory = true;
 #endif
         if (BallShootable)
         {
