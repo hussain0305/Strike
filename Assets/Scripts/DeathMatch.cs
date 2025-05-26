@@ -1,11 +1,22 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class DeathMatch : GameMode
 {
     private Coroutine nextShotCoroutine;
     
+    private GameManager gameManager;
+    private RoundDataManager roundDataManager;
+
+    [Inject]
+    public void Construct(GameManager _gameManager, RoundDataManager _roundDataManager)
+    {
+        gameManager = _gameManager;
+        roundDataManager = _roundDataManager;
+    }
+
     private void Start()
     {
         defaultWinCondition = WinCondition.Survival;
@@ -20,8 +31,8 @@ public class DeathMatch : GameMode
         }
         else
         {
-            int player = GameManager.Instance.CurrentPlayerTurn;
-            RoundDataManager.Instance.EliminatePlayer(player);
+            int player = gameManager.CurrentPlayerTurn;
+            roundDataManager.EliminatePlayer(player);
             FlagNextShot(1);
         }
     }

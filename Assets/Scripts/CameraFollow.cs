@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (ballTransform == null)
             {
-                ballTransform = GameManager.Instance.ball.transform;
+                ballTransform = gameManager.ball.transform;
             }
 
             return ballTransform;
@@ -32,7 +33,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (ball == null)
             {
-                ball = GameManager.Instance.ball;
+                ball = gameManager.ball;
             }
 
             return ball;
@@ -47,16 +48,25 @@ public class CameraFollow : MonoBehaviour
         {
             if (ballRigidbody == null)
             {
-                ballRigidbody = GameManager.Instance?.ball.rb;
+                ballRigidbody = gameManager?.ball.rb;
             }
 
             return ballRigidbody;
         }
     }
 
+    private GameManager gameManager;
+
+    [Inject]
+    public void Construct(GameManager _gameManager)
+    {
+        gameManager = _gameManager;
+    }
+
     private void LateUpdate()
     {
-        if (BallTransform == null || BallRigidbody == null || !followBall) return;
+        if (BallTransform == null || BallRigidbody == null || !followBall)
+            return;
 
         Vector3 velocity = BallRigidbody.linearVelocity;
 

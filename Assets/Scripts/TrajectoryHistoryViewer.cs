@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Zenject;
 
 public class TrajectoryHistoryViewer : MonoBehaviour
 {
@@ -13,17 +14,12 @@ public class TrajectoryHistoryViewer : MonoBehaviour
     private readonly Queue<TrajectoryLabel> labelPool = new Queue<TrajectoryLabel>();
     private readonly List<TrajectoryLabel> activeLabels = new List<TrajectoryLabel>();
     
-    private static TrajectoryHistoryViewer instance;
-    public static TrajectoryHistoryViewer Instance => instance;
-    
-    private void Awake()
+    private RoundDataManager roundDataManager;
+
+    [Inject]
+    public void Construct(RoundDataManager _roundDataManager)
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+        roundDataManager = _roundDataManager;
     }
     
     private void OnEnable()
@@ -44,12 +40,12 @@ public class TrajectoryHistoryViewer : MonoBehaviour
     
     public bool GetIsTrajectoryHistoryAvailable()
     {
-        return RoundDataManager.Instance.GetTrajectoryHistory().Count > 0;
+        return roundDataManager.GetTrajectoryHistory().Count > 0;
     }
     
     public void ShowTrajectoryHistory()
     {
-        List<ShotInfo> trajectoryHistory = RoundDataManager.Instance.GetTrajectoryHistory();
+        List<ShotInfo> trajectoryHistory = roundDataManager.GetTrajectoryHistory();
         int numTrajectoriesNeeded = Mathf.Min(trajectoryHistoryMaterials.Length, trajectoryHistory.Count);
         int numTrajectoriesAvailable = transform.childCount;
 
@@ -121,7 +117,7 @@ public class TrajectoryHistoryViewer : MonoBehaviour
         activeLabels.Clear();
 
         int trajectoryCount = transform.childCount;
-        List<ShotInfo> shotHistory = RoundDataManager.Instance.GetTrajectoryHistory();
+        List<ShotInfo> shotHistory = roundDataManager.GetTrajectoryHistory();
 
         for (int i = 0; i < trajectoryCount; i++)
         {

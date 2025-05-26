@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class TrajectoryHistoryButton : MonoBehaviour
 {
+    public TrajectoryHistoryViewer trajectoryHistoryViewer;
     public Button button;
     
     private bool trajectoryHistoryBeingDisplayed = false;
@@ -27,11 +28,11 @@ public class TrajectoryHistoryButton : MonoBehaviour
             trajectoryHistoryBeingDisplayed = !trajectoryHistoryBeingDisplayed;
             if (trajectoryHistoryBeingDisplayed)
             {
-                TrajectoryHistoryViewer.Instance.ShowTrajectoryHistory();
+                trajectoryHistoryViewer.ShowTrajectoryHistory();
             }
             else
             {
-                TrajectoryHistoryViewer.Instance.HideTrajectoryHistory();
+                trajectoryHistoryViewer.HideTrajectoryHistory();
             }
         });
     }

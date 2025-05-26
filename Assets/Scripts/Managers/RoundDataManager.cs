@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class PlayerEliminatedEvent
 {
@@ -30,22 +31,15 @@ public class RoundDataManager : MonoBehaviour
     private ShotData currentShotData;
     public  ShotData CurrentShotData => currentShotData;
     
-    private static RoundDataManager instance;
-    public static RoundDataManager Instance => instance;
-
-    private void Awake()
+    private GameManager gameManager;
+    private GameMode gameMode;
+    [Inject]
+    void Construct(GameManager _gameManager, GameMode _gameMode)
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+        gameManager = _gameManager;
+        gameMode = _gameMode;
     }
 
-    private GameManager game;
-    private GameManager Game => game ??= GameManager.Instance;
-    
     private void OnEnable()
     {
         EventBus.Subscribe<BallShotEvent>(BallShot);
@@ -60,9 +54,9 @@ public class RoundDataManager : MonoBehaviour
     
     public void BallShot(BallShotEvent e)
     {
-        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
         gameData.shotsTaken++;
-        playerGameData[Game.CurrentPlayerTurn] = gameData;
+        playerGameData[gameManager.CurrentPlayerTurn] = gameData;
     }
 
     public void CreateNewPlayerRecord(int _index)
@@ -73,7 +67,7 @@ public class RoundDataManager : MonoBehaviour
         data.name = $"Player {_index + 1}";
         data.totalPoints = 0;
         data.shotsTaken = 0;
-        data.projectileViewsRemaining = GameMode.Instance.NumProjectileViews;
+        data.projectileViewsRemaining = gameMode.NumProjectileViews;
         data.shotHistory = new List<ShotInfo>();
         
         if (playerGameData == null)
@@ -100,8 +94,8 @@ public class RoundDataManager : MonoBehaviour
 
     public void CollectibleHit(CollectibleHitEvent e)
     {
-        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
-        PlayerScoreboard scoreboard = playerScoreboards[Game.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
+        PlayerScoreboard scoreboard = playerScoreboards[gameManager.CurrentPlayerTurn];
 
         switch (e.Type)
         {
@@ -117,11 +111,11 @@ public class RoundDataManager : MonoBehaviour
                 break;
             case CollectibleType.Danger:
                 currentShotData.hitDangerPin = true;
-                EliminatePlayer(GameManager.Instance.CurrentPlayerTurn);
+                EliminatePlayer(gameManager.CurrentPlayerTurn);
                 break;
         }
 
-        playerGameData[Game.CurrentPlayerTurn] = gameData;
+        playerGameData[gameManager.CurrentPlayerTurn] = gameData;
     }
 
     public int GetPointsForPlayer(int index)
@@ -166,7 +160,7 @@ public class RoundDataManager : MonoBehaviour
 
     public void SetCurrentShotTaker()
     {
-        int currentShotTaker = Game.CurrentPlayerTurn;
+        int currentShotTaker = gameManager.CurrentPlayerTurn;
         for (int i = 0; i < playerScoreboards.Keys.Count; i++)
         {
             playerScoreboards[i].SetCurrentShotTaker(i == currentShotTaker);
@@ -175,15 +169,15 @@ public class RoundDataManager : MonoBehaviour
     
     public int GetTrajectoryViewsRemaining()
     {
-        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
         return gameData.projectileViewsRemaining;
     }
 
     public void TrajectoryViewUsed()
     {
-        PlayerGameData gameData = playerGameData[Game.CurrentPlayerTurn];
+        PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
         gameData.projectileViewsRemaining--;
-        playerGameData[Game.CurrentPlayerTurn] = gameData;
+        playerGameData[gameManager.CurrentPlayerTurn] = gameData;
     }
 
     public void AddPlayerShotHistory(int playerIndex, ShotInfo shotInfo)
@@ -195,16 +189,16 @@ public class RoundDataManager : MonoBehaviour
 
     public List<ShotInfo> GetTrajectoryHistory()
     {
-        return playerGameData[Game.CurrentPlayerTurn].shotHistory;
+        return playerGameData[gameManager.CurrentPlayerTurn].shotHistory;
     }
     
     public void StartLoggingShotInfo()
     {
-        currentShotData.StartLogging(GameManager.Instance.CurrentPlayerTurn);
+        currentShotData.StartLogging(gameManager.CurrentPlayerTurn);
         currentShotInfo = new ShotInfo();
-        currentShotInfo.angle = Game.AngleInput.CalculateProjectedAngle();
-        currentShotInfo.spin = Game.SpinInput.SpinVector;
-        currentShotInfo.power = (int)Game.PowerInput.Power;
+        currentShotInfo.angle = gameManager.AngleInput.CalculateProjectedAngle();
+        currentShotInfo.spin = gameManager.SpinInput.SpinVector;
+        currentShotInfo.power = (int)gameManager.PowerInput.Power;
     }
 
     public void FinishLoggingShotInfo(List<Vector3> capturedTrajectory)
@@ -213,7 +207,7 @@ public class RoundDataManager : MonoBehaviour
         currentShotInfo.trajectory = capturedTrajectory;
         AddPlayerShotHistory(currentShotData.ownerIndex, currentShotInfo);
         
-        GameMode.Instance.OnShotComplete(currentShotData.hitDangerPin || currentShotData.hitNormalPint);
+        gameMode.OnShotComplete(currentShotData.hitDangerPin || currentShotData.hitNormalPint);
         
         currentShotData.Reset();
     }

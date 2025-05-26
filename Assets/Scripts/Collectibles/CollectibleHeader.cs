@@ -29,12 +29,7 @@ public class CollectibleHeader : MonoBehaviour
             animationCoroutine = StartCoroutine(HoverAnimation());
         }
     }
-
-    private void Start()
-    {
-        QOLFeaturesManager.Instance.RegisterCollectibleHeader(this);
-    }
-
+    
     public void StartAnimation()
     {
         lowerPosition = transform.position - new Vector3(0, -0.5f, 0);

@@ -53,20 +53,7 @@ public class CameraController : MonoBehaviour
     private Coroutine autohideCoroutine;
     
     public bool CameraIsFollowingBall => cameraFollow.enabled && cameraFollow.followBall;
-
-    private static CameraController instance;
-    public static CameraController Instance => instance;
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-    }
-
+    
     private void Start()
     {
         currentCameraHoistedAt = defaultCameraHoistAt;

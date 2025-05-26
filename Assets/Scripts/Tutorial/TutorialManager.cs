@@ -9,7 +9,7 @@ using Zenject;
 public class TutorialManager : MonoBehaviour
 {
     [Inject]
-    DiContainer diContainer;
+    SceneContext sceneContext;
 
     public Tee tee;
     public BallParameterController ballParameterController;
@@ -118,9 +118,8 @@ public class TutorialManager : MonoBehaviour
     {
         BallProperties selected = Balls.Instance.GetBall(tutorialBallID);
         GameObject spawned = Instantiate(selected.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
-        diContainer.InjectGameObject(spawned);
+        sceneContext.Container.InjectGameObject(spawned);
         ball = spawned.GetComponent<Ball>();
-        CameraController.Instance.cameraFollow.BallTransform = ball.transform;
         
         gameStateManager.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());

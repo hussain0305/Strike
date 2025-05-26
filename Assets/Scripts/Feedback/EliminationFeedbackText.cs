@@ -1,12 +1,21 @@
 using System;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class EliminationFeedbackText : MonoBehaviour
 {
     public GameObject elimination;
     public TextMeshProUGUI eliminationText;
     
+    private GameManager gameManager;
+
+    [Inject]
+    public void Construct(GameManager _gameManager)
+    {
+        gameManager = _gameManager;
+    }
+
     private void OnEnable()
     {
         EventBus.Subscribe<GameEndedEvent>(DisableText);
@@ -26,7 +35,7 @@ public class EliminationFeedbackText : MonoBehaviour
     public void ShowEliminationText(PlayerEliminatedEvent e)
     {
         elimination.SetActive(true);
-        if(GameManager.Instance.NumPlayersInGame == 1)
+        if(gameManager.NumPlayersInGame == 1)
             eliminationText.text = $"!! ELIMINATED !!";
         else
             eliminationText.text = $"PLAYER {e.PlayerIndex + 1} ELIMINATED!";

@@ -55,6 +55,12 @@ public class Ball : MonoBehaviour
     
     private GameStateManager gameStateManager;
     
+    [InjectOptional]
+    private RoundDataManager roundDataManager;
+    [InjectOptional]
+    private GameManager gameManager;
+    public GameManager GameManager => gameManager;
+    
     [Inject]
     public void Construct(GameStateManager _gameStateManager)
     {
@@ -180,7 +186,7 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
-        RoundDataManager.Instance?.FinishLoggingShotInfo(capturedTrajectoryPoints);
+        roundDataManager?.FinishLoggingShotInfo(capturedTrajectoryPoints);
     }
     
     public void ResetBall<T>(T e)

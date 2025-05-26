@@ -12,21 +12,26 @@ public class BallVicinityDetection : MonoBehaviour
     private int portalLayerMask;
     private const float portalRayDistance = 1f;
     
+    private GameManager gameManager;
+    private GameManager GameManager => gameManager ??= Ball.GameManager;
+    
     private void Start()
     {
         lastPosition = transform.position;
         raycastLayerMask = ~LayerMask.GetMask("CollideWithBallUnaffected", "OtherCollectingObject", "Portal");
-        portalLayerMask = LayerMask.GetMask("Portal"); }
+        portalLayerMask = LayerMask.GetMask("Portal");
+        
+    }
 
     private void Update()
     {
-        if (!GameManager.IsGameplayActive)
+        if (!GameManager || !GameManager.IsGameplayActive)
             return;
 
         Vector3 currentPosition = transform.position;
         Vector3 motionVector = currentPosition - lastPosition;
 
-        float rayLength = GameManager.Instance.PowerInput.Power / 4f;
+        float rayLength = GameManager.PowerInput.Power / 4f;
         
         if (motionVector.sqrMagnitude > 0)
         {

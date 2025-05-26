@@ -42,18 +42,17 @@ public class TrajectorySegmentVisuals
     public MeshRenderer segmentEnd;
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IInitializable, IDisposable
 {
+    [HideInInspector]
     [Inject]
-    public DiContainer diContainer;
-
-    private static GameManager instance;
-    public static GameManager Instance => instance;
-
-    public static bool IsGameplayActive => Instance != null;
+    public SceneContext sceneContext;
+    
+    public bool IsGameplayActive { get; private set; }
     
     [Header("Level Setup")]
     public LevelLoader levelLoader;
+    public TrajectoryHistoryViewer trajectoryHistoryViewer;
     
     [Header("Level Objects")]
     public Tee tee;
@@ -76,32 +75,21 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI objectiveText;
     
     [Header("Results Screen")]
-    public Transform resultScreen;
+    public ResultsScreen resultScreen;
     
-    private BallState ballState = BallState.OnTee;
+    private static BallState ballState = BallState.OnTee;
     public static BallState BallState
     {
-        set => Instance.ballState = value;
-        get => Instance.ballState;
+        set => ballState = value;
+        get => ballState;
     }
+    public static bool BallShootable => BallState == BallState.OnTee;
 
     private int currentPlayerTurn;
     public int CurrentPlayerTurn => currentPlayerTurn;
-
-    public static bool BallShootable => BallState == BallState.OnTee;
     
     private static InGameContext context;
-    public static InGameContext Context
-    {
-        get
-        {
-            if (context == null)
-            {
-                context = new InGameContext();
-            }
-            return context;
-        }
-    }
+    public static InGameContext Context => context;
 
     private ITrajectoryModifier trajectoryModifier;
     public ITrajectoryModifier TrajectoryModifier
@@ -176,31 +164,38 @@ public class GameManager : MonoBehaviour
     private ModeSelector modeSelector;
     private GameStateManager gameStateManager;
     private InputManager inputManager;
+    private CameraController cameraController;
+    private RoundDataManager roundDataManager;
+    private GameMode gameMode;
     
     [Inject]
-    void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager, InputManager _inputManager)
+    public void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager, InputManager _inputManager, 
+        CameraController _cameraController, RoundDataManager _roundDataManager, GameMode _gameMode, InGameContext _inGameContext)
     {
         modeSelector = _modeSelector;
         gameStateManager = _gameStateManager;
         inputManager = _inputManager;
+        cameraController = _cameraController;
+        roundDataManager = _roundDataManager;
+        gameMode = _gameMode;
+        context = _inGameContext;
     }
 
-    private void Awake()
+    public void Initialize()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+        IsGameplayActive = true;
     }
 
+    public void Dispose()
+    {
+        IsGameplayActive = false;
+    }
+    
     private void Start()
     {
         InitGame();
         InitBall();
         
-        //===== Above this might need changing. Was written in the prototyping stage
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick.AddListener(NextButtonPressed);
         
@@ -211,7 +206,7 @@ public class GameManager : MonoBehaviour
         SetupPlayers();
         ShowLevelInfo();
         currentPlayerTurn = 0;
-        RoundDataManager.Instance.SetCurrentShotTaker();
+        roundDataManager.SetCurrentShotTaker();
     }
 
     private void OnEnable()
@@ -230,6 +225,7 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
+        ballState = BallState.OnTee;
         gameStateManager.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());
         inputManager.SetContext(GameContext.InGame);
@@ -255,7 +251,7 @@ public class GameManager : MonoBehaviour
 
         var props = Balls.Instance.GetBall(primaryID);
         var spawned = Instantiate(props.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
-        diContainer.InjectGameObject(spawned);
+        sceneContext.Container.InjectGameObject(spawned);
 
         ball = spawned.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
@@ -267,17 +263,17 @@ public class GameManager : MonoBehaviour
     public void SetupPlayers()
     {
         numPlayersInGame = modeSelector.GetNumPlayers();
-        RoundDataManager.Instance.CreatePlayers(numPlayersInGame);
+        roundDataManager.CreatePlayers(numPlayersInGame);
     }
 
     public void ShowLevelInfo()
     {
         volleyText.text = "Volley 1";
 
-        switch (GameMode.Instance.GetWinCondition())
+        switch (gameMode.GetWinCondition())
         {
             case WinCondition.PointsRequired:
-                objectiveText.text = $"Target : {GameMode.Instance.PointsRequired}";
+                objectiveText.text = $"Target : {gameMode.PointsRequired}";
                 break;
             case WinCondition.PointsRanking:
                 objectiveText.text = $"Maximum total points wins";
@@ -334,7 +330,7 @@ public class GameManager : MonoBehaviour
     
     public void CueNextShot(CueNextShotEvent e)
     {
-        if (GameMode.Instance.ShouldEndGame())
+        if (gameMode.ShouldEndGame())
         {
             GameEnded();
             return;
@@ -371,18 +367,16 @@ public class GameManager : MonoBehaviour
                 EventBus.Publish(new NewRoundStartedEvent(volleyNumber));
                 volleyText.text = $"Volley {volleyNumber}";
 
-                if (volleyNumber > GameMode.Instance.NumVolleys)
+                if (volleyNumber > gameMode.NumVolleys)
                 {
                     GameEnded();
                     return;
                 }
             }
 
-        }
-        while (RoundDataManager.Instance.EliminationOrder.Contains(currentPlayerTurn)
-               && currentPlayerTurn != first);
+        }while (roundDataManager.EliminationOrder.Contains(currentPlayerTurn) && currentPlayerTurn != first);
 
-        RoundDataManager.Instance.SetCurrentShotTaker();
+        roundDataManager.SetCurrentShotTaker();
     }
     
     public void FireButtonPressed()
@@ -400,7 +394,7 @@ public class GameManager : MonoBehaviour
         EventBus.Publish(new BallShotEvent());
         DisableRelevantElementsDuringShot();
         StartMinTimePerShotPeriod();
-        RoundDataManager.Instance.StartLoggingShotInfo();
+        roundDataManager.StartLoggingShotInfo();
         BallState = BallState.InControlledMotion;
     }
 
@@ -482,7 +476,7 @@ public class GameManager : MonoBehaviour
     {
         IEnumerator<WaitForSeconds> MinTimeRoutine()
         {
-            yield return new WaitForSeconds(GameMode.Instance.MinTimePerShot);
+            yield return new WaitForSeconds(gameMode.MinTimePerShot);
             minTimePerShotRoutine = null;
             StartOptionalTimePerShotPeriod();
         }
@@ -501,7 +495,7 @@ public class GameManager : MonoBehaviour
         {
             nextButton.gameObject.SetActive(true);
             float timePassed = 0;
-            float optionalTime = GameMode.Instance.GetOptionalTimePerShot();
+            float optionalTime = gameMode.GetOptionalTimePerShot();
             while (timePassed <= optionalTime)
             {
                 timePassed += Time.deltaTime;
@@ -522,7 +516,7 @@ public class GameManager : MonoBehaviour
     
     public void CheckToShowTrajectoryButton()
     {
-        int trajectoryViewsRemaining = RoundDataManager.Instance.GetTrajectoryViewsRemaining();
+        int trajectoryViewsRemaining = roundDataManager.GetTrajectoryViewsRemaining();
         if (trajectoryViewsRemaining > 0)
         {
             trajectoryButtonSection.gameObject.SetActive(true);
@@ -532,12 +526,12 @@ public class GameManager : MonoBehaviour
 
     public void TrajectoryButtonPressed(TrajectoryEnabledEvent e)
     {
-        if (RoundDataManager.Instance.GetTrajectoryViewsRemaining() <= 0)
+        if (roundDataManager.GetTrajectoryViewsRemaining() <= 0)
         {
             return;
         }
         
-        RoundDataManager.Instance.TrajectoryViewUsed();
+        roundDataManager.TrajectoryViewUsed();
         DiscardTrajectoryViewRoutine();
         trajectoryViewRoutine = StartCoroutine(ShowTrajectory());
     }
@@ -545,7 +539,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShowTrajectory()
     {
         showTrajectory = true;
-        int secondsRemaining = GameMode.Instance.ProjectileViewDuration;
+        int secondsRemaining = gameMode.ProjectileViewDuration;
         trajectoryButton.SetCountdownText(secondsRemaining);
         while (secondsRemaining >= 0)
         {
@@ -580,7 +574,7 @@ public class GameManager : MonoBehaviour
 
     public void CheckToShowTrajectoryHistoryButton()
     {
-        trajectoryHistoryButton.gameObject.SetActive(TrajectoryHistoryViewer.Instance.GetIsTrajectoryHistoryAvailable());
+        trajectoryHistoryButton.gameObject.SetActive(trajectoryHistoryViewer.GetIsTrajectoryHistoryAvailable());
     }
 
     public void StarCollected(int index)
@@ -591,7 +585,7 @@ public class GameManager : MonoBehaviour
     public void GameEnded()
     {
         EventBus.Publish(new GameEndedEvent());
-        CameraController.Instance.ResetCamera();
+        cameraController.ResetCamera();
         PostGameStuff();
         SetupResults();
     }
@@ -599,7 +593,7 @@ public class GameManager : MonoBehaviour
     public void PostGameStuff()
     {
         bool levelCleared = modeSelector.IsPlayingSolo &&
-                            RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.PointsRequired;
+                            roundDataManager.GetPointsForPlayer(0) >= gameMode.PointsRequired;
         if (levelCleared)
         {
             SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel());
@@ -624,7 +618,7 @@ public class GameManager : MonoBehaviour
     {
         gameStateManager.SetGameState(GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
-        ResultsScreen.Instance.SetupResults();
+        resultScreen.SetupResults();
     }
     
     private void DiscardGameContext()

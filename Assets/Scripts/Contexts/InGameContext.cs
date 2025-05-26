@@ -1,32 +1,39 @@
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 
 public class InGameContext : IContextProvider
 {
+    private GameManager gameManager;
+    private GameMode gameMode;
+
+    public InGameContext(GameManager _gameManager, GameMode _gameMode)
+    {
+        gameManager = _gameManager;
+        gameMode = _gameMode;
+    }
+    
     public Transform GetAimTransform()
     {
-        return GameManager.Instance.AngleInput.cylinderPivot;
+        return gameManager.AngleInput.cylinderPivot;
     }
 
     public Transform GetBallParent()
     {
-        return GameManager.Instance.tee.transform;
+        return gameManager.tee.transform;
     }
 
     public float GetLaunchForce()
     {
-        return GameManager.Instance.LaunchForce;
+        return gameManager.LaunchForce;
     }
 
     public Quaternion GetLaunchAngle()
     {
-        return GameManager.Instance.LaunchAngle;
+        return gameManager.LaunchAngle;
     }
 
     public Vector2 GetSpinVector()
     {
-        return GameManager.Instance.SpinVector;
+        return gameManager.SpinVector;
     }
 
     public void SetBallState(BallState newState)
@@ -36,12 +43,12 @@ public class InGameContext : IContextProvider
 
     public PinBehaviourPerTurn GetPinResetBehaviour()
     {
-        return GameMode.Instance.PinBehaviour;
+        return gameMode.PinBehaviour;
     }
 
     public Tee GetTee()
     {
-        return GameManager.Instance.tee;
+        return gameManager.tee;
     }
 
     public int GetTrajectoryDefinition()
@@ -51,6 +58,6 @@ public class InGameContext : IContextProvider
 
     public float GetGravity()
     {
-        return GameManager.Instance.Gravity;
+        return gameManager.Gravity;
     }
 }

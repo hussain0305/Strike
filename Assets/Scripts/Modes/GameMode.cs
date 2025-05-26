@@ -27,24 +27,16 @@ public abstract class GameMode : MonoBehaviour
     private int projectileViewDuration = 10;
     public int ProjectileViewDuration => projectileViewDuration;
     
-    private static GameMode instance;
-    public static GameMode Instance => instance;
-
     private ModeSelector modeSelector;
-    
+    private GameManager gameManager;
+    private RoundDataManager roundDataManager;
+
     [Inject]
-    public void Construct(ModeSelector _modeSelector)
+    public void Construct(ModeSelector _modeSelector, GameManager _gameManager, RoundDataManager _roundDataManager)
     {
         modeSelector = _modeSelector;
-    }
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(instance.gameObject);
-        }
-        instance = this;
+        gameManager = _gameManager;
+        roundDataManager = _roundDataManager;
     }
 
     private void OnEnable()
@@ -61,14 +53,14 @@ public abstract class GameMode : MonoBehaviour
     {
         if (e.Type == CollectibleType.Danger)
         {
-            int player = GameManager.Instance.CurrentPlayerTurn;
-            RoundDataManager.Instance.EliminatePlayer(player);
+            int player = gameManager.CurrentPlayerTurn;
+            roundDataManager.EliminatePlayer(player);
         }
     }
 
     public virtual WinCondition GetWinCondition()
     {
-        pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
+        pointsRequired = gameManager.levelLoader.GetTargetPoints();
         return modeSelector.IsPlayingSolo ? defaultWinCondition : multiplayerWinCondition;
     }
 
@@ -89,18 +81,18 @@ public abstract class GameMode : MonoBehaviour
     
     public virtual bool ShouldEndGame()
     {
-        int numPlayers = GameManager.Instance.NumPlayersInGame;
+        int numPlayers = gameManager.NumPlayersInGame;
         bool isSolo = (numPlayers == 1);
-        int numEliminatedPlayers = RoundDataManager.Instance.EliminationOrder.Count;
+        int numEliminatedPlayers = roundDataManager.EliminationOrder.Count;
         
         if (isSolo && GetWinCondition() == WinCondition.PointsRequired)
         {
-            int pts = RoundDataManager.Instance.GetPointsForPlayer(0);
+            int pts = roundDataManager.GetPointsForPlayer(0);
             if (pts >= PointsRequired) 
                 return true;
         }
 
-        if (GameManager.Instance.VolleyNumber > NumVolleys)
+        if (gameManager.VolleyNumber > NumVolleys)
             return true;
 
         if (!isSolo && numEliminatedPlayers >= numPlayers - 1)

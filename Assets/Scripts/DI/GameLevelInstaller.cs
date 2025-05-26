@@ -7,7 +7,6 @@ public class GameLevelInstaller : MonoInstaller
     public GameManager gameManager;
     public RoundDataManager roundDataManager;
     public CameraController cameraManager;
-    public QOLFeaturesManager qolFeaturesManager;
     public FlavorTextSpawner flavorTextSpawner;
     public GameMode gameMode;
     public NotableEventsManager notableEventsManager;
@@ -16,7 +15,12 @@ public class GameLevelInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container
-            .Bind<GameManager>()
+            .Bind<InGameContext>()
+            .AsSingle()
+            .NonLazy();
+        
+        Container
+            .BindInterfacesAndSelfTo<GameManager>()
             .FromInstance(gameManager)
             .AsSingle()
             .NonLazy();
@@ -30,12 +34,6 @@ public class GameLevelInstaller : MonoInstaller
         Container
             .Bind<CameraController>()
             .FromInstance(cameraManager)
-            .AsSingle()
-            .NonLazy();
-        
-        Container
-            .Bind<QOLFeaturesManager>()
-            .FromInstance(qolFeaturesManager)
             .AsSingle()
             .NonLazy();
         
@@ -62,6 +60,16 @@ public class GameLevelInstaller : MonoInstaller
             .FromInstance(effectsManager)
             .AsSingle()
             .NonLazy();
+        
+        Container.Inject(gameManager);
+        Container.Inject(roundDataManager);
+        Container.Inject(cameraManager);
+        Container.Inject(flavorTextSpawner);
+        Container.Inject(gameMode);
+        Container.Inject(notableEventsManager);
+        
+        var poolingManager = ProjectContext.Instance.Container.Resolve<PoolingManager>();
+        Container.Inject(poolingManager);
     }
 
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class NotableEventsManager : MonoBehaviour
 {
@@ -29,6 +30,14 @@ public class NotableEventsManager : MonoBehaviour
 
     private Coroutine multiplierAnimationRoutine;
     
+    private RoundDataManager roundDataManager;
+
+    [Inject]
+    public void Construct(RoundDataManager _roundDataManager)
+    {
+        roundDataManager = _roundDataManager;
+    }
+
     private void OnEnable()
     {
         EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
@@ -171,7 +180,7 @@ public class NotableEventsManager : MonoBehaviour
     {
         yield return null;
 
-        int value = RoundDataManager.Instance.CurrentShotData.multiplierAccrued;
+        int value = roundDataManager.CurrentShotData.multiplierAccrued;
         
         multiplierText.textGO.SetActive(true);
         multiplierText.textComponent.text = $"{value}x";

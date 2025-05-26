@@ -76,11 +76,13 @@ public class Collectible : MonoBehaviour
     private IContextProvider context;
     
     private GameStateManager gameStateManager;
+    private RoundDataManager roundDataManager;
     
     [Inject]
-    public void Construct(GameStateManager _gameStateManager)
+    public void Construct(GameStateManager _gameStateManager, RoundDataManager _roundDataManager)
     {
         gameStateManager = _gameStateManager;
+        roundDataManager = _roundDataManager;
     }
 
     public void Awake()
@@ -208,7 +210,7 @@ public class Collectible : MonoBehaviour
         if (SetupFloatingBoard)
         {
             inBodyPointDisplay?.gameObject.SetActive(false);
-            header = Instantiate(RoundDataManager.Instance.collectibleHeaderPrefab, RoundDataManager.Instance.collectibleHeadersParent);
+            header = Instantiate(roundDataManager.collectibleHeaderPrefab, roundDataManager.collectibleHeadersParent);
             header.SetText(value);
             float headerOffset = (transform.position.y + (body.localScale.y * heightMultipleForOffsetCalculation) + 0.5f);
             header.transform.position = transform.position;

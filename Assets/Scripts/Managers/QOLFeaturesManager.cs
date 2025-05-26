@@ -5,21 +5,8 @@ using UnityEngine;
 
 public class QOLFeaturesManager : MonoBehaviour
 {
-    private static QOLFeaturesManager instance;
-    public static QOLFeaturesManager Instance => instance;
-
     private List<CollectibleHeader> collectibleHeaders;
     
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-    }
-
     private void Update()
     {
         if (collectibleHeaders != null && collectibleHeaders.Count > 0)

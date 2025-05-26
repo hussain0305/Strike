@@ -21,29 +21,20 @@ public class ResultsScreen : MonoBehaviour
     public Button retryButton;
     public Button nextLevelButton;
     
-    private static ResultsScreen instance;
-    public static ResultsScreen Instance => instance;
-
     private ModeSelector modeSelector;
     private GameStateManager gameStateManager;
+    private RoundDataManager roundDataManager;
+    private GameMode gameMode;
     
     [Inject]
-    public void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager)
+    public void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager, RoundDataManager _roundDataManager, GameMode _gameMode)
     {
         modeSelector = _modeSelector;
         gameStateManager = _gameStateManager;
+        roundDataManager = _roundDataManager;
+        gameMode = _gameMode;
     }
     
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-    }
-
     private void OnEnable()
     {
         retryButton.onClick.AddListener(RetryButtonClicked);
@@ -64,7 +55,7 @@ public class ResultsScreen : MonoBehaviour
         winConditionPointsRanking.gameObject.SetActive(false);
         winConditionPointsRequirement.gameObject.SetActive(false);
         
-        switch (GameMode.Instance.GetWinCondition())
+        switch (gameMode.GetWinCondition())
         {
             case WinCondition.PointsRanking:
                 ShowMultiplayerResultScreen();
@@ -81,8 +72,8 @@ public class ResultsScreen : MonoBehaviour
     public void ShowSoloRulesResultScreen()
     {
         winConditionPointsRequirement.gameObject.SetActive(true);
-        int playerPoints = RoundDataManager.Instance.GetPointsForPlayer(0);
-        bool levelCleared = playerPoints >= GameMode.Instance.PointsRequired;
+        int playerPoints = roundDataManager.GetPointsForPlayer(0);
+        bool levelCleared = playerPoints >= gameMode.PointsRequired;
         wonMessage.gameObject.SetActive(levelCleared);
         lostMessage.gameObject.SetActive(!levelCleared);
     }
@@ -90,7 +81,7 @@ public class ResultsScreen : MonoBehaviour
     public void ShowMultiplayerResultScreen()
     {
         winConditionPointsRanking.gameObject.SetActive(true);
-        List<PlayerGameData> playerRanks = RoundDataManager.Instance.GetPlayerRankings();
+        List<PlayerGameData> playerRanks = roundDataManager.GetPlayerRankings();
         winConditionPointsRankingText.text = $"{playerRanks[0].name} wins";
         int i = 0;
         while (i < playerRanks.Count)
