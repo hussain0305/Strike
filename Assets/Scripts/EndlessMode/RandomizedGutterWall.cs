@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public enum RandomizedMovementOptions
 {
@@ -46,6 +47,14 @@ public class RandomizedGutterWall : RandomizerSpawner
     private readonly int minGutterWallPointsFactor = 2;
     private readonly int maxGutterWallPointsFactor = 3;
     
+    private PoolingManager poolingManager;
+    
+    [Inject]
+    public void Construct(PoolingManager _poolingManager)
+    {
+        poolingManager = _poolingManager;
+    }
+
     public void Setup(int _difficulty)
     {
         difficulty = _difficulty;
@@ -167,8 +176,8 @@ public class RandomizedGutterWall : RandomizerSpawner
     private void SpawnObject(bool spawnPoint, Vector3 pos, Quaternion rot, Transform parent, bool shouldMove, Vector3[] path)
     {
         GameObject obj = spawnPoint
-            ? PoolingManager.Instance.GetObject(PointTokenType.Cuboid_Gutter)
-            : PoolingManager.Instance.GetObject(DangerTokenType.Cube_3x3);
+            ? poolingManager.GetObject(PointTokenType.Cuboid_Gutter)
+            : poolingManager.GetObject(DangerTokenType.Cube_3x3);
         var rb = obj.GetComponent<Rigidbody>();
         if (rb)
             rb.isKinematic = true;

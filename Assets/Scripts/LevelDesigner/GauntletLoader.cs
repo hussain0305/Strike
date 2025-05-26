@@ -1,11 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class GauntletLoader : LevelLoader
 {
+    private ModeSelector modeSelector;
+    private PoolingManager poolingManager;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager, ModeSelector _modeSelector, PoolingManager _poolingManager)
+    {
+        modeSelector = _modeSelector;
+        poolingManager = _poolingManager;
+    }
+
     public override void LoadLevel()
     {
-        if (PoolingManager.Instance == null)
+        if (poolingManager == null)
         {
             Debug.LogError("PoolingManager is not assigned.");
             return;
@@ -13,10 +24,10 @@ public class GauntletLoader : LevelLoader
 
         int levelNumber = 1;
         GameModeType gameMode = GameModeType.Pins;
-        if (ModeSelector.Instance)
+        if (modeSelector)
         {
-            levelNumber = ModeSelector.Instance.GetSelectedLevel();
-            gameMode = ModeSelector.Instance.GetSelectedGameMode();
+            levelNumber = modeSelector.GetSelectedLevel();
+            gameMode = modeSelector.GetSelectedGameMode();
         }
         else
         {
@@ -48,16 +59,16 @@ public class GauntletLoader : LevelLoader
             GameObject collectibleObject = null;
             if (collectibleData.pointTokenType != PointTokenType.None)
             {
-                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.pointTokenType);
+                collectibleObject = poolingManager.GetObject(collectibleData.pointTokenType);
             }
             else if (collectibleData.multiplierTokenType != MultiplierTokenType.None)
             {
-                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.multiplierTokenType);
+                collectibleObject = poolingManager.GetObject(collectibleData.multiplierTokenType);
             }
 
             else if (collectibleData.dangerTokenType != DangerTokenType.None)
             {
-                collectibleObject = PoolingManager.Instance.GetObject(collectibleData.dangerTokenType);
+                collectibleObject = poolingManager.GetObject(collectibleData.dangerTokenType);
             }
 
             if (collectibleObject == null)
@@ -110,8 +121,8 @@ public class GauntletLoader : LevelLoader
             }
         }
 
-        SaveManager.GetStarsCollectedStatus(ModeSelector.Instance.GetSelectedGameMode(),
-            ModeSelector.Instance.GetSelectedLevel(), out bool[] starStatus);
+        SaveManager.GetStarsCollectedStatus(modeSelector.GetSelectedGameMode(),
+            modeSelector.GetSelectedLevel(), out bool[] starStatus);
         foreach (LevelExporter.StarData starData in levelData.stars)
         {
             if (starStatus[starData.index])
@@ -119,7 +130,7 @@ public class GauntletLoader : LevelLoader
                 //Don't spawn the star if it was already collected
                 continue;
             }
-            GameObject starObject = PoolingManager.Instance.GetStar();
+            GameObject starObject = poolingManager.GetStar();
             if (starObject == null)
             {
                 Debug.LogWarning($"Failed to load star");
@@ -151,7 +162,7 @@ public class GauntletLoader : LevelLoader
 
         foreach (LevelExporter.ObstacleData obstacleData in levelData.obstacles)
         {
-            GameObject obstacleObject = PoolingManager.Instance.GetObject(obstacleData.type);
+            GameObject obstacleObject = poolingManager.GetObject(obstacleData.type);
 
             if (obstacleObject == null)
             {

@@ -1,23 +1,19 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class InputManager : MonoBehaviour
 {
-    private static InputManager instance;
-    public static InputManager Instance => instance;
-
     private GameContext currentContext = GameContext.InMenu; 
     
-    private void Awake()
+    private MenuManager menuManager;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager)
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(instance.gameObject);
-        }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
+        menuManager = _menuManager;
     }
-
+    
     private void Start()
     {
         EventBus.Subscribe<InGameEvent>(InGame);
@@ -58,17 +54,17 @@ public class InputManager : MonoBehaviour
         switch (currentContext)
         {
             case GameContext.InMenu:
-                MenuManager.Instance.CloseCurrentMenu();
+                menuManager.CloseCurrentMenu();
                 break;
 
             case GameContext.InGame:
-                if (MenuManager.Instance.IsAnyMenuOpen())
+                if (menuManager.IsAnyMenuOpen())
                 {
-                    MenuManager.Instance.CloseCurrentMenu();
+                    menuManager.CloseCurrentMenu();
                 }
                 else
                 {
-                    MenuManager.Instance.OpenMenu(MenuBase.MenuType.PauseMenu);
+                    menuManager.OpenMenu(MenuBase.MenuType.PauseMenu);
                 }
                 break;
         }

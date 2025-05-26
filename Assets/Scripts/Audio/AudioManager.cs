@@ -6,8 +6,6 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
-
     public AudioMixer audioMixer;
 
     public AudioSource musicSourceA;
@@ -28,19 +26,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         activeMusicSource = musicSourceA;
-
         InitializeSFXPool();
     }
 

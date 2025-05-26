@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class RemovePlayerButton : MonoBehaviour
 {
@@ -16,11 +17,19 @@ public class RemovePlayerButton : MonoBehaviour
         }
     }
     
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
+
     private void OnEnable()
     {
         Button.onClick.AddListener(() =>
         {
-            ModeSelector.Instance.RemovePlayer();
+            modeSelector.RemovePlayer();
         });
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }

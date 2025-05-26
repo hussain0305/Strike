@@ -1,0 +1,161 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
+
+public class ModeSelectorUI : MonoBehaviour
+{
+    [Header("Game Mode")]
+    [SerializeField] Button nextGameModeButton;
+    [SerializeField] Button prevGameModeButton;
+    [SerializeField] TextMeshProUGUI selectedGameModeNameText;
+    [SerializeField] TextMeshProUGUI selectedGameModeDescriptionText;
+    [SerializeField] GameObject bottomPanelGameModeUnlocked;
+
+    [Header("Game Mode - Locked")]
+    [SerializeField] GameObject lockedSection;
+    [SerializeField] TextMeshProUGUI unlockRequirementText;
+    [SerializeField] Button unlockGameModeButton;
+    [SerializeField] GameObject bottomPanelGameModeLocked;
+
+    [Header("Levels")]
+    [SerializeField] Transform levelButtonParent;
+    [SerializeField] LevelSelectionButton levelButtonPrefab;
+    private readonly List<LevelSelectionButton> levelButtonsPool = new List<LevelSelectionButton>();
+
+    [Header("Players and Play")]
+    [SerializeField] Button playButton;
+
+    [Header("DEBUG")]
+    [SerializeField] Button addStars;
+    [SerializeField] Button deductStars;
+
+    private ModeSelector modeSelector;
+
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
+
+    private void OnEnable()
+    {
+        nextGameModeButton.onClick.AddListener(OnNextGameMode);
+        prevGameModeButton.onClick.AddListener(OnPreviousGameMode);
+        playButton.onClick.AddListener(OnPlay);
+
+        //===TODO: DEBUG. DELETE LATER===
+        addStars.onClick.AddListener(() => SaveManager.AddStars(40));
+        deductStars.onClick.AddListener(() => SaveManager.SpendStars(20));
+
+        EventBus.Subscribe<GameModeChangedEvent>(OnGameModeChanged);
+        EventBus.Subscribe<NumPlayersChangedEvent>(OnNumPlayersChanged);
+    }
+
+    private void OnDisable()
+    {
+        nextGameModeButton.onClick.RemoveListener(OnNextGameMode);
+        prevGameModeButton.onClick.RemoveListener(OnPreviousGameMode);
+        playButton.onClick.RemoveListener(OnPlay);
+
+        addStars.onClick.RemoveAllListeners();
+        deductStars.onClick.RemoveAllListeners();
+
+        EventBus.Unsubscribe<GameModeChangedEvent>(OnGameModeChanged);
+        EventBus.Unsubscribe<NumPlayersChangedEvent>(OnNumPlayersChanged);
+    }
+
+    // private void Start()
+    // {
+    //     UpdateGameModeUI();
+    //     UpdateLevelButtons();
+    // }
+
+    private void OnNextGameMode()
+    {
+        modeSelector.NextGameMode();
+    }
+
+    private void OnPreviousGameMode()
+    {
+        modeSelector.PreviousGameMode();
+    }
+
+    private void OnPlay()
+    {
+        modeSelector.StartGame();
+    }
+
+    private void OnGameModeChanged(GameModeChangedEvent e)
+    {
+        UpdateGameModeUI();
+        UpdateLevelButtons();
+    }
+
+    private void OnNumPlayersChanged(NumPlayersChangedEvent e)
+    {
+        
+    }
+
+    private void UpdateGameModeUI()
+    {
+        if (modeSelector.CurrentSelectedModeInfo.displayName == null)
+        {
+            return;
+        }
+        var info = modeSelector.CurrentSelectedModeInfo;
+        selectedGameModeNameText.text = info.displayName.ToUpper();
+        selectedGameModeDescriptionText.text = info.description;
+
+        bool unlocked = SaveManager.GetIsGameModeUnlocked((int)modeSelector.CurrentSelectedMode);
+        lockedSection.SetActive(!unlocked);
+        bottomPanelGameModeLocked.SetActive(!unlocked);
+        bottomPanelGameModeUnlocked.SetActive(unlocked);
+
+        if (!unlocked)
+        {
+            int requiredStars = info.starsRequiredToUnlock;
+            unlockRequirementText.text = $"{requiredStars} STARS REQUIRED TO UNLOCK THIS GAME MODE";
+            bool canAfford = SaveManager.GetStars() >= requiredStars;
+            unlockGameModeButton.gameObject.SetActive(canAfford);
+            unlockGameModeButton.onClick.RemoveAllListeners();
+            if (canAfford)
+                unlockGameModeButton.onClick.AddListener(() => {
+                    SaveManager.SpendStars(requiredStars);
+                    SaveManager.SetGameModeUnlocked((int)modeSelector.CurrentSelectedMode);
+                    modeSelector.GameModeSelected(modeSelector.CurrentSelectedMode);
+                });
+        }
+        else
+        {
+            levelButtonParent.gameObject.SetActive(true);
+        }
+    }
+
+    private void UpdateLevelButtons()
+    {
+        var info = modeSelector.CurrentSelectedModeInfo;
+        var levels = GameModeLevelMapping.Instance.GetLevelsForGameMode(modeSelector.CurrentSelectedMode);
+        int highestCleared = SaveManager.GetHighestClearedLevel(modeSelector.CurrentSelectedMode);
+
+        while (levelButtonsPool.Count < levels.Count)
+        {
+            var btn = Instantiate(levelButtonPrefab, levelButtonParent);
+            btn.gameObject.SetActive(false);
+            levelButtonsPool.Add(btn);
+        }
+
+        for (int i = 0; i < levels.Count; i++)
+        {
+            var button = levelButtonsPool[i];
+            button.gameObject.SetActive(true);
+            button.SetMappedLevel(modeSelector.CurrentSelectedMode, levels[i]);
+            bool unlocked = levels[i] <= highestCleared + 1;
+            if (unlocked) button.SetUnlocked(); else button.SetLocked();
+        }
+
+        for (int i = levels.Count; i < levelButtonsPool.Count; i++)
+            levelButtonsPool[i].gameObject.SetActive(false);
+    }
+}

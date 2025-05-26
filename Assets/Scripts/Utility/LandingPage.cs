@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class LandingPage : MonoBehaviour
 {
@@ -10,6 +11,16 @@ public class LandingPage : MonoBehaviour
     
     private bool isKeyPressed = false;
     
+    private MenuManager menuManager;
+    private GameStateManager gameStateManager;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager, GameStateManager _gameStateManager)
+    {
+        menuManager = _menuManager;
+        gameStateManager = _gameStateManager;
+    }
+
     void Update()
     {
         if(SaveManager.IsGameReady && !isKeyPressed && (Input.anyKey || Input.GetMouseButtonDown(0)))
@@ -29,8 +40,8 @@ public class LandingPage : MonoBehaviour
         IEnumerator MainMenuOpen()
         {
             yield return new WaitForSeconds(delay);
-            GameStateManager.Instance.SetGameState(GameState.Menu);
-            MenuManager.Instance.OpenMenu(MenuBase.MenuType.MainMenu);
+            gameStateManager.SetGameState(GameState.Menu);
+            menuManager.OpenMenu(MenuBase.MenuType.MainMenu);
             gameObject.SetActive(false);
         }
         isKeyPressed = true;

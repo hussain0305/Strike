@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Zenject;
 
 public class PoolingManager : MonoBehaviour
 {
-    private static PoolingManager instance;
-    public static PoolingManager Instance => instance;
+    [Inject]
+    DiContainer diContainer;
     
     private CollectiblePrefabMapping prefabMapping => CollectiblePrefabMapping.Instance;
 
@@ -13,17 +14,6 @@ public class PoolingManager : MonoBehaviour
     private Dictionary<DangerTokenType, Queue<GameObject>> dangerTokensDictionary = new Dictionary<DangerTokenType, Queue<GameObject>>();
     private Dictionary<ObstacleType, Queue<GameObject>> obstaclesDictionary = new Dictionary<ObstacleType, Queue<GameObject>>();
     private Queue<GameObject> starPool = new Queue<GameObject>();
-    
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
     
     private GameObject GetObjectFromDictionary<T>(Dictionary<T, Queue<GameObject>> dictionary, T type, System.Func<T, GameObject> prefabGetter)
     {
@@ -35,6 +25,7 @@ public class PoolingManager : MonoBehaviour
         }
 
         GameObject newObj = Instantiate(prefabGetter(type));
+        diContainer.InjectGameObject(newObj);
         return newObj;
     }
 
@@ -99,7 +90,10 @@ public class PoolingManager : MonoBehaviour
             return star;
         }
 
-        return Instantiate(prefabMapping.GetStarPrefab());
+        GameObject newStar = Instantiate(prefabMapping.GetStarPrefab());
+        diContainer.InjectGameObject(newStar);
+
+        return newStar;
     }
 
     public void ReturnStar(GameObject star)

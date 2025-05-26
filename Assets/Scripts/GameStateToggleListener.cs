@@ -1,17 +1,26 @@
 using UnityEngine;
+using Zenject;
 
 public class GameStateToggleListener : MonoBehaviour
 {
     public GameState[] statesToBeActiveIn;
 
+    private GameStateManager gameStateManager;
+    
+    [Inject]
+    public void Construct(GameStateManager _gameStateManager)
+    {
+        gameStateManager = _gameStateManager;
+    }
+
     private void OnEnable()
     {
-        GameStateManager.Instance.RegisterStateListener(this);
+        gameStateManager?.RegisterStateListener(this);
     }
 
     private void OnDisable()
     {
-        GameStateManager.Instance.UnregisterStateListener(this);
+        gameStateManager?.UnregisterStateListener(this);
     }
 
     public void CheckState(GameState currentState)

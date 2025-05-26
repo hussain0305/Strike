@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class LevelSelectionMenu : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class LevelSelectionMenu : MonoBehaviour
     
     private static LevelSelectionMenu instance;
     public static LevelSelectionMenu Instance => instance;
+
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
     
     private void Awake()
     {
@@ -42,9 +51,9 @@ public class LevelSelectionMenu : MonoBehaviour
     private void OnEnable()
     {
         PromptGameObject.SetActive(false);
-        ModeSelector.Instance.LevelSelectionMenuOpened();
+        modeSelector.LevelSelectionMenuOpened();
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
-        numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
+        numPlayersText.text = modeSelector.GetNumPlayers().ToString();
     }
 
     private void OnDisable()

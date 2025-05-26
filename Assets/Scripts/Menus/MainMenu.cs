@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class MainMenu : MonoBehaviour
 {
@@ -39,36 +40,46 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    private MenuManager menuManager;
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager, ModeSelector _modeSelector)
+    {
+        menuManager = _menuManager;
+        modeSelector = _modeSelector;
+    }
+
     private void OnEnable()
     {
         ballSelectionButton.onClick.RemoveAllListeners();
         ballSelectionButton.onClick.AddListener(() =>
         {
-            MenuManager.Instance.OpenMenu(MenuBase.MenuType.BallSelectionPage);
+            menuManager.OpenMenu(MenuBase.MenuType.BallSelectionPage);
         });
         
         gauntletModeButton.onClick.RemoveAllListeners();
         gauntletModeButton.onClick.AddListener(() =>
         {
-            MenuManager.Instance.OpenMenu(MenuBase.MenuType.GameModeScreen);
+            menuManager.OpenMenu(MenuBase.MenuType.GameModeScreen);
         });
         
         randomizerModeButton.onClick.RemoveAllListeners();
         randomizerModeButton.onClick.AddListener(() =>
         {
-            MenuManager.Instance.OpenMenu(MenuBase.MenuType.RandomizerPage);
+            menuManager.OpenMenu(MenuBase.MenuType.RandomizerPage);
         });
         
         settingsPageButton.onClick.RemoveAllListeners();
         settingsPageButton.onClick.AddListener(() =>
         {
-            MenuManager.Instance.OpenMenu(MenuBase.MenuType.SettingsPage);
+            menuManager.OpenMenu(MenuBase.MenuType.SettingsPage);
         });
         
         tuorialButton.onClick.RemoveAllListeners();
         tuorialButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(ModeSelector.Instance.GetTutorialLevel());
+            SceneManager.LoadScene(modeSelector.GetTutorialLevel());
         });
         
         exitButton.onClick.RemoveAllListeners();

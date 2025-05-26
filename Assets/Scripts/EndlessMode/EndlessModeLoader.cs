@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
@@ -221,6 +222,16 @@ public class EndlessModeLoader : LevelLoader
     private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     private readonly List<SpawnedToken> tokenCache = new List<SpawnedToken>();
     
+    private ModeSelector modeSelector;
+    private PoolingManager poolingManager;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager, ModeSelector _modeSelector, PoolingManager _poolingManager)
+    {
+        modeSelector = _modeSelector;
+        poolingManager = _poolingManager;
+    }
+
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
@@ -243,7 +254,7 @@ public class EndlessModeLoader : LevelLoader
 
     public override void LoadLevel()
     {
-        EndlessGenerationSettings settings = ModeSelector.Instance.EndlessGenerationSettings;
+        EndlessGenerationSettings settings = modeSelector.EndlessGenerationSettings;
         if (settings.TryGetValue(RandomizerParameterType.Dificulty, out object diffSetting))
         {
             difficulty = (int)diffSetting;
@@ -275,7 +286,7 @@ public class EndlessModeLoader : LevelLoader
 
     public void SetupPinBehaviour()
     {
-        EndlessGenerationSettings settings = ModeSelector.Instance.EndlessGenerationSettings;
+        EndlessGenerationSettings settings = modeSelector.EndlessGenerationSettings;
         if (settings.TryGetValue(RandomizerParameterType.PinBehavior, out object pbSetting))
         {
             int pinBehaviourIndex = (int)pbSetting;
@@ -400,7 +411,7 @@ public class EndlessModeLoader : LevelLoader
 
     public void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot, SectorInfo sectorInfo)
     {
-        var obj = PoolingManager.Instance.GetObject(tokenType);
+        var obj = poolingManager.GetObject(tokenType);
         obj.transform.SetParent(collectiblesParent, false);
         obj.transform.position = pos;
         obj.transform.rotation = rot;
@@ -416,7 +427,7 @@ public class EndlessModeLoader : LevelLoader
 
     public void SpawnObstacle(ObstacleType obstacleType, Vector3 pos, Quaternion rot)
     {
-        var obj = PoolingManager.Instance.GetObject(obstacleType);
+        var obj = poolingManager.GetObject(obstacleType);
         obj.transform.SetParent(obstaclesParentPlatform, false);
         obj.transform.position = pos;
         obj.transform.rotation = rot;
@@ -489,7 +500,7 @@ public class EndlessModeLoader : LevelLoader
         int starIndex = 0;
         foreach (var starPosition in starPositions)
         {
-            GameObject starObject = PoolingManager.Instance.GetStar();
+            GameObject starObject = poolingManager.GetStar();
             if (starObject == null)
             {
                 Debug.LogWarning($"Failed to load star");
@@ -505,7 +516,7 @@ public class EndlessModeLoader : LevelLoader
         
         foreach (var multiplierPosition in multiplierPositions)
         {
-            GameObject collectibleObject = PoolingManager.Instance.GetObject(MultiplierTokenType.CircularTrigger);
+            GameObject collectibleObject = poolingManager.GetObject(MultiplierTokenType.CircularTrigger);
             collectibleObject.transform.SetParent(collectiblesParent);
             collectibleObject.transform.position = multiplierPosition;
             collectibleObject.transform.rotation = Quaternion.identity;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class ResultsScreen : MonoBehaviour
 {
@@ -23,6 +24,16 @@ public class ResultsScreen : MonoBehaviour
     private static ResultsScreen instance;
     public static ResultsScreen Instance => instance;
 
+    private ModeSelector modeSelector;
+    private GameStateManager gameStateManager;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager)
+    {
+        modeSelector = _modeSelector;
+        gameStateManager = _gameStateManager;
+    }
+    
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -99,22 +110,22 @@ public class ResultsScreen : MonoBehaviour
     public void RetryButtonClicked()
     {
         //TODO: Reload current scene cannot be hardcoded
-        GameStateManager.Instance.RetryLevel();
+        gameStateManager.RetryLevel();
     }
     
     public void MainMenuButtonClicked()
     {
-        GameStateManager.Instance.ReturnToMainMenu();
+        gameStateManager.ReturnToMainMenu();
     }
     
     public void NextLevelButtonClicked()
     {
-        GameStateManager.Instance.LoadNextLevel();
+        gameStateManager.LoadNextLevel();
     }
 
     public void CheckIsNextLevelAvailable()
     {
-        bool showNextLevelButton = ModeSelector.Instance.IsNextLevelAvailableAndUnlocked() && !ModeSelector.Instance.IsGauntletMode();
+        bool showNextLevelButton = modeSelector.IsNextLevelAvailableAndUnlocked() && !modeSelector.IsGauntletMode();
         nextLevelButton.transform.parent.gameObject.SetActive(showNextLevelButton);
     }
 }

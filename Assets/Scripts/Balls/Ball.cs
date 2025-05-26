@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class BallHitSomethingEvent
 {
@@ -52,6 +53,14 @@ public class Ball : MonoBehaviour
     private Vector3 lastKnownVelocity;
     public Vector3 LastKnownVelocity => lastKnownVelocity;
     
+    private GameStateManager gameStateManager;
+    
+    [Inject]
+    public void Construct(GameStateManager _gameStateManager)
+    {
+        gameStateManager = _gameStateManager;
+    }
+
     private void OnEnable()
     {
         EventBus.Subscribe<ResetPreviewEvent>(ResetBall);
@@ -91,7 +100,7 @@ public class Ball : MonoBehaviour
 
         rb.isKinematic = true;
         StartCoroutine(FollowTrajectory());
-        if (GameStateManager.Instance.CurrentGameState == GameState.InGame)
+        if (gameStateManager.CurrentGameState == GameState.InGame)
         {
             StartCoroutine(CaptureTrajectory());
         }

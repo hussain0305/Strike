@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public class MenuBase : MonoBehaviour
 {
@@ -25,6 +26,14 @@ public class MenuBase : MonoBehaviour
     public bool disableAfterRegister = true;
     public bool waitForSaveFileLoaded = false;
 
+    private MenuManager menuManager;
+    
+    [Inject]
+    public void Construct(MenuManager _menuManager)
+    {
+        menuManager = _menuManager;
+    }
+
     public void Start()
     {
         Register();
@@ -32,7 +41,7 @@ public class MenuBase : MonoBehaviour
     
     public void Register()
     {
-        MenuManager.Instance.RegisterMenu(this);
+        menuManager.RegisterMenu(this);
         if (waitForSaveFileLoaded)
         {
             EventBus.Subscribe<SaveLoadedEvent>(OnSaveFileLoaded);

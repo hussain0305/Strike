@@ -3,9 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Zenject;
 
 public class BallSelectionPage : MonoBehaviour
 {
+    [Inject]
+    public DiContainer diContainer;
+    
     public Transform previewBallsParent;
     public BallSelectionButton ballSelectionPrefab;
     public Transform ballSelectionButtonsParent;
@@ -212,6 +216,7 @@ public class BallSelectionPage : MonoBehaviour
         if (!selectedBall)
         {
             selectedBall = Instantiate(Balls.Instance.GetBall(ballID).prefab, previewBallsParent);
+            diContainer.InjectGameObject(selectedBall);
             selectedBall.transform.localScale *= 0.25f;
             previewBalls.Add(ballID, selectedBall);
         }

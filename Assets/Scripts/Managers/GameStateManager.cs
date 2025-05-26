@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class GameStateChangedEvent
 {
@@ -16,27 +17,21 @@ public class GameStateChangedEvent
 
 public class GameStateManager : MonoBehaviour
 {
-    private static GameStateManager instance;
-    public static GameStateManager Instance => instance;
-    
     private List<GameStateToggleListener> stateToggleListeners = new List<GameStateToggleListener>();
 
     private GameState currentGameState;
     public GameState CurrentGameState => currentGameState;
 
-    private void Awake()
+    private PoolingManager poolingManager;
+    [InjectOptional]
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(PoolingManager _poolingManager)
     {
-        if (Instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        poolingManager = _poolingManager;
     }
-
+    
     private void OnEnable()
     {
         EventBus.Subscribe<GameEndedEvent>(GameEnded);
@@ -108,7 +103,7 @@ public class GameStateManager : MonoBehaviour
         }
         foreach (Transform star in starList)
         {
-            PoolingManager.Instance.ReturnStar(star.gameObject);
+            poolingManager.ReturnStar(star.gameObject);
         }
 
         if (worldObstacles.childCount > 0)
@@ -121,7 +116,7 @@ public class GameStateManager : MonoBehaviour
             foreach (Transform child in worldObstaclesList)
             {
                 Obstacle obstacle = child.GetComponent<Obstacle>();
-                PoolingManager.Instance.ReturnObject(obstacle.type, obstacle.gameObject);
+                poolingManager.ReturnObject(obstacle.type, obstacle.gameObject);
             }
         }
 
@@ -135,7 +130,7 @@ public class GameStateManager : MonoBehaviour
             foreach (Transform child in platformObstaclesList)
             {
                 Obstacle obstacle = child.GetComponent<Obstacle>();
-                PoolingManager.Instance.ReturnObject(obstacle.type, obstacle.gameObject);
+                poolingManager.ReturnObject(obstacle.type, obstacle.gameObject);
             }
         }
     }
@@ -148,15 +143,15 @@ public class GameStateManager : MonoBehaviour
 
         if (multiplierCollectible)
         {
-            PoolingManager.Instance.ReturnObject(multiplierCollectible.multiplierTokenType, multiplierCollectible.gameObject);
+            poolingManager.ReturnObject(multiplierCollectible.multiplierTokenType, multiplierCollectible.gameObject);
         }
         else if (pointCollectible)
         {
-            PoolingManager.Instance.ReturnObject(pointCollectible.pointTokenType, pointCollectible.gameObject);
+            poolingManager.ReturnObject(pointCollectible.pointTokenType, pointCollectible.gameObject);
         }
         else if (dangerCollectible)
         {
-            PoolingManager.Instance.ReturnObject(dangerCollectible.dangerTokenType, dangerCollectible.gameObject);
+            poolingManager.ReturnObject(dangerCollectible.dangerTokenType, dangerCollectible.gameObject);
         }
     }
     public void GameEnded(GameEndedEvent e)
@@ -177,12 +172,12 @@ public class GameStateManager : MonoBehaviour
 
     public void RetryLevel()
     {
-        SceneManager.LoadScene(ModeSelector.Instance.CurrentSelectedModeInfo.scene);
+        SceneManager.LoadScene(modeSelector.CurrentSelectedModeInfo.scene);
     }
     
     public void LoadNextLevel()
     {
-        ModeSelector.Instance.SetNextLevelSelected();
-        SceneManager.LoadScene(ModeSelector.Instance.CurrentSelectedModeInfo.scene);
+        modeSelector.SetNextLevelSelected();
+        SceneManager.LoadScene(modeSelector.CurrentSelectedModeInfo.scene);
     }
 }

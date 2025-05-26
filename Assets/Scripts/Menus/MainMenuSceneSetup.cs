@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class InMenuEvent { }
 
@@ -6,6 +7,16 @@ public class MainMenuSceneSetup : MonoBehaviour
 {
     public LandingPage landingPage;
     
+    private ModeSelector modeSelector;
+    private InputManager inputManager;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector, InputManager _inputManager)
+    {
+        modeSelector = _modeSelector;
+        inputManager = _inputManager;
+    }
+
     private void OnEnable()
     {
         EventBus.Subscribe<SaveLoadedEvent>(SaveLoaded);
@@ -21,7 +32,7 @@ public class MainMenuSceneSetup : MonoBehaviour
 
     private void Start()
     {
-        InputManager.Instance.SetContext(GameContext.InMenu);
+        inputManager.SetContext(GameContext.InMenu);
         landingPage.SetText("Loading Save file");
         CoroutineDispatcher.Instance.RunCoroutine(SaveManager.LoadSaveProcess());
     }
@@ -29,7 +40,7 @@ public class MainMenuSceneSetup : MonoBehaviour
     public void SaveLoaded(SaveLoadedEvent e)
     {
         landingPage.SetText("Setting things up");
-        ModeSelector.Instance.Init();
+        modeSelector.Init();
         EventBus.Publish(new InMenuEvent());
     }
     

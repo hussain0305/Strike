@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    public static MenuManager Instance;
-
     private Stack<GameObject> menuStack = new Stack<GameObject>();
     private Stack<GameObject> popupStack = new Stack<GameObject>();
 
@@ -15,24 +13,11 @@ public class MenuManager : MonoBehaviour
     private GameContext currentGameContext = GameContext.InMenu;
     private MenuBase.MenuType? requiredMenuType = MenuBase.MenuType.MainMenu;
     
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    
     private void Start()
     {
         EventBus.Subscribe<InGameEvent>(InGame);
         EventBus.Subscribe<InMenuEvent>(InMenus);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()

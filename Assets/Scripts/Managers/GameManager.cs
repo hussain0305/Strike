@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class BallShotEvent { }
 public class ShotCompleteEvent { }
@@ -43,6 +44,9 @@ public class TrajectorySegmentVisuals
 
 public class GameManager : MonoBehaviour
 {
+    [Inject]
+    public DiContainer diContainer;
+
     private static GameManager instance;
     public static GameManager Instance => instance;
 
@@ -99,15 +103,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private static ITrajectoryModifier trajectoryModifier;
-    public static ITrajectoryModifier TrajectoryModifier
+    private ITrajectoryModifier trajectoryModifier;
+    public ITrajectoryModifier TrajectoryModifier
     {
         get
         {
             if (trajectoryModifier == null)
             {
                 Debug.Log("Determining trajectory modifier");
-                switch (ModeSelector.Instance.CurrentSelectedMode)
+                switch (modeSelector.CurrentSelectedMode)
                 {
                     case GameModeType.Portals:
                         trajectoryModifier = new PortalTrajectoryModifier();
@@ -169,6 +173,18 @@ public class GameManager : MonoBehaviour
     private float lastBallLandingShownAt = 0;
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
 
+    private ModeSelector modeSelector;
+    private GameStateManager gameStateManager;
+    private InputManager inputManager;
+    
+    [Inject]
+    void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager, InputManager _inputManager)
+    {
+        modeSelector = _modeSelector;
+        gameStateManager = _gameStateManager;
+        inputManager = _inputManager;
+    }
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -214,9 +230,9 @@ public class GameManager : MonoBehaviour
 
     public void InitGame()
     {
-        GameStateManager.Instance.SetGameState(GameState.InGame);
+        gameStateManager.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());
-        InputManager.Instance.SetContext(GameContext.InGame);
+        inputManager.SetContext(GameContext.InGame);
         gravity = -Physics.gravity.y;
     }
 
@@ -239,6 +255,7 @@ public class GameManager : MonoBehaviour
 
         var props = Balls.Instance.GetBall(primaryID);
         var spawned = Instantiate(props.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
+        diContainer.InjectGameObject(spawned);
 
         ball = spawned.GetComponent<Ball>();
         startPosition = tee.ballPosition.position;
@@ -249,14 +266,7 @@ public class GameManager : MonoBehaviour
     
     public void SetupPlayers()
     {
-        if (ModeSelector.Instance)
-        {
-            numPlayersInGame = ModeSelector.Instance.GetNumPlayers();
-        }
-        else
-        {
-            numPlayersInGame = 1;
-        }
+        numPlayersInGame = modeSelector.GetNumPlayers();
         RoundDataManager.Instance.CreatePlayers(numPlayersInGame);
     }
 
@@ -588,21 +598,21 @@ public class GameManager : MonoBehaviour
 
     public void PostGameStuff()
     {
-        bool levelCleared = ModeSelector.Instance.IsPlayingSolo &&
+        bool levelCleared = modeSelector.IsPlayingSolo &&
                             RoundDataManager.Instance.GetPointsForPlayer(0) >= GameMode.Instance.PointsRequired;
         if (levelCleared)
         {
-            SaveManager.SetLevelCompleted(ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel());
+            SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel());
             foreach (int starIndex in starsCollected)
             {
-                SaveManager.SetStarCollected((int)ModeSelector.Instance.GetSelectedGameMode(), ModeSelector.Instance.GetSelectedLevel(), starIndex);
+                SaveManager.SetStarCollected((int)modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), starIndex);
             }
             SaveManager.AddStars(starsCollected.Count);
         }
 
-        if (ModeSelector.Instance.IsGauntletMode())
+        if (modeSelector.IsGauntletMode())
         {
-            int difficulty = ModeSelector.Instance.GetEndlessModeDifficulty();
+            int difficulty = modeSelector.GetEndlessModeDifficulty();
             if (levelCleared)
                 SaveManager.RecordEndlessWin(difficulty);
             else
@@ -612,12 +622,12 @@ public class GameManager : MonoBehaviour
 
     public void SetupResults()
     {
-        GameStateManager.Instance.SetGameState(GameState.OnResultScreen);
+        gameStateManager.SetGameState(GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
         ResultsScreen.Instance.SetupResults();
     }
     
-    private static void DiscardGameContext()
+    private void DiscardGameContext()
     {
         context = null;
         trajectoryModifier = null;

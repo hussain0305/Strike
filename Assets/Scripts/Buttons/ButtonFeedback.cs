@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class ButtonClickedEvent
 {
@@ -45,7 +46,7 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [HideInInspector]
     public bool isSelected = false;
 
-    private SoundLibrary soundLibrary => AudioManager.Instance?.soundLibrary;
+    private SoundLibrary soundLibrary => audioManager?.soundLibrary;
 
     private TextMeshProUGUI textComponent;
     private TextMeshProUGUI TextComponent
@@ -77,6 +78,14 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Color highlightedTextColor = new Color(1f, 0.5f, 0.7f); 
     private Color defaultTextColor = Color.white;
     
+    private AudioManager audioManager;
+    
+    [Inject]
+    public void Construct(AudioManager _audioManager)
+    {
+        audioManager = _audioManager;
+    }
+
     private void Awake()
     {
         if (popTarget == null)
@@ -101,35 +110,24 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public void OnPointerDown(PointerEventData eventData)
     {
         if (!Button.enabled)
-        {
             return;
-        }
 
         if (!isEnabled)
-        {
             return;
-        }
+
         if (staysSelected)
-        {
             SetSelected();
-        }
         else
-        {
             SetToHighlighted();
-        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         if (!Button.enabled)
-        {
             return;
-        }
 
         if (!staysSelected)
-        {
             SetToDefault();
-        }
         
         PlaySound(playsClickSound, overrideClickSound, clickClipOverride, 
             soundLibrary?.buttonClickSFX);
@@ -138,14 +136,10 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!Button.enabled)
-        {
             return;
-        }
 
         if (isEnabled && !isSelected)
-        {
             SetToHover();
-        }
 
         PlaySound(playsHoverSound, overrideHoverSound, hoverClipOverride, 
             soundLibrary?.buttonHoverSFX);
@@ -161,13 +155,10 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!Button.enabled)
-        {
             return;
-        }
+        
         if (isEnabled && (!staysSelected || !isSelected))
-        {
             SetToDefault();
-        }
     }
 
     public void SetToDefault()
@@ -207,22 +198,23 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     
     private void PlaySound(bool shouldPlay, bool overrideClip, AudioClip clip, AudioClip defaultSound)
     {
-        if (!shouldPlay || AudioManager.Instance == null) return;
+        if (!shouldPlay || audioManager == null)
+            return;
 
         AudioClip chosenClip = overrideClip ? clip : defaultSound;
-        if (chosenClip == null) return;
+        if (chosenClip == null)
+            return;
 
-        // Slight pitch variation for hover (not for click)
         float pitch = 1f;
         if (chosenClip == soundLibrary?.buttonHoverSFX)
         {
             pitch = UnityEngine.Random.Range(0.95f, 1.05f);
         }
 
-        AudioSource source = AudioManager.Instance.GetAvailableSFXSource();
+        AudioSource source = audioManager.GetAvailableSFXSource();
         source.pitch = pitch;
         source.PlayOneShot(chosenClip);
-        StartCoroutine(AudioManager.Instance.ResetPitchAfter(chosenClip.length, source));
+        StartCoroutine(audioManager.ResetPitchAfter(chosenClip.length, source));
     }
 
     public void SetMaterial(Material _mat)

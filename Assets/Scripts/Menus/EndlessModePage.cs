@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class EndlessModePage : MonoBehaviour
 {
@@ -23,14 +24,22 @@ public class EndlessModePage : MonoBehaviour
     
     private readonly RandomizerParameterHub hub = new();
 
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
+
     private void OnEnable()
     {
         difficulty.OnValueChanged += DifficultyChanged;
         
         randomizerButton.onClick.AddListener(OnGeneratePressed);
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
-        numPlayersText.text = ModeSelector.Instance.GetNumPlayers().ToString();
-        ModeSelector.Instance.EndlessModeOpened();
+        numPlayersText.text = modeSelector.GetNumPlayers().ToString();
+        modeSelector.EndlessModeOpened();
         UpdateRecordUI(difficulty.ValueInt);
     }
 
@@ -51,8 +60,8 @@ public class EndlessModePage : MonoBehaviour
 
     public void OnGeneratePressed()
     {
-        ModeSelector.Instance.SetRandomizerGenerationSettings(hub.ToSettings());
-        SceneManager.LoadScene(ModeSelector.Instance.GetEndlessLevel());
+        modeSelector.SetRandomizerGenerationSettings(hub.ToSettings());
+        SceneManager.LoadScene(modeSelector.GetEndlessLevel());
     }
 
     public void NumPlayersChanged(NumPlayersChangedEvent e)

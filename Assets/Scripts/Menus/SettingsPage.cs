@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class SettingsPage : MonoBehaviour
 {
@@ -19,6 +20,14 @@ public class SettingsPage : MonoBehaviour
     
     private int savedMusicVolume;
     private int savedSFXVolume;
+
+    private AudioManager audioManager;
+    
+    [Inject]
+    public void Construct(AudioManager _audioManager)
+    {
+        audioManager = _audioManager;
+    }
 
     private void OnEnable()
     {
@@ -59,13 +68,13 @@ public class SettingsPage : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
-        AudioManager.Instance.SetVolume(AudioManager.AudioChannel.Music, value);
+        audioManager.SetVolume(AudioManager.AudioChannel.Music, value);
         UpdateMusicUI((int)value);
     }
 
     private void SetSFXVolume(float value)
     {
-        AudioManager.Instance.SetVolume(AudioManager.AudioChannel.SFX, value);
+        audioManager.SetVolume(AudioManager.AudioChannel.SFX, value);
         UpdateSFXUI((int)value);
     }
 

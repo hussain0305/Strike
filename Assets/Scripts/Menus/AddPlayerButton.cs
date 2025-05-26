@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class AddPlayerButton : MonoBehaviour
 {
@@ -21,17 +22,25 @@ public class AddPlayerButton : MonoBehaviour
         get
         {
             if (maxPlayers == -1)
-                maxPlayers = ModeSelector.Instance.MaxPlayers;
+                maxPlayers = modeSelector.MaxPlayers;
 
             return maxPlayers;
         }    
     }
     
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
+
     private void OnEnable()
     {
         Button.onClick.AddListener(() =>
         {
-            ModeSelector.Instance.AddPlayer();
+            modeSelector.AddPlayer();
         });
         
         EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);

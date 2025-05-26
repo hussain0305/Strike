@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class CollectibleHitEvent
 {
@@ -74,6 +75,14 @@ public class Collectible : MonoBehaviour
 
     private IContextProvider context;
     
+    private GameStateManager gameStateManager;
+    
+    [Inject]
+    public void Construct(GameStateManager _gameStateManager)
+    {
+        gameStateManager = _gameStateManager;
+    }
+
     public void Awake()
     {
         SaveDefaults();
@@ -187,7 +196,7 @@ public class Collectible : MonoBehaviour
 
             case PinBehaviourPerTurn.DisappearUponCollection:
                 if (accountedForInThisShot)
-                    GameStateManager.Instance.ReturnCollectible(transform);
+                    gameStateManager.ReturnCollectible(transform);
                 else
                     ResetPin();
                 break;

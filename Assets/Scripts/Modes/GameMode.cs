@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public abstract class GameMode : MonoBehaviour
 {
@@ -28,6 +29,14 @@ public abstract class GameMode : MonoBehaviour
     
     private static GameMode instance;
     public static GameMode Instance => instance;
+
+    private ModeSelector modeSelector;
+    
+    [Inject]
+    public void Construct(ModeSelector _modeSelector)
+    {
+        modeSelector = _modeSelector;
+    }
 
     private void Awake()
     {
@@ -60,7 +69,7 @@ public abstract class GameMode : MonoBehaviour
     public virtual WinCondition GetWinCondition()
     {
         pointsRequired = GameManager.Instance.levelLoader.GetTargetPoints();
-        return ModeSelector.Instance.IsPlayingSolo ? defaultWinCondition : multiplayerWinCondition;
+        return modeSelector.IsPlayingSolo ? defaultWinCondition : multiplayerWinCondition;
     }
 
     public float GetMinTimePerShot()

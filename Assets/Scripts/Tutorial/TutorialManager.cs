@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class TutorialManager : MonoBehaviour
 {
+    [Inject]
+    DiContainer diContainer;
+
     public Tee tee;
     public BallParameterController ballParameterController;
     public TrajectoryButton trajectoryButton;
@@ -45,6 +49,16 @@ public class TutorialManager : MonoBehaviour
 
     private string tutorialBallID = "soccBall";
     
+    private GameStateManager gameStateManager;
+    private InputManager inputManager;
+    
+    [Inject]
+    public void Construct(GameStateManager _gameStateManager, InputManager _inputManager)
+    {
+        gameStateManager = _gameStateManager;
+        inputManager = _inputManager;
+    }
+
     private void Start()
     {
         InitTutorial();
@@ -104,12 +118,13 @@ public class TutorialManager : MonoBehaviour
     {
         BallProperties selected = Balls.Instance.GetBall(tutorialBallID);
         GameObject spawned = Instantiate(selected.prefab, tee.ballPosition.position, Quaternion.identity, tee.transform);
+        diContainer.InjectGameObject(spawned);
         ball = spawned.GetComponent<Ball>();
         CameraController.Instance.cameraFollow.BallTransform = ball.transform;
         
-        GameStateManager.Instance.SetGameState(GameState.InGame);
+        gameStateManager.SetGameState(GameState.InGame);
         EventBus.Publish(new InGameEvent());
-        InputManager.Instance.SetContext(GameContext.InGame);
+        inputManager.SetContext(GameContext.InGame);
         gravity = -Physics.gravity.y;
         TutorialContext = new TutorialContext();
         TutorialContext.InitTutorial(ball, ballParameterController, tee);
