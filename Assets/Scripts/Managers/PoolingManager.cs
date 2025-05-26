@@ -4,8 +4,8 @@ using Zenject;
 
 public class PoolingManager : MonoBehaviour
 {
-    [InjectOptional]
-    SceneContext sceneContext;
+    [Inject]
+    DiContainer diContainer;
     
     private CollectiblePrefabMapping prefabMapping => CollectiblePrefabMapping.Instance;
 
@@ -25,7 +25,7 @@ public class PoolingManager : MonoBehaviour
         }
 
         GameObject newObj = Instantiate(prefabGetter(type));
-        sceneContext.Container.InjectGameObject(newObj);
+        diContainer.InjectGameObject(newObj);
         return newObj;
     }
 
@@ -91,7 +91,7 @@ public class PoolingManager : MonoBehaviour
         }
 
         GameObject newStar = Instantiate(prefabMapping.GetStarPrefab());
-        sceneContext.Container.InjectGameObject(newStar);
+        diContainer.InjectGameObject(newStar);
 
         return newStar;
     }
