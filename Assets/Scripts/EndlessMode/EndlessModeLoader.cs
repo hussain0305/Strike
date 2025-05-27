@@ -472,7 +472,7 @@ public class EndlessModeLoader : LevelLoader
                 obstacleData.rotationAxis = new Vector3(0, 0, 1);
                 obstacleData.rotationSpeed = 360;
             }
-            obstacle.InitializeAndSetup(gameManager.Context, obstacleData);
+            obstacle.InitializeAndSetup(gameManager.Context, obstacleData, gameManager.NumPlayersInGame);
         }
     }
 

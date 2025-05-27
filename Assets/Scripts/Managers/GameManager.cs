@@ -11,7 +11,6 @@ public class BallShotEvent { }
 public class ShotCompleteEvent { }
 public class CueNextShotEvent { }
 public class PreNextShotCuedEvent { }
-public class NextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
@@ -23,6 +22,29 @@ public class ProjectilesSpawnedEvent
     public ProjectilesSpawnedEvent(GameObject[] _projectiles)
     {
         projectiles = _projectiles;
+    }
+}
+
+public class NewGameStartedEvent
+{
+    public int NumPlayers;
+
+    public NewGameStartedEvent(int _numPlayers)
+    {
+        NumPlayers = _numPlayers;
+    }
+}
+
+public class NextShotCuedEvent
+{
+    public int CurrentPlayerTurn;
+    public NextShotCuedEvent()
+    {
+        CurrentPlayerTurn = 0;
+    }
+    public NextShotCuedEvent(int _currentPlayerTurn)
+    {
+        CurrentPlayerTurn = _currentPlayerTurn;
     }
 }
 
@@ -59,7 +81,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     [HideInInspector]
     public Ball ball;
 
-    [FormerlySerializedAs("ballInputController")] [Header("Controls Panel")]
+    [Header("Controls Panel")]
     public BallParameterController ballParameterController;
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
@@ -200,6 +222,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         ShowLevelInfo();
         currentPlayerTurn = 0;
         roundDataManager.SetCurrentShotTaker();
+        EventBus.Publish(new NewGameStartedEvent(NumPlayersInGame));
     }
 
     private void OnEnable()
@@ -343,12 +366,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         EventBus.Publish(new PreNextShotCuedEvent());
         yield return null;
-        EventBus.Publish(new NextShotCuedEvent());
+        EventBus.Publish(new NextShotCuedEvent(CurrentPlayerTurn));
     }
 
     public void TogglePlayer()
     {
-        int first = currentPlayerTurn;
+        int lastTurn = currentPlayerTurn;
 
         do
         {
@@ -367,7 +390,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
                 }
             }
 
-        }while (roundDataManager.EliminationOrder.Contains(currentPlayerTurn) && currentPlayerTurn != first);
+        }while (roundDataManager.EliminationOrder.Contains(currentPlayerTurn) && currentPlayerTurn != lastTurn);
 
         roundDataManager.SetCurrentShotTaker();
     }

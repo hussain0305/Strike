@@ -42,4 +42,31 @@ public class SwitchDoor : Obstacle, ISwitchable
 
         door.gameObject.SetActive(!doorOpen);
     }
+    
+    public void SetDoorOpen()
+    {
+        doorOpen = true;
+        door.localScale = new Vector3(door.localScale.x, 0, door.localScale.z);
+        door.gameObject.SetActive(false);
+    }
+
+    public void SetDoorClosed()
+    {
+        doorOpen = false;
+        door.localScale = new Vector3(door.localScale.x, doorOpenYScale, door.localScale.z);
+        door.gameObject.SetActive(true);
+    }
+
+    public void Reset()
+    {
+        SetDoorClosed();
+    }
+    
+    public void SyncForPlayer(bool open)
+    {
+        if (open)
+            SetDoorOpen();
+        else
+            SetDoorClosed();
+    }
 }

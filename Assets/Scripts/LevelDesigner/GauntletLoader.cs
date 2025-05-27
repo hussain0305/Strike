@@ -174,7 +174,7 @@ public class GauntletLoader : LevelLoader
             Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
             if (obstacleScript != null)
             {
-                obstacleScript.InitializeAndSetup(gameManager.Context, obstacleData);
+                obstacleScript.InitializeAndSetup(gameManager.Context, obstacleData, gameManager.NumPlayersInGame);
             }
         }
         

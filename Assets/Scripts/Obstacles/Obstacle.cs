@@ -6,10 +6,12 @@ public class Obstacle : MonoBehaviour
     
     private Positioning positioning;
     private IContextProvider context;
+    protected int numTotalPlayers;
     
-    public void InitializeAndSetup(IContextProvider _context, LevelExporter.ObstacleData _obstacleData)
+    public void InitializeAndSetup(IContextProvider _context, LevelExporter.ObstacleData _obstacleData, int _numTotalPlayers = 1)
     {
         context = _context;
+        numTotalPlayers = _numTotalPlayers;
         type = _obstacleData.type;
         positioning = _obstacleData.positioning;
         
