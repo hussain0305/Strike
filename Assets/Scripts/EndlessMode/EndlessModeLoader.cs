@@ -155,6 +155,7 @@ public class EndlessModeLoader : LevelLoader
     public EndlessLevelWalls wallLocations;
     public int maxObjects = 50;
     public GameObject gameModeObject;
+    public EndlessLevelInstaller endlessLevelInstaller;
     
     private RandomizedHexStack randomizedHexStack;
     public RandomizedHexStack RandomizedHexStack
@@ -179,6 +180,7 @@ public class EndlessModeLoader : LevelLoader
             {
                 randomizedGutterWall = gameObject.AddComponent<RandomizedGutterWall>();
                 randomizedGutterWall.Initialize(this);
+                diContainer.Inject(randomizedGutterWall);
             }
             return randomizedGutterWall;
         }
@@ -222,16 +224,20 @@ public class EndlessModeLoader : LevelLoader
     private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     private readonly List<SpawnedToken> tokenCache = new List<SpawnedToken>();
     
-    private ModeSelector modeSelector;
-    private PoolingManager poolingManager;
+    private GameMode currentGameMode;
+    [Inject]
+    DiContainer diContainer;
+    
+    [InjectOptional]
+    SceneContext sceneContext;
     
     [Inject]
-    public void Construct(MenuManager _menuManager, ModeSelector _modeSelector, PoolingManager _poolingManager)
-    {
-        modeSelector = _modeSelector;
-        poolingManager = _poolingManager;
-    }
-
+    private GameManager gameManager;
+    [Inject]
+    private ModeSelector modeSelector;
+    [Inject]
+    private PoolingManager poolingManager;
+    
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
@@ -293,15 +299,37 @@ public class EndlessModeLoader : LevelLoader
             RandomizerEnum[] pinBehaviours = EndlessModePinBehaviour.Instance.pinBehaviours;
             pinBehaviour = pinBehaviours[pinBehaviourIndex].pinBehaviour;
             
+            var oldDefault = FindFirstObjectByType<RegularMode>();
+            if (oldDefault != null)
+            {
+                Debug.Log(">>> DELETING OLD MODE!!");
+                Destroy(oldDefault.gameObject);
+            }
+            
             switch (pinBehaviour)
             {
                 case PinBehaviourPerTurn.Reset:
-                    gameModeObject.AddComponent<RegularMode>();
+                    currentGameMode = gameModeObject.AddComponent<RegularMode>();
                     break;
                 case PinBehaviourPerTurn.DisappearUponCollection:
-                    gameModeObject.AddComponent<DisappearingMode>();
+                    currentGameMode = gameModeObject.AddComponent<DisappearingMode>();
                     break;
             }
+            
+            diContainer.Inject(currentGameMode);
+            diContainer
+                .Rebind<GameMode>()
+                .FromInstance(currentGameMode)
+                .AsSingle()
+                .NonLazy();
+            
+            Debug.Log(">>> REBOUND!!");
+            if (diContainer == sceneContext.Container)
+            {
+                Debug.Log(">>> I Got the scene context!!");
+            }
+            
+            endlessLevelInstaller.ReinjectAll();
         }
 
     }
@@ -444,7 +472,7 @@ public class EndlessModeLoader : LevelLoader
                 obstacleData.rotationAxis = new Vector3(0, 0, 1);
                 obstacleData.rotationSpeed = 360;
             }
-            obstacle.InitializeAndSetup(GameManager.Context, obstacleData);
+            obstacle.InitializeAndSetup(gameManager.Context, obstacleData);
         }
     }
 
@@ -477,7 +505,7 @@ public class EndlessModeLoader : LevelLoader
             int points = Mathf.CeilToInt(raw / 5f) * 5;
 
             var collectible = scoredByDifficultyToCollectList[i].collectible;
-            collectible.InitializeAndSetup(GameManager.Context, points, 1, Collectible.PointDisplayType.InBody);
+            collectible.InitializeAndSetup(gameManager.Context, points, 1, Collectible.PointDisplayType.InBody);
         }
     }
 
@@ -537,7 +565,7 @@ public class EndlessModeLoader : LevelLoader
                 // picker.AddChoice(4, w4);
                 int multiple = picker.Pick();
 
-                collectibleScript.InitializeAndSetup(GameManager.Context, multiple, 1, Collectible.PointDisplayType.InBody);
+                collectibleScript.InitializeAndSetup(gameManager.Context, multiple, 1, Collectible.PointDisplayType.InBody);
             }
 
         }

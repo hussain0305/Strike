@@ -88,9 +88,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private int currentPlayerTurn;
     public int CurrentPlayerTurn => currentPlayerTurn;
     
-    private static InGameContext context;
-    public static InGameContext Context => context;
-
     private ITrajectoryModifier trajectoryModifier;
     public ITrajectoryModifier TrajectoryModifier
     {
@@ -161,26 +158,22 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private float lastBallLandingShownAt = 0;
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
 
+    [InjectOptional]
     private ModeSelector modeSelector;
+    [InjectOptional]
     private GameStateManager gameStateManager;
+    [InjectOptional]
     private InputManager inputManager;
+    [InjectOptional]
     private CameraController cameraController;
+    [InjectOptional]
     private RoundDataManager roundDataManager;
-    private GameMode gameMode;
-    
     [Inject]
-    public void Construct(ModeSelector _modeSelector, GameStateManager _gameStateManager, InputManager _inputManager, 
-        CameraController _cameraController, RoundDataManager _roundDataManager, GameMode _gameMode, InGameContext _inGameContext)
-    {
-        modeSelector = _modeSelector;
-        gameStateManager = _gameStateManager;
-        inputManager = _inputManager;
-        cameraController = _cameraController;
-        roundDataManager = _roundDataManager;
-        gameMode = _gameMode;
-        context = _inGameContext;
-    }
-
+    private GameMode gameMode;
+    [InjectOptional]
+    private InGameContext context;
+    public InGameContext Context => context;
+    
     public void Initialize()
     {
         IsGameplayActive = true;

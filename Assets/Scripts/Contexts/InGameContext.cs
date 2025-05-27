@@ -1,15 +1,18 @@
 using UnityEngine;
+using Zenject;
 
 public class InGameContext : IContextProvider
 {
+    [InjectOptional]
     private GameManager gameManager;
+    [InjectOptional]
     private GameMode gameMode;
 
-    public InGameContext(GameManager _gameManager, GameMode _gameMode)
-    {
-        gameManager = _gameManager;
-        gameMode = _gameMode;
-    }
+    // public InGameContext(GameManager _gameManager, GameMode _gameMode)
+    // {
+    //     gameManager = _gameManager;
+    //     gameMode = _gameMode;
+    // }
     
     public Transform GetAimTransform()
     {

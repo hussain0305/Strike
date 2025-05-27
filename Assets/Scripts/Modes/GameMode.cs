@@ -27,18 +27,13 @@ public abstract class GameMode : MonoBehaviour
     private int projectileViewDuration = 10;
     public int ProjectileViewDuration => projectileViewDuration;
     
+    [InjectOptional]
     private ModeSelector modeSelector;
+    [InjectOptional]
     private GameManager gameManager;
+    [InjectOptional]
     private RoundDataManager roundDataManager;
-
-    [Inject]
-    public void Construct(ModeSelector _modeSelector, GameManager _gameManager, RoundDataManager _roundDataManager)
-    {
-        modeSelector = _modeSelector;
-        gameManager = _gameManager;
-        roundDataManager = _roundDataManager;
-    }
-
+    
     private void OnEnable()
     {
         EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);

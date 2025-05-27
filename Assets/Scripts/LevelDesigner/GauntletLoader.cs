@@ -4,16 +4,13 @@ using Zenject;
 
 public class GauntletLoader : LevelLoader
 {
-    private ModeSelector modeSelector;
-    private PoolingManager poolingManager;
-    
     [Inject]
-    public void Construct(MenuManager _menuManager, ModeSelector _modeSelector, PoolingManager _poolingManager)
-    {
-        modeSelector = _modeSelector;
-        poolingManager = _poolingManager;
-    }
-
+    private ModeSelector modeSelector;
+    [Inject]
+    private PoolingManager poolingManager;
+    [Inject]
+    private GameManager gameManager;
+    
     public override void LoadLevel()
     {
         if (poolingManager == null)
@@ -86,7 +83,7 @@ public class GauntletLoader : LevelLoader
             if (collectibleScript != null)
             {
                 collectibleScript.OverrideDefaultLocalScale(Vector3.one);
-                collectibleScript.InitializeAndSetup(GameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
+                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
             }
             bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
             ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
@@ -177,7 +174,7 @@ public class GauntletLoader : LevelLoader
             Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
             if (obstacleScript != null)
             {
-                obstacleScript.InitializeAndSetup(GameManager.Context, obstacleData);
+                obstacleScript.InitializeAndSetup(gameManager.Context, obstacleData);
             }
         }
         

@@ -31,14 +31,10 @@ public class RoundDataManager : MonoBehaviour
     private ShotData currentShotData;
     public  ShotData CurrentShotData => currentShotData;
     
-    private GameManager gameManager;
-    private GameMode gameMode;
     [Inject]
-    void Construct(GameManager _gameManager, GameMode _gameMode)
-    {
-        gameManager = _gameManager;
-        gameMode = _gameMode;
-    }
+    private GameManager gameManager;
+    [Inject]
+    private GameMode gameMode;
 
     private void OnEnable()
     {

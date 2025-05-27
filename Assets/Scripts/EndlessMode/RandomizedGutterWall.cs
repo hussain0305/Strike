@@ -47,13 +47,10 @@ public class RandomizedGutterWall : RandomizerSpawner
     private readonly int minGutterWallPointsFactor = 2;
     private readonly int maxGutterWallPointsFactor = 3;
     
-    private PoolingManager poolingManager;
-    
     [Inject]
-    public void Construct(PoolingManager _poolingManager)
-    {
-        poolingManager = _poolingManager;
-    }
+    private PoolingManager poolingManager;
+    [Inject]
+    private GameManager gameManager;
 
     public void Setup(int _difficulty)
     {
@@ -195,7 +192,7 @@ public class RandomizedGutterWall : RandomizerSpawner
             float points = Mathf.Lerp(minPoints, maxPoints, Random.value);
             int roundedOffPoints = Mathf.CeilToInt(points / 5f) * 5;
             
-            pointToken.InitializeAndSetup(GameManager.Context, roundedOffPoints, 1, Collectible.PointDisplayType.InBody);
+            pointToken.InitializeAndSetup(gameManager.Context, roundedOffPoints, 1, Collectible.PointDisplayType.InBody);
         }
         
         var cm = obj.GetComponent<ContinuousMovement>();

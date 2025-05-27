@@ -168,7 +168,7 @@ public class LevelEditorWindow : EditorWindow
             Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
             if (obstacleScript != null)
             {
-                obstacleScript.InitializeAndSetup(GameManager.Context, obstacleData);
+                obstacleScript.InitializeAndSetup(null, obstacleData);//TODO: Revisit this later if passing null is acceptable
             }
         }
         
