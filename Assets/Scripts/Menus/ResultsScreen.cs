@@ -50,41 +50,24 @@ public class ResultsScreen : MonoBehaviour
         nextLevelButton.onClick.RemoveAllListeners();
     }
 
-
-    public void SetupResults()
+    public void SetupResult(bool levelCleared)
     {
         winConditionPointsRanking.gameObject.SetActive(false);
-        winConditionPointsRequirement.gameObject.SetActive(false);
-        
-        switch (gameMode.GetWinCondition())
-        {
-            case WinCondition.PointsRanking:
-                ShowMultiplayerResultScreen();
-                break;
-            case WinCondition.PointsRequired:
-            case WinCondition.Survival:
-                ShowSoloRulesResultScreen();
-                break;
-        }
-
-        CheckIsNextLevelAvailable();
-    }
-
-    public void ShowSoloRulesResultScreen()
-    {
         winConditionPointsRequirement.gameObject.SetActive(true);
-        int playerPoints = roundDataManager.GetPointsForPlayer(0);
-        bool levelCleared = playerPoints >= gameMode.PointsRequired;
+        
         wonMessage.gameObject.SetActive(levelCleared);
         lostMessage.gameObject.SetActive(!levelCleared);
         backgroundImage.material = levelCleared ? GlobalAssets.Instance.winResultBackgroundMaterial : GlobalAssets.Instance.loseResultBackgroundMaterial;
-    }
 
-    public void ShowMultiplayerResultScreen()
+        CheckIsNextLevelAvailable();
+    }
+    
+    public void SetupResult(List<PlayerGameData> playerRanks)
     {
-        backgroundImage.material = GlobalAssets.Instance.neutralResultBackgroundMaterial;
         winConditionPointsRanking.gameObject.SetActive(true);
-        List<PlayerGameData> playerRanks = roundDataManager.GetPlayerRankings();
+        winConditionPointsRequirement.gameObject.SetActive(false);
+        
+        backgroundImage.material = GlobalAssets.Instance.neutralResultBackgroundMaterial;
         winConditionPointsRankingText.text = $"{playerRanks[0].name} wins";
         int i = 0;
         while (i < playerRanks.Count)
@@ -99,8 +82,10 @@ public class ResultsScreen : MonoBehaviour
             rankRows[i].gameObject.SetActive(false);
             i++;
         }
+        
+        CheckIsNextLevelAvailable();
     }
-
+    
     public void RetryButtonClicked()
     {
         //TODO: Reload current scene cannot be hardcoded

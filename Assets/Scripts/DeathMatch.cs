@@ -7,30 +7,25 @@ public class DeathMatch : GameMode
 {
     private Coroutine nextShotCoroutine;
     
-    private GameManager gameManager;
-    private RoundDataManager roundDataManager;
-
-    [Inject]
-    public void Construct(GameManager _gameManager, RoundDataManager _roundDataManager)
-    {
-        gameManager = _gameManager;
-        roundDataManager = _roundDataManager;
-    }
-
+    private bool deathMatchFailCondition = false;
+    
     private void Start()
     {
         defaultWinCondition = WinCondition.Survival;
         pinBehaviour = PinBehaviourPerTurn.DisappearUponCollection;
     }
 
-    public override void OnShotComplete(bool hitSomething)
+    public override void OnShotComplete(bool hitDangerPin, bool hitNormalPin)
     {
+        deathMatchFailCondition = deathMatchFailCondition || hitDangerPin;
+        bool hitSomething = hitDangerPin || hitNormalPin;
         if (hitSomething)
         {
             FlagNextShot(0);
         }
         else
         {
+            deathMatchFailCondition = true;
             int player = gameManager.CurrentPlayerTurn;
             roundDataManager.EliminatePlayer(player);
             FlagNextShot(1);
@@ -58,5 +53,10 @@ public class DeathMatch : GameMode
     {
         defaultWinCondition = WinCondition.Survival;
         return base.GetWinCondition();
+    }
+
+    public override bool LevelCompletedSuccessfully()
+    {
+        return !deathMatchFailCondition;
     }
 }

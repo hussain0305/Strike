@@ -8,13 +8,21 @@ using UnityEngine.UI;
 using Zenject;
 
 public class BallShotEvent { }
-public class ShotCompleteEvent { }
 public class CueNextShotEvent { }
 public class PreNextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class TrajectoryEnabledEvent { }
+
+public class ShotCompleteEvent
+{
+    public List<Vector3> ShotTrajectory;
+    public ShotCompleteEvent(List<Vector3> capturedTrajectory)
+    {
+        ShotTrajectory = capturedTrajectory;
+    }
+}
 
 public class ProjectilesSpawnedEvent
 {
@@ -341,7 +349,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     public void ShotComplete()
     {
         nextButton.gameObject.SetActive(false);
-        EventBus.Publish(new ShotCompleteEvent());
+        EventBus.Publish(new ShotCompleteEvent(ball.CapturedTrajectoryPoints));
     }
     
     public void CueNextShot(CueNextShotEvent e)
@@ -608,8 +616,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 
     public void PostGameStuff()
     {
-        bool levelCleared = modeSelector.IsPlayingSolo &&
-                            roundDataManager.GetPointsForPlayer(0) >= gameMode.PointsRequired;
+        bool levelCleared = modeSelector.IsPlayingSolo && gameMode.LevelCompletedSuccessfully();
+        
         if (levelCleared)
         {
             SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel());
@@ -632,9 +640,17 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 
     public void SetupResults()
     {
+        if (modeSelector.IsPlayingSolo)
+        {
+            resultScreen.SetupResult(gameMode.LevelCompletedSuccessfully());
+        }
+        else
+        {
+            resultScreen.SetupResult(roundDataManager.GetPlayerRankings());
+        }
+        
         gameStateManager.SetGameState(GameState.OnResultScreen);
         resultScreen.gameObject.SetActive(true);
-        resultScreen.SetupResults();
     }
     
     private void DiscardGameContext()

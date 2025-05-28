@@ -39,12 +39,14 @@ public class RoundDataManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<ShotCompleteEvent>(ShotComplete);
         EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<ShotCompleteEvent>(ShotComplete);
         EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
     }
     
@@ -53,6 +55,11 @@ public class RoundDataManager : MonoBehaviour
         PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
         gameData.shotsTaken++;
         playerGameData[gameManager.CurrentPlayerTurn] = gameData;
+    }
+
+    public void ShotComplete(ShotCompleteEvent e)
+    {
+        FinishLoggingShotInfo(e.ShotTrajectory);
     }
 
     public void CreateNewPlayerRecord(int _index)
@@ -203,7 +210,7 @@ public class RoundDataManager : MonoBehaviour
         currentShotInfo.trajectory = capturedTrajectory;
         AddPlayerShotHistory(currentShotData.ownerIndex, currentShotInfo);
         
-        gameMode.OnShotComplete(currentShotData.hitDangerPin || currentShotData.hitNormalPint);
+        gameMode.OnShotComplete(currentShotData.hitDangerPin, currentShotData.hitNormalPint);
         
         currentShotData.Reset();
     }

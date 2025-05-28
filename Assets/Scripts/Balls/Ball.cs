@@ -36,6 +36,7 @@ public class Ball : MonoBehaviour
     protected List<Vector3> trajectoryPoints;
     protected List<List<Vector3>> finalTrajectory;
     protected List<Vector3> capturedTrajectoryPoints;
+    public List<Vector3> CapturedTrajectoryPoints => capturedTrajectoryPoints;
 
     protected int trajectoryDefinition = 10;
     protected float gravity;
@@ -186,7 +187,6 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
-        roundDataManager?.FinishLoggingShotInfo(capturedTrajectoryPoints);
     }
     
     public void ResetBall<T>(T e)

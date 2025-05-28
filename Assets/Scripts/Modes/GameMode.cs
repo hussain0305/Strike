@@ -28,11 +28,11 @@ public abstract class GameMode : MonoBehaviour
     public int ProjectileViewDuration => projectileViewDuration;
     
     [InjectOptional]
-    private ModeSelector modeSelector;
+    protected ModeSelector modeSelector;
     [InjectOptional]
-    private GameManager gameManager;
+    protected GameManager gameManager;
     [InjectOptional]
-    private RoundDataManager roundDataManager;
+    protected RoundDataManager roundDataManager;
     
     private void OnEnable()
     {
@@ -99,8 +99,13 @@ public abstract class GameMode : MonoBehaviour
         return false;
     }
     
-    public virtual void OnShotComplete(bool hitSomething)
+    public virtual void OnShotComplete(bool hitDangerPin, bool hitNormalPin)
     {
         EventBus.Publish(new CueNextShotEvent());
+    }
+
+    public virtual bool LevelCompletedSuccessfully()
+    {
+        return roundDataManager.GetPointsForPlayer(0) >= PointsRequired;
     }
 }
