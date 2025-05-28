@@ -79,12 +79,6 @@ public class GauntletLoader : LevelLoader
             collectibleObject.transform.rotation = collectibleData.rotation;
             collectibleObject.transform.localScale = Vector3.one;
 
-            Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
-            if (collectibleScript != null)
-            {
-                collectibleScript.OverrideDefaultLocalScale(Vector3.one);
-                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
-            }
             bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
             ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
 
@@ -103,6 +97,13 @@ public class GauntletLoader : LevelLoader
             else if (cmScript)
             {
                 Destroy(cmScript);
+            }
+
+            Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
+            if (collectibleScript != null)
+            {
+                collectibleScript.OverrideDefaultLocalScale(Vector3.one);
+                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
             }
             
             DangerToken dangerScript = collectibleObject.GetComponent<DangerToken>();
