@@ -22,18 +22,8 @@ public class BallPreviewController : MonoBehaviour
             { "mirrorBall", gameObject.AddComponent<PreviewMirrorBall>() }
             
         };
-
-        InitializeElements();
     }
-
-    private void InitializeElements()
-    {
-        foreach (Collectible collectible in previewSceneObjects.GetComponentsInChildren<Collectible>())
-        {
-            collectible.Initialize(MainMenu.Context);
-        }
-    }
-
+    
     public void PlayPreview(string ballID, GameObject previewBall)
     {
         if (previewStrategies.TryGetValue(ballID, out IBallPreview preview))

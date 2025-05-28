@@ -56,6 +56,11 @@ public class MirrorModule : IBallAbilityModule, IBallAbilityUpdateableModule
 
     public void Cleanup()
     {
+        DiscardMirroredBall();
+    }
+
+    public void DiscardMirroredBall()
+    {
         if (mirroredBall)
         {
             GameObject.Destroy(mirroredBall);

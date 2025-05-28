@@ -65,14 +65,19 @@ public class MenuContext : IContextProvider
         return PinBehaviourPerTurn.Reset;
     }
 
-    public void SpoofNewTrajectory()
+    public void SpoofNewTrajectory(float spinXMin = -0.25f, float spinXMax = 0.25f, float spinYMin = -0.5f, 
+        float spinYMax = -0.25f, float launchForceMin = 6f, float launchForceMax = 7f)
     {
-        spoofedSpinVector = new Vector2(Random.Range(-0.25f, 0.25f), Random.Range(-0.5f, -0.25f));
-        spoofedLaunchAngle = Quaternion.identity;
-        spoofedLaunchForce = Random.Range(6f, 7f) / (currentBall ? currentBall.rb.mass : 1);
-        aimTransform.rotation = spoofedLaunchAngle;
-    }
+        spoofedSpinVector = new Vector2(Random.Range(spinXMin, spinXMax), Random.Range(spinYMin, spinYMax));
 
+        spoofedLaunchAngle = Quaternion.identity;
+        aimTransform.rotation = spoofedLaunchAngle;
+
+        float mass = currentBall ? currentBall.rb.mass : 1f;
+        float force = Random.Range(launchForceMin, launchForceMax);
+        spoofedLaunchForce = force / mass;
+    }
+    
     public void SetSpoofedSpinVector(Vector2 _spinVector)
     {
         spoofedSpinVector = _spinVector;
