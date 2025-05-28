@@ -13,11 +13,25 @@ public class MirrorModule : IBallAbilityModule, IBallAbilityUpdateableModule
     {
         ball = ownerBall;
         context  = _context;
+        if (mirroredBall)
+        {
+            mirroredBall.transform.parent = ball.transform.parent;
+            mirroredBall.transform.localScale = ball.transform.localScale;
+        }
     }
 
     public void SetShadowBall(GameObject go)
     {
-        mirroredBall = go;
+        if (go)
+        {
+            mirroredBall = go;
+        }
+
+        if (ball)
+        {
+            mirroredBall.transform.parent = ball.transform.parent;
+            mirroredBall.transform.localScale = ball.transform.localScale;
+        }
     }
 
     public void OnBallShot(BallShotEvent e)
@@ -47,6 +61,6 @@ public class MirrorModule : IBallAbilityModule, IBallAbilityUpdateableModule
 
     public void OnUpdate()
     {
-        mirroredBall.transform.position = new Vector3(-ball.transform.position.x, ball.transform.position.y, ball.transform.position.z);
+        mirroredBall.transform.localPosition = new Vector3(-ball.transform.localPosition.x, ball.transform.localPosition.y, ball.transform.localPosition.z);
     }
 }
