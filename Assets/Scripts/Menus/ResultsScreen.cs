@@ -17,6 +17,7 @@ public class ResultsScreen : MonoBehaviour
     public RankRow[] rankRows;
     
     [Header("Universal")]
+    public Image backgroundImage;
     public Button mainMenuButton;
     public Button retryButton;
     public Button nextLevelButton;
@@ -76,10 +77,12 @@ public class ResultsScreen : MonoBehaviour
         bool levelCleared = playerPoints >= gameMode.PointsRequired;
         wonMessage.gameObject.SetActive(levelCleared);
         lostMessage.gameObject.SetActive(!levelCleared);
+        backgroundImage.material = levelCleared ? GlobalAssets.Instance.winResultBackgroundMaterial : GlobalAssets.Instance.loseResultBackgroundMaterial;
     }
 
     public void ShowMultiplayerResultScreen()
     {
+        backgroundImage.material = GlobalAssets.Instance.neutralResultBackgroundMaterial;
         winConditionPointsRanking.gameObject.SetActive(true);
         List<PlayerGameData> playerRanks = roundDataManager.GetPlayerRankings();
         winConditionPointsRankingText.text = $"{playerRanks[0].name} wins";

@@ -55,6 +55,11 @@ public class GlobalAssets : ScriptableObject
     [Header("GameObject Prefabs")]
     public GameObject ballLandingIndicatorPrefab;
     
+    [Header("Results Screen appearance")]
+    public Material winResultBackgroundMaterial;
+    public Material loseResultBackgroundMaterial;
+    public Material neutralResultBackgroundMaterial;
+    
     private Dictionary<ButtonLocation, Material> lockedMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> defaultMaterialsDictionary;
     private Dictionary<ButtonLocation, Material> selectedMaterialsDictionary;
