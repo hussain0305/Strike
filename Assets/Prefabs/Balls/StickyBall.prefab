@@ -316,8 +316,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
@@ -340,6 +340,7 @@ MonoBehaviour:
   dipClamp: 5
   groundLevel: 0
   collidedWithSomething: 0
+  shouldResumePhysics: 1
 --- !u!114 &5560138045211544573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4690533fe1410ad49939c775b387f6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: -9019952836771291240}
 --- !u!1 &8535519100030460562
 GameObject:
   m_ObjectHideFlags: 0
@@ -5312,7 +5312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e4cef0496911a46ac08ae192f0e74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: -9019952836771291240}
 --- !u!114 &7610025539870540025
 MonoBehaviour:
   m_ObjectHideFlags: 0
