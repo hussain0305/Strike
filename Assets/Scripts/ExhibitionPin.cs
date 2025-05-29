@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ExhibitionPin : MonoBehaviour
+public class ExhibitionPin : MonoBehaviour, ICollectible
 {
     public Material defaultMaterial;
     public Material hitMaterial;
@@ -59,5 +59,10 @@ public class ExhibitionPin : MonoBehaviour
             SetHitVisuals();
             ball.collidedWithSomething = true;
         }
+    }
+
+    public bool CanBeCollected()
+    {
+        return true;
     }
 }

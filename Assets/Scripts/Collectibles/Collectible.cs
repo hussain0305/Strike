@@ -16,7 +16,7 @@ public class CollectibleHitEvent
     }
 }
 
-public class Collectible : MonoBehaviour
+public class Collectible : MonoBehaviour, ICollectible
 {
     public enum PointDisplayType
     {
