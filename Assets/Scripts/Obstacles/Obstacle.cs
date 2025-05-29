@@ -49,7 +49,7 @@ public class Obstacle : MonoBehaviour
             Rigidbody rBody = GetComponent<Rigidbody>();
             rBody.isKinematic = true;
         }
-        else if (crScript)
+        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
         {
             Destroy(crScript);
         }

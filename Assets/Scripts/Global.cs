@@ -39,7 +39,8 @@ public enum ObstacleType
     SmallFan,
     SmallWall,
     SmallWallSeeThrough,
-    WallSeeThrough //8
+    WallSeeThrough, //8
+    ForcePad
 };
 
 public enum Positioning
@@ -293,6 +294,7 @@ public struct MinMaxFloat
 
 public static class Global
 {
+    public static readonly string ResistComponentDeletionTag = "ResistComponentDeletion";
     public static readonly LayerMask GroundSurface = LayerMask.GetMask("Ground");
     public static readonly LayerMask LevelSurfaces = LayerMask.GetMask("Wall", "Ground");
     public static readonly LayerMask StickySurfaces = LayerMask.GetMask("CollideWithBall");

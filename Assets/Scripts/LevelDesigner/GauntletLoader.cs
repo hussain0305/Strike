@@ -218,7 +218,7 @@ public class GauntletLoader : LevelLoader
             crScript.rotationAxis = portalData.rotationAxis;
             crScript.rotationSpeed = portalData.rotationSpeed;
         }
-        else if (crScript)
+        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
         {
             Destroy(crScript);
         }
