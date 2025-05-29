@@ -9,27 +9,29 @@ public class BallPreviewController : MonoBehaviour
     public Transform previewSceneObjects;
     public Tee tee;
     
-    private Dictionary<string, IBallPreview> previewStrategies;
+    private IBallPreview defaultPreview;
+    private Dictionary<string, IBallPreview> previewOverrides;
     
     private void Awake()
     {
-        previewStrategies = new Dictionary<string, IBallPreview>
+        defaultPreview = gameObject.AddComponent<PreviewBallGenericRules>();
+        previewOverrides = new Dictionary<string, IBallPreview>
         {
-            { "soccBall", gameObject.AddComponent<PreviewSoccerBall>() },
-            { "shotgunBall", gameObject.AddComponent<PreviewShotgunBall>() },
             { "sniperBall", gameObject.AddComponent<PreviewSniperBall>() },
-            { "stickyBall", gameObject.AddComponent<PreviewStickyBall>() },
             { "mirrorBall", gameObject.AddComponent<PreviewMirrorBall>() },
-            { "ricoBall", gameObject.AddComponent<PreviewRicochet>() },
-            { "ghostBall", gameObject.AddComponent<PreviewGhostBall>() },
+            // { "stickyBall", gameObject.AddComponent<PreviewStickyBall>() },
         };
     }
     
     public void PlayPreview(string ballID, GameObject previewBall)
     {
-        if (previewStrategies.TryGetValue(ballID, out IBallPreview preview))
+        if (previewOverrides.TryGetValue(ballID, out IBallPreview preview))
         {
             preview.PlayPreview(previewBall);
+        }
+        else
+        {
+            defaultPreview.PlayPreview(previewBall);
         }
     }
 }
