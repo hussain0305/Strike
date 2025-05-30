@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 public class ForcePad : Obstacle
 {
-    private float pushForceMagnitude = 15f;
+    private float pushForceMagnitude = 30f;
 
     void OnTriggerEnter(Collider other)
     {
