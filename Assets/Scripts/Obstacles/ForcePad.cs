@@ -21,7 +21,7 @@ public class ForcePad : Obstacle
         
         ball.collidedWithSomething = true;
         
-        yield return null;
+        yield return new WaitForSeconds(0.15f);
         
         rBody.linearVelocity = Vector3.zero;
         rBody.angularVelocity = Vector3.zero;
