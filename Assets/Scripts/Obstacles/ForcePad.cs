@@ -4,20 +4,14 @@ using UnityEngine.Serialization;
 
 public class ForcePad : Obstacle
 {
-    public float pushForce = 10f;
-
-    void Reset()
-    {
-        Collider col = GetComponent<Collider>();
-        col.isTrigger = true;
-    }
+    private float pushForceMagnitude = 15f;
 
     void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(ApplyForce(other.gameObject));
+        StartCoroutine(ApplyForceAbsolute(other.gameObject));
     }
 
-    private IEnumerator ApplyForce(GameObject ballObject)
+    private IEnumerator ApplyForceAbsolute(GameObject ballObject)
     {
         Rigidbody rBody = ballObject.GetComponent<Rigidbody>();
         Ball ball = ballObject.GetComponent<Ball>();
@@ -34,6 +28,25 @@ public class ForcePad : Obstacle
 
         Vector3 pushDir = transform.forward.normalized;
 
-        rBody.linearVelocity = pushDir * pushForce;
+        rBody.linearVelocity = pushDir * pushForceMagnitude;
+    }
+    
+    private IEnumerator ApplyForceAdditive(GameObject ballObject)
+    {
+        Rigidbody rBody = ballObject.GetComponent<Rigidbody>();
+        Ball ball = ballObject.GetComponent<Ball>();
+        
+        if (!rBody || !ball) 
+            yield break;
+        
+        Vector3 currentVelocity = rBody.isKinematic ? ball.LastKnownVelocity : rBody.linearVelocity;
+        
+        ball.collidedWithSomething = true;
+        
+        yield return null;
+        
+        Vector3 push = transform.forward.normalized * pushForceMagnitude;
+
+        rBody.linearVelocity = push + currentVelocity;
     }
 }
