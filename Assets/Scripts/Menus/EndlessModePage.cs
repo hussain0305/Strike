@@ -53,6 +53,7 @@ public class EndlessModePage : MonoBehaviour
 
     void Awake()
     {
+        difficulty.SetValue(1);
         hub.Register(difficulty);
         hub.Register(hasDangerPins);
         hub.Register(pinBehaviour);

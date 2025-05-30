@@ -42,4 +42,16 @@ public class RandomizerRangedParameter : MonoBehaviour, IRandomizerParameter
             OnValueChanged?.Invoke(value);
         }
     }
+
+    public void SetValue(int newValue)
+    {
+        newValue = Mathf.Clamp(newValue, min, max);
+        if (newValue != value)
+        {
+            value = newValue;
+            text.text = value.ToString();
+            OnValueChanged?.Invoke(value);
+        }
+        
+    }
 }
