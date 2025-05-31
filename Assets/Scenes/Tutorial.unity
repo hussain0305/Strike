@@ -5388,7 +5388,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -17893,6 +17893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b1bf28c49980040ae77c2f816eec11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trajectoryHistoryViewer: {fileID: 0}
   button: {fileID: 3189224931143232237}
 --- !u!1 &5682448080150335422
 GameObject:
