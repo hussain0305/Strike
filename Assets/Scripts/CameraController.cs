@@ -39,6 +39,11 @@ public class CameraController : MonoBehaviour
     [Header("Camera Follow Options")]
     public Button followCamButton;
     public Button stayInPlaceCamButton;
+
+    [Header("Camera Pan Options")]
+    public Button panCameraButton;
+    public Transform[] panPoints;
+    public Transform panFocalPoint;
     
     private bool markersCurrentlyVisible = false;
     private bool followBallOnShoot = false;
@@ -51,6 +56,9 @@ public class CameraController : MonoBehaviour
     private const float ROLLOUT_MENU_AUTOHIDE_DURATION = 5f;
     private float autohideTimeRemaining;
     private Coroutine autohideCoroutine;
+
+    private Coroutine cameraPanCoroutine;
+    private bool panCamera = false;
     
     public bool CameraIsFollowingBall => cameraFollow.enabled && cameraFollow.followBall;
     
@@ -65,6 +73,7 @@ public class CameraController : MonoBehaviour
         cameraToggleButton.onClick.AddListener(RolloutMenuButtonPressed);
         followCamButton.onClick.AddListener(SetToFollowCam);
         stayInPlaceCamButton.onClick.AddListener(SetToStayCam);
+        panCameraButton.onClick.AddListener(StartCameraPan);
         
         EventBus.Subscribe<BallShotEvent>(BallShot);
         EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
@@ -76,7 +85,8 @@ public class CameraController : MonoBehaviour
         cameraToggleButton.onClick.RemoveAllListeners();
         followCamButton.onClick.RemoveAllListeners();
         stayInPlaceCamButton.onClick.RemoveAllListeners();
-        
+        panCameraButton.onClick.RemoveAllListeners();
+
         EventBus.Unsubscribe<BallShotEvent>(BallShot);
         EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
         EventBus.Unsubscribe<CameraSwitchedEvent>(CameraSwitchedButtonPressed);
@@ -84,7 +94,8 @@ public class CameraController : MonoBehaviour
 
     public void RolloutMenuButtonPressed()
     {
-        if (!GameManager.BallShootable) return;
+        if (!GameManager.BallShootable)
+            return;
         ToggleRollOutMenuVisibility(!rollOutMenu.activeSelf);
     }
 
@@ -114,6 +125,8 @@ public class CameraController : MonoBehaviour
         {
             return;
         }
+
+        panCamera = false;
         if (cameraMovementCoroutine != null)
         {
             StopCoroutine(cameraMovementCoroutine);
@@ -138,17 +151,19 @@ public class CameraController : MonoBehaviour
     
     IEnumerator CameraMoveRoutine()
     {
-        currentTransform = currentCameraHoistedAt.transform;
-        targetTransform = targetCameraHoistAt.transform;
-        
         Camera mainCam = Camera.main;
+        // currentTransform = currentCameraHoistedAt.transform;
+        targetTransform = targetCameraHoistAt.transform;
+        Vector3 startPosition = mainCam.transform.position;
+        Quaternion startRotation = mainCam.transform.rotation;
+        
         mainCam.transform.SetParent(targetCameraHoistAt.parentCameraUnder);
         float timePassed = 0;
         while (timePassed <= timeToMoveCamera)
         {
             float lerpVal = timePassed / timeToMoveCamera;
-            mainCam.transform.position = Vector3.Lerp(currentTransform.position, targetTransform.position, lerpVal);
-            mainCam.transform.rotation = Quaternion.Lerp(currentTransform.rotation, targetTransform.rotation, lerpVal);
+            mainCam.transform.position = Vector3.Lerp(startPosition, targetTransform.position, lerpVal);
+            mainCam.transform.rotation = Quaternion.Lerp(startRotation, targetTransform.rotation, lerpVal);
             
             timePassed += Time.deltaTime;
             yield return null;
@@ -167,6 +182,7 @@ public class CameraController : MonoBehaviour
     {
         if (followBallOnShoot)
         {
+            panCamera = false;
             cameraFollow.enabled = true;
             cameraFollow.followBall = true;
         }
@@ -176,6 +192,7 @@ public class CameraController : MonoBehaviour
 
     public void NextShotCued(NextShotCuedEvent e)
     {
+        panCamera = false;
         cameraFollow.followBall = false;
         cameraFollow.enabled = false;
         // MoveToCameraPosition(defaultCameraHoistAt);
@@ -185,10 +202,11 @@ public class CameraController : MonoBehaviour
 
     public void CameraSwitchedButtonPressed(CameraSwitchedEvent e)
     {
-        if (!GameManager.BallShootable || cameraMovementCoroutine != null)
+        if (!GameManager.BallShootable || (cameraMovementCoroutine != null && !panCamera))
         {
             return;
         }
+        panCamera = false;
         EventBus.Publish(new CameraSwitchProcessedEvent(e.NewCameraPos, timeToMoveCamera));
         MoveToCameraPosition(e.NewCameraPos);
         autohideTimeRemaining = ROLLOUT_MENU_AUTOHIDE_DURATION;
@@ -225,9 +243,45 @@ public class CameraController : MonoBehaviour
 
     public void ResetCamera()
     {
+        panCamera = false;
         currentCameraHoistedAt = defaultCameraHoistAt;
-        Camera.main.transform.parent = null;
-        Camera.main.transform.position = currentCameraHoistedAt.transform.position;
+        Transform mainCam = Camera.main.transform;
+        mainCam.parent = null;
+        mainCam.position = currentCameraHoistedAt.transform.position;
         EventBus.Publish(new CameraSwitchCompletedEvent(currentCameraHoistedAt));
+    }
+
+    public void StartCameraPan()
+    {
+        panCamera = true;
+        if (cameraMovementCoroutine != null)
+        {
+            StopCoroutine(cameraMovementCoroutine);
+        }
+        cameraMovementCoroutine = StartCoroutine(CameraPan());
+    }
+    
+    private IEnumerator CameraPan()
+    {
+        Transform mainCam = Camera.main.transform;
+
+        float timePerPathSegment = 2;
+        
+        int nextPoint = -1;
+        while (panCamera)
+        {
+            nextPoint = (nextPoint + 1) % panPoints.Length;
+            float timePassed = 0;
+            Vector3 startPosition = mainCam.position;
+            Vector3 endPosition = panPoints[nextPoint].position;
+            while (timePassed <= timePerPathSegment && panCamera)
+            {
+                mainCam.position = Vector3.Lerp(startPosition, endPosition, timePassed / timePerPathSegment);
+                mainCam.LookAt(panFocalPoint);
+                timePassed += Time.deltaTime;
+                yield return null;
+            }
+        }
+        cameraMovementCoroutine = null;
     }
 }

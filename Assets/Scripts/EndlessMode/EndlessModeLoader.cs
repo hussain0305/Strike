@@ -413,7 +413,6 @@ public class EndlessModeLoader : LevelLoader
                 }
                 var fpData = new LevelExporter.ForcePadObstacleData(obstacleData, swivelSpeed, swivelAxis);
                 obstacleData = fpData;
-                //is it safe to do just do - obstacleData = new LevelExporter.ForcePadObstacleData(obstacleData, swivelSpeed, swivelAxis);?
                 break;
             
             case ObstacleType.Fan:
