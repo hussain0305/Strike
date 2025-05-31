@@ -186,6 +186,7 @@ public class GauntletLoader : LevelLoader
         
         EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex));
         Debug.Log($"Level {levelNumber} loaded successfully!");
+        EventBus.Publish(new LevelSetupCompleteEvent());
     }
         
     void ApplyPortalData(Portal portal, LevelExporter.PortalData portalData)
@@ -199,7 +200,8 @@ public class GauntletLoader : LevelLoader
 
         if (portalMoves)
         {
-            if (!cmScript) cmScript = portalObject.AddComponent<ContinuousMovement>();
+            if (!cmScript)
+                cmScript = portalObject.AddComponent<ContinuousMovement>();
             cmScript.pointA = portalData.path[0];
             cmScript.pointB = portalData.path[1];
             cmScript.speed  = portalData.movementSpeed;
@@ -214,7 +216,8 @@ public class GauntletLoader : LevelLoader
 
         if (portalRotates)
         {
-            if (!crScript) crScript = portalObject.AddComponent<ContinuousRotation>();
+            if (!crScript)
+                crScript = portalObject.AddComponent<ContinuousRotation>();
             crScript.rotationAxis = portalData.rotationAxis;
             crScript.rotationSpeed = portalData.rotationSpeed;
         }

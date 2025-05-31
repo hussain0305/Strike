@@ -5,7 +5,7 @@ public class Obstacle : MonoBehaviour
     public ObstacleType type;
     
     private Positioning positioning;
-    private IContextProvider context;
+    protected IContextProvider context;
     protected int numTotalPlayers;
     
     public void InitializeAndSetup(IContextProvider _context, LevelExporter.ObstacleData _obstacleData, int _numTotalPlayers = 1)
@@ -53,5 +53,9 @@ public class Obstacle : MonoBehaviour
         {
             Destroy(crScript);
         }
+
+        ObstacleSpecificSetup(_obstacleData);
     }
+
+    protected virtual void ObstacleSpecificSetup(LevelExporter.ObstacleData _obstacleData) { }
 }

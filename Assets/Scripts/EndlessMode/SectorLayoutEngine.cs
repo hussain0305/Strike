@@ -44,16 +44,14 @@ public static class SectorLayoutEngine
     private static SpawnInstruction PlaceSingleObstacle(SectorSpawnPayload.Entry entry, AreaWorldBound bounds, IList<SpawnInstruction> existing, 
         SectorCoord sectorCoord, SectorCoord gridSize)
     {
-        bool isBig = SpawnPayloadEngine.BigObstacles.Contains(entry.obstacleType);
+        bool isBig = EndlessModeSpawnEngine.BigObstacles.Contains(entry.obstacleType);
         int z = sectorCoord.z;
         if (isBig && !bigRowsUsed.Contains(z))
         {
-            // Decide front vs back based on row relative to grid middle:
             bool towardFront = z < gridSize.z / 2;
             float xMin = bounds.xMin, xMax = bounds.xMax;
             float zLine = towardFront ? bounds.zMax : bounds.zMin;
             Vector3 pos = new Vector3((xMin + xMax) * 0.5f, 0, zLine);
-            // Big obstacles face into the sector:
             Vector3 dir = towardFront ? Vector3.forward : Vector3.back;
             Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
             bigRowsUsed.Add(z);
@@ -62,8 +60,6 @@ public static class SectorLayoutEngine
         Vector3 dim = CollectiblePrefabMapping.Instance.GetObstacleDimension(entry.obstacleType);
         var sizeXZ = new Vector2(dim.x, dim.z);
 
-        // 2) Pick a random position anywhere *including* edges
-        //    Try up to N times to avoid overlap
         for (int attempt = 0; attempt < 10; attempt++)
         {
             float cornerX = Random.Range(bounds.xMin, bounds.xMax - sizeXZ.x);
@@ -92,12 +88,9 @@ public static class SectorLayoutEngine
             }
             else if (entry.obstacleType == ObstacleType.Wall)
             {
-                // 3) Wall in the center, but rotated on the sector’s diagonal
-                //    place only once at the true center:
                 var center = bounds.Center();
                 pos = new Vector3(center.x, 0, center.z);
 
-                // diagonal from (xMin,zMin) to (xMax,zMax):
                 Vector3 diag = (new Vector3(bounds.xMax, 0, bounds.zMax) - new Vector3(bounds.xMin, 0, bounds.zMin)).normalized;
                 rot = Quaternion.LookRotation(diag, Vector3.up);
             }
@@ -108,11 +101,9 @@ public static class SectorLayoutEngine
 
     private static SpawnInstruction PlaceSingleToken(SectorSpawnPayload.Entry entry, AreaWorldBound b, IList<SpawnInstruction> existing)
     {
-        // 1) Get token footprint
         Vector3 dim = CollectiblePrefabMapping.Instance.GetPointTokenDimension(entry.pointTokenType);
         var sizeXZ = new Vector2(dim.x, dim.z);
         
-        // 2) Pick *inside* only (no edges), so inset by half-size
         float insetX = sizeXZ.x / 2;
         float insetZ = sizeXZ.y / 2;
         float minX = b.xMin + insetX;

@@ -51,7 +51,7 @@ public class EndlessAreaPopulator
             if (!sectorGridHelper.GetSectorBounds(sector, out var worldBound))
                 continue;
 
-            var payload = SpawnPayloadEngine.SectorSpawnPayloadPicker(sector, difficulty, sectorGridSize.x, sectorGridSize.z);
+            var payload = EndlessModeSpawnEngine.GetSectorSpawnPayload(sector, difficulty, sectorGridSize.x, sectorGridSize.z);
 
             var instructions = SectorLayoutEngine.LayoutSector(payload.Entries, worldBound, sector, sectorGridSize);
 

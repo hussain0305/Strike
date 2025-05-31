@@ -187,7 +187,8 @@ public class LevelEditorWindow : EditorWindow
 
         if (portalMoves)
         {
-            if (!cmScript) cmScript = Undo.AddComponent<ContinuousMovement>(portalObject);
+            if (!cmScript)
+                cmScript = Undo.AddComponent<ContinuousMovement>(portalObject);
             Undo.RecordObject(cmScript, "Modify Portal Movement");
             cmScript.pointA = portalData.path[0];
             cmScript.pointB = portalData.path[1];
@@ -202,7 +203,8 @@ public class LevelEditorWindow : EditorWindow
 
         if (portalRotates)
         {
-            if (!crScript) crScript = Undo.AddComponent<ContinuousRotation>(portalObject);
+            if (!crScript)
+                crScript = Undo.AddComponent<ContinuousRotation>(portalObject);
             Undo.RecordObject(crScript, "Modify Portal Rotation");
             crScript.rotationAxis = portalData.rotationAxis;
             crScript.rotationSpeed = portalData.rotationSpeed;
@@ -228,7 +230,8 @@ public class LevelEditorWindow : EditorWindow
         foreach (Transform collectible in collectibleParent)
         {
             Collectible collectibleScript = collectible.GetComponent<Collectible>();
-            if (collectibleScript == null) continue;
+            if (collectibleScript == null)
+                continue;
 
             LevelExporter.CollectibleData data = new LevelExporter.CollectibleData
             {

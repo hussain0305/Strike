@@ -9,10 +9,10 @@ public enum HexStackShape
     PeripheryWithInner
 }
 
-public class RandomizedHexStack : RandomizerSpawner
+public class RandomizedHexStack : EndlessModeSpawner
 {
     private float sqrt3 = Mathf.Sqrt(3f);
-    private static readonly Vector2Int[] _hexDirections = {
+    private static readonly Vector2Int[] hexDirections = {
         new Vector2Int(1, 0),
         new Vector2Int(1, -1),
         new Vector2Int(0, -1),
@@ -24,14 +24,14 @@ public class RandomizedHexStack : RandomizerSpawner
     public List<Vector2Int> GetRingCoords(int radius)
     {
         var results = new List<Vector2Int>(6 * radius);
-        var coord = _hexDirections[4] * radius;
+        var coord = hexDirections[4] * radius;
 
         for (int side = 0; side < 6; side++)
         {
             for (int step = 0; step < radius; step++)
             {
                 results.Add(coord);
-                coord += _hexDirections[side];
+                coord += hexDirections[side];
             }
         }
         return results;
@@ -55,27 +55,17 @@ public class RandomizedHexStack : RandomizerSpawner
             return;
         }
 
-        {
-            string s = "Spawning Hex Stacks in area of sectors ";
-            foreach (var ss in sectors)
-            {
-                s += $" ({ss.x},{ss.z}),";
-            }
-            Debug.Log(s + " | center of this area is " + area.Center());
-        }
-        
-        
-        WeightedRandomPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
+        WeightBasedPicker<HexStackShape> hexShapePicker = SpawnWeights.HexShapePicker(sectors.Length);
         HexStackShape selectedStackShape = hexShapePicker.Pick();
         
-        WeightedRandomPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
+        WeightBasedPicker<PointTokenType> tokenPicker = SpawnWeights.HexTokenPicker(selectedStackShape);
         PointTokenType selectedToken = tokenPicker.Pick();
         Vector3 dimensions = CollectiblePrefabMapping.Instance.GetPointTokenDimension(selectedToken);
 
         float xLength = area.xMax - area.xMin;
         float zLength = area.zMax - area.zMin;
 
-        WeightedRandomPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
+        WeightBasedPicker<(int, int)> dimensionsPicker = SpawnWeights.HexStackDimensionsPicker(xLength, zLength, selectedToken);
         (int numRings, int numLevels) = dimensionsPicker.Pick();
         
         //TODO: REMOVE THE areaBoundingCoord parameter when debug messages are removed
@@ -90,7 +80,6 @@ public class RandomizedHexStack : RandomizerSpawner
             float levelY = center.y + lvl * height;
             Vector3 levelCenter = new Vector3(center.x, levelY, center.z);
             
-            // Determine current max ring based on shape
             switch (shape)
             {
                 case HexStackShape.Uniform:

@@ -24,7 +24,7 @@ public struct IncludeTypesInRandomization
     }
 }
 
-public class RandomizedGutterWall : RandomizerSpawner
+public class RandomizedGutterWall : EndlessModeSpawner
 {
     private float hexSideLength = -1f;
     private float HexSideLength
@@ -216,7 +216,7 @@ public class RandomizedGutterWall : RandomizerSpawner
         for (int i = 0; i < list.Count; i++)
         {
             int r = Random.Range(i, list.Count);
-            T tmp = list[i]; list[i] = list[r]; list[r] = tmp;
+            (list[i], list[r]) = (list[r], list[i]);
         }
     }
 }

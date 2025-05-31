@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,57 +12,116 @@ public class SectorSpawnPayload
     public List<Entry> Entries;
 }
 
-public static class SpawnPayloadEngine
+public static class EndlessModeSpawnEngine
 {
-    private static float difficultyFactor;
+private static float difficultyFactor;
     
     private static int tokenCount;
     private static int obstacleCount;
     private static readonly Dictionary<PointTokenType,int> tokenTypeCounts = new Dictionary<PointTokenType,int>();
     private static readonly Dictionary<ObstacleType,int> obstacleTypeCounts = new Dictionary<ObstacleType,int>();
+    private static readonly List<int> bigObstaclesXTracker = new List<int>();
     private static readonly List<int> bigObstaclesZTracker = new List<int>();
 
     private static readonly List<ObstacleType> loneSectorObstacleTypes = new()
     {
-        ObstacleType.SmallFan,
         ObstacleType.SmallWallSeeThrough,
+        ObstacleType.WallSeeThrough,
+        ObstacleType.ForcePad,
+        ObstacleType.SmallFan,
         ObstacleType.Window,
     };
 
     public static readonly HashSet<ObstacleType> BigObstacles = new() {
+        ObstacleType.WallSeeThrough,
         ObstacleType.SwitchDoor,
         ObstacleType.Window,
         ObstacleType.Wall,
     };
+
+    public static readonly PointTokenType[] allPointTokenOptions = new[]
+    {
+        PointTokenType.Cuboid_4x2,
+        PointTokenType.Cube_2x2,
+        PointTokenType.Pin_2x,
+        PointTokenType.Pin_1x,
+        PointTokenType.Brick,
+    };
     
     private static readonly float imbalanceFactor = 0.4f;
 
-    private static (float baseW, float slope) TokenParams(PointTokenType t)
+    private static void GetTokenParams(PointTokenType token, out float baseW, out float slope)
     {
-        return t switch
+        switch (token)
         {
-            PointTokenType.Brick      => (2f, +3f),
-            PointTokenType.Cube_2x2   => (2f, +2f),
-            PointTokenType.Cuboid_4x2 => (2f,  0f),
-            PointTokenType.Pin_1x     => (3f, -1f),
-            PointTokenType.Pin_2x     => (3f, -2f),
-            PointTokenType.Pin_4x     => (3f, -3f),
-            _                         => (1f, 0f),
-        };
+            case PointTokenType.Brick:
+                baseW = 2f;
+                slope = 3f;
+                break;
+            case PointTokenType.Cube_2x2:
+                baseW = 2f;
+                slope = 2f;
+                break;
+            case PointTokenType.Cuboid_4x2:
+                baseW = 2f;
+                slope = 0f;
+                break;
+            case PointTokenType.Pin_1x:
+                baseW = 3f;
+                slope = -1f;
+                break;
+            case PointTokenType.Pin_2x:
+                baseW = 3f;
+                slope = -2f;
+                break;
+            case PointTokenType.Pin_4x:
+                baseW = 3f;
+                slope = -3f;
+                break;
+            default:
+                baseW = 1f;
+                slope = 0f;
+                break;
+        }
     }
 
-    private static (float baseW, float slope) ObstacleParams(ObstacleType o)
+    private static void GetObstacleParams(ObstacleType obstacle, out float baseW, out float slope)
     {
-        return o switch
+        switch (obstacle)
         {
-            ObstacleType.SmallFan    => (1.0f, +1.00f),
-            ObstacleType.SmallWallSeeThrough   => (1.0f, +1.00f),
-            ObstacleType.Window      => (0.5f, +0.25f),
-            ObstacleType.Fan         => (1.0f, +0.50f),
-            ObstacleType.SwitchDoor  => (1.7f, +0.50f),
-            ObstacleType.Wall        => (0.2f, +0.50f),
-            _                        => (1.0f, 0f),
-        };
+            case ObstacleType.SmallFan:
+                baseW = 1f;
+                slope = 1f;
+                break;
+            case ObstacleType.SmallWallSeeThrough:
+                baseW = 1f;
+                slope = 1f;
+                break;
+            case ObstacleType.Window:
+                baseW = 0.5f;
+                slope = 0.25f;
+                break;
+            case ObstacleType.Fan:
+                baseW = 1f;
+                slope = 0.5f;
+                break;
+            case ObstacleType.ForcePad:
+                baseW = 1f;
+                slope = 1f;
+                break;
+            case ObstacleType.SwitchDoor:
+                baseW = 1.7f;
+                slope = 0.5f;
+                break;
+            case ObstacleType.Wall:
+                baseW = 0.2f;
+                slope = 0.5f;
+                break;
+            default:
+                baseW = 1f;
+                slope = 0f;
+                break;
+        }
     }
     
     public static void Refresh()
@@ -72,6 +130,7 @@ public static class SpawnPayloadEngine
         obstacleCount = 0;
         tokenTypeCounts.Clear();
         obstacleTypeCounts.Clear();
+        bigObstaclesXTracker.Clear();
         bigObstaclesZTracker.Clear();
     }
 
@@ -80,7 +139,7 @@ public static class SpawnPayloadEngine
         return Mathf.Max(0.1f, baseW + (slope * difficultyFactor));
     }
     
-    public static SectorSpawnPayload SectorSpawnPayloadPicker(SectorCoord sectorCoord, int difficulty, int maxXCoord, int maxZCoord)
+    public static SectorSpawnPayload GetSectorSpawnPayload(SectorCoord sectorCoord, int difficulty, int maxXCoord, int maxZCoord)
     {
         var payload = new SectorSpawnPayload();
         payload.Entries = new List<SectorSpawnPayload.Entry>();
@@ -88,10 +147,10 @@ public static class SpawnPayloadEngine
         difficultyFactor = difficulty / 10f;
         bool isBackSector = (sectorCoord.z > (maxZCoord * 0.5f));
 
-        int localObsCount = 0;
-        int maxLocalObs = 2;
+        int localObstacleCount = 0;
+        int maxLocalObstacles = 2;
         
-        var totalObjectsPicker = new WeightedRandomPicker<int>();
+        var totalObjectsPicker = new WeightBasedPicker<int>();
         totalObjectsPicker.AddChoice(1, 1);
         totalObjectsPicker.AddChoice(2, 2);
         totalObjectsPicker.AddChoice(3, 3);
@@ -102,26 +161,20 @@ public static class SpawnPayloadEngine
         for (int i = 0; i < totalObjects; i++)
         {
             float imbalance = (obstacleCount - tokenCount) * imbalanceFactor;
-            var kindPicker = new WeightedRandomPicker<bool>();
-            // true → point, false → obstacle
-            // easier → favor points; harder → favor obstacles; back → favor obstacles too
+            var kindPicker = new WeightBasedPicker<bool>();
+
             kindPicker.AddChoice(true, Mathf.Max(0.1f, (2f - difficultyFactor + (isBackSector ? 1f : 0f)) + imbalance));
-            float obsBase = Mathf.Max(0.1f, (difficultyFactor + (isBackSector ? 0f : 0.5f) - imbalance));
-            kindPicker.AddChoice(false, (localObsCount >= maxLocalObs) ? 0f : obsBase);
+            float obstacleBaseProbability = Mathf.Max(0.1f, (difficultyFactor + (isBackSector ? 0f : 0.5f) - imbalance));
+            kindPicker.AddChoice(false, (localObstacleCount >= maxLocalObstacles) ? 0f : obstacleBaseProbability);
             bool spawnPoint = kindPicker.Pick();
             
             if (spawnPoint)
             {
                 tokenCount++;
-                var tokenPicker = new WeightedRandomPicker<PointTokenType>();
-                foreach (var type in new[]{ 
-                             PointTokenType.Brick,
-                             PointTokenType.Cube_2x2,
-                             PointTokenType.Cuboid_4x2,
-                             PointTokenType.Pin_1x,
-                             PointTokenType.Pin_2x })
+                var tokenPicker = new WeightBasedPicker<PointTokenType>();
+                foreach (var type in allPointTokenOptions)
                 {
-                    var (baseWeight, slope) = TokenParams(type);
+                    GetTokenParams(type, out float baseWeight, out float slope);
                     float w = GetPickerWeight(baseWeight, slope);
                     int used = tokenTypeCounts.TryGetValue(type, out var c) ? c : 0;
                     w *= 1f / (1f + used * 0.2f);
@@ -138,18 +191,17 @@ public static class SpawnPayloadEngine
             else
             {
                 obstacleCount++;
-                localObsCount++;
+                localObstacleCount++;
                 
-                var obsPicker = new WeightedRandomPicker<ObstacleType>();
+                var obsPicker = new WeightBasedPicker<ObstacleType>();
 
                 foreach (var obs in loneSectorObstacleTypes)
                 {
-                    
-                    if (BigObstacles.Contains(obs) && bigObstaclesZTracker.Contains(sectorCoord.z))
+                    if (BigObstacles.Contains(obs) && (bigObstaclesZTracker.Contains(sectorCoord.z) || bigObstaclesXTracker.Contains(sectorCoord.x)))
                         continue;
                     
-                    var (b, s) = ObstacleParams(obs);
-                    float w = GetPickerWeight(b, s);
+                    GetObstacleParams(obs, out float baseWeight, out float slope);
+                    float w = GetPickerWeight(baseWeight, slope);
                     int used = obstacleTypeCounts.GetValueOrDefault(obs);
                     w *= 1f / (1f + used * 0.2f);
                     obsPicker.AddChoice(obs, w);
@@ -162,7 +214,10 @@ public static class SpawnPayloadEngine
                 });
 
                 if (BigObstacles.Contains(choice))
+                {
+                    bigObstaclesXTracker.Add(sectorCoord.x);
                     bigObstaclesZTracker.Add(sectorCoord.z);
+                }
                 
                 obstacleTypeCounts[choice] = obstacleTypeCounts.GetValueOrDefault(choice) + 1;
             }
@@ -177,7 +232,7 @@ public static class SpawnPayloadEngine
 
         foreach (var sec in sectors)
         {
-            var sectorPayload = SectorSpawnPayloadPicker(sec, difficulty, maxXCoord, maxZCoord );
+            var sectorPayload = GetSectorSpawnPayload(sec, difficulty, maxXCoord, maxZCoord );
             combined.Entries.AddRange(sectorPayload.Entries);
         }
 

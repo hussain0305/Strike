@@ -60,6 +60,27 @@ public class LevelExporter : MonoBehaviour
     }
 
     [System.Serializable]
+    public class ForcePadObstacleData : ObstacleData
+    {
+        public float swivelSpeed;
+        public Vector3 swivelAxis;
+        
+        public ForcePadObstacleData(ObstacleData _baseData, float _swivelSpeed, Vector3 _swivelAxis)
+        {
+            type = _baseData.type;
+            positioning = _baseData.positioning;
+            movementSpeed = _baseData.movementSpeed;
+            rotationSpeed = _baseData.rotationSpeed;
+            position = _baseData.position;
+            rotation = _baseData.rotation;
+            path = _baseData.path;
+
+            swivelSpeed = _swivelSpeed;
+            swivelAxis = _swivelAxis;
+        }
+    }
+
+    [System.Serializable]
     public class LevelData
     {
         public GameModeType gameMode; 

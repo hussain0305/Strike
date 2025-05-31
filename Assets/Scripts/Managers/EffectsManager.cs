@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EffectsManager : MonoBehaviour
 {
     public GameObject flatEffectPrefab;
-    public GameObject pfx3DPrefab;
+    public GameObject pfxPrefabCollectibleHit;
+    public GameObject pfxPrefabObstacleHit;
+    public GameObject pfxPrefabDangerHit;
     public GameObject starHitPrefab;
 
     private Queue<GameObject> flatEffectPool = new Queue<GameObject>();
-    private Queue<GameObject> pfx3DPool = new Queue<GameObject>();
     private Queue<GameObject> starPFXPool = new Queue<GameObject>();
+    private Queue<GameObject> pfxCollectibleHitPool = new Queue<GameObject>();
+    private Queue<GameObject> pfxObstacleHitPool = new Queue<GameObject>();
+    private Queue<GameObject> pfxDangerHitPool = new Queue<GameObject>();
 
     private void OnEnable()
     {
@@ -34,9 +39,19 @@ public class EffectsManager : MonoBehaviour
             PlayFlatEffect(hitPosition, normal, e.Collision.gameObject.transform);
         }
 
-        if (e.PfxTypes.Contains(PFXType.HitPFX3D))
+        if (e.PfxTypes.Contains(PFXType.HitPFXCollectible))
         {
-            PlayPFX3D(hitPosition);
+            PlayPFXHitCollectible(hitPosition);
+        }
+        
+        if (e.PfxTypes.Contains(PFXType.HitPFXObstacle))
+        {
+            PlayPFXHitObstacle(hitPosition);
+        }
+        
+        if (e.PfxTypes.Contains(PFXType.HitPFXDanger))
+        {
+            PlayPFXHitDanger(hitPosition);
         }
     }
 
@@ -54,13 +69,31 @@ public class EffectsManager : MonoBehaviour
         ReturnToPool(effect, flatEffectPool, 1.5f);
     }
 
-    private void PlayPFX3D(Vector3 position)
+    private void PlayPFXHitCollectible(Vector3 position)
     {
-        GameObject effect = GetFromPool(pfx3DPool, pfx3DPrefab);
+        GameObject effect = GetFromPool(pfxCollectibleHitPool, pfxPrefabCollectibleHit);
         effect.transform.position = position;
         effect.SetActive(true);
 
-        ReturnToPool(effect, pfx3DPool, 1f);
+        ReturnToPool(effect, pfxCollectibleHitPool, 1f);
+    }
+
+    private void PlayPFXHitObstacle(Vector3 position)
+    {
+        GameObject effect = GetFromPool(pfxObstacleHitPool, pfxPrefabObstacleHit);
+        effect.transform.position = position;
+        effect.SetActive(true);
+
+        ReturnToPool(effect, pfxObstacleHitPool, 1f);
+    }
+
+    private void PlayPFXHitDanger(Vector3 position)
+    {
+        GameObject effect = GetFromPool(pfxDangerHitPool, pfxPrefabDangerHit);
+        effect.transform.position = position;
+        effect.SetActive(true);
+
+        ReturnToPool(effect, pfxDangerHitPool, 1f);
     }
 
     private void PlayStarHitPFX(Vector3 position)
@@ -69,7 +102,7 @@ public class EffectsManager : MonoBehaviour
         effect.transform.position = position;
         effect.SetActive(true);
         
-        ReturnToPool(effect, pfx3DPool, 1f);
+        ReturnToPool(effect, pfxCollectibleHitPool, 1f);
     }
 
     private void StarCollected(StarCollectedEvent e)

@@ -18,4 +18,5 @@ public class RandomizerBoolParameter : MonoBehaviour, IRandomizerParameter
             value = state;
             OnValueChanged?.Invoke(value);
         }
-    }}
+    }
+}

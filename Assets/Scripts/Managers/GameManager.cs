@@ -14,6 +14,7 @@ public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class TrajectoryEnabledEvent { }
+public class LevelSetupCompleteEvent { }
 
 public class ShotCompleteEvent
 {
@@ -225,12 +226,11 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         fireButton.onClick.RemoveAllListeners();
         fireButton.onClick.AddListener(FireButtonPressed);
         
-        levelLoader.LoadLevel();
         SetupPlayers();
+        levelLoader.LoadLevel();
         ShowLevelInfo();
         currentPlayerTurn = 0;
         roundDataManager.SetCurrentShotTaker();
-        EventBus.Publish(new NewGameStartedEvent(NumPlayersInGame));
     }
 
     private void OnEnable()
@@ -238,6 +238,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Subscribe<LevelSetupCompleteEvent>(LevelSetupComplete);
     }
 
     private void OnDisable()
@@ -245,6 +246,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Unsubscribe<LevelSetupCompleteEvent>(LevelSetupComplete);
+    }
+
+    private void LevelSetupComplete(LevelSetupCompleteEvent e)
+    {
+        EventBus.Publish(new NewGameStartedEvent(NumPlayersInGame));
     }
 
     public void InitGame()

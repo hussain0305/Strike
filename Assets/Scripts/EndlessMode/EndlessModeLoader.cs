@@ -1,149 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
-
-[System.Serializable]
-public struct EdgeDefinition
-{
-    public Transform end1;
-    public Transform end2;
-}
-
-public struct AreaWorldBound
-{
-    public float xMin;
-    public float xMax;
-    public float zMin;
-    public float zMax;
-
-    public AreaWorldBound(float _xMin, float _xMax, float _zMin, float _zMax)
-    {
-        xMin = _xMin;
-        xMax = _xMax;
-        zMin = _zMin;
-        zMax = _zMax;
-    }
-
-    public Vector3 Center()
-    {
-        return new Vector3((xMin + xMax) / 2, 0, (zMin + zMax) / 2);
-    }
-}
-
-public struct SectorInfo
-{
-    SectorCoord sectorCoord;
-    public int numPointTokens;
-    public int numObstacles;
-
-    public SectorInfo(SectorCoord _sectorCoord, SectorSpawnPayload payload)
-    {
-        sectorCoord = _sectorCoord;
-        numPointTokens = 0;
-        numObstacles = 0;
-        
-        if (payload == null)
-            return;
-        
-        foreach (var entry in payload.Entries)
-        {
-            if (entry.pointTokenType != PointTokenType.None)
-            {
-                numPointTokens++;
-            }
-            if (entry.obstacleType != ObstacleType.None)
-            {
-                numObstacles++;
-            }
-        }
-    }
-}
-
-public struct SectorCoord
-{
-    public int x;
-    public int z;
-
-    public SectorCoord(int _x, int _z)
-    {
-        x = _x;
-        z = _z;
-    }
-    
-    public bool Equals(SectorCoord other) => x == other.x && z == other.z;
-
-    public override bool Equals(object obj)=> obj is SectorCoord other && Equals(other);
-
-    public override int GetHashCode() => System.HashCode.Combine(x, z);
-
-    public static bool operator ==(SectorCoord a, SectorCoord b) => a.Equals(b);
-
-    public static bool operator !=(SectorCoord a, SectorCoord b) => !a.Equals(b);
-}
-
-public struct AreaBoundingCoord
-{
-    public int xMin;
-    public int xMax;
-    public int zMin;
-    public int zMax;
-
-    public int xDimension;
-    public int zDimension;
-
-    public AreaBoundingCoord(int _xMin, int _zMin, int _xMax, int _zMax)
-    {
-        xMin = _xMin;
-        xMax = _xMax;
-        zMin = _zMin;
-        zMax = _zMax;
-        
-        xDimension = xMax - xMin;
-        zDimension = zMax - zMin;
-    }
-    
-    public AreaBoundingCoord(SectorCoord[] sectors)
-    {
-        xMin = sectors.Min(s => s.x);
-        xMax = sectors.Max(s => s.x);
-        zMin = sectors.Min(s => s.z);
-        zMax = sectors.Max(s => s.z);
-        
-        xDimension = xMax - xMin;
-        zDimension = zMax - zMin;
-    }
-
-    public bool IsSquare()
-    {
-        return xDimension == zDimension;
-    }
-
-    public SectorCoord CenterCoord()
-    {
-        return new SectorCoord((xMin + xMax) / 2, (zMin + zMax) / 2);
-    }
-}
-
-[System.Serializable]
-public struct EndlessLevelWalls
-{
-    public Transform LeftSlat;
-    public Transform[] LeftWall;
-    public Transform[] LeftCap;
-    public Transform[] RightCap;
-    public Transform[] RightWall;
-    public Transform RightSlat;
-}
-
-class SpawnedToken
-{
-    public Collectible collectible;
-    public SectorInfo sectorInfo;
-    public Vector3 position;
-}
 
 public class EndlessModeLoader : LevelLoader
 {
@@ -218,6 +79,7 @@ public class EndlessModeLoader : LevelLoader
     }
     
     private SectorCoord sectorGridSize;
+    private SectorCoord centerSector;
     private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
     public int Difficulty => difficulty;
@@ -241,6 +103,8 @@ public class EndlessModeLoader : LevelLoader
     private void Awake()
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
+        centerSector = new SectorCoord(sectorGridSize.x / 2, sectorGridSize.z / 2);
+        Debug.Log($">>> Center sector is {centerSector.ToString()}");
         blacklistedSectors = new HashSet<SectorCoord>()
         {
             new SectorCoord(0, 0),
@@ -268,26 +132,40 @@ public class EndlessModeLoader : LevelLoader
         }
 
         SetupPinBehaviour();
-        SpawnPayloadEngine.Refresh();
+        EndlessModeSpawnEngine.Refresh();
         SectorLayoutEngine.Refresh();
 
+        StartCoroutine(EndlessModeSetupProcess());
+    }
+
+    private IEnumerator EndlessModeSetupProcess()
+    {
+        float messageDurations = 0.25f;
+        EventBus.Publish(new EndlessModeLoadingProgress("Zoning areas to spawn tokens in", 1));
+
         GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
-        
         EndlessSectorPopulator.PopulateSectors(loneSectorsToFill);
         EndlessAreaPopulator.PopulateAreas(areasToFill);
-        RandomizedGutterWall.Setup(Difficulty);
-
-        {
-            string s = "Spawning in lone sectors ";
-            foreach (var ss in loneSectorsToFill)
-            {
-                s += $" ({ss.x},{ss.z}),";
-            }
-            Debug.Log(s);
-        }
-        
+        RandomizedGutterWall.Setup(Difficulty);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
         AssignPointsToTokens();
         SpawnMultipliersAndStars();
+
+        yield return new WaitForSeconds(messageDurations);
+        
+        EventBus.Publish(new EndlessModeLoadingProgress("Populating sectors on the grid", 2));
+        yield return new WaitForSeconds(messageDurations);
+        
+        EventBus.Publish(new EndlessModeLoadingProgress("Populating larger areas on the grid", 3));
+        yield return new WaitForSeconds(messageDurations);
+        
+        EventBus.Publish(new EndlessModeLoadingProgress("Setting up walls", 4));
+        yield return new WaitForSeconds(messageDurations);
+        
+        EventBus.Publish(new EndlessModeLoadingProgress("Wrapping up...", 5));
+        yield return new WaitForSeconds(messageDurations);
+
+        EventBus.Publish(new EndlessModeLoadingProgress(true));
+        EventBus.Publish(new LevelSetupCompleteEvent());
     }
 
     public void SetupPinBehaviour()
@@ -323,12 +201,6 @@ public class EndlessModeLoader : LevelLoader
                 .AsSingle()
                 .NonLazy();
             
-            Debug.Log(">>> REBOUND!!");
-            if (diContainer == sceneContext.Container)
-            {
-                Debug.Log(">>> I Got the scene context!!");
-            }
-            
             endlessLevelInstaller.ReinjectAll();
         }
 
@@ -339,102 +211,156 @@ public class EndlessModeLoader : LevelLoader
         int gridX = sectorGridSize.x;
         int gridZ = sectorGridSize.z;
         int totalSectors = gridX * gridZ;
-
         int availableCount = totalSectors - blacklistedSectors.Count;
 
         float difficultyFactor = difficulty / 10f;
-        float minLoneChance = 0.4f;
-        float loneChance    = Mathf.Lerp(minLoneChance, 1f, difficultyFactor);
         float fillPercent = Mathf.Lerp(0.25f, 0.95f, difficultyFactor);
         int targetCount = Mathf.RoundToInt(availableCount * fillPercent);
 
-        var occupied = new HashSet<SectorCoord>();
-        var loneList = new List<SectorCoord>();
-        var areaList = new List<SectorCoord[]>();
-        
-        int spanZ = Mathf.Max(2, Mathf.Min(gridZ, Mathf.CeilToInt(Mathf.Sqrt(targetCount))));
-        int spanX = Mathf.Max(2, Mathf.Min(gridX, Mathf.CeilToInt((float)targetCount / spanZ)));
+        int targetLone = targetCount / 2;
+        int targetArea = targetCount - targetLone;
 
-        int startX = (gridX - spanX) / 2;
-        int startZ = (gridZ - spanZ) / 2;
-        
-        for (int secCoordX = startX; secCoordX < startX + spanX; secCoordX++)
+        int expansionRing = 0;
+        List<int> currentXsInPlay = new List<int>(){centerSector.x};
+        List<int> currentZsInPlay = new List<int>(){centerSector.z};
+        HashSet<SectorCoord> effectiveGridSectors = new HashSet<SectorCoord>() { centerSector };
+        bool expandAlongX = true;
+
+        while (effectiveGridSectors.Count < targetCount)
         {
-            if (occupied.Count >= targetCount)
+            if (expandAlongX)
+            {
+                int xLeft = Mathf.Clamp(centerSector.x - expansionRing, 0, gridX - 1);
+                int xRight = Mathf.Clamp(centerSector.x + expansionRing, 0, gridX - 1);
+                foreach (int z in currentZsInPlay)
+                {
+                    var c1 = new SectorCoord(xLeft, z);
+                    if (!blacklistedSectors.Contains(c1) && !effectiveGridSectors.Contains(c1))
+                        effectiveGridSectors.Add(c1);
+
+                    var c2 = new SectorCoord(xRight, z);
+                    if (!blacklistedSectors.Contains(c2) && !effectiveGridSectors.Contains(c2))
+                        effectiveGridSectors.Add(c2);
+                }
+                currentXsInPlay.Add(xLeft);
+                currentXsInPlay.Add(xRight);
+            }
+            else
+            {
+                int zFront = Mathf.Clamp(centerSector.z - expansionRing, 0, gridZ - 1);
+                int zBack = Mathf.Clamp(centerSector.z + expansionRing, 0, gridZ - 1);
+                foreach (int x in currentXsInPlay)
+                {
+                    var r1 = new SectorCoord(x, zFront);
+                    if (!blacklistedSectors.Contains(r1) && !effectiveGridSectors.Contains(r1))
+                        effectiveGridSectors.Add(r1);
+                    
+                    var r2 = new SectorCoord(x, zBack);
+                    if (!blacklistedSectors.Contains(r2) && !effectiveGridSectors.Contains(r2))
+                        effectiveGridSectors.Add(r2);
+                }
+                currentZsInPlay.Add(zFront);
+                currentZsInPlay.Add(zBack);
+                expansionRing++;
+            }
+            expandAlongX = !expandAlongX;
+        }
+        
+        AreaBoundingCoord effectiveGrid = new AreaBoundingCoord(effectiveGridSectors.ToArray());
+        
+        var occupied = new HashSet<SectorCoord>(blacklistedSectors);
+        var areaSizes = new List<Vector2Int>();
+        var picker = new WeightBasedPicker<Vector2Int>();
+
+        while (targetArea > 1)
+        {
+            picker.AddChoice(new Vector2Int(1, 2), 1f);
+            picker.AddChoice(new Vector2Int(2, 1), 1f);
+
+            if (targetArea >= 4)
+            {
+                picker.AddChoice(new Vector2Int(2, 2), 1f);
+            }
+            if (targetArea >= 6)
+            {
+                picker.AddChoice(new Vector2Int(2, 3), 0.5f);
+                picker.AddChoice(new Vector2Int(3, 2), 0.5f);
+            }
+            
+            if (targetArea >= 9)
+            {
+                picker.AddChoice(new Vector2Int(3, 3), 0.075f);
+            }
+            Vector2Int size = picker.Pick();
+            int areaCount = size.x * size.y;
+            
+            if (areaCount > targetArea)
+            {
+                //Failsafe but this condition should actually never hit. Investigate if the execution comes here ever
+                targetLone += targetArea;
+                targetArea = 0;
+                break;
+            }
+
+            areaSizes.Add(size);
+            targetArea -= areaCount;
+        }
+
+        //Note to future self: Ideally targetArea here will be 0 and no transfer needs to happen, but just converting leftover area budget to lone sectors just in case
+        targetLone += targetArea;
+        targetArea = 0;
+
+        var shuffledEffectiveGridSectors = new List<SectorCoord>(effectiveGridSectors);
+        for (int i = 0; i < shuffledEffectiveGridSectors.Count; i++)
+        {
+            int j = Random.Range(i, shuffledEffectiveGridSectors.Count);
+            (shuffledEffectiveGridSectors[i], shuffledEffectiveGridSectors[j]) = (shuffledEffectiveGridSectors[j], shuffledEffectiveGridSectors[i]);
+        }
+        
+        var placedAreas = new List<SectorCoord[]>();
+        var remainingAreas = new List<Vector2Int>(areaSizes);
+        
+        foreach (var baseCoord in shuffledEffectiveGridSectors)
+        {
+            if (remainingAreas.Count == 0)
                 break;
             
-            for (int secCoordZ = startZ; secCoordZ < startZ + spanZ; secCoordZ++)
+            for (int remainingAreaIndex = 0; remainingAreaIndex < remainingAreas.Count; remainingAreaIndex++)
             {
-                if (occupied.Count >= targetCount)
-                    break;
-                
-                SectorCoord thisSector = new SectorCoord(secCoordX, secCoordZ);
-                if (blacklistedSectors.Contains(thisSector))
+                var area = remainingAreas[remainingAreaIndex];
+                var coords = new List<SectorCoord>();
+                bool valid = true;
+                for (int dx = 0; dx < area.x && valid; dx++)
                 {
-                    continue;
-                }
-
-                int maxW = sectorGridSize.x - secCoordX;
-                int maxH = sectorGridSize.z - secCoordZ;
-                bool canSpawnArea = maxW > 1 || maxH > 1;
-                bool tryToSpawnArea = canSpawnArea && Random.value < (difficultyFactor / 2);
-                
-                if (tryToSpawnArea)
-                {
-                    int w = Random.Range(1, maxW + 1);
-                    int hMin = (w == 1) ? 2 : 1;
-                    int h = Random.Range(hMin, maxH + 1);
-                    
-                    int rectSize = w * h;
-                    if (occupied.Count + rectSize <= targetCount)
+                    for (int dz = 0; dz < area.y; dz++)
                     {
-                        SectorCoord[] thisArea = new SectorCoord[rectSize];
-                        bool bad = false;
-                        int index = 0;
-                        for (int dx = 0; dx < w && !bad; dx++)
+                        var currentSector = new SectorCoord(baseCoord.x + dx, baseCoord.z + dz);
+                        if (!effectiveGridSectors.Contains(currentSector) || occupied.Contains(currentSector))
                         {
-                            for (int dz = 0; dz < h; dz++)
-                            {
-                                SectorCoord areaSector = new SectorCoord(secCoordX + dx, secCoordZ + dz);
-                                if (blacklistedSectors.Contains(areaSector) || occupied.Contains(areaSector))
-                                {
-                                    bad = true;
-                                    break;
-                                }
-                                thisArea[index] = areaSector;
-                                index++;
-                            }
+                            valid = false;
+                            break;
                         }
-                        if (!bad)
-                        {
-                             if (SectorGridHelper.IsValidArea(thisArea) && SectorGridHelper.IsAreaContainedOnGrid(thisArea))
-                             {
-                                 foreach (var c in thisArea)
-                                     occupied.Add(c);
-                                 areaList.Add(thisArea.ToArray());
-                                 continue;
-                             }
-                        }
+                        coords.Add(currentSector);
                     }
                 }
-                
-                bool tryToGetLoneSector = Random.value < loneChance && occupied.Count < targetCount;
-                if (!tryToGetLoneSector)
+                if (valid)
                 {
-                    continue;
-                }
-
-                SectorCoord loneSector = new SectorCoord(secCoordX, secCoordZ);
-                if (!blacklistedSectors.Contains(loneSector) && !occupied.Contains(loneSector))
-                {
-                    occupied.Add(loneSector);
-                    loneList.Add(loneSector);
+                    foreach (var c in coords)
+                    {
+                        occupied.Add(c);
+                    }
+                    placedAreas.Add(coords.ToArray());
+                    remainingAreas.RemoveAt(remainingAreaIndex);
+                    break;
                 }
             }
         }
-        
+        List<SectorCoord> freeSectors = shuffledEffectiveGridSectors.Where(p => !occupied.Contains(p)).ToList();
+        var loneList = freeSectors.Take(targetLone).ToList();
+        // loneList = EvenlyDistributeSectors(loneList, placedAreas.ToArray(), gridX, gridZ, blacklistedSectors);
+
         loneSectors = loneList.ToArray();
-        areas = areaList.ToArray();
+        areas = placedAreas.ToArray();
     }
 
     public void SpawnPointToken(PointTokenType tokenType, Vector3 pos, Quaternion rot, SectorInfo sectorInfo)
@@ -462,40 +388,65 @@ public class EndlessModeLoader : LevelLoader
 
         if (obj.TryGetComponent<Obstacle>(out var obstacle))
         {
-            LevelExporter.ObstacleData obstacleData = new LevelExporter.ObstacleData();
-            obstacleData.movementSpeed = 0;
-            obstacleData.position = pos;
-            obstacleData.rotation = rot;
-            obstacleData.type = obstacleType;
-            if (obstacleType == ObstacleType.SmallFan || obstacleType == ObstacleType.Fan)
-            {
-                obstacleData.rotationAxis = new Vector3(0, 0, 1);
-                obstacleData.rotationSpeed = 360;
-            }
-            obstacle.InitializeAndSetup(gameManager.Context, obstacleData, gameManager.NumPlayersInGame);
+            obstacle.InitializeAndSetup(gameManager.Context, CreateDataFor(obstacleType, pos, rot), gameManager.NumPlayersInGame);
         }
+    }
+    
+    private LevelExporter.ObstacleData CreateDataFor(ObstacleType obstacleType, Vector3 pos, Quaternion rot)
+    {
+        LevelExporter.ObstacleData obstacleData = new LevelExporter.ObstacleData();
+        obstacleData.movementSpeed = 0;
+        obstacleData.position = pos;
+        obstacleData.rotation = rot;
+        obstacleData.type = obstacleType;
+
+        switch (obstacleType)
+        {
+            case ObstacleType.ForcePad:
+                Vector3 swivelAxis = Vector3.zero;
+                float swivelSpeed = 0f;
+                bool addRotation = Random.value > 0.6f;
+                if (addRotation)
+                {
+                    swivelAxis = Vector3.up;
+                    swivelSpeed = 30;
+                }
+                var fpData = new LevelExporter.ForcePadObstacleData(obstacleData, swivelSpeed, swivelAxis);
+                obstacleData = fpData;
+                //is it safe to do just do - obstacleData = new LevelExporter.ForcePadObstacleData(obstacleData, swivelSpeed, swivelAxis);?
+                break;
+            
+            case ObstacleType.Fan:
+            case ObstacleType.SmallFan:
+                obstacleData.rotationAxis = new Vector3(0, 0, 1);
+                obstacleData.rotationSpeed = 90;
+                break;
+        }
+        return obstacleData;
     }
 
     public void AssignPointsToTokens()
     {
         float obstacleWeight = 1f;
-        float backWeight = 1f;
+        float backWeight = 1.5f;
         int platformDepth = sectorGridSize.z - 1;
         
         var scoredByDifficultyToCollectList = tokenCache.Select(st => new {
                 st.collectible,
                 Score = (st.sectorInfo.numObstacles * obstacleWeight) + ((st.position.z / platformDepth) * backWeight)})
-            .OrderByDescending(x => x.Score)
-            .ToList();
+                        .OrderByDescending(x => x.Score)
+                        .ToList();
         
-        int maxHighestValueHits = Mathf.Clamp(difficulty, 1, 4);
+        int maxHighestValueHits = Mathf.Clamp((int)(difficulty / 1.25f), 1, 5);
+        Debug.Log($">>> maxHighestValueHits {maxHighestValueHits}");
         int highValueCount = Mathf.Min(maxHighestValueHits, scoredByDifficultyToCollectList.Count);
-        int highValuePerHit = targetPoints / highValueCount;
+        int highValuePerHit = (int)(targetPoints / (highValueCount * 1.2f));//just an arbitrary factor because in a crowded space multiple tokens were being hit so this is an attempt to make highValuePerHit value lower
         
         int n = scoredByDifficultyToCollectList.Count;
-        if (n == 0) return;
+        if (n == 0)
+            return;
 
-        float minVal = highValuePerHit / 5f;
+        float minVal = highValuePerHit / 8f;
         float maxVal = highValuePerHit;
 
         for (int i = 0; i < n; i++)
@@ -516,7 +467,7 @@ public class EndlessModeLoader : LevelLoader
         float difficultyFactor = difficulty / 10f;
 
         int numMultipliers = Mathf.Max(0, difficulty - 5);
-        int numStars = Mathf.Clamp((difficulty - 6) / 2 + 1, 1, 3);
+        int numStars = Mathf.Clamp((difficulty / 2) - 2, 0, 3);
         int totalPositionsRequired = numStars + numMultipliers;
         if (totalPositionsRequired <= 0)
             return;
@@ -559,7 +510,7 @@ public class EndlessModeLoader : LevelLoader
                 float w2 = 1f + difficultyFactor * (1f - frontness);
                 float w3 = 1f + difficultyFactor * 0.5f;
                 float w4 = 1f + difficultyFactor * frontness * 0.3f;
-                var picker = new WeightedRandomPicker<int>();
+                var picker = new WeightBasedPicker<int>();
                 picker.AddChoice(2, w2);
                 picker.AddChoice(3, w3);
                 // picker.AddChoice(4, w4);

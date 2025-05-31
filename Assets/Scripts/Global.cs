@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 //============---- ENUMS ----============
 
@@ -118,7 +117,9 @@ public enum GameContext
 public enum PFXType
 {
     FlatHitEffect,
-    HitPFX3D
+    HitPFXCollectible,
+    HitPFXObstacle,
+    HitPFXDanger,
 };
 
 [System.Serializable]
@@ -291,6 +292,170 @@ public struct MinMaxFloat
 
     public float Clamp(float value) => Mathf.Clamp(value, Min, Max);
 }
+
+#region Endless Mode
+
+[System.Serializable]
+public struct EdgeDefinition
+{
+    public Transform end1;
+    public Transform end2;
+}
+
+public struct AreaWorldBound
+{
+    public float xMin;
+    public float xMax;
+    public float zMin;
+    public float zMax;
+
+    public AreaWorldBound(float _xMin, float _xMax, float _zMin, float _zMax)
+    {
+        xMin = _xMin;
+        xMax = _xMax;
+        zMin = _zMin;
+        zMax = _zMax;
+    }
+
+    public Vector3 Center()
+    {
+        return new Vector3((xMin + xMax) / 2, 0, (zMin + zMax) / 2);
+    }
+}
+
+public struct SectorInfo
+{
+    SectorCoord sectorCoord;
+    public int numPointTokens;
+    public int numObstacles;
+
+    public SectorInfo(SectorCoord _sectorCoord, SectorSpawnPayload payload)
+    {
+        sectorCoord = _sectorCoord;
+        numPointTokens = 0;
+        numObstacles = 0;
+        
+        if (payload == null)
+            return;
+        
+        foreach (var entry in payload.Entries)
+        {
+            if (entry.pointTokenType != PointTokenType.None)
+            {
+                numPointTokens++;
+            }
+            if (entry.obstacleType != ObstacleType.None)
+            {
+                numObstacles++;
+            }
+        }
+    }
+}
+
+public struct SectorCoord
+{
+    public int x;
+    public int z;
+
+    public SectorCoord(int _x, int _z)
+    {
+        x = _x;
+        z = _z;
+    }
+
+    public bool Equals(SectorCoord other)
+    {
+        return x == other.x && z == other.z;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is SectorCoord other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return System.HashCode.Combine(x, z);
+    }
+
+    public static bool operator ==(SectorCoord a, SectorCoord b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(SectorCoord a, SectorCoord b)
+    {
+        return !a.Equals(b);
+    }
+
+    public override string ToString()
+    {
+        return $"[{x},{z}]";
+    }
+}
+
+public struct AreaBoundingCoord
+{
+    public int xMin;
+    public int xMax;
+    public int zMin;
+    public int zMax;
+
+    public int xDimension;
+    public int zDimension;
+
+    public AreaBoundingCoord(int _xMin, int _zMin, int _xMax, int _zMax)
+    {
+        xMin = _xMin;
+        xMax = _xMax;
+        zMin = _zMin;
+        zMax = _zMax;
+        
+        xDimension = xMax - xMin;
+        zDimension = zMax - zMin;
+    }
+    
+    public AreaBoundingCoord(SectorCoord[] sectors)
+    {
+        xMin = sectors.Min(s => s.x);
+        xMax = sectors.Max(s => s.x);
+        zMin = sectors.Min(s => s.z);
+        zMax = sectors.Max(s => s.z);
+        
+        xDimension = xMax - xMin;
+        zDimension = zMax - zMin;
+    }
+
+    public bool IsSquare()
+    {
+        return xDimension == zDimension;
+    }
+
+    public SectorCoord CenterCoord()
+    {
+        return new SectorCoord((xMin + xMax) / 2, (zMin + zMax) / 2);
+    }
+}
+
+[System.Serializable]
+public struct EndlessLevelWalls
+{
+    public Transform LeftSlat;
+    public Transform[] LeftWall;
+    public Transform[] LeftCap;
+    public Transform[] RightCap;
+    public Transform[] RightWall;
+    public Transform RightSlat;
+}
+
+class SpawnedToken
+{
+    public Collectible collectible;
+    public SectorInfo sectorInfo;
+    public Vector3 position;
+}
+
+#endregion
 
 public static class Global
 {

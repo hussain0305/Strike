@@ -1,7 +1,7 @@
 using NUnit.Framework.Internal;
 using UnityEngine;
 
-public class RandomizerSpawner : MonoBehaviour
+public class EndlessModeSpawner : MonoBehaviour
 {
     protected EndlessModeLoader endlessMode;
     protected SectorGridHelper sectorGridHelper;
