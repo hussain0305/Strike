@@ -188,7 +188,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         (showBallLandingOverride || (!showTrajectory && Time.time > lastBallLandingShownAt + BALL_LANDING_INDICATOR_INTERVAL));
     private float lastBallLandingShownAt = 0;
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
-
+    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 10;
+    
     [InjectOptional]
     private ModeSelector modeSelector;
     [InjectOptional]
@@ -326,7 +327,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             launchAngle = AngleInput.cylinderPivot.rotation;
             spinVector = SpinInput.SpinVector;
 
-            if (!trajectoryButtonSection.gameObject.activeSelf && launchForce > 20 && launchAngle.eulerAngles.sqrMagnitude > 1)
+            if (!trajectoryButtonSection.gameObject.activeSelf && launchForce > MIN_POWER_TO_OFFER_TRAJECTORY_VIEW && 
+                launchAngle.eulerAngles.sqrMagnitude > 1)
             {
                 CheckToShowTrajectoryButton();
             }

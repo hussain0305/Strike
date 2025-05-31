@@ -24,7 +24,7 @@ public abstract class GameMode : MonoBehaviour
     private int numProjectileViews = 3;
     public int NumProjectileViews => numProjectileViews;
     
-    private int projectileViewDuration = 10;
+    private int projectileViewDuration = 30;
     public int ProjectileViewDuration => projectileViewDuration;
     
     [InjectOptional]
