@@ -14,7 +14,6 @@ public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class TrajectoryEnabledEvent { }
-public class LevelSetupCompleteEvent { }
 
 public class ShotCompleteEvent
 {
@@ -240,7 +239,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
-        EventBus.Subscribe<LevelSetupCompleteEvent>(LevelSetupComplete);
     }
 
     private void OnDisable()
@@ -248,10 +246,9 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
-        EventBus.Unsubscribe<LevelSetupCompleteEvent>(LevelSetupComplete);
     }
 
-    private void LevelSetupComplete(LevelSetupCompleteEvent e)
+    public void LevelSetupComplete()
     {
         EventBus.Publish(new NewGameStartedEvent(NumPlayersInGame));
     }

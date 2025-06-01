@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class InitializeDangerTokens
 {
-    public GameObject[] dangerTokens;
-    public int highestTokenIndexToActivate;
+    public int NumPlayers;
+    public GameObject[] DangerTokens;
+    public int HighestTokenIndexToActivate;
 
-    public InitializeDangerTokens(GameObject[] _dangerTokens, int _highestTokenIndexToActivate)
+    public InitializeDangerTokens(GameObject[] _dangerTokens, int _highestTokenIndexToActivate, int numPlayers)
     {
-        dangerTokens = _dangerTokens;
-        highestTokenIndexToActivate = _highestTokenIndexToActivate;
+        DangerTokens = _dangerTokens;
+        HighestTokenIndexToActivate = _highestTokenIndexToActivate;
+        NumPlayers = numPlayers;
     }
 }
 
@@ -32,12 +34,14 @@ public class DangerLayer : MonoBehaviour
 
     public void InitializeDangerTokens(InitializeDangerTokens e)
     {
-        dangerTokens = e.dangerTokens;
+        dangerTokens = e.DangerTokens;
         for (int i = 0; i < dangerTokens.Length; i++)
         {
-            dangerTokens[i].SetActive(i <= e.highestTokenIndexToActivate);
+            dangerTokens[i].SetActive(true);
+            dangerTokens[i].GetComponent<Collectible>().NewGameStarted(e.NumPlayers);
+            dangerTokens[i].SetActive(i <= e.HighestTokenIndexToActivate);
         }
-        nextTokenToActivate = e.highestTokenIndexToActivate + 1;
+        nextTokenToActivate = e.HighestTokenIndexToActivate + 1;
     }
     
     public void NewRoundStarted(NewRoundStartedEvent e)

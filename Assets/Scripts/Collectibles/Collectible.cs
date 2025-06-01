@@ -160,6 +160,14 @@ public class Collectible : MonoBehaviour, ICollectible
         currentPlayer = 0;
     }
 
+    public void NewGameStarted(int _numPlayers)
+    {
+        numPlayers = _numPlayers;
+        stateForPlayers = new bool[numPlayers];
+        isPlayingSolo = numPlayers == 1;
+        currentPlayer = 0;
+    }
+
     public void OnCollisionEnter(Collision other)
     {
         ProcessHit(other.gameObject, other.transform.position);

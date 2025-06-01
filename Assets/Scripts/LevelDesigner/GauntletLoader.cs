@@ -184,9 +184,9 @@ public class GauntletLoader : LevelLoader
             EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));
         }
         
-        EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex));
+        EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex, gameManager.NumPlayersInGame));
         Debug.Log($"Level {levelNumber} loaded successfully!");
-        EventBus.Publish(new LevelSetupCompleteEvent());
+        gameManager.LevelSetupComplete();
     }
         
     void ApplyPortalData(Portal portal, LevelExporter.PortalData portalData)

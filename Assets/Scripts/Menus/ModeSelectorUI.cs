@@ -7,30 +7,26 @@ using Zenject;
 public class ModeSelectorUI : MonoBehaviour
 {
     [Header("Game Mode")]
-    [SerializeField] Button nextGameModeButton;
-    [SerializeField] Button prevGameModeButton;
-    [SerializeField] TextMeshProUGUI selectedGameModeNameText;
-    [SerializeField] TextMeshProUGUI selectedGameModeDescriptionText;
-    [SerializeField] GameObject bottomPanelGameModeUnlocked;
+    public Button nextGameModeButton;
+    public Button prevGameModeButton;
+    public TextMeshProUGUI selectedGameModeNameText;
+    public TextMeshProUGUI selectedGameModeDescriptionText;
+    public GameObject bottomPanelGameModeUnlocked;
 
     [Header("Game Mode - Locked")]
-    [SerializeField] GameObject lockedSection;
-    [SerializeField] TextMeshProUGUI unlockRequirementText;
-    [SerializeField] Button unlockGameModeButton;
-    [SerializeField] GameObject bottomPanelGameModeLocked;
+    public GameObject lockedSection;
+    public TextMeshProUGUI unlockRequirementText;
+    public Button unlockGameModeButton;
+    public GameObject bottomPanelGameModeLocked;
 
     [Header("Levels")]
-    [SerializeField] Transform levelButtonParent;
-    [SerializeField] LevelSelectionButton levelButtonPrefab;
+    public Transform levelButtonParent;
+    public LevelSelectionButton levelButtonPrefab;
     private readonly List<LevelSelectionButton> levelButtonsPool = new List<LevelSelectionButton>();
 
     [Header("Players and Play")]
-    [SerializeField] Button playButton;
-
-    [Header("DEBUG")]
-    [SerializeField] Button addStars;
-    [SerializeField] Button deductStars;
-
+    public Button playButton;
+    
     private ModeSelector modeSelector;
 
     [Inject]
@@ -44,11 +40,7 @@ public class ModeSelectorUI : MonoBehaviour
         nextGameModeButton.onClick.AddListener(OnNextGameMode);
         prevGameModeButton.onClick.AddListener(OnPreviousGameMode);
         playButton.onClick.AddListener(OnPlay);
-
-        //===TODO: DEBUG. DELETE LATER===
-        addStars.onClick.AddListener(() => SaveManager.AddStars(40));
-        deductStars.onClick.AddListener(() => SaveManager.SpendStars(20));
-
+        
         EventBus.Subscribe<GameModeChangedEvent>(OnGameModeChanged);
         EventBus.Subscribe<NumPlayersChangedEvent>(OnNumPlayersChanged);
     }
@@ -58,10 +50,7 @@ public class ModeSelectorUI : MonoBehaviour
         nextGameModeButton.onClick.RemoveListener(OnNextGameMode);
         prevGameModeButton.onClick.RemoveListener(OnPreviousGameMode);
         playButton.onClick.RemoveListener(OnPlay);
-
-        addStars.onClick.RemoveAllListeners();
-        deductStars.onClick.RemoveAllListeners();
-
+        
         EventBus.Unsubscribe<GameModeChangedEvent>(OnGameModeChanged);
         EventBus.Unsubscribe<NumPlayersChangedEvent>(OnNumPlayersChanged);
     }

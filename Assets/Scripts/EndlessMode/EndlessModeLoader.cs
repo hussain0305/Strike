@@ -165,7 +165,7 @@ public class EndlessModeLoader : LevelLoader
         yield return new WaitForSeconds(messageDurations);
 
         EventBus.Publish(new EndlessModeLoadingProgress(true));
-        EventBus.Publish(new LevelSetupCompleteEvent());
+        gameManager.LevelSetupComplete();
     }
 
     public void SetupPinBehaviour()
