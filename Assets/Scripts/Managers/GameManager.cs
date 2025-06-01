@@ -70,6 +70,7 @@ public class NewRoundStartedEvent
 public class TrajectorySegmentVisuals
 {
     public LineRenderer trajectory;
+    public MeshRenderer segmentStart;
     public MeshRenderer segmentEnd;
 }
 
@@ -448,12 +449,15 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             line.SetPositions(trajectorySegments[i].ToArray());
             line.enabled = true;
 
+            trajectories[i].segmentStart.transform.position = trajectorySegments[i][0];
+            trajectories[i].segmentStart.enabled = true;
             trajectories[i].segmentEnd.transform.position = trajectorySegments[i][^1];
             trajectories[i].segmentEnd.enabled = true;
         }
 
         for (int i = trajectorySegments.Count; i < trajectories.Length; i++)
         {
+            trajectories[i].segmentStart.enabled = false;
             trajectories[i].segmentEnd.enabled = false;
             trajectories[i].trajectory.enabled = false;
         }
@@ -599,6 +603,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         DiscardTrajectoryViewRoutine();
         foreach (var trajectory in trajectories)
         {
+            trajectory.segmentStart.enabled = false;
             trajectory.segmentEnd.enabled = false;
             trajectory.trajectory.enabled = false;
         }

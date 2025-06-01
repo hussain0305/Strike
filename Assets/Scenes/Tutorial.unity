@@ -3916,16 +3916,22 @@ MonoBehaviour:
   trajectoryButtonSection: {fileID: 1882245026924694261}
   trajectories:
   - trajectory: {fileID: 2026108910}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 1551532719}
   - trajectory: {fileID: 1723991485}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 1835472795}
   - trajectory: {fileID: 1275961549}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 1437418508}
   - trajectory: {fileID: 454444989}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 1592170540}
   - trajectory: {fileID: 369935599}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 837262851}
   - trajectory: {fileID: 1303023003}
+    segmentStart: {fileID: 0}
     segmentEnd: {fileID: 1225936366}
   fireButton: {fileID: 1376957821500136497}
   angleIndicator: {fileID: 824971010}
@@ -4742,7 +4748,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837262849}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -6629,7 +6635,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225936364}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -8507,7 +8513,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437418505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -9028,7 +9034,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551532716}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -9533,7 +9539,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592170538}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11087,7 +11093,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835472792}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
