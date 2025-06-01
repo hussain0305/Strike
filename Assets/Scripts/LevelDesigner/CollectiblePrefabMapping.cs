@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -59,46 +61,75 @@ public class CollectiblePrefabMapping : ScriptableObject
     public ObstaclePrefab[] obstaclePrefabs;
     public GameObject starPrefab;
     
-    public GameObject GetPointTokenPrefab(PointTokenType pointTokenType)
+    private Dictionary<PointTokenType, PointTokenPrefab> pointTokenDict = new ();
+    private Dictionary<MultiplierTokenType, MultiplierTokenPrefab> multiplierTokenDict = new ();
+    private Dictionary<DangerTokenType, DangerTokenPrefab> dangerTokenDict = new ();
+    private Dictionary<ObstacleType, ObstaclePrefab> obstacleDict = new ();
+
+    private void OnEnable()
     {
+        BuildDictionaries();
+    }
+
+    private void BuildDictionaries()
+    {
+        pointTokenDict = new Dictionary<PointTokenType, PointTokenPrefab>();
         foreach (var entry in pointTokenPrefabs)
         {
-            if (entry.pointTokenType == pointTokenType)
-                return entry.prefab;
+            pointTokenDict.TryAdd(entry.pointTokenType, entry);
         }
+
+        multiplierTokenDict = new Dictionary<MultiplierTokenType, MultiplierTokenPrefab>();
+        foreach (var entry in multiplierTokenPrefabs)
+        {
+            multiplierTokenDict.TryAdd(entry.multiplierTokenType, entry);
+        }
+
+        dangerTokenDict = new Dictionary<DangerTokenType, DangerTokenPrefab>();
+        foreach (var entry in dangerTokenPrefabs)
+        {
+            dangerTokenDict.TryAdd(entry.dangerTokenType, entry);
+        }
+
+        obstacleDict = new Dictionary<ObstacleType, ObstaclePrefab>();
+        foreach (var entry in obstaclePrefabs)
+        {
+            obstacleDict.TryAdd(entry.obstacleType, entry);
+        }
+    }
+
+    public GameObject GetPointTokenPrefab(PointTokenType pointTokenType)
+    {
+        if (pointTokenDict.TryGetValue(pointTokenType, out var entry))
+            return entry.prefab;
+
         Debug.LogError($"Prefab not found for PointTokenType: {pointTokenType}");
         return null;
     }
 
     public GameObject GetMultiplierTokenPrefab(MultiplierTokenType multiplierTokenType)
     {
-        foreach (var entry in multiplierTokenPrefabs)
-        {
-            if (entry.multiplierTokenType == multiplierTokenType)
-                return entry.prefab;
-        }
+        if (multiplierTokenDict.TryGetValue(multiplierTokenType, out var entry))
+            return entry.prefab;
+        
         Debug.LogError($"Prefab not found for MultiplierTokenType: {multiplierTokenType}");
         return null;
     }
     
     public GameObject GetDangerTokenPrefab(DangerTokenType dangerTokenType)
     {
-        foreach (var entry in dangerTokenPrefabs)
-        {
-            if (entry.dangerTokenType == dangerTokenType)
-                return entry.prefab;
-        }
+        if (dangerTokenDict.TryGetValue(dangerTokenType, out var entry))
+            return entry.prefab;
+        
         Debug.LogError($"Prefab not found for DangerTokenType: {dangerTokenType}");
         return null;
     }
     
     public GameObject GetObstaclePrefab(ObstacleType obstacleType)
     {
-        foreach (var entry in obstaclePrefabs)
-        {
-            if (entry.obstacleType == obstacleType)
-                return entry.prefab;
-        }
+        if (obstacleDict.TryGetValue(obstacleType, out var entry))
+            return entry.prefab;
+        
         Debug.LogError($"Prefab not found for ObstacleType: {obstacleType}");
         return null;
     }
@@ -114,42 +145,33 @@ public class CollectiblePrefabMapping : ScriptableObject
     
     public Vector3 GetPointTokenDimension(PointTokenType pointTokenType)
     {
-        foreach (var entry in pointTokenPrefabs)
-        {
-            if (entry.pointTokenType == pointTokenType)
-                return entry.dimensions;
-        }
+        if (pointTokenDict.TryGetValue(pointTokenType, out var entry))
+            return entry.dimensions;
+        
         return Vector3.zero;
     }
 
     public Vector3 GetMultiplierTokenDimension(MultiplierTokenType multiplierTokenType)
     {
-        foreach (var entry in multiplierTokenPrefabs)
-        {
-            if (entry.multiplierTokenType == multiplierTokenType)
-                return entry.dimensions;
-        }
+        if (multiplierTokenDict.TryGetValue(multiplierTokenType, out var entry))
+            return entry.dimensions;
+        
         return Vector3.zero;
     }
     
     public Vector3 GetDangerTokenDimension(DangerTokenType dangerTokenType)
     {
-        foreach (var entry in dangerTokenPrefabs)
-        {
-            if (entry.dangerTokenType == dangerTokenType)
-                return entry.dimensions;
-        }
+        if (dangerTokenDict.TryGetValue(dangerTokenType, out var entry))
+            return entry.dimensions;
+        
         return Vector3.zero;
     }
     
     public Vector3 GetObstacleDimension(ObstacleType obstacleType)
     {
-        foreach (var entry in obstaclePrefabs)
-        {
-            if (entry.obstacleType == obstacleType)
-                return entry.dimensions;
-        }
+        if (obstacleDict.TryGetValue(obstacleType, out var entry))
+            return entry.dimensions;
+        
         return Vector3.zero;
     }
-
 }
