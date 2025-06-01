@@ -6,10 +6,12 @@ using Zenject;
 public class PlayerEliminatedEvent
 {
     public int PlayerIndex;
+    public EliminationReason EliminationReason;
 
-    public PlayerEliminatedEvent(int playerIndex)
+    public PlayerEliminatedEvent(int playerIndex, EliminationReason eliminationReason)
     {
         this.PlayerIndex = playerIndex;
+        this.EliminationReason = eliminationReason;
     }
 }
 
@@ -114,7 +116,7 @@ public class RoundDataManager : MonoBehaviour
                 break;
             case CollectibleType.Danger:
                 currentShotData.hitDangerPin = true;
-                EliminatePlayer(gameManager.CurrentPlayerTurn);
+                EliminatePlayer(gameManager.CurrentPlayerTurn, EliminationReason.HitDangerPin);
                 break;
         }
 
@@ -215,13 +217,13 @@ public class RoundDataManager : MonoBehaviour
         currentShotData.Reset();
     }
     
-    public void EliminatePlayer(int playerIndex)
+    public void EliminatePlayer(int playerIndex, EliminationReason reason)
     {
         if (!eliminationOrder.Contains(playerIndex))
         {
             eliminationOrder.Add(playerIndex);
             playerScoreboards[playerIndex].SetEliminated();
-            EventBus.Publish(new PlayerEliminatedEvent(playerIndex));
+            EventBus.Publish(new PlayerEliminatedEvent(playerIndex, reason));
         }
     }
 }

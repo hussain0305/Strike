@@ -34,24 +34,17 @@ public abstract class GameMode : MonoBehaviour
     [InjectOptional]
     protected RoundDataManager roundDataManager;
     
-    private void OnEnable()
-    {
-        EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
-    }
-
-    private void OnDisable()
-    {
-        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
-    }
-
-    public void CollectibleHit(CollectibleHitEvent e)
-    {
-        if (e.Type == CollectibleType.Danger)
-        {
-            int player = gameManager.CurrentPlayerTurn;
-            roundDataManager.EliminatePlayer(player);
-        }
-    }
+    //Note to future self: I forgot why was this needed here? Round Data manager already listens to this event. Just commenting it out for now.
+    //If something breaks, investigate this.
+    // public void CollectibleHit(CollectibleHitEvent e)
+    // {
+    //     if (e.Type == CollectibleType.Danger)
+    //     {
+    //         int player = gameManager.CurrentPlayerTurn;
+    //         Debug.Log(">>> Eliminate player caught here as well");
+    //         roundDataManager.EliminatePlayer(player);
+    //     }
+    // }
 
     public virtual WinCondition GetWinCondition()
     {

@@ -7,6 +7,7 @@ public class EliminationFeedbackText : MonoBehaviour
 {
     public GameObject elimination;
     public TextMeshProUGUI eliminationText;
+    public TextMeshProUGUI reasonText;
     
     private GameManager gameManager;
 
@@ -35,6 +36,10 @@ public class EliminationFeedbackText : MonoBehaviour
     public void ShowEliminationText(PlayerEliminatedEvent e)
     {
         elimination.SetActive(true);
+        reasonText.text = e.EliminationReason == EliminationReason.HitDangerPin ? 
+            "Hit an Elimination Token" : 
+            "Failed to hit a point token";
+        
         if(gameManager.NumPlayersInGame == 1)
             eliminationText.text = $"!! ELIMINATED !!";
         else

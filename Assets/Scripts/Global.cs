@@ -155,6 +155,13 @@ public enum ButtonGroup
     CamerBehaviour
 }
 
+public enum EliminationReason
+{
+    None,
+    HitDangerPin,
+    HitNoting
+};
+
 //============---- STRUCTS ----============
 
 public struct ShotInfo

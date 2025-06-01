@@ -27,7 +27,7 @@ public class DeathMatch : GameMode
         {
             deathMatchFailCondition = true;
             int player = gameManager.CurrentPlayerTurn;
-            roundDataManager.EliminatePlayer(player);
+            roundDataManager.EliminatePlayer(player, EliminationReason.HitNoting);
             FlagNextShot(1);
         }
     }
