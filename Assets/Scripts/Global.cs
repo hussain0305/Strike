@@ -39,7 +39,8 @@ public enum ObstacleType
     SmallWall,
     SmallWallSeeThrough,
     WallSeeThrough, //8
-    ForcePad
+    ForcePad,
+    PhysicsPlank
 };
 
 public enum Positioning
