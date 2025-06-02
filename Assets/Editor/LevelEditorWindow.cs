@@ -112,6 +112,23 @@ public class LevelEditorWindow : EditorWindow
             collectibleScript.pointDisplay = collectibleData.pointDisplayType;
             
             collectibleObject.transform.SetParent(collectibleParent);
+            
+            bool collectibeMoves = collectibleData.path != null && collectibleData.path.Length > 1;
+            var cmScript = collectibleObject.GetComponent<ContinuousMovement>();
+
+            if (collectibeMoves)
+            {
+                if (!cmScript)
+                    cmScript = Undo.AddComponent<ContinuousMovement>(collectibleObject);
+                Undo.RecordObject(cmScript, "Modify Collectible Movement");
+                cmScript.pointA = collectibleData.path[0];
+                cmScript.pointB = collectibleData.path[1];
+            }
+            else if (cmScript)
+            {
+                Undo.DestroyObjectImmediate(cmScript);
+            }
+
         }
 
         foreach (var starData in loadedLevelData.stars)
