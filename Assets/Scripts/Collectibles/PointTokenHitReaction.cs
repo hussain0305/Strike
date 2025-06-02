@@ -10,6 +10,9 @@ public class PointTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
     private Collectible collectible;
     private Collectible Collectible => collectible ??= GetComponent<Collectible>();
     
+    private MeshRenderer edgesMeshRenderer;
+    private MeshRenderer EdgesMeshRenderer => edgesMeshRenderer ??= edges.GetComponent<MeshRenderer>();
+    
     private void OnEnable()
     {
         SetDefaultVisuals(null);
@@ -31,14 +34,11 @@ public class PointTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
 
     public void SetHitVisuals()
     {
-        foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
-        {
-            mr.sharedMaterial = Collectible.type == CollectibleType.Danger
-                ? GlobalAssets.Instance.dangerCollectibleHitMaterial
-                : Collectible.value > 0
+        EdgesMeshRenderer.sharedMaterial = Collectible.type == CollectibleType.Danger
+            ? GlobalAssets.Instance.dangerCollectibleHitMaterial
+            : Collectible.value > 0
                 ? GlobalAssets.Instance.positiveCollectibleHitMaterial
                 : GlobalAssets.Instance.negativeCollectibleHitMaterial;
-        }
 
         Collectible.inBodyPointDisplay.fontMaterial = Collectible.HitFontColor;
     }
@@ -46,14 +46,11 @@ public class PointTokenHitReaction : MonoBehaviour, ICollectibleHitReaction
     public void SetDefaultVisuals(NextShotCuedEvent e)
     {
         transform.localScale = Collectible.DefaultLocalScale;
-        foreach (MeshRenderer mr in edges.GetComponentsInChildren<MeshRenderer>())
-        {
-            mr.sharedMaterial = Collectible.type == CollectibleType.Danger
-                ? GlobalAssets.Instance.dangerCollectibleMaterial
-                : Collectible.value > 0
+        EdgesMeshRenderer.sharedMaterial = Collectible.type == CollectibleType.Danger
+            ? GlobalAssets.Instance.dangerCollectibleMaterial
+            : Collectible.value > 0
                 ? GlobalAssets.Instance.positiveCollectibleMaterial
                 : GlobalAssets.Instance.negativeCollectibleMaterial;
-        }
         Collectible.inBodyPointDisplay.fontMaterial = Collectible.RegularFontColor;
     }
 
