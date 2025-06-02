@@ -35,12 +35,14 @@ public class GameStateManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<GameEndedEvent>(GameEnded);
+        EventBus.Subscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Subscribe<GameExitedEvent>(GameExitedPrematurely);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<GameEndedEvent>(GameEnded);
+        EventBus.Unsubscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Unsubscribe<GameExitedEvent>(GameExitedPrematurely);
     }
 
@@ -163,6 +165,12 @@ public class GameStateManager : MonoBehaviour
     {
         ReturnEverythingToPool();
         ReturnToMainMenu();
+    }
+
+    public void GameRestarted(GameRestartedEvent e)
+    {
+        ReturnEverythingToPool();
+        RetryLevel();
     }
 
     public void ReturnToMainMenu()

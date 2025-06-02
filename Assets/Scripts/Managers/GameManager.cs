@@ -13,6 +13,7 @@ public class PreNextShotCuedEvent { }
 public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
+public class GameRestartedEvent { }
 public class TrajectoryEnabledEvent { }
 
 public class ShotCompleteEvent
@@ -239,6 +240,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Subscribe<GameRestartedEvent>(GameRestarted);
     }
 
     private void OnDisable()
@@ -246,6 +248,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Unsubscribe<GameRestartedEvent>(GameRestarted);
     }
 
     public void LevelSetupComplete()
@@ -615,6 +618,11 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     public void StarCollected(int index)
     {
         starsCollected.Add(index);
+    }
+
+    public void GameRestarted(GameRestartedEvent e)
+    {
+        PostGameStuff();
     }
     
     public void GameEnded()
