@@ -108,6 +108,7 @@ public class LevelEditorWindow : EditorWindow
             collectibleScript.value = collectibleData.value;
             collectibleScript.numTimesCanBeCollected = collectibleData.numTimesCanBeCollected;
             collectibleScript.activeOnStart = collectibleData.activeOnStart;
+            collectibleScript.isKinematic = collectibleData.isKinematic;
             collectibleScript.pointDisplay = collectibleData.pointDisplayType;
             
             collectibleObject.transform.SetParent(collectibleParent);
@@ -240,7 +241,8 @@ public class LevelEditorWindow : EditorWindow
                 rotation = collectible.rotation,
                 value = collectibleScript.value,
                 numTimesCanBeCollected = collectibleScript.numTimesCanBeCollected,
-                activeOnStart = collectibleScript.activeOnStart
+                activeOnStart = collectibleScript.activeOnStart,
+                isKinematic = collectibleScript.isKinematic
             };
 
             loadedLevelData.collectibles.Add(data);

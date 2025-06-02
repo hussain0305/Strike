@@ -81,7 +81,13 @@ public class GauntletLoader : LevelLoader
 
             bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
             ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
-
+            Rigidbody rBody = collectibleObject.GetComponent<Rigidbody>();
+            //TODO: Dirty 'if' below. See if there's time to retrospectively fix existing level data with multi-tokens gravity info and remove this check, just make it universal for all types
+            if (collectibleData.pointTokenType != PointTokenType.None)
+            {
+                rBody.isKinematic = collectibleData.isKinematic;
+            }
+            
             if (collectibleMoves)
             {
                 if (!cmScript)
@@ -91,7 +97,6 @@ public class GauntletLoader : LevelLoader
                 cmScript.pointB = collectibleData.path[1];
                 cmScript.speed  = collectibleData.movementSpeed;
                 
-                Rigidbody rBody = collectibleObject.GetComponent<Rigidbody>();
                 rBody.isKinematic = true;
             }
             else if (cmScript)

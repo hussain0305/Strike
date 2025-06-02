@@ -30,6 +30,7 @@ public class Collectible : MonoBehaviour, ICollectible
     public int value;
     public int numTimesCanBeCollected = 1;
     public bool activeOnStart = true;
+    public bool isKinematic = false;
 
     [Header("Header")]
     public float heightMultipleForOffsetCalculation = 1;
