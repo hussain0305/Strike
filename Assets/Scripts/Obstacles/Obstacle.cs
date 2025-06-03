@@ -47,7 +47,7 @@ public class Obstacle : MonoBehaviour
         }
     } 
     
-    public void CheckForContinuousRotation(Vector3 rotationAxis, float rotationSpeed)
+    public virtual void CheckForContinuousRotation(Vector3 rotationAxis, float rotationSpeed)
     {
         bool objRotates = rotationAxis != Vector3.zero && rotationSpeed != 0;
         var crScript = axisOfRotation.GetComponent<ContinuousRotation>();

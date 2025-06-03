@@ -267,8 +267,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8, y: 10, z: 16}
-  m_Center: {x: 0, y: 4, z: 9}
+  m_Size: {x: 10, y: 10, z: 21.154793}
+  m_Center: {x: 0, y: 4, z: 11.577396}
 --- !u!114 &4012213387027929819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 9
   axisOfRotation: {fileID: 6361733155617237819}
+  isKinematic: 1
 --- !u!54 &8089031570459811831
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -426,7 +427,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.6
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -982,7 +983,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 8, y: 8, z: 1}
+    m_Scale: {x: 10, y: 10, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0

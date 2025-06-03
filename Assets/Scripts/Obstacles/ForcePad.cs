@@ -49,4 +49,25 @@ public class ForcePad : Obstacle
 
         rBody.linearVelocity = push + currentVelocity;
     }
+    
+    public override void CheckForContinuousRotation(Vector3 rotationAxis, float rotationSpeed)
+    {
+        bool objRotates = rotationAxis != Vector3.zero && rotationSpeed != 0;
+        var crScript = axisOfRotation.GetComponent<ContinuousRotation>();
+
+        if (objRotates)
+        {
+            if (!crScript)
+                crScript = axisOfRotation.AddComponent<ContinuousRotation>();
+            crScript.rotationAxis = rotationAxis;
+            crScript.rotationSpeed = rotationSpeed;
+            crScript.RotateAroundWorld();
+            
+            RBody.isKinematic = true;
+        }
+        else if (crScript)
+        {
+            Destroy(crScript);
+        }
+    } 
 }
