@@ -45,7 +45,7 @@ public class ShotgunModule : IBallAbilityModule
         pelletPool = new Queue<GameObject>();
         for (int i = 0; i < pelletCount; i++)
         {
-            GameObject pellet = Object.Instantiate(pelletPrefab, ball.transform);
+            GameObject pellet = Object.Instantiate(pelletPrefab);
             pellet.SetActive(false);
             pelletPool.Enqueue(pellet);
             yield return null;

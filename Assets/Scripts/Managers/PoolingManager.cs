@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Zenject;
@@ -14,7 +15,17 @@ public class PoolingManager : MonoBehaviour
     private Dictionary<DangerTokenType, Queue<GameObject>> dangerTokensDictionary = new Dictionary<DangerTokenType, Queue<GameObject>>();
     private Dictionary<ObstacleType, Queue<GameObject>> obstaclesDictionary = new Dictionary<ObstacleType, Queue<GameObject>>();
     private Queue<GameObject> starPool = new Queue<GameObject>();
-    
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+    }
+
     private GameObject GetObjectFromDictionary<T>(Dictionary<T, Queue<GameObject>> dictionary, T type, System.Func<T, GameObject> prefabGetter)
     {
         if (dictionary.TryGetValue(type, out Queue<GameObject> queue) && queue.Count > 0)
@@ -101,5 +112,13 @@ public class PoolingManager : MonoBehaviour
         star.transform.SetParent(transform);
         star.SetActive(false);
         starPool.Enqueue(star);
+    }
+
+    public void ProjectilesSpawned(ProjectilesSpawnedEvent e)
+    {
+        foreach (var projectile in e.projectiles)
+        {
+            projectile.transform.SetParent(transform);
+        }
     }
 }
