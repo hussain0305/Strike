@@ -221,6 +221,7 @@ public struct GameModeInfo
     public GameModeType gameMode;
     public string displayName;
     public string description;
+    public string[] rules;
     public int scene;
     public int starsRequiredToUnlock;
 }

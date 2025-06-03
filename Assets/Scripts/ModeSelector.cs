@@ -5,7 +5,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameModeChangedEvent { }
+public class GameModeChangedEvent
+{
+    public GameModeInfo GameModeInfo;
+    public GameModeChangedEvent(GameModeInfo gameModeInfo)
+    {
+        GameModeInfo = gameModeInfo;
+    }
+}
 public class NumPlayersChangedEvent
 {
     public int numPlayers;
@@ -105,7 +112,7 @@ public class ModeSelector : MonoBehaviour
         ResetSelectedLevel();
         currentSelectedMode = currentSelected;
         currentSelectedModeInfo = gameModeInfo.GetGameModeInfo(currentSelected);
-        EventBus.Publish(new GameModeChangedEvent());
+        EventBus.Publish(new GameModeChangedEvent(currentSelectedModeInfo));
     }
     
     public void SaveLastPlayedGauntletMode()

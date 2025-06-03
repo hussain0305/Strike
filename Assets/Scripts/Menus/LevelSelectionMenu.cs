@@ -16,10 +16,6 @@ public class LevelSelectionMenu : MonoBehaviour
     private Color promptLineColor;
     private Color promptTextColor;
     private Color transparentColor;
-
-    [Header("Info Section")]
-    public GameObject soloModeSection;
-    public GameObject passplaySection;
     
     private static LevelSelectionMenu instance;
     public static LevelSelectionMenu Instance => instance;
@@ -108,7 +104,5 @@ public class LevelSelectionMenu : MonoBehaviour
     public void NumPlayersChanged(NumPlayersChangedEvent e)
     {
         numPlayersText.text = e.numPlayers.ToString();
-        soloModeSection.SetActive(e.numPlayers == 1);
-        passplaySection.SetActive(e.numPlayers != 1);
     }
 }
