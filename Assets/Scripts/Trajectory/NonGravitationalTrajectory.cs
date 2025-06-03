@@ -5,7 +5,6 @@ public class NonGravitationalTrajectory : ITrajectoryCalculator
 {
     private IContextProvider context;
     private Rigidbody rb;
-    private float gravity;
     private int trajectoryDefinition;
 
     private float spinEffect;
@@ -21,7 +20,6 @@ public class NonGravitationalTrajectory : ITrajectoryCalculator
         spinEffect = ball.spinEffect;
         curveClamp = ball.curveClamp;
         dipClamp = ball.dipClamp;
-        gravity = 0;
         trajectoryDefinition = trajectoryPointCount;
     }
 

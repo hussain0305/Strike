@@ -5,6 +5,7 @@ using UnityEngine.Windows;
 
 public class EditorMeshCombiner : MonoBehaviour
 {
+#if UNITY_EDITOR
     [MenuItem("Tools/Combine Selected Children into Mesh Asset")]
     private static void CombineSelectedChildren()
     {
@@ -82,4 +83,5 @@ public class EditorMeshCombiner : MonoBehaviour
         EditorUtility.SetDirty(parentGO);
         Debug.Log($"Combined {combineList.Count} child meshes into {assetPath} and assigned to {parentGO.name}");
     }
+#endif
 }
