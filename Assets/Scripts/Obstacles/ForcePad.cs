@@ -49,18 +49,4 @@ public class ForcePad : Obstacle
 
         rBody.linearVelocity = push + currentVelocity;
     }
-
-    protected override void ObstacleSpecificSetup(LevelExporter.ObstacleData _obstacleData)
-    {
-        LevelExporter.ForcePadObstacleData forcePadData = _obstacleData as LevelExporter.ForcePadObstacleData;
-        if (forcePadData == null)
-            return;
-
-        if (forcePadData.swivelAxis == Vector3.zero)
-            return;
-        
-        ContinuousRotation swivelRotation = gameObject.AddComponent<ContinuousRotation>();
-        swivelRotation.rotationAxis = forcePadData.swivelAxis;
-        swivelRotation.rotationSpeed = forcePadData.swivelSpeed;
-    }
 }

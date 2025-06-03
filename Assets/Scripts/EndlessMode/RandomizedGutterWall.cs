@@ -192,7 +192,14 @@ public class RandomizedGutterWall : EndlessModeSpawner
             float points = Mathf.Lerp(minPoints, maxPoints, Random.value);
             int roundedOffPoints = Mathf.CeilToInt(points / 5f) * 5;
             
-            pointToken.InitializeAndSetup(gameManager.Context, roundedOffPoints, 1, Collectible.PointDisplayType.InBody);
+            LevelExporter.CollectibleData data = new LevelExporter.CollectibleData();
+            data.value = roundedOffPoints;
+            data.numTimesCanBeCollected = 1;
+            data.pointDisplayType = Collectible.PointDisplayType.InBody;
+            data.path = path;
+            data.movementSpeed = 1f;
+            
+            pointToken.InitializeAndSetup(gameManager.Context, data);
         }
         
         var cm = obj.GetComponent<ContinuousMovement>();

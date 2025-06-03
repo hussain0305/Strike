@@ -47,31 +47,40 @@ public class GauntletLoader : LevelLoader
 
         targetPoints = levelData.targetPoints;
 
+        SpawnCollectibles(levelData.collectibles);
+        SpawnStars(levelData.stars);
+        SpawnPortals(levelData.portals);
+        SpawnObstacle(levelData.obstacles);
+        
+        if (levelData.platformRotationSpeed != 0f)
+        {
+            EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));
+        }
+        
+        Debug.Log($"Level {levelNumber} loaded successfully!");
+        gameManager.LevelSetupComplete();
+    }
+
+    public void SpawnCollectibles(List<LevelExporter.CollectibleData> allCollectibleData)
+    {
         List<GameObject> spawnedDangerObjects = new List<GameObject>();
         int highestActiveDangerPinIndex = -1;
         int currentDangerPinIndex = 0;
-        
-        foreach (LevelExporter.CollectibleData collectibleData in levelData.collectibles)
+
+        foreach (var collectibleData in allCollectibleData)
         {
             GameObject collectibleObject = null;
             if (collectibleData.pointTokenType != PointTokenType.None)
-            {
                 collectibleObject = poolingManager.GetObject(collectibleData.pointTokenType);
-            }
             else if (collectibleData.multiplierTokenType != MultiplierTokenType.None)
-            {
                 collectibleObject = poolingManager.GetObject(collectibleData.multiplierTokenType);
-            }
-
             else if (collectibleData.dangerTokenType != DangerTokenType.None)
-            {
                 collectibleObject = poolingManager.GetObject(collectibleData.dangerTokenType);
-            }
 
             if (collectibleObject == null)
             {
                 Debug.LogWarning($"Failed to load collectible of type {collectibleData.type}");
-                continue;
+                return;
             }
             
             collectibleObject.transform.SetParent(collectiblesParent);
@@ -79,8 +88,9 @@ public class GauntletLoader : LevelLoader
             collectibleObject.transform.rotation = collectibleData.rotation;
             collectibleObject.transform.localScale = Vector3.one;
 
-            bool collectibleMoves = collectibleData.path != null && collectibleData.path.Length > 1;
-            ContinuousMovement cmScript = collectibleObject.GetComponent<ContinuousMovement>();
+            // CheckForContinuousMovement(collectibleObject, collectibleData.path, collectibleData.movementSpeed);
+            // CheckForContinuousRotation(collectibleObject, collectibleData.rotationAxis, collectibleData.rotationSpeed);
+
             Rigidbody rBody = collectibleObject.GetComponent<Rigidbody>();
             //TODO: Dirty 'if' below. See if there's time to retrospectively fix existing level data with multi-tokens gravity info and remove this check, just make it universal for all types
             if (collectibleData.pointTokenType != PointTokenType.None)
@@ -88,27 +98,11 @@ public class GauntletLoader : LevelLoader
                 rBody.isKinematic = collectibleData.isKinematic;
             }
             
-            if (collectibleMoves)
-            {
-                if (!cmScript)
-                    cmScript = collectibleObject.AddComponent<ContinuousMovement>();
-
-                cmScript.pointA = collectibleData.path[0];
-                cmScript.pointB = collectibleData.path[1];
-                cmScript.speed  = collectibleData.movementSpeed;
-                
-                rBody.isKinematic = true;
-            }
-            else if (cmScript)
-            {
-                Destroy(cmScript);
-            }
-
             Collectible collectibleScript = collectibleObject.GetComponent<Collectible>();
             if (collectibleScript != null)
             {
                 collectibleScript.OverrideDefaultLocalScale(Vector3.one);
-                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData.value, collectibleData.numTimesCanBeCollected, collectibleData.pointDisplayType);
+                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData);
             }
             
             DangerToken dangerScript = collectibleObject.GetComponent<DangerToken>();
@@ -123,10 +117,14 @@ public class GauntletLoader : LevelLoader
                 currentDangerPinIndex++;
             }
         }
+        EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex, gameManager.NumPlayersInGame));
+    }
 
+    public void SpawnStars(List<LevelExporter.StarData> stars)
+    {
         SaveManager.GetStarsCollectedStatus(modeSelector.GetSelectedGameMode(),
             modeSelector.GetSelectedLevel(), out bool[] starStatus);
-        foreach (LevelExporter.StarData starData in levelData.stars)
+        foreach (LevelExporter.StarData starData in stars)
         {
             if (starStatus[starData.index])
             {
@@ -145,25 +143,11 @@ public class GauntletLoader : LevelLoader
             Star starScript = starObject.GetComponent<Star>();
             starScript.index = starData.index;
         }
-
-        PortalPair[] allPortalPairs = portalsParent.GetComponentsInChildren<PortalPair>(true);
-        int i;
-        for (i = 0; i < levelData.portals.Count; i++)
-        {
-            LevelExporter.PortalSet portalSet = levelData.portals[i];
-            PortalPair portalPair = allPortalPairs[i];
-            portalPair.gameObject.SetActive(true);
-
-            ApplyPortalData(portalPair.portalA, portalSet.portalA);
-            ApplyPortalData(portalPair.portalB, portalSet.portalB);
-        }
-
-        for (; i < allPortalPairs.Length; i++)
-        {
-            allPortalPairs[i].gameObject.SetActive(false);
-        }
-
-        foreach (LevelExporter.ObstacleData obstacleData in levelData.obstacles)
+    }
+    
+    public void SpawnObstacle(List<LevelExporter.ObstacleData> allObstacleData)
+    {
+        foreach (LevelExporter.ObstacleData obstacleData in allObstacleData)
         {
             GameObject obstacleObject = poolingManager.GetObject(obstacleData.type);
 
@@ -176,60 +160,46 @@ public class GauntletLoader : LevelLoader
             obstacleObject.transform.SetParent(obstacleData.positioning == Positioning.OnPlatform ? obstaclesParentPlatform : obstaclesParentWorld);
             obstacleObject.transform.position = obstacleData.position;
             obstacleObject.transform.rotation = obstacleData.rotation;
-
+            
+            // CheckForContinuousMovement(obstacleObject, obstacleData.path, obstacleData.movementSpeed);
+            // CheckForContinuousRotation(obstacleObject, obstacleData.rotationAxis, obstacleData.rotationSpeed);
+            
             Obstacle obstacleScript = obstacleObject.GetComponent<Obstacle>();
             if (obstacleScript != null)
             {
                 obstacleScript.InitializeAndSetup(gameManager.Context, obstacleData, gameManager.NumPlayersInGame);
             }
         }
-        
-        if (levelData.platformRotationSpeed != 0f)
-        {
-            EventBus.Publish(new LevelPlatformHasRotation(levelData.platformRotationSpeed));
-        }
-        
-        EventBus.Publish(new InitializeDangerTokens(spawnedDangerObjects.ToArray(), highestActiveDangerPinIndex, gameManager.NumPlayersInGame));
-        Debug.Log($"Level {levelNumber} loaded successfully!");
-        gameManager.LevelSetupComplete();
     }
-        
+
+    public void SpawnPortals(List<LevelExporter.PortalSet> portals)
+    {
+        PortalPair[] allPortalPairs = portalsParent.GetComponentsInChildren<PortalPair>(true);
+        int i;
+        for (i = 0; i < portals.Count; i++)
+        {
+            LevelExporter.PortalSet portalSet = portals[i];
+            PortalPair portalPair = allPortalPairs[i];
+            portalPair.gameObject.SetActive(true);
+
+            ApplyPortalData(portalPair.portalA, portalSet.portalA);
+            ApplyPortalData(portalPair.portalB, portalSet.portalB);
+        }
+
+        for (; i < allPortalPairs.Length; i++)
+        {
+            allPortalPairs[i].gameObject.SetActive(false);
+        }
+    }
+    
     void ApplyPortalData(Portal portal, LevelExporter.PortalData portalData)
     {
         GameObject portalObject = portal.gameObject;
         portalObject.transform.position = portalData.position;
         portalObject.transform.rotation = portalData.rotation;
 
-        bool portalMoves = portalData.path != null && portalData.path.Length > 1;
-        var cmScript = portalObject.GetComponent<ContinuousMovement>();
-
-        if (portalMoves)
-        {
-            if (!cmScript)
-                cmScript = portalObject.AddComponent<ContinuousMovement>();
-            cmScript.pointA = portalData.path[0];
-            cmScript.pointB = portalData.path[1];
-            cmScript.speed  = portalData.movementSpeed;
-        }
-        else if (cmScript)
-        {
-            Destroy(cmScript);
-        }
-
-        bool portalRotates = portalData.rotationSpeed != 0;
-        var crScript = portalObject.GetComponent<ContinuousRotation>();
-
-        if (portalRotates)
-        {
-            if (!crScript)
-                crScript = portalObject.AddComponent<ContinuousRotation>();
-            crScript.rotationAxis = portalData.rotationAxis;
-            crScript.rotationSpeed = portalData.rotationSpeed;
-        }
-        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
-        {
-            Destroy(crScript);
-        }
+        CheckForContinuousMovement(portalObject, portalData.path, portalData.movementSpeed);
+        CheckForContinuousRotation(portalObject, portalData.rotationAxis, portalData.rotationSpeed);
     }
     
     public override int GetTargetPoints()

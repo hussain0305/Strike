@@ -3,11 +3,16 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public ObstacleType type;
+    public GameObject axisOfRotation;
+    public bool isKinematic = true;
     
     private Positioning positioning;
     protected IContextProvider context;
     protected int numTotalPlayers;
     
+    private Rigidbody rBody;
+    public Rigidbody RBody => rBody ??= GetComponent<Rigidbody>();
+
     public void InitializeAndSetup(IContextProvider _context, LevelExporter.ObstacleData _obstacleData, int _numTotalPlayers = 1)
     {
         context = _context;
@@ -15,47 +20,50 @@ public class Obstacle : MonoBehaviour
         type = _obstacleData.type;
         positioning = _obstacleData.positioning;
         
-        bool obstacleMoves = _obstacleData.path != null && _obstacleData.path.Length > 1;
-        ContinuousMovement cmScript = GetComponent<ContinuousMovement>();
+        RBody.isKinematic = isKinematic;
+        CheckForContinuousMovement(_obstacleData.path, _obstacleData.movementSpeed);
+        CheckForContinuousRotation(_obstacleData.rotationAxis, _obstacleData.rotationSpeed);
+    }
+    
+    public void CheckForContinuousMovement(Vector3[] path, float movementSpeed)
+    {
+        bool objMoves = path != null && path.Length > 1;
+        var cmScript = gameObject.GetComponent<ContinuousMovement>();
 
-        if (obstacleMoves)
+        if (objMoves)
         {
             if (!cmScript)
                 cmScript = gameObject.AddComponent<ContinuousMovement>();
-
-            cmScript.pointA = _obstacleData.path[0];
-            cmScript.pointB = _obstacleData.path[1];
-            cmScript.speed  = _obstacleData.movementSpeed;
-                
-            Rigidbody rBody = GetComponent<Rigidbody>();
-            rBody.isKinematic = true;
+            
+            cmScript.pointA = path[0];
+            cmScript.pointB = path[1];
+            cmScript.speed  = movementSpeed;
+            
+            RBody.isKinematic = true;
         }
         else if (cmScript)
         {
             Destroy(cmScript);
         }
+    } 
+    
+    public void CheckForContinuousRotation(Vector3 rotationAxis, float rotationSpeed)
+    {
+        bool objRotates = rotationAxis != Vector3.zero && rotationSpeed != 0;
+        var crScript = axisOfRotation.GetComponent<ContinuousRotation>();
 
-        bool obstacleRotates = _obstacleData.rotationAxis != Vector3.zero && _obstacleData.rotationSpeed != 0;
-        ContinuousRotation crScript = GetComponentInChildren<ContinuousRotation>();
-
-        if (obstacleRotates)
+        if (objRotates)
         {
             if (!crScript)
-                crScript = transform.GetChild(0).gameObject.AddComponent<ContinuousRotation>();
-
-            crScript.rotationAxis = _obstacleData.rotationAxis;
-            crScript.rotationSpeed = _obstacleData.rotationSpeed;
+                crScript = axisOfRotation.AddComponent<ContinuousRotation>();
+            crScript.rotationAxis = rotationAxis;
+            crScript.rotationSpeed = rotationSpeed;
             
-            Rigidbody rBody = GetComponent<Rigidbody>();
-            rBody.isKinematic = true;
+            RBody.isKinematic = true;
         }
-        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
+        else if (crScript)
         {
             Destroy(crScript);
         }
-
-        ObstacleSpecificSetup(_obstacleData);
-    }
-
-    protected virtual void ObstacleSpecificSetup(LevelExporter.ObstacleData _obstacleData) { }
+    } 
 }

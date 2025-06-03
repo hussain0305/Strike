@@ -16,4 +16,41 @@ public class LevelLoader : MonoBehaviour
     {
         return targetPoints;
     }
+    
+    public void CheckForContinuousMovement(GameObject obj, Vector3[] path, float movementSpeed)
+    {
+        bool objMoves = path != null && path.Length > 1;
+        var cmScript = obj.GetComponent<ContinuousMovement>();
+
+        if (objMoves)
+        {
+            if (!cmScript)
+                cmScript = obj.AddComponent<ContinuousMovement>();
+            cmScript.pointA = path[0];
+            cmScript.pointB = path[1];
+            cmScript.speed  = movementSpeed;
+        }
+        else if (cmScript)
+        {
+            Destroy(cmScript);
+        }
+    } 
+    
+    public void CheckForContinuousRotation(GameObject obj, Vector3 rotationAxis, float rotationSpeed)
+    {
+        bool objRotates = rotationSpeed != 0;
+        var crScript = obj.GetComponent<ContinuousRotation>();
+
+        if (objRotates)
+        {
+            if (!crScript)
+                crScript = obj.AddComponent<ContinuousRotation>();
+            crScript.rotationAxis = rotationAxis;
+            crScript.rotationSpeed = rotationSpeed;
+        }
+        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
+        {
+            Destroy(crScript);
+        }
+    } 
 }

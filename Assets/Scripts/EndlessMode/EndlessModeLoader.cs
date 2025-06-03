@@ -403,22 +403,18 @@ public class EndlessModeLoader : LevelLoader
         switch (obstacleType)
         {
             case ObstacleType.ForcePad:
-                Vector3 swivelAxis = Vector3.zero;
-                float swivelSpeed = 0f;
-                bool addRotation = Random.value > 0.6f;
-                if (addRotation)
+                bool makeItSwivel = Random.value > 0.6f;
+                if (makeItSwivel)
                 {
-                    swivelAxis = Vector3.up;
-                    swivelSpeed = 30;
+                    obstacleData.rotationAxis = Vector3.up;
+                    obstacleData.rotationSpeed = 30;
                 }
-                var fpData = new LevelExporter.ForcePadObstacleData(obstacleData, swivelSpeed, swivelAxis);
-                obstacleData = fpData;
                 break;
             
             case ObstacleType.Fan:
             case ObstacleType.SmallFan:
                 obstacleData.rotationAxis = new Vector3(0, 0, 1);
-                obstacleData.rotationSpeed = 90;
+                obstacleData.rotationSpeed = 45;
                 break;
         }
         return obstacleData;
@@ -455,7 +451,12 @@ public class EndlessModeLoader : LevelLoader
             int points = Mathf.CeilToInt(raw / 5f) * 5;
 
             var collectible = scoredByDifficultyToCollectList[i].collectible;
-            collectible.InitializeAndSetup(gameManager.Context, points, 1, Collectible.PointDisplayType.InBody);
+            
+            LevelExporter.CollectibleData collectibleData = new LevelExporter.CollectibleData();
+            collectibleData.value = points;
+            collectibleData.numTimesCanBeCollected = 1;
+            collectibleData.pointDisplayType = Collectible.PointDisplayType.InBody;
+            collectible.InitializeAndSetup(gameManager.Context, collectibleData);
         }
     }
 
@@ -515,7 +516,12 @@ public class EndlessModeLoader : LevelLoader
                 // picker.AddChoice(4, w4);
                 int multiple = picker.Pick();
 
-                collectibleScript.InitializeAndSetup(gameManager.Context, multiple, 1, Collectible.PointDisplayType.InBody);
+                LevelExporter.CollectibleData collectibleData = new LevelExporter.CollectibleData();
+                collectibleData.value = multiple;
+                collectibleData.numTimesCanBeCollected = 1;
+                collectibleData.pointDisplayType = Collectible.PointDisplayType.InBody;
+
+                collectibleScript.InitializeAndSetup(gameManager.Context, collectibleData);
             }
 
         }

@@ -70,7 +70,7 @@ public class Collectible : MonoBehaviour, ICollectible
     private int currentPlayer = -1;
     private bool[] stateForPlayers;
     private bool isPlayingSolo = true;
-    private bool defaultIsKinematic;
+    private bool isKinematicInThisLevel;
     private bool IsDisappearingMode => context?.GetPinResetBehaviour() == PinBehaviourPerTurn.DisappearUponCollection;
     
     private Quaternion defaultRotation;
@@ -121,22 +121,24 @@ public class Collectible : MonoBehaviour, ICollectible
         context = _contextProvider;
     }
 
-    public void InitializeAndSetup(IContextProvider _contextProvider, int _value, int _numTimesCanBeCollected, PointDisplayType _displayType)
+    public void InitializeAndSetup(IContextProvider _contextProvider, LevelExporter.CollectibleData _collectibleData)
     {
-        value = _value;
-        numTimesCanBeCollected = _numTimesCanBeCollected;
-        pointDisplay = _displayType;
+        value = _collectibleData.value;
+        numTimesCanBeCollected = _collectibleData.numTimesCanBeCollected;
+        pointDisplay = _collectibleData.pointDisplayType;
         context = _contextProvider;
         
         numTimesCollected = 0;
         accountedForInThisShot = false;
         hitReaction = GetComponent<ICollectibleHitReaction>();
 
+        RBody.isKinematic = isKinematic || _collectibleData.isKinematic;
         SaveDefaults();
         InitAppearance();
+        CheckForContinuousMovement(_collectibleData.path, _collectibleData.movementSpeed);
+        CheckForContinuousRotation(_collectibleData.rotationAxis, _collectibleData.rotationSpeed);
         
-        defaultIsKinematic = RBody.isKinematic;
-        continuousMovement = GetComponent<ContinuousMovement>();
+        isKinematicInThisLevel = RBody.isKinematic;
     }
 
     public void SaveDefaults()
@@ -273,7 +275,7 @@ public class Collectible : MonoBehaviour, ICollectible
     
     public void ResetPin()
     {
-        RBody.isKinematic = defaultIsKinematic;
+        RBody.isKinematic = isKinematicInThisLevel;
         if (!RBody.isKinematic)
         {
             RBody.angularVelocity = Vector3.zero;
@@ -297,4 +299,45 @@ public class Collectible : MonoBehaviour, ICollectible
     {
         defaultLocalScale = scale;
     }
+
+    public void CheckForContinuousMovement(Vector3[] path, float movementSpeed)
+    {
+        bool objMoves = path != null && path.Length > 1;
+        var cmScript = gameObject.GetComponent<ContinuousMovement>();
+        
+        if (objMoves)
+        {
+            if (!cmScript)
+                cmScript = gameObject.AddComponent<ContinuousMovement>();
+            
+            cmScript.pointA = path[0];
+            cmScript.pointB = path[1];
+            cmScript.speed  = movementSpeed;
+            RBody.isKinematic = true;
+        }
+        else if (cmScript)
+        {
+            Destroy(cmScript);
+        }
+
+        continuousMovement = cmScript;
+    } 
+    
+    public void CheckForContinuousRotation(Vector3 rotationAxis, float rotationSpeed)
+    {
+        bool objRotates = rotationAxis != Vector3.zero && rotationSpeed != 0;
+        var crScript = gameObject.GetComponent<ContinuousRotation>();
+
+        if (objRotates)
+        {
+            if (!crScript)
+                crScript = gameObject.AddComponent<ContinuousRotation>();
+            crScript.rotationAxis = rotationAxis;
+            crScript.rotationSpeed = rotationSpeed;
+        }
+        else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
+        {
+            Destroy(crScript);
+        }
+    } 
 }
