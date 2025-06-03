@@ -83,8 +83,12 @@ public class EndlessModeLoader : LevelLoader
     private HashSet<SectorCoord> blacklistedSectors;
     private int difficulty = 1;
     public int Difficulty => difficulty;
+    private const int TARGET_TO_DIFFICULTY_FACTOR = 75;
     private PinBehaviourPerTurn pinBehaviour = PinBehaviourPerTurn.Reset;
     private readonly List<SpawnedToken> tokenCache = new List<SpawnedToken>();
+
+    private SectorCoord[] loneSectorsToFill;
+    private SectorCoord[][] areasToFill;
     
     private GameMode currentGameMode;
     [Inject]
@@ -118,7 +122,7 @@ public class EndlessModeLoader : LevelLoader
 
     public override int GetTargetPoints()
     {
-        targetPoints = difficulty * 50;
+        targetPoints = difficulty * TARGET_TO_DIFFICULTY_FACTOR;
         return targetPoints;
     }
 
@@ -143,27 +147,26 @@ public class EndlessModeLoader : LevelLoader
         float messageDurations = 0.25f;
         EventBus.Publish(new EndlessModeLoadingProgress("Zoning areas to spawn tokens in", 1));
 
-        GetSectorsToFill(out SectorCoord[] loneSectorsToFill, out SectorCoord[][] areasToFill);
-        EndlessSectorPopulator.PopulateSectors(loneSectorsToFill);
-        EndlessAreaPopulator.PopulateAreas(areasToFill);
-        RandomizedGutterWall.Setup(Difficulty);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-        AssignPointsToTokens();
-        SpawnMultipliersAndStars();
-
+        GetSectorsToFill(out loneSectorsToFill, out areasToFill);
         yield return new WaitForSeconds(messageDurations);
         
+        EndlessSectorPopulator.PopulateSectors(loneSectorsToFill);
         EventBus.Publish(new EndlessModeLoadingProgress("Populating sectors on the grid", 2));
         yield return new WaitForSeconds(messageDurations);
         
+        EndlessAreaPopulator.PopulateAreas(areasToFill);
         EventBus.Publish(new EndlessModeLoadingProgress("Populating larger areas on the grid", 3));
         yield return new WaitForSeconds(messageDurations);
         
+        RandomizedGutterWall.Setup(Difficulty);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
         EventBus.Publish(new EndlessModeLoadingProgress("Setting up walls", 4));
         yield return new WaitForSeconds(messageDurations);
         
+        AssignPointsToTokens();
         EventBus.Publish(new EndlessModeLoadingProgress("Wrapping up...", 5));
         yield return new WaitForSeconds(messageDurations);
 
+        SpawnMultipliersAndStars();
         EventBus.Publish(new EndlessModeLoadingProgress(true));
         gameManager.LevelSetupComplete();
     }
@@ -370,7 +373,7 @@ public class EndlessModeLoader : LevelLoader
         obj.transform.position = pos;
         obj.transform.rotation = rot;
 
-        targetPoints = difficulty * 50;
+        targetPoints = difficulty * TARGET_TO_DIFFICULTY_FACTOR;
         
         if (obj.TryGetComponent<Collectible>(out var collectible))
         {
@@ -428,14 +431,14 @@ public class EndlessModeLoader : LevelLoader
         
         var scoredByDifficultyToCollectList = tokenCache.Select(st => new {
                 st.collectible,
+                st.sectorInfo,
                 Score = (st.sectorInfo.numObstacles * obstacleWeight) + ((st.position.z / platformDepth) * backWeight)})
                         .OrderByDescending(x => x.Score)
                         .ToList();
         
         int maxHighestValueHits = Mathf.Clamp((int)(difficulty / 1.25f), 1, 5);
-        Debug.Log($">>> maxHighestValueHits {maxHighestValueHits}");
         int highValueCount = Mathf.Min(maxHighestValueHits, scoredByDifficultyToCollectList.Count);
-        int highValuePerHit = (int)(targetPoints / (highValueCount * 1.2f));//just an arbitrary factor because in a crowded space multiple tokens were being hit so this is an attempt to make highValuePerHit value lower
+        int highValuePerHit = (int)(targetPoints / (highValueCount * 1.5f));//just an arbitrary factor because in a crowded space multiple tokens were being hit so this is an attempt to make highValuePerHit value lower
         
         int n = scoredByDifficultyToCollectList.Count;
         if (n == 0)
@@ -444,6 +447,15 @@ public class EndlessModeLoader : LevelLoader
         float minVal = highValuePerHit / 8f;
         float maxVal = highValuePerHit;
 
+        List<SectorCoord> sectorCoordsWithNegativePoints = GetSectorsWithNegativeValueTokens();
+        HashSet<SectorCoord> sectorCoordsWithNegativePointsAssigned = new HashSet<SectorCoord>();
+        float extraNegativeTokenProbability = 0;
+        if (difficulty >= 4)
+        {
+            float t = (difficulty - 4f) / 6f;
+            extraNegativeTokenProbability = Mathf.Lerp(0.05f, 0.25f, t);
+        }
+
         for (int i = 0; i < n; i++)
         {
             float t = (n == 1) ? 1f : (1f - (float)i / (n - 1));
@@ -451,6 +463,18 @@ public class EndlessModeLoader : LevelLoader
             int points = Mathf.CeilToInt(raw / 5f) * 5;
 
             var collectible = scoredByDifficultyToCollectList[i].collectible;
+            SectorInfo sector = scoredByDifficultyToCollectList[i].sectorInfo;
+            bool isNegativeValueSector = sectorCoordsWithNegativePoints.Contains(sector.sectorCoord);
+            bool negativeAlreadyAssigned = sectorCoordsWithNegativePointsAssigned.Contains(sector.sectorCoord);
+            if (isNegativeValueSector && !negativeAlreadyAssigned)
+            {
+                points *= -1;
+                sectorCoordsWithNegativePointsAssigned.Add(sector.sectorCoord);
+            }
+            else if (negativeAlreadyAssigned && Random.value <= extraNegativeTokenProbability)
+            {
+                points = -Mathf.Abs(points);
+            }
             
             LevelExporter.CollectibleData collectibleData = new LevelExporter.CollectibleData();
             collectibleData.value = points;
@@ -525,5 +549,36 @@ public class EndlessModeLoader : LevelLoader
             }
 
         }
+    }
+
+    public List<SectorCoord> GetSectorsWithNegativeValueTokens()
+    {
+        var allSectors = new List<SectorCoord>();
+        
+        if (loneSectorsToFill != null)
+            allSectors.AddRange(loneSectorsToFill);
+        
+        if (areasToFill != null)
+        {
+            foreach (var area in areasToFill)
+            {
+                if (area != null)
+                    allSectors.AddRange(area);
+            }
+        }
+
+        float sectorPercent = 0;
+        if (Difficulty >= 4)
+        {
+            float t = (difficulty - 4f) / 6f;
+            sectorPercent = Mathf.Lerp(0.25f, 1f, t);
+        }
+        
+        int totalSectors = allSectors.Count;
+        int numToPick = Mathf.CeilToInt(sectorPercent * totalSectors);
+        numToPick = Mathf.Clamp(numToPick, 0, totalSectors);
+        
+        var shuffledSectors = allSectors.OrderBy(_ => Random.value).ToList();
+        return shuffledSectors.Take(numToPick).ToList();
     }
 }

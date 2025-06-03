@@ -334,7 +334,7 @@ public struct AreaWorldBound
 
 public struct SectorInfo
 {
-    SectorCoord sectorCoord;
+    public SectorCoord sectorCoord;
     public int numPointTokens;
     public int numObstacles;
 
