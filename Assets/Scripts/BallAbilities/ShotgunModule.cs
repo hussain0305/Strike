@@ -28,7 +28,6 @@ public class ShotgunModule : IBallAbilityModule
 
     public void OnProjectilesSpawned(ProjectilesSpawnedEvent e) { }
     public void OnHitSomething(BallHitSomethingEvent e) { }
-    public void Cleanup() { }
 
     public void OnNextShotCued(NextShotCuedEvent e)
     {
@@ -91,6 +90,15 @@ public class ShotgunModule : IBallAbilityModule
                     rb.linearVelocity = (aim.forward + spreadOffset) * context.GetLaunchForce();
                 }
             }
+        }
+    }
+
+    public void Cleanup()
+    {
+        GameObject[] pelletArray = activePellets.ToArray();
+        for (int i = 0; i < pelletArray.Length; i++)
+        {
+            GameObject.Destroy(pelletArray[i]);   
         }
     }
 }

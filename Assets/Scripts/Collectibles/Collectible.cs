@@ -191,8 +191,9 @@ public class Collectible : MonoBehaviour, ICollectible
 
         numTimesCollected++;
         accountedForInThisShot = true;
-        
-        stateForPlayers[currentPlayer] = true;
+
+        if (stateForPlayers != null && currentPlayer < stateForPlayers.Length)
+            stateForPlayers[currentPlayer] = true;
         
         EventBus.Publish(new CollectibleHitEvent(type, value, hitPosition));
         header?.gameObject.SetActive(false);

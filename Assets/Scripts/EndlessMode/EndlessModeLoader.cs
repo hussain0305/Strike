@@ -187,13 +187,16 @@ public class EndlessModeLoader : LevelLoader
                 Destroy(oldDefault.gameObject);
             }
             
+            EndlessGameMode endlessGameMode = gameModeObject.AddComponent<EndlessGameMode>();
+            currentGameMode = endlessGameMode;
+            
             switch (pinBehaviour)
             {
                 case PinBehaviourPerTurn.Reset:
-                    currentGameMode = gameModeObject.AddComponent<RegularMode>();
+                    endlessGameMode.SetAsResetMode();
                     break;
                 case PinBehaviourPerTurn.DisappearUponCollection:
-                    currentGameMode = gameModeObject.AddComponent<DisappearingMode>();
+                    endlessGameMode.SetAsDisappearingPinMode();
                     break;
             }
             
