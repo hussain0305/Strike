@@ -132,6 +132,7 @@ public class Collectible : MonoBehaviour, ICollectible
         accountedForInThisShot = false;
         hitReaction = GetComponent<ICollectibleHitReaction>();
 
+        NullifyVelocities();
         RBody.isKinematic = isKinematic || _collectibleData.isKinematic;
         SaveDefaults();
         InitAppearance();
@@ -276,6 +277,7 @@ public class Collectible : MonoBehaviour, ICollectible
     
     public void ResetPin()
     {
+        NullifyVelocities();
         RBody.isKinematic = isKinematicInThisLevel;
         if (!RBody.isKinematic)
         {
@@ -291,6 +293,13 @@ public class Collectible : MonoBehaviour, ICollectible
             continuousMovement.enabled = true;
     }
 
+    public void NullifyVelocities()
+    {
+        RBody.isKinematic = true;
+        RBody.angularVelocity = Vector3.zero;
+        RBody.linearVelocity = Vector3.zero;
+    }
+    
     public bool CanBeCollected()
     {
         return numTimesCollected < numTimesCanBeCollected;
