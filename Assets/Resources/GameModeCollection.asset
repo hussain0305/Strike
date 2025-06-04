@@ -17,32 +17,32 @@ MonoBehaviour:
     displayName: Pins
     description: Knock over tokens to accumulate points
     rules:
-    - 'Reach Target Points [ 1 ]'
-    - 'Tokens reset each volley and can be recollected [ 2 ]'
+    - Reach Target Points
+    - Tokens reset each volley
     scene: 1
     starsRequiredToUnlock: 0
   - gameMode: 1
     displayName: Portals
     description: Portals go Rrrrraaaaa
     rules:
-    - 'Reach Target Points [ 1 ]'
-    - 'Tokens reset each volley and can be recollected [ 2 ]'
+    - Reach Target Points
+    - Tokens reset each volley
     scene: 2
     starsRequiredToUnlock: 50
   - gameMode: 2
     displayName: Deathmatch
     description: "Pressure Mounts. Miss and You\u2019re Out. Last One Standing."
     rules:
-    - 'Survive all 5 volleys [ 1 ]'
-    - 'Hitting an X Token results in a loss [ 2 ]'
-    - 'Failing to hit a point token results in a loss [ 3 ]'
+    - Survive all 5 volleys
+    - Loss if an X Token is hit
+    - Loss if no tokens are hit
     scene: 3
     starsRequiredToUnlock: 100
   - gameMode: 3
     displayName: Pinocalypse
     description: Gameplay evolves as collected pins disappear after every round
     rules:
-    - 'Reach Target Points [ 1 ]'
-    - 'Tokens disappear after collecting them once [ 2 ]'
+    - Reach Target Points
+    - Tokens can only be collected once
     scene: 4
     starsRequiredToUnlock: 100

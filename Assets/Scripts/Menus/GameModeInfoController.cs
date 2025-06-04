@@ -58,7 +58,14 @@ public class GameModeInfoController : MonoBehaviour
     public void GameModeChanged(GameModeChangedEvent e)
     {
         currentGameModeInfo = currentGameModeInfo;
-        string rulesConsolidated = string.Join("\n", e.GameModeInfo.rules);
+        
+        string[] rulesArray = new string[e.GameModeInfo.rules.Length];
+        for (int i = 0; i < rulesArray.Length; i++)
+        {
+            rulesArray[i] = e.GameModeInfo.rules[i] + "  [ \u2022 ]";
+        }
+        string rulesConsolidated = string.Join("\n", rulesArray);
+        
         gameModeRules.text = rulesConsolidated;
         firstCarouselElement = gameModeRulesSection;
         secondCarouselElement = progressSection;
