@@ -109,7 +109,19 @@ MonoBehaviour:
     prefab: {fileID: 3931144424910952291, guid: 076a488c0394fad4aa651dc1800341d5, type: 3}
     id: mirrorBall
     cost: 1
+  - name: Disco
+    description: Stops at the highest point in its trajectory and sprinkles pellets
+      in every direction
+    rarity: 2
+    weight: 1
+    spin: 0
+    abilityAxis: 1
+    abilityText: Spawn pellets in an area
+    moduleDefinition: {fileID: 11400000, guid: 7e4828eae4d1d1e47b5e146a2dc22679, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 3931144424910952291, guid: 66c0659fe5a9662409ca9ca670025b61, type: 3}
+    id: discoBall
+    cost: 1
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3
-  shotgunPellets: {fileID: 1089681808455105078, guid: 0558c6b7cc36509468512abd75aab6a7, type: 3}

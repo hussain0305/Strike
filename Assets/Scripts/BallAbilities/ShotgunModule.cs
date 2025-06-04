@@ -6,17 +6,28 @@ public class ShotgunModule : IBallAbilityModule
 {
     Ball ball;
     IContextProvider context;
-    
-    private Vector2 spread = new Vector2(0.5f, 0.5f);
+
     private Queue<GameObject> pelletPool = new Queue<GameObject>();
     private List<GameObject> activePellets = new List<GameObject>();
-    private const int pelletCount = 50;
+    private int pelletCount;
+    private int pelletsToFire;
+    private Vector2 spread;
+    private GameObject pelletPrefab;
 
     public AbilityAxis Axis => AbilityAxis.Spawn;
+
+    public ShotgunModule(GameObject _pellePrefab, Vector2 _spread, int _poolSize, int _pelletsToFire)
+    {
+        pelletPrefab = _pellePrefab;
+        spread = _spread;
+        pelletCount = _poolSize;
+        pelletsToFire = _pelletsToFire;
+    }
+    
     public void Initialize(Ball ownerBall, IContextProvider _context)
     {
         ball = ownerBall;
-        context  = _context;
+        context = _context;
 
         ball.StartCoroutine(InitializePelletPool());
     }
@@ -40,7 +51,6 @@ public class ShotgunModule : IBallAbilityModule
     
     private IEnumerator InitializePelletPool()
     {
-        GameObject pelletPrefab = Balls.Instance.shotgunPellets;
         pelletPool = new Queue<GameObject>();
         for (int i = 0; i < pelletCount; i++)
         {
@@ -58,7 +68,7 @@ public class ShotgunModule : IBallAbilityModule
         {
             return pelletPool.Dequeue();
         }
-        return Object.Instantiate(Balls.Instance.shotgunPellets, ball.transform);
+        return Object.Instantiate(pelletPrefab, ball.transform);
     }
 
     public void ReturnPelletToPool(GameObject pellet)
@@ -70,7 +80,6 @@ public class ShotgunModule : IBallAbilityModule
     private void FireShotgunPellets()
     {
         Transform aim = context.GetAimTransform();
-        int pelletsToFire = 20;
         for (int i = 0; i < pelletsToFire; i++)
         {
             GameObject pellet = GetPelletFromPool();
@@ -95,7 +104,7 @@ public class ShotgunModule : IBallAbilityModule
 
     public void Cleanup()
     {
-        GameObject[] pelletArray = activePellets.ToArray();
+        GameObject[] pelletArray = pelletPool.ToArray();
         for (int i = 0; i < pelletArray.Length; i++)
         {
             GameObject.Destroy(pelletArray[i]);   

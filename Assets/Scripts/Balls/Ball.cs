@@ -47,6 +47,10 @@ public class Ball : MonoBehaviour
     public bool collidedWithSomething = false;
     [HideInInspector]
     public bool shouldResumePhysics = true;
+    [HideInInspector]
+    public bool haltBall = false;
+    [HideInInspector]
+    public BallState ballState = BallState.OnTee;
 
     private AbilityDriver abilityDriver;
     private CollisionForce collisionForce;
@@ -132,6 +136,11 @@ public class Ball : MonoBehaviour
         {
             for (int i = 0; i < trajectoryPart.Count - 1; i++)
             {
+                while (haltBall)
+                {
+                    yield return null;
+                    continue;
+                }
                 Vector3 currentPoint = trajectoryPart[i];
                 Vector3 nextPoint = trajectoryPart[i + 1];
                 lastKnownVelocity = (nextPoint - currentPoint) / timeStep;
@@ -153,6 +162,7 @@ public class Ball : MonoBehaviour
                 {
                     elapsedTime += Time.deltaTime;
                     ball.position = Vector3.Lerp(currentPoint, nextPoint, elapsedTime / timeStep);
+                    ball.transform.Rotate(Vector3.up, 540 * Time.deltaTime, Space.Self);
                     yield return null;
                 }
             }

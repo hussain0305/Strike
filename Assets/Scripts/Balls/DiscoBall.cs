@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotgunBall : Ball
+public class DiscoBall : Ball
 {
     public override void InitAbilityDriver(List<IBallAbilityModule> additionalModules)
     {
-        var ballProperty = Balls.Instance.GetBall("shotgunBall");
+        var ballProperty = Balls.Instance.GetBall("discoBall");
         var moduleInstance = ballProperty.CreateModuleInstance();
         var modules = new List<IBallAbilityModule> { moduleInstance };
         

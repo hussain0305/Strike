@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7409bcbea497614bad7e29232715dd7, type: 3}
-  m_Name: Shotgun
+  m_Script: {fileID: 11500000, guid: d5e1a369159b7b145aa1815ea4df58c0, type: 3}
+  m_Name: Disco
   m_EditorClassIdentifier: 
-  pelletPrefab: {fileID: 1089681808455105078, guid: 0558c6b7cc36509468512abd75aab6a7, type: 3}
+  discoPelletPrefabs: []
   spread: {x: 0.5, y: 0.5}
   pelletPoolCount: 20
   pelletsToFire: 20
