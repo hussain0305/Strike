@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e1a369159b7b145aa1815ea4df58c0, type: 3}
   m_Name: Disco
   m_EditorClassIdentifier: 
-  discoPelletPrefabs: []
-  spread: {x: 0.5, y: 0.5}
+  discoPelletPrefabs:
+  - {fileID: 1089681808455105078, guid: 5d462f63ad637214fa6ec3731f87c58c, type: 3}
+  - {fileID: 1089681808455105078, guid: 67f9a94c34576f44d91441de4939c6c3, type: 3}
+  - {fileID: 1089681808455105078, guid: aa3a0383d3a30174587449233bc7d171, type: 3}
+  - {fileID: 1089681808455105078, guid: 7868c3c1b26349d4ab182195618af1c6, type: 3}
+  - {fileID: 1089681808455105078, guid: 90d6cd8d7684f4041b471c76d497ea78, type: 3}
+  spread: {x: 10, y: 10}
   pelletPoolCount: 20
   pelletsToFire: 20

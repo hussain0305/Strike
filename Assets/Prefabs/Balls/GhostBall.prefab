@@ -66,7 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4690533fe1410ad49939c775b387f6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 5703397933703037229}
 --- !u!1 &2312504833614143066
 GameObject:
   m_ObjectHideFlags: 0
@@ -5009,6 +5008,8 @@ MonoBehaviour:
   groundLevel: 0
   collidedWithSomething: 0
   shouldResumePhysics: 1
+  haltBall: 0
+  ballState: 0
 --- !u!114 &1492437123448554915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5079,7 +5080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e4cef0496911a46ac08ae192f0e74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 5703397933703037229}
 --- !u!114 &1985286137502261384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5121,7 +5121,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1126876196341179405}
@@ -5133,7 +5133,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3816218215771387500}
-  m_Mesh: {fileID: 4300000, guid: 58119f7e9f45c2944a0b18dd33378ffd, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &6223920048052496487
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5157,8 +5157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cff0f8a4e9c85a045be6d610d20b87b3, type: 2}
-  - {fileID: 2100000, guid: fb69c479c3cec624b96dfe20d305c1b9, type: 2}
+  - {fileID: 2100000, guid: 3980c23c14abe824c9e59b6eb1c90dbc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
