@@ -343,6 +343,7 @@ MonoBehaviour:
   value: 25
   numTimesCanBeCollected: 1
   activeOnStart: 1
+  isKinematic: 0
   heightMultipleForOffsetCalculation: 1
   body: {fileID: 763378489987802348}
   inBodyPointDisplay: {fileID: 6402456734363066350}
@@ -381,7 +382,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 2, z: 1}
+  m_Size: {x: 4, y: 2.11, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8019234530276404958
 GameObject:
