@@ -44,21 +44,8 @@ public class BallSelectionPage : MonoBehaviour
     private string currentSelectedBall;
     private bool setupComplete = false;
     
-    private static BallSelectionPage instance;
-    public static BallSelectionPage Instance => instance;
-
     private Coroutine cantUnlockMessageCoroutine;
     
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-    }
-
     public void Start()
     {
         SaveManager.RegisterListener(this);
@@ -127,6 +114,7 @@ public class BallSelectionPage : MonoBehaviour
             spawnedSelectionButton.SetBallName(ballProperty.name);
             spawnedSelectionButton.SetBallIndex(i);
             spawnedSelectionButton.SetBallID(ballProperty.id);
+            diContainer.InjectGameObject(spawnedSelectionButton.gameObject);
             ballButtons.Add(ballProperty.id, spawnedSelectionButton);
             i++;
         }

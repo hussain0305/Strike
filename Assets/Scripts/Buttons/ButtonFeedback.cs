@@ -29,9 +29,9 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public bool playsHoverSound = true;
     public bool playsClickSound = true;
     public bool overrideHoverSound = false;
-    public AudioClip hoverClipOverride;
+    public Sound hoverClipOverride;
     public bool overrideClickSound = false;
-    public AudioClip clickClipOverride;
+    public Sound clickClipOverride;
     public bool overrideNormalTextColor;
     public Color normalTextColor;
     
@@ -129,8 +129,7 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         if (!staysSelected)
             SetToDefault();
         
-        PlaySound(playsClickSound, overrideClickSound, clickClipOverride, 
-            soundLibrary?.buttonClickSFX);
+        PlayClickSound();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -141,8 +140,7 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         if (isEnabled && !isSelected)
             SetToHover();
 
-        PlaySound(playsHoverSound, overrideHoverSound, hoverClipOverride, 
-            soundLibrary?.buttonHoverSFX);
+        PlayHoverSound();
         
         if (popTarget != null)
         {
@@ -196,25 +194,20 @@ public class ButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         SetToDefault();
     }
     
-    private void PlaySound(bool shouldPlay, bool overrideClip, AudioClip clip, AudioClip defaultSound)
+    private void PlayClickSound()
     {
-        if (!shouldPlay || audioManager == null)
+        if (!playsClickSound || audioManager == null)
             return;
 
-        AudioClip chosenClip = overrideClip ? clip : defaultSound;
-        if (chosenClip == null)
+        audioManager.PlaySFX(overrideClickSound ? clickClipOverride : soundLibrary.buttonClickSFX);
+    }
+
+    private void PlayHoverSound()
+    {
+        if (!playsHoverSound || audioManager == null)
             return;
 
-        float pitch = 1f;
-        if (chosenClip == soundLibrary?.buttonHoverSFX)
-        {
-            pitch = UnityEngine.Random.Range(0.95f, 1.05f);
-        }
-
-        AudioSource source = audioManager.GetAvailableSFXSource();
-        source.pitch = pitch;
-        source.PlayOneShot(chosenClip);
-        StartCoroutine(audioManager.ResetPitchAfter(chosenClip.length, source));
+        audioManager.PlaySFX(overrideHoverSound ? hoverClipOverride : soundLibrary.buttonHoverSFX);
     }
 
     public void SetMaterial(Material _mat)

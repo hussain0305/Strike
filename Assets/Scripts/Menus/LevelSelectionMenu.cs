@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+public class PromptToSelectLevelEvent { }
+
 public class LevelSelectionMenu : MonoBehaviour
 {
     [Header("Select A Level Prompt")]
@@ -17,9 +19,6 @@ public class LevelSelectionMenu : MonoBehaviour
     private Color promptTextColor;
     private Color transparentColor;
     
-    private static LevelSelectionMenu instance;
-    public static LevelSelectionMenu Instance => instance;
-
     private ModeSelector modeSelector;
     
     [Inject]
@@ -28,15 +27,6 @@ public class LevelSelectionMenu : MonoBehaviour
         modeSelector = _modeSelector;
     }
     
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(instance.gameObject);
-        }
-        instance = this;
-    }
-
     private void Start()
     {
         promptLineColor = promptImages[0].color;
@@ -48,17 +38,19 @@ public class LevelSelectionMenu : MonoBehaviour
     {
         PromptGameObject.SetActive(false);
         modeSelector.LevelSelectionMenuOpened();
-        EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
         numPlayersText.text = modeSelector.GetNumPlayers().ToString();
+        EventBus.Subscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
+        EventBus.Subscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }
 
     private void OnDisable()
     {
+        EventBus.Unsubscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
         EventBus.Unsubscribe<NumPlayersChangedEvent>(NumPlayersChanged);
     }
 
     private Coroutine promptRoutine;
-    public void PromptToSelectLevel()
+    public void PromptToSelectLevel(PromptToSelectLevelEvent e)
     {
         IEnumerator FadePrompt()
         {

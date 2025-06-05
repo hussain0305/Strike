@@ -104,10 +104,12 @@ public class ShotgunModule : IBallAbilityModule
 
     public void Cleanup()
     {
-        GameObject[] pelletArray = pelletPool.ToArray();
-        for (int i = 0; i < pelletArray.Length; i++)
+        List<GameObject> allPellets = new List<GameObject>(pelletPool);
+        allPellets.AddRange(activePellets);
+
+        foreach (GameObject pellet in allPellets)
         {
-            GameObject.Destroy(pelletArray[i]);   
+            GameObject.Destroy(pellet);
         }
     }
 }

@@ -28,6 +28,9 @@ public class Ball : MonoBehaviour
     public float curveClamp = 5f;
     public float dipClamp = 5f;
     public float groundLevel = 0.0f;
+    
+    public AudioSource wooshSFX;
+    public AudioSource bounceSFX;
 
     protected IContextProvider context;
     protected ITrajectoryCalculator trajectoryCalculator;
@@ -115,6 +118,9 @@ public class Ball : MonoBehaviour
         {
             StartCoroutine(CaptureTrajectory());
         }
+        
+        wooshSFX.enabled = true;
+        wooshSFX.Play();
     }
 
     public List<Vector3> CalculateTrajectory()
@@ -214,6 +220,9 @@ public class Ball : MonoBehaviour
         ball.rotation = Quaternion.Euler(GlobalConsts.BallTeeRotation);
         collidedWithSomething = false;
         shouldResumePhysics = true;
+        
+        wooshSFX.Stop();
+        wooshSFX.enabled = false;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -221,6 +230,7 @@ public class Ball : MonoBehaviour
         Collectible collectible = other.gameObject.GetComponent<Collectible>();
         if (((1 << other.gameObject.layer) & Global.LevelSurfaces) != 0)
         {
+            BallBounced();
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}, lastKnownVelocity));
         }
         else if(collectible)
@@ -231,6 +241,7 @@ public class Ball : MonoBehaviour
         }       
         else if (((1 << other.gameObject.layer) & Global.StickySurfaces) != 0)
         {
+            BallBounced();
             collidedWithSomething = true;
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFXObstacle}, lastKnownVelocity));
         }
@@ -255,5 +266,10 @@ public class Ball : MonoBehaviour
             GetComponentInChildren<TrailRenderer>()?.gameObject.SetActive(false);
             GetComponentInChildren<ParticleSystem>()?.gameObject.SetActive(false);
         }
+    }
+
+    public void BallBounced()
+    {
+        bounceSFX.Play();
     }
 }

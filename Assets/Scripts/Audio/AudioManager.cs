@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSourceA;
     public AudioSource musicSourceB;
     public AudioSource sfxSource;
-
+    public AudioSource ambientSource;
+    
     public SoundLibrary soundLibrary;
 
     private AudioSource activeMusicSource;
@@ -22,7 +24,7 @@ public class AudioManager : MonoBehaviour
     private List<AudioSource> sfxSources;
     private int sfxIndex = 0;
 
-    public enum AudioChannel { Music, SFX }
+    public enum AudioChannel { Music, SFX, Ambient }
 
     private void Awake()
     {
@@ -32,7 +34,7 @@ public class AudioManager : MonoBehaviour
 
     private void InitializeSFXPool()
     {
-        sfxSources = new List<AudioSource>();
+        sfxSources = new List<AudioSource>(sfxPoolSize);
         for (int i = 0; i < sfxPoolSize; i++)
         {
             AudioSource src = gameObject.AddComponent<AudioSource>();
@@ -46,21 +48,35 @@ public class AudioManager : MonoBehaviour
     {
         EventBus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
         EventBus.Subscribe<SaveLoadedEvent>(OnSaveLoaded);
+        
+        EventBus.Subscribe<BallShotEvent>(BallShot);
+        EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
+        EventBus.Subscribe<StarCollectedEvent>(StarCollected);
+        EventBus.Subscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
+        EventBus.Subscribe<ResultDeterminedEvent>(ResultDetermined);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
         EventBus.Unsubscribe<SaveLoadedEvent>(OnSaveLoaded);
+        
+        EventBus.Unsubscribe<BallShotEvent>(BallShot);
+        EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
+        EventBus.Unsubscribe<StarCollectedEvent>(StarCollected);
+        EventBus.Unsubscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
+        EventBus.Unsubscribe<ResultDeterminedEvent>(ResultDetermined);
     }
-
-    public void PlayMusic(AudioClip clip, bool loop = true, float fadeDuration = 1.0f)
+    
+    public void PlayMusic(Sound music, bool loop = true, float fadeDuration = 1.0f)
     {
-        if (activeMusicSource.clip == clip) return;
+        if (activeMusicSource.clip == music.clip)
+            return;
 
         AudioSource newSource = activeMusicSource == musicSourceA ? musicSourceB : musicSourceA;
-        newSource.clip = clip;
+        newSource.clip = music.clip;
         newSource.loop = loop;
+        newSource.volume = music.volume;
         newSource.Play();
 
         StartCoroutine(CrossfadeMusic(activeMusicSource, newSource, fadeDuration));
@@ -82,21 +98,25 @@ public class AudioManager : MonoBehaviour
         from.volume = 1;
     }
 
-    public void PlaySFX(AudioClip clip, bool allowOverlap = true)
+    public void PlaySFX(Sound sound, bool allowOverlap = true)
     {
         if (!allowOverlap)
         {
-            if (uniquePlayingSounds.Contains(clip.name)) return;
-            uniquePlayingSounds.Add(clip.name);
+            if (uniquePlayingSounds.Contains(sound.clip.name))
+                return;
+            
+            uniquePlayingSounds.Add(sound.clip.name);
         }
 
         AudioSource source = sfxSources[sfxIndex];
         sfxIndex = (sfxIndex + 1) % sfxSources.Count;
-        source.PlayOneShot(clip);
+
+        source.pitch = sound.clip == soundLibrary?.buttonHoverSFX.clip ? Random.Range(0.95f, 1.05f) : 1;
+        source.PlayOneShot(sound.clip, sound.volume);
 
         if (!allowOverlap)
         {
-            StartCoroutine(RemoveFromUniqueList(clip));
+            StartCoroutine(RemoveFromUniqueList(sound.clip));
         }
     }
 
@@ -108,48 +128,36 @@ public class AudioManager : MonoBehaviour
 
     public void SetVolume(AudioChannel channel, float volume)
     {
-        string param = channel == AudioChannel.Music ? "MusicVolume" : "SFXVolume";
-
+        string param = "";
+        switch (channel)
+        {
+            case AudioChannel.Music:
+                param = "MusicVolume";
+                break;
+            
+            case AudioChannel.SFX:
+                param = "SFXVolume";
+                break;
+            
+            case AudioChannel.Ambient:
+                param = "AmbientVolume";
+                break;
+            
+            default:
+                return;
+        }
         float dB = (volume > 0) ? Mathf.Lerp(-30, 0, volume / 100) : -80;
+        Debug.Log($">>> vol {param} set to {dB}");
         audioMixer.SetFloat(param, dB);
     }
-
-    public void OnGameStateChanged(GameStateChangedEvent e)
-    {
-        AudioClip clip = null;
-
-        switch (e.gameState)
-        {
-            case GameState.Menu:
-                clip = soundLibrary.menuMusic;
-                break;
-            case GameState.InGame:
-                clip = soundLibrary.levelMusic;
-                break;
-        }
-
-        if (clip != null)
-        {
-            PlayMusic(clip);
-        }
-    }
-
+    
     public void OnSaveLoaded(SaveLoadedEvent e)
     {
         SetVolume(AudioChannel.Music, SaveManager.GetMusicVolume());
         SetVolume(AudioChannel.SFX, SaveManager.GetSFXVolume());
+        SetVolume(AudioChannel.Ambient, SaveManager.GetAmbientVolume());
     }
 
-    public void PlaySuccessfulActionSFX()
-    {
-        PlaySFX(soundLibrary.successfulActionSFX, false);
-    }
-
-    public void PlayUnsuccessfulActionSFX()
-    {
-        PlaySFX(soundLibrary.unsuccessfulActionSFX, false);
-    }
-    
     public AudioSource GetAvailableSFXSource()
     {
         AudioSource source = sfxSources[sfxIndex];
@@ -162,4 +170,100 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         source.pitch = 1f;
     }
+
+    public void PlayAmbientNoise()
+    {
+        Debug.Log(">>> Playing ambient noise");
+        ambientSource.clip = soundLibrary.ambientNoise.clip;
+        ambientSource.volume = soundLibrary.ambientNoise.volume;
+        ambientSource.loop = true;
+        ambientSource.Play();
+
+        SetVolume(AudioChannel.Ambient, 100f);
+    }
+    
+    public void StopAmbientNoise()
+    {
+        SetVolume(AudioChannel.Ambient, 0f);
+
+        if (ambientSource.isPlaying)
+            ambientSource.Pause();
+    }
+    
+#region Playing Specific Event Sounds
+
+    public void BallShot(BallShotEvent e)
+    {
+        PlaySFX(soundLibrary.ballShotSFX);
+    }
+        
+    public void CollectibleHit(CollectibleHitEvent e)
+    {
+        switch (e.Type)
+        {
+            case CollectibleType.Points:
+                if (e.Value > 0)
+                    PlaySFX(soundLibrary.positiveHitSFX[Random.Range(0, soundLibrary.positiveHitSFX.Length)]);
+                else
+                    PlaySFX(soundLibrary.negativeHitSFX[Random.Range(0, soundLibrary.negativeHitSFX.Length)]);
+                break;
+            case CollectibleType.Multiple:
+                PlaySFX(soundLibrary.positiveHitSFX[Random.Range(0, soundLibrary.positiveHitSFX.Length)]);
+                break;
+            case CollectibleType.Danger:
+                PlaySFX(soundLibrary.eliminationSFX);
+                break;
+        }
+    }
+        
+    public void StarCollected(StarCollectedEvent e)
+    {
+        PlaySFX(soundLibrary.starPickupSFX);
+    }
+
+    public void OnGameStateChanged(GameStateChangedEvent e)
+    {
+        StopAmbientNoise();
+
+        Sound? music = null;
+
+        switch (e.gameState)
+        {
+            case GameState.Menu:
+                music = soundLibrary.menuMusic;
+                break;
+            case GameState.InGame:
+                music = soundLibrary.levelMusic[Random.Range(0, soundLibrary.levelMusic.Length)];
+                // if (SaveManager.GetMusicVolume() == 0 && SaveManager.GetSFXVolume() != 0)
+                //     PlayAmbientNoise();
+                // else
+                //     StopAmbientNoise();
+                break;
+        }
+
+        if (music != null)
+        {
+            PlayMusic((Sound)music);
+        }
+    }
+
+    public void PromptToSelectLevel(PromptToSelectLevelEvent e)
+    {
+        PlaySFX(soundLibrary.negativeHitSFX[0]);
+    }
+
+    public void ResultDetermined(ResultDeterminedEvent e)
+    {
+        StopAmbientNoise();
+        if (!e.IsPlayingSolo || (e.IsPlayingSolo && e.Won))
+        {
+            PlaySFX(soundLibrary.wonGameSFX);
+        }
+        else
+        {
+            PlaySFX(soundLibrary.lostGameSFX);
+        }
+    }
+    
+#endregion
 }

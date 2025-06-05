@@ -62,7 +62,19 @@ public class NewRoundStartedEvent
     public int RoundNumber;
     public NewRoundStartedEvent(int roundNumber)
     {
-        this.RoundNumber = roundNumber;
+        RoundNumber = roundNumber;
+    }
+}
+
+public class ResultDeterminedEvent
+{
+    public bool IsPlayingSolo;
+    public bool Won;
+    
+    public ResultDeterminedEvent(bool _isPlayingSolo, bool _won)
+    {
+        IsPlayingSolo = _isPlayingSolo;
+        Won = _won;
     }
 }
 
@@ -647,7 +659,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             SaveManager.AddStars(starsCollected.Count);
         }
 
-        if (modeSelector.IsGauntletMode())
+        if (modeSelector.IsPlayingEndlessMode())
         {
             int difficulty = modeSelector.GetEndlessModeDifficulty();
             if (levelCleared)
@@ -655,6 +667,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             else
                 SaveManager.RecordEndlessLoss(difficulty);
         }
+
+        EventBus.Publish(new ResultDeterminedEvent(modeSelector.IsPlayingSolo, levelCleared));
     }
 
     public void SetupResults()

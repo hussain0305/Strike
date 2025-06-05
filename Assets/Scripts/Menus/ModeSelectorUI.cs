@@ -30,6 +30,9 @@ public class ModeSelectorUI : MonoBehaviour
     private ModeSelector modeSelector;
 
     [Inject]
+    DiContainer diContainer;
+
+    [Inject]
     public void Construct(ModeSelector _modeSelector)
     {
         modeSelector = _modeSelector;
@@ -132,6 +135,7 @@ public class ModeSelectorUI : MonoBehaviour
         {
             var btn = Instantiate(levelButtonPrefab, levelButtonParent);
             btn.gameObject.SetActive(false);
+            diContainer.InjectGameObject(btn.gameObject);
             levelButtonsPool.Add(btn);
         }
 

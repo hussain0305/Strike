@@ -288,6 +288,11 @@ public static class SaveManager
         return currentSaveData.musicVolume;
     }
     
+    public static int GetAmbientVolume()
+    {
+        return currentSaveData.musicVolume == 0 ? 100 : 0;
+    }
+
     public static void SetSFXVolume(int newSFXVolume)
     {
         currentSaveData.sfxVolume = newSFXVolume;

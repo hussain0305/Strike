@@ -12,13 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb338975d08660c438fbab08cf76b760, type: 3}
   m_Name: SoundLibrary
   m_EditorClassIdentifier: 
-  menuMusic: {fileID: 8300000, guid: cac6d4c08d3a44340854dd25dccc77f5, type: 3}
-  levelMusic: {fileID: 8300000, guid: f394ed80805d63045b81c8c88241b1c8, type: 3}
-  buttonHoverSFX: {fileID: 8300000, guid: ecc10fa31a914f245a95a71ec9fc3f7b, type: 3}
-  buttonClickSFX: {fileID: 8300000, guid: 8913fc377407707449f80abe6ca9dc8b, type: 3}
-  backButtonClickSFX: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
-  successfulActionSFX: {fileID: 8300000, guid: a29ecb05e2add9c47835f8d07739306f, type: 3}
-  unsuccessfulActionSFX: {fileID: 8300000, guid: 74a760e15c007f5458099e5620d7d919, type: 3}
-  hitEffectSFX: {fileID: 8300000, guid: a29ecb05e2add9c47835f8d07739306f, type: 3}
-  jumpSFX: {fileID: 8300000, guid: a29ecb05e2add9c47835f8d07739306f, type: 3}
-  starPickupSFX: {fileID: 8300000, guid: a29ecb05e2add9c47835f8d07739306f, type: 3}
+  menuMusic:
+    clip: {fileID: 8300000, guid: ceab1efaaa93c5749b2a3d1506f4890e, type: 3}
+    volume: 1
+  levelMusic:
+  - clip: {fileID: 8300000, guid: 6f10df24621482c49951aa4656610124, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 73deca7480425c94bbe170bbfde1f7f9, type: 3}
+    volume: 1
+  buttonHoverSFX:
+    clip: {fileID: 8300000, guid: ecc10fa31a914f245a95a71ec9fc3f7b, type: 3}
+    volume: 1
+  buttonClickSFX:
+    clip: {fileID: 8300000, guid: 8913fc377407707449f80abe6ca9dc8b, type: 3}
+    volume: 1
+  backButtonClickSFX:
+    clip: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
+    volume: 1
+  ballShotSFX:
+    clip: {fileID: 8300000, guid: 8cd699d31faf27e47a9bc8f693f754de, type: 3}
+    volume: 1
+  starPickupSFX:
+    clip: {fileID: 8300000, guid: c3e15ab4d94ac23489b2ae838a04937b, type: 3}
+    volume: 1
+  positiveHitSFX:
+  - clip: {fileID: 8300000, guid: 75e44f641f6c77348be500b7fd74f932, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: f72525ec762118342a8fd69ec56382a0, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: fa2b34f342415a2419c99f84bbb0dbac, type: 3}
+    volume: 1
+  - clip: {fileID: 8300000, guid: 4f29a7b6249a2884a88813f2420d800f, type: 3}
+    volume: 1
+  negativeHitSFX:
+  - clip: {fileID: 8300000, guid: 960ebb9a98f6bc04e971f64925aba12e, type: 3}
+    volume: 1
+  eliminationSFX:
+    clip: {fileID: 8300000, guid: bf410202e7a85ec4b9b378fb92d4185b, type: 3}
+    volume: 1
+  forcePadSFX:
+    clip: {fileID: 8300000, guid: 6359c17ce7ec6ec4e94752f11e27ca25, type: 3}
+    volume: 1
+  nextShotCuedSFX:
+    clip: {fileID: 8300000, guid: cc94cfe03bc94d44aafb62d381fc1f3b, type: 3}
+    volume: 1
+  wonGameSFX:
+    clip: {fileID: 8300000, guid: f189ea4c4e63c754db87dce058750cda, type: 3}
+    volume: 1
+  lostGameSFX:
+    clip: {fileID: 8300000, guid: b9ee5372763866f43bed9693d58b6f6c, type: 3}
+    volume: 1

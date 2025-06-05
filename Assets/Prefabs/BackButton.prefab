@@ -180,9 +180,15 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 1
-  clickClipOverride: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
+  clickClipOverride:
+    clip: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
+    volume: 1
+  overrideNormalTextColor: 0
+  normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 5758970438876049892}
   popScale: 1.1
   popDuration: 0.15

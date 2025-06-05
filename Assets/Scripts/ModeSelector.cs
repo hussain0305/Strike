@@ -127,7 +127,7 @@ public class ModeSelector : MonoBehaviour
     {
         if (selectedLevel <= 0)
         {
-            LevelSelectionMenu.Instance.PromptToSelectLevel();
+            EventBus.Publish(new PromptToSelectLevelEvent());
             return;
         }
 
@@ -203,7 +203,7 @@ public class ModeSelector : MonoBehaviour
         currentSelectedModeInfo = endlessGameMode;
     }
 
-    public bool IsGauntletMode()
+    public bool IsPlayingEndlessMode()
     {
         return CurrentSelectedModeInfo.gameMode == GameModeType.Endless;
     }
