@@ -128,6 +128,11 @@ public class LevelExporter : MonoBehaviour
                 path = new[] { moveScript.pointATransform.position, moveScript.pointBTransform.position };
                 movementSpeed = moveScript.speed;
             }
+            
+            ContinuousRotation rotationScript = collectible.GetComponent<ContinuousRotation>();
+            Vector3 rotationAxis = rotationScript != null ? rotationScript.rotationAxis : Vector3.zero;
+            float rotationSpeed = rotationScript != null ? rotationScript.rotationSpeed : 0;
+
             CollectibleData collectibleData = new CollectibleData
             {
                 type = collectibleScript.type,
@@ -141,6 +146,8 @@ public class LevelExporter : MonoBehaviour
                 pointDisplayType = displayType,
                 movementSpeed = movementSpeed,
                 path = path,
+                rotationAxis = rotationAxis,
+                rotationSpeed = rotationSpeed,
                 activeOnStart = collectibleScript.activeOnStart,
                 isKinematic = collectibleScript.isKinematic
             };

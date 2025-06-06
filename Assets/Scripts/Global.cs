@@ -11,6 +11,7 @@ public enum GameModeType
     Portals,
     Deathmatch,
     DisappearingTokens,
+    Dartboard,
     Endless //Always keep this last
 }
 
