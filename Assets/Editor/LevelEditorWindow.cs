@@ -123,6 +123,14 @@ public class LevelEditorWindow : EditorWindow
                 Undo.RecordObject(cmScript, "Modify Collectible Movement");
                 cmScript.pointA = collectibleData.path[0];
                 cmScript.pointB = collectibleData.path[1];
+                GameObject goA = new GameObject("A");
+                goA.transform.parent = collectibleObject.transform;
+                goA.transform.position = collectibleData.path[0];
+                cmScript.pointATransform = goA.transform;
+                GameObject goB = new GameObject("B");
+                goB.transform.parent = collectibleObject.transform;
+                goB.transform.position = collectibleData.path[1];
+                cmScript.pointBTransform = goB.transform;
             }
             else if (cmScript)
             {
