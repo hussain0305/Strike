@@ -30,7 +30,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 5a8f77e2d3becb5479da9f0879de701e, type: 3}
     volume: 1
   ballShotSFX:
-    clip: {fileID: 8300000, guid: 8cd699d31faf27e47a9bc8f693f754de, type: 3}
+    clip: {fileID: 8300000, guid: 050fc47dff643b8438e92038c0d59f25, type: 3}
     volume: 1
   starPickupSFX:
     clip: {fileID: 8300000, guid: c3e15ab4d94ac23489b2ae838a04937b, type: 3}
@@ -56,6 +56,9 @@ MonoBehaviour:
   nextShotCuedSFX:
     clip: {fileID: 8300000, guid: cc94cfe03bc94d44aafb62d381fc1f3b, type: 3}
     volume: 1
+  ambientNoise:
+    clip: {fileID: 8300000, guid: cad8c6f0bf38a394da5ab24bcf04faf6, type: 3}
+    volume: 0.2
   wonGameSFX:
     clip: {fileID: 8300000, guid: f189ea4c4e63c754db87dce058750cda, type: 3}
     volume: 1
