@@ -43,4 +43,28 @@ public class GameModeCollection : ScriptableObject
         }
         return highestGameModeSceneIndex + 2;
     }
+
+    public GameModeType GetNextGameMode(GameModeType gameMode)
+    {
+        for (int i = 0; i < gameModes.Length; i++)
+        {
+            if (gameModes[i].gameMode == gameMode)
+            {
+                return gameModes[(i + 1) % gameModes.Length].gameMode;
+            }
+        }
+        return gameModes[0].gameMode;
+    }
+    
+    public GameModeType GetPreviousGameMode(GameModeType gameMode)
+    {
+        for (int i = 0; i < gameModes.Length; i++)
+        {
+            if (gameModes[i].gameMode == gameMode)
+            {
+                return gameModes[(i - 1 + gameModes.Length) % gameModes.Length].gameMode;
+            }
+        }
+        return gameModes[0].gameMode;
+    }
 }

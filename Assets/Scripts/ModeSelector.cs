@@ -94,16 +94,13 @@ public class ModeSelector : MonoBehaviour
 
     public void NextGameMode()
     {
-        currentSelectedMode = (GameModeType)(((int)currentSelectedMode + 1) % gameModeInfo.gameModes.Length);
-        Debug.Log("Next Game Mode: " + currentSelectedMode);
+        currentSelectedMode = gameModeInfo.GetNextGameMode(currentSelectedMode);
         GameModeSelected(currentSelectedMode);
     }
 
     public void PreviousGameMode()
     {
-        int totalModes = gameModeInfo.gameModes.Length;
-        currentSelectedMode = (GameModeType)(((int)currentSelectedMode - 1 + totalModes) % totalModes);
-        Debug.Log("Previous Game Mode: " + currentSelectedMode);
+        currentSelectedMode = gameModeInfo.GetPreviousGameMode(currentSelectedMode);
         GameModeSelected(currentSelectedMode);
     }
 
