@@ -55,7 +55,6 @@ public class HoneycombGeneratorWindow : EditorWindow
         if (parentContainer == null)
         {
             GameObject go = new GameObject($"Honeycomb_{rings}Rings");
-            Undo.RegisterCreatedObjectUndo(go, "Create Honeycomb Container");
             parentContainer = go.transform;
         }
 
