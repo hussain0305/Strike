@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     public BallParameterController ballParameterController;
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
+    public GameObject trajectoryAdButtonSection;
     public GameObject trajectoryHistoryButton;
     public TrajectorySegmentVisuals[] trajectories;
     
@@ -201,7 +202,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         (showBallLandingOverride || (!showTrajectory && Time.time > lastBallLandingShownAt + BALL_LANDING_INDICATOR_INTERVAL));
     private float lastBallLandingShownAt = 0;
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
-    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 10;
+    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 5;
     
     [InjectOptional]
     private ModeSelector modeSelector;
@@ -253,6 +254,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
         EventBus.Subscribe<GameRestartedEvent>(GameRestarted);
+        EventBus.Subscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
     }
 
     private void OnDisable()
@@ -261,6 +263,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
         EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
         EventBus.Unsubscribe<GameRestartedEvent>(GameRestarted);
+        EventBus.Unsubscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
     }
 
     public void LevelSetupComplete()
@@ -449,6 +452,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         angleIndicator.SetActive(false);
         fireButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
+        trajectoryAdButtonSection.gameObject.SetActive(false);
         DisableTrajectory();
     }
     
@@ -569,7 +573,13 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         if (trajectoryViewsRemaining > 0)
         {
             trajectoryButtonSection.gameObject.SetActive(true);
+            trajectoryAdButtonSection.gameObject.SetActive(false);
             trajectoryButton.ShowButton(trajectoryViewsRemaining);
+        }
+        else
+        {
+            trajectoryButtonSection.gameObject.SetActive(false);
+            trajectoryAdButtonSection.gameObject.SetActive(true);
         }
     }
 
@@ -626,6 +636,26 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         trajectoryHistoryButton.gameObject.SetActive(trajectoryHistoryViewer.GetIsTrajectoryHistoryAvailable());
     }
+
+    public void TryWatchingTrajectoryAd(TrajectoryAdAttemptedEvent e)
+    {
+        if (roundDataManager.GetTrajectoryViewsRemaining() != 0)
+        {
+            return;
+        }
+        
+        trajectoryAdButtonSection.SetActive(false);
+        
+        AdManager.ShowRewardedAd((success) =>
+            {
+                if (success)
+                {
+                    roundDataManager.AddTrajectoryView();
+                }
+                CheckToShowTrajectoryButton();
+            });
+    }
+
 
     public void StarCollected(int index)
     {

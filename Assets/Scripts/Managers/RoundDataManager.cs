@@ -185,6 +185,13 @@ public class RoundDataManager : MonoBehaviour
         playerGameData[gameManager.CurrentPlayerTurn] = gameData;
     }
 
+    public void AddTrajectoryView()
+    {
+        PlayerGameData gameData = playerGameData[gameManager.CurrentPlayerTurn];
+        gameData.projectileViewsRemaining = Mathf.Min(1, gameData.projectileViewsRemaining + 1);
+        playerGameData[gameManager.CurrentPlayerTurn] = gameData;
+    }
+
     public void AddPlayerShotHistory(int playerIndex, ShotInfo shotInfo)
     {
         PlayerGameData gameData = playerGameData[playerIndex];

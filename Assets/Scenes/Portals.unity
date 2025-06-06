@@ -3339,6 +3339,7 @@ MonoBehaviour:
   ballParameterController: {fileID: 1671959285}
   trajectoryButton: {fileID: 201615518}
   trajectoryButtonSection: {fileID: 853715000}
+  trajectoryAdButtonSection: {fileID: 1586351919010768103}
   trajectoryHistoryButton: {fileID: 1732607316}
   trajectories:
   - trajectory: {fileID: 2026108910}
@@ -11056,6 +11057,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1586351919010768103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3421583792857026159, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
+  m_PrefabInstance: {fileID: 1586351919010768099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1758251017259353924 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8423786491349739504, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
