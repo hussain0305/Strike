@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         switch (gameMode.GetWinCondition())
         {
             case WinCondition.PointsRequired:
-                objectiveText.text = $"Target : {gameMode.PointsRequired}";
+                objectiveText.text = $"TARGET : {gameMode.PointsRequired}";
                 break;
             case WinCondition.PointsRanking:
                 objectiveText.text = $"Maximum total points wins";

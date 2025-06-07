@@ -5,6 +5,7 @@ public class GridGeneratorWindow : EditorWindow
 {
     private GameObject objectPrefab;
     private Transform parentContainer;
+    private Vector3 center = Vector3.zero;
     private float xSpacing = 1f;
     private float ySpacing = 1f;
     private float zSpacing = 1f;
@@ -27,6 +28,8 @@ public class GridGeneratorWindow : EditorWindow
         parentContainer = (Transform)EditorGUILayout.ObjectField(new GUIContent("Parent Container"), parentContainer, typeof(Transform), true);
 
         GUILayout.Space(5);
+
+        center = EditorGUILayout.Vector3Field("Center Position", center);
 
         xSpacing = EditorGUILayout.FloatField(new GUIContent("X Spacing"), xSpacing);
         if (xSpacing < 0.01f)
@@ -83,9 +86,9 @@ public class GridGeneratorWindow : EditorWindow
             {
                 for (int z = 0; z < numZ; z++)
                 {
-                    float xPos = x * xSpacing;
-                    float yPos = y * ySpacing;
-                    float zPos = z * zSpacing;
+                    float xPos = center.x + (x * xSpacing);
+                    float yPos = center.y + (y * ySpacing);
+                    float zPos = center.z + (z * zSpacing);
                     Vector3 spawnPos = new Vector3(xPos, yPos, zPos);
 
                     GameObject spawnedObj = Instantiate(objectPrefab, parentContainer);
