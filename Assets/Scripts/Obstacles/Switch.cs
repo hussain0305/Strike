@@ -39,13 +39,16 @@ public class Switch : MonoBehaviour
         if (switchedThisTurn)
             return;
 
-        switchedThisTurn = true;
-        SwitchPressed();
+        Obstacle triggeringObstacle = other.GetComponent<Obstacle>();
+        bool markAsSwitched = triggeringObstacle && triggeringObstacle.type != ObstacleType.SwitchFlipper;
+        SwitchPressed(markAsSwitched);
     }
 
-    public void SwitchPressed()
+    public void SwitchPressed(bool markAsSwitched)
     {
-        switchedThisTurn = true;
+        if(markAsSwitched)
+            switchedThisTurn = true;
+        
         switchedOn = !switchedOn;
         Mesh.sharedMaterial = switchedOn ? GlobalAssets.Instance.switchedOnMaterial : GlobalAssets.Instance.switchedOffMaterial;
         Switchable.Switched(switchedOn);
