@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5305661636775840769}
   - component: {fileID: 2920841842883814978}
-  - component: {fileID: 6820340270067140874}
+  - component: {fileID: 7091157859460122953}
   m_Layer: 8
   m_Name: Switch
   m_TagString: Untagged
@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ad7a0a7aa870046a3fe6148c4d407f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &6820340270067140874
-SphereCollider:
+--- !u!65 &7091157859460122953
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -151,5 +151,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2
+  m_Size: {x: 2, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
