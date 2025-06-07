@@ -15,6 +15,12 @@ public abstract class GameMode : MonoBehaviour
     protected int numVolleys = 5;
     public int NumVolleys => numVolleys;
     
+    protected int numAdditionalVolleysPerGrant = 2;
+    public int NumAdditionalVolleysPerGrant => numAdditionalVolleysPerGrant;
+    
+    protected int numAdditionalVolleyGrants = 1;
+    public int NumAdditionalVolleyGrants => numAdditionalVolleyGrants;
+    
     private float minTimePerShot = 5;
     public float MinTimePerShot => minTimePerShot;
     
@@ -79,10 +85,7 @@ public abstract class GameMode : MonoBehaviour
             if (pts >= PointsRequired) 
                 return true;
         }
-
-        if (gameManager.VolleyNumber > NumVolleys)
-            return true;
-
+        
         if (!isSolo && numEliminatedPlayers >= numPlayers - 1)
             return true;
 

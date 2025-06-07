@@ -3,6 +3,9 @@ using UnityEngine;
 
 public static class AdManager
 {
+    public static bool IsPlayingRewardedAd = false;
+    public static bool IsPlayingInterstitialAd = false;
+    
     private static bool isInitialized = true;
 
     public static void Initialize()

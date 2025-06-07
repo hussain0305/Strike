@@ -13,7 +13,8 @@ public class MenuBase : MonoBehaviour
         QuitGameScreen,
         PauseMenu,
         SettingsPage,
-        RandomizerPage
+        RandomizerPage,
+        AdditionalVolleyOfferPopup
     };
     
     [System.Serializable]

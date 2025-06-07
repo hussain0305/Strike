@@ -204,6 +204,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
     private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 5;
     
+    public AdditionalVolleyOffer additionalVolleyOffer;
+    private int additionalVolleys;
+    private int numTimesAdditionalVolleysGranted;
+    public int TotalVolleysAvailable => additionalVolleys + gameMode.NumVolleys;
+    private Coroutine cueNextShotRoutine;
+
     [InjectOptional]
     private ModeSelector modeSelector;
     [InjectOptional]
@@ -384,15 +390,57 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             GameEnded();
             return;
         }
-        
-        showTrajectory = false;
-        angleIndicator.SetActive(true);
+
+        StartCoroutine(CueNextShotRoutine());
+    }
+
+    private IEnumerator CueNextShotRoutine()
+    {
         nextButton.gameObject.SetActive(false);
+        trajectoryHistoryButton.gameObject.SetActive(false);
+        showTrajectory = false;
+        
+        yield return CheckIfNextShotAvailable();
+        
+        angleIndicator.SetActive(true);
         fireButton.gameObject.SetActive(true);
         BallState = BallState.OnTee;
+        
         TogglePlayer();
-        StartCoroutine(StaggeredCueNextShot());
+        
+        yield return StaggeredCueNextShot();
+        
         CheckToShowTrajectoryHistoryButton();
+    }
+
+    private IEnumerator CheckIfNextShotAvailable()
+    {
+        if(!CanGrantAdditionalVolleys())
+            yield break;
+        
+        if (volleyNumber >= TotalVolleysAvailable)
+        {
+            string messageString = $"YOU ARE {gameMode.PointsRequired - roundDataManager.GetPointsForPlayer(0)} POINTS SHORT. WATCH AN AD FOR {gameMode.NumAdditionalVolleysPerGrant} ADDITIONAL VOLLEYS?";
+            additionalVolleyOffer.Show(messageString, (offerTaken) => { });
+                    
+            yield return new WaitWhile(() => additionalVolleyOffer.offerActive);
+
+            if (additionalVolleyOffer.offerTaken)
+            {
+                GrantAdditionalVolleys();
+            }
+        }
+    }
+    
+    public bool CanGrantAdditionalVolleys()
+    {
+        return modeSelector.IsPlayingSolo && numTimesAdditionalVolleysGranted < gameMode.NumAdditionalVolleyGrants;
+    }
+
+    public void GrantAdditionalVolleys()
+    {
+        additionalVolleys += gameMode.NumAdditionalVolleysPerGrant;
+        numTimesAdditionalVolleysGranted++;
     }
 
     private IEnumerator StaggeredCueNextShot()
@@ -416,7 +464,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
                 EventBus.Publish(new NewRoundStartedEvent(volleyNumber));
                 volleyText.text = $"Volley {volleyNumber}";
 
-                if (volleyNumber > gameMode.NumVolleys)
+                if (volleyNumber > TotalVolleysAvailable)
                 {
                     GameEnded();
                     return;
@@ -453,6 +501,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         fireButton.gameObject.SetActive(false);
         nextButton.gameObject.SetActive(false);
         trajectoryAdButtonSection.gameObject.SetActive(false);
+        trajectoryHistoryButton.gameObject.SetActive(false);
         DisableTrajectory();
     }
     
