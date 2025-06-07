@@ -147,7 +147,6 @@ public class AudioManager : MonoBehaviour
                 return;
         }
         float dB = (volume > 0) ? Mathf.Lerp(-30, 0, volume / 100) : -80;
-        Debug.Log($">>> vol {param} set to {dB}");
         audioMixer.SetFloat(param, dB);
     }
     
@@ -173,7 +172,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAmbientNoise()
     {
-        Debug.Log(">>> Playing ambient noise");
         ambientSource.clip = soundLibrary.ambientNoise.clip;
         ambientSource.volume = soundLibrary.ambientNoise.volume;
         ambientSource.loop = true;

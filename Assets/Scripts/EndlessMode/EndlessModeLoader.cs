@@ -108,7 +108,6 @@ public class EndlessModeLoader : LevelLoader
     {
         sectorGridSize = new SectorCoord(SectorLinesX.Length - 1, SectorLinesZ.Length - 1);
         centerSector = new SectorCoord(sectorGridSize.x / 2, sectorGridSize.z / 2);
-        Debug.Log($">>> Center sector is {centerSector.ToString()}");
         blacklistedSectors = new HashSet<SectorCoord>()
         {
             new SectorCoord(0, 0),
@@ -183,7 +182,6 @@ public class EndlessModeLoader : LevelLoader
             var oldDefault = FindFirstObjectByType<RegularMode>();
             if (oldDefault != null)
             {
-                Debug.Log(">>> DELETING OLD MODE!!");
                 Destroy(oldDefault.gameObject);
             }
             
