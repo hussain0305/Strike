@@ -9,7 +9,7 @@ public class TutorialContext : IContextProvider
     private Vector2 spoofedSpinVector;
     private Quaternion spoofedLaunchAngle;
     private float spoofedLaunchForce;
-    private BallParameterController ballParameterController;
+    private ShotInput shotInput;
     private float gravity;
     
     public Transform GetAimTransform()
@@ -24,17 +24,17 @@ public class TutorialContext : IContextProvider
 
     public Vector2 GetSpinVector()
     {
-        return ballParameterController.spinInput.SpinVector;
+        return shotInput.spinInput.SpinVector;
     }
     
     public Quaternion GetLaunchAngle()
     {
-        return ballParameterController.angleInput.cylinderPivot.rotation;
+        return shotInput.angleInput.cylinderPivot.rotation;
     }
 
     public float GetLaunchForce()
     {
-        return ballParameterController.powerInput.Power;
+        return shotInput.powerInput.Power;
     }
 
     public int GetTrajectoryDefinition()
@@ -62,10 +62,10 @@ public class TutorialContext : IContextProvider
         return PinBehaviourPerTurn.Reset;
     }
     
-    public void InitTutorial(Ball _ball, BallParameterController _ballParameterController, Tee _tee)
+    public void InitTutorial(Ball _ball, ShotInput shotInput, Tee _tee)
     {
-        ballParameterController = _ballParameterController;
-        aimTransform = ballParameterController.angleInput.cylinderPivot;
+        this.shotInput = shotInput;
+        aimTransform = this.shotInput.angleInput.cylinderPivot;
         currentBall = _ball;
         tee = _tee;
         gravity = -Physics.gravity.y;

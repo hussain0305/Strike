@@ -5128,7 +5128,7 @@ GameObject:
   - component: {fileID: 8544745534358801410}
   - component: {fileID: 5106130021256850818}
   m_Layer: 5
-  m_Name: BallParameterInput
+  m_Name: ShotInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8851,6 +8851,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1707949917526086782}
+  - component: {fileID: 3923866009186285857}
   m_Layer: 5
   m_Name: GameHUD
   m_TagString: Untagged
@@ -8886,6 +8887,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3923866009186285857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4341636187650407033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5433eb05e95c3f44b55ed93e520163d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotInput: {fileID: 8176606972366855901}
+  trajectoryButton: {fileID: 3960118361483333553}
+  trajectoryButtonSection: {fileID: 8803155361758267937}
+  trajectoryAdButtonSection: {fileID: 3421583792857026159}
+  trajectoryHistoryButton: {fileID: 4775419973970485890}
+  fireButton: {fileID: 8300111160654224613}
+  nextButton: {fileID: 7823401697921671296}
+  nextButtonFill: {fileID: 4004490389753574977}
+  volleyText: {fileID: 1547650328283493245}
+  objectiveText: {fileID: 2362223463028209496}
 --- !u!1 &4352848252405335508
 GameObject:
   m_ObjectHideFlags: 0
@@ -9035,7 +9058,7 @@ GameObject:
   - component: {fileID: 2195502956718566913}
   - component: {fileID: 7463854390552075548}
   m_Layer: 5
-  m_Name: LevelsCanvas (UI)
+  m_Name: PlayerHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

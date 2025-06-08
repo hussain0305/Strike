@@ -41,7 +41,7 @@ public class Step_AdjustAngle : TutorialStep
 
         phase = Phase.WaitForSwipe;
         controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your Angle.");
-        startingAngle = controller.tutorialHUD.BallParameterController.angleInput.cylinderPivot.rotation;
+        startingAngle = controller.tutorialHUD.shotInput.angleInput.cylinderPivot.rotation;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
 
@@ -52,7 +52,7 @@ public class Step_AdjustAngle : TutorialStep
 
         while (true)
         {
-            var currentRotation = controller.tutorialHUD.BallParameterController.angleInput.cylinderPivot.rotation;
+            var currentRotation = controller.tutorialHUD.shotInput.angleInput.cylinderPivot.rotation;
 
             if (!angleChanged && Quaternion.Angle(startingAngle, currentRotation) > 5f)
             {

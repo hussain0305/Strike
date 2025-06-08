@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TutorialHUD : MonoBehaviour
@@ -33,7 +34,7 @@ public class TutorialHUD : MonoBehaviour
     public TextMeshProUGUI stepNameText;
 
     [Header("Ball Parameters Section")]
-    public BallParameterController BallParameterController;
+    public ShotInput shotInput;
     public Button angleButton;
     public Button spinButton;
     public Button powerButton;

@@ -10,11 +10,24 @@ public class EndlessLevelInstaller : MonoInstaller
     public FlavorTextSpawner flavorTextSpawner;
     public NotableEventsManager notableEventsManager;
     // public EffectsManager effectsManager;
-    
+    public ShotInput shotInput;
+    public PlayerHUD playerHUD;
+    public TrajectoryHistoryViewer trajectoryHistoryViewer;
+
     public override void InstallBindings()
     {
         Container
             .Bind<InGameContext>()
+            .AsSingle();
+        
+        Container
+            .Bind<ShotInput>()
+            .FromInstance(shotInput)
+            .AsSingle();
+        
+        Container
+            .BindInterfacesAndSelfTo<PlayerHUD>()
+            .FromInstance(playerHUD)
             .AsSingle();
         
         Container
@@ -53,6 +66,11 @@ public class EndlessLevelInstaller : MonoInstaller
             .FromNewComponentOnNewGameObject()
             .AsSingle();
         
+        Container
+            .Bind<TrajectoryHistoryViewer>()
+            .FromInstance(trajectoryHistoryViewer)
+            .AsSingle();
+
         var defaultMode = Container.Resolve<GameMode>();
         
         Container.Inject(gameManager);
@@ -61,6 +79,8 @@ public class EndlessLevelInstaller : MonoInstaller
         Container.Inject(flavorTextSpawner);
         Container.Inject(notableEventsManager);
         Container.Inject(defaultMode);
+        Container.Inject(shotInput);
+        Container.Inject(playerHUD);
 
         var poolingManager = ProjectContext.Instance.Container.Resolve<PoolingManager>();
         Container.Inject(poolingManager);

@@ -36,7 +36,7 @@ public class Step_ToggleTrajectory : TutorialStep
         
         phase = Phase.WaitForConfirmation;
 
-        controller.tutorialHUD.BallParameterController.powerInput.OverridePower(20);
+        controller.tutorialHUD.shotInput.powerInput.OverridePower(20);
         controller.tutorialHUD.trajectoryButtonContainer.SetActive(false);
         controller.tutorialHUD.SetInstructionText(successfulText,"Tap anywhere to continue.");
         controller.StartCoroutine(WaitForScreenTap());

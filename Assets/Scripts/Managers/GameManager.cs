@@ -14,7 +14,6 @@ public class InGameEvent { }
 public class GameEndedEvent { }
 public class GameExitedEvent { }
 public class GameRestartedEvent { }
-public class TrajectoryEnabledEvent { }
 
 public class ShotCompleteEvent
 {
@@ -99,25 +98,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     public TrajectoryHistoryViewer trajectoryHistoryViewer;
     
     [Header("Level Objects")]
+    public TrajectorySegmentVisuals[] trajectories;
+    public GameObject angleIndicator;
     public Tee tee;
+    
     [HideInInspector]
     public Ball ball;
-
-    [Header("Controls Panel")]
-    public BallParameterController ballParameterController;
-    public TrajectoryButton trajectoryButton;
-    public GameObject trajectoryButtonSection;
-    public GameObject trajectoryAdButtonSection;
-    public GameObject trajectoryHistoryButton;
-    public TrajectorySegmentVisuals[] trajectories;
-    
-    [Header("Game Screen")]
-    public Button fireButton;
-    public Button nextButton;
-    public Image nextButtonFill;
-    public GameObject angleIndicator;
-    public TextMeshProUGUI volleyText;
-    public TextMeshProUGUI objectiveText;
     
     [Header("Results Screen")]
     public ResultsScreen resultScreen;
@@ -171,21 +157,16 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         }
     }
     
-    public PowerInput PowerInput => ballParameterController.powerInput;
-    public SpinInput SpinInput => ballParameterController.spinInput;
-    public AngleInput AngleInput => ballParameterController.angleInput;
+    public PowerInput PowerInput => shotInput.powerInput;
+    public SpinInput SpinInput => shotInput.spinInput;
+    public AngleInput AngleInput => shotInput.angleInput;
     public float Gravity => gravity;
-    public float LaunchForce => launchForce;
-    public Vector2 SpinVector => spinVector;
-    public Quaternion LaunchAngle => launchAngle;
+    public float LaunchForce => PowerInput.Power;
+    public Vector2 SpinVector => SpinInput.SpinVector;
+    public Quaternion LaunchAngle => AngleInput.cylinderPivot.rotation;
     public const int TRAJECTORY_DEFINITION = 100;
 
     private float gravity;
-    private float ballMass;
-    private float launchForce;
-    private Vector2 spinVector;
-    private Vector3 startPosition;
-    private Quaternion launchAngle;
 
     private int numPlayersInGame;
     public int NumPlayersInGame => numPlayersInGame;
@@ -198,11 +179,10 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private Coroutine trajectoryViewRoutine;
     
     private bool showBallLandingOverride = false;
-    private bool showBallLanding => ballParameterController.powerInput.Power > 10 && 
+    private bool showBallLanding => shotInput.powerInput.Power > 10 && 
         (showBallLandingOverride || (!showTrajectory && Time.time > lastBallLandingShownAt + BALL_LANDING_INDICATOR_INTERVAL));
     private float lastBallLandingShownAt = 0;
     private const float BALL_LANDING_INDICATOR_INTERVAL = 2;
-    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 5;
     
     public AdditionalVolleyOffer additionalVolleyOffer;
     private int additionalVolleys;
@@ -222,6 +202,10 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private RoundDataManager roundDataManager;
     [Inject]
     private GameMode gameMode;
+    [Inject]
+    private ShotInput shotInput;
+    [Inject]
+    private IHUD playerHUD;
     [InjectOptional]
     private InGameContext context;
     public InGameContext Context => context;
@@ -241,33 +225,33 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         InitGame();
         InitBall();
         
-        nextButton.onClick.RemoveAllListeners();
-        nextButton.onClick.AddListener(NextButtonPressed);
-        
-        fireButton.onClick.RemoveAllListeners();
-        fireButton.onClick.AddListener(FireButtonPressed);
-        
         SetupPlayers();
         levelLoader.LoadLevel();
-        ShowLevelInfo();
+        playerHUD.ShowLevelInfo();
         currentPlayerTurn = 0;
         roundDataManager.SetCurrentShotTaker();
     }
 
     private void OnEnable()
     {
-        EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Subscribe<HUDAction_CheckTrajectory>(TrajectoryButtonPressed);
+        EventBus.Subscribe<HUDAction_Fire>(FireButtonPressed);
+        EventBus.Subscribe<HUDAction_Next>(NextButtonPressed);
+        
         EventBus.Subscribe<CueNextShotEvent>(CueNextShot);
-        EventBus.Subscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Subscribe<StoppedShotInput>(StoppedInputtingShot);
         EventBus.Subscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Subscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
     }
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryButtonPressed);
+        EventBus.Unsubscribe<HUDAction_CheckTrajectory>(TrajectoryButtonPressed);
+        EventBus.Unsubscribe<HUDAction_Fire>(FireButtonPressed);
+        EventBus.Unsubscribe<HUDAction_Next>(NextButtonPressed);
+        
         EventBus.Unsubscribe<CueNextShotEvent>(CueNextShot);
-        EventBus.Unsubscribe<StoppedBallParameterInput>(StoppedInputtingBallParameter);
+        EventBus.Unsubscribe<StoppedShotInput>(StoppedInputtingShot);
         EventBus.Unsubscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Unsubscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
     }
@@ -308,8 +292,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         sceneContext.Container.InjectGameObject(spawned);
 
         ball = spawned.GetComponent<Ball>();
-        startPosition = tee.ballPosition.position;
-        ballMass = ball.rb.mass;
 
         ball.Initialize(Context, TrajectoryModifier, extras);
     }
@@ -320,23 +302,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         roundDataManager.CreatePlayers(numPlayersInGame);
     }
 
-    public void ShowLevelInfo()
-    {
-        volleyText.text = "Volley 1";
-
-        switch (gameMode.GetWinCondition())
-        {
-            case WinCondition.PointsRequired:
-                objectiveText.text = $"TARGET : {gameMode.PointsRequired}";
-                break;
-            case WinCondition.PointsRanking:
-                objectiveText.text = $"Maximum total points wins";
-                break;
-            case WinCondition.Survival:
-                objectiveText.text = $"Survive All Volleys";
-                break;
-        }
-    }
 
     void Update()
     {
@@ -345,16 +310,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 #endif
         if (BallShootable)
         {
-            launchForce = PowerInput.Power;
-            launchAngle = AngleInput.cylinderPivot.rotation;
-            spinVector = SpinInput.SpinVector;
-
-            if (!trajectoryButtonSection.gameObject.activeSelf && launchForce > MIN_POWER_TO_OFFER_TRAJECTORY_VIEW && 
-                launchAngle.eulerAngles.sqrMagnitude > 1)
-            {
-                CheckToShowTrajectoryButton();
-            }
-
             if (showTrajectory)
             {
                 List<Vector3> trajectoryPoints = ball.CalculateTrajectory();
@@ -368,7 +323,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         }
     }
 
-    public void NextButtonPressed()
+    public void NextButtonPressed(HUDAction_Next e)
     {
         if (optTimePerShotRoutine != null)
         {
@@ -379,7 +334,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 
     public void ShotComplete()
     {
-        nextButton.gameObject.SetActive(false);
         EventBus.Publish(new ShotCompleteEvent(ball.CapturedTrajectoryPoints));
     }
     
@@ -396,21 +350,16 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 
     private IEnumerator CueNextShotRoutine()
     {
-        nextButton.gameObject.SetActive(false);
-        trajectoryHistoryButton.gameObject.SetActive(false);
         showTrajectory = false;
         
         yield return CheckIfNextShotAvailable();
         
         angleIndicator.SetActive(true);
-        fireButton.gameObject.SetActive(true);
         BallState = BallState.OnTee;
         
         TogglePlayer();
         
         yield return StaggeredCueNextShot();
-        
-        CheckToShowTrajectoryHistoryButton();
     }
 
     private IEnumerator CheckIfNextShotAvailable()
@@ -462,7 +411,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
                 currentPlayerTurn = 0;
                 volleyNumber++;
                 EventBus.Publish(new NewRoundStartedEvent(volleyNumber));
-                volleyText.text = $"Volley {volleyNumber}";
 
                 if (volleyNumber > TotalVolleysAvailable)
                 {
@@ -476,7 +424,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         roundDataManager.SetCurrentShotTaker();
     }
     
-    public void FireButtonPressed()
+    public void FireButtonPressed(HUDAction_Fire e)
     {
         if (BallShootable)
         {
@@ -498,10 +446,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     public void DisableRelevantElementsDuringShot()
     {
         angleIndicator.SetActive(false);
-        fireButton.gameObject.SetActive(false);
-        nextButton.gameObject.SetActive(false);
-        trajectoryAdButtonSection.gameObject.SetActive(false);
-        trajectoryHistoryButton.gameObject.SetActive(false);
         DisableTrajectory();
     }
     
@@ -528,7 +472,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         }
     }
 
-    public void StoppedInputtingBallParameter(StoppedBallParameterInput e)
+    public void StoppedInputtingShot(StoppedShotInput e)
     {
         BallLandingIndicator.ResetAnimation();
         showBallLandingOverride = true;
@@ -595,13 +539,13 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         IEnumerator<WaitForSeconds> OptionalTimeRoutine()
         {
-            nextButton.gameObject.SetActive(true);
+            playerHUD.SetNextButtonActive(true);
             float timePassed = 0;
             float optionalTime = gameMode.GetOptionalTimePerShot();
             while (timePassed <= optionalTime)
             {
                 timePassed += Time.deltaTime;
-                nextButtonFill.fillAmount = timePassed / optionalTime;
+                playerHUD.UpdateOptionalShotPhaseProgress(timePassed / optionalTime);
                 yield return null;
             }
             optTimePerShotRoutine = null;
@@ -616,23 +560,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         optTimePerShotRoutine = StartCoroutine(OptionalTimeRoutine());
     }
     
-    public void CheckToShowTrajectoryButton()
-    {
-        int trajectoryViewsRemaining = roundDataManager.GetTrajectoryViewsRemaining();
-        if (trajectoryViewsRemaining > 0)
-        {
-            trajectoryButtonSection.gameObject.SetActive(true);
-            trajectoryAdButtonSection.gameObject.SetActive(false);
-            trajectoryButton.ShowButton(trajectoryViewsRemaining);
-        }
-        else
-        {
-            trajectoryButtonSection.gameObject.SetActive(false);
-            trajectoryAdButtonSection.gameObject.SetActive(true);
-        }
-    }
-
-    public void TrajectoryButtonPressed(TrajectoryEnabledEvent e)
+    public void TrajectoryButtonPressed(HUDAction_CheckTrajectory e)
     {
         if (roundDataManager.GetTrajectoryViewsRemaining() <= 0)
         {
@@ -648,17 +576,17 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         showTrajectory = true;
         int secondsRemaining = gameMode.ProjectileViewDuration;
-        trajectoryButton.SetCountdownText(secondsRemaining);
+        playerHUD.UpdateTrajectoryViewTimeRemaining(secondsRemaining);
         while (secondsRemaining >= 0)
         {
             secondsRemaining--;
             yield return new WaitForSeconds(1);
-            trajectoryButton.SetCountdownText(secondsRemaining);
+            playerHUD.UpdateTrajectoryViewTimeRemaining(secondsRemaining);
         }
 
         showTrajectory = false;
         DisableTrajectory();
-        CheckToShowTrajectoryButton();
+        playerHUD.CheckToShowTrajectoryButton();
     }
 
     public void DiscardTrajectoryViewRoutine()
@@ -678,14 +606,10 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             trajectory.segmentEnd.enabled = false;
             trajectory.trajectory.enabled = false;
         }
-        trajectoryButtonSection.gameObject.SetActive(false);
+        
+        playerHUD.SetTrajectoryButtonSectionActive(false);
     }
-
-    public void CheckToShowTrajectoryHistoryButton()
-    {
-        trajectoryHistoryButton.gameObject.SetActive(trajectoryHistoryViewer.GetIsTrajectoryHistoryAvailable());
-    }
-
+    
     public void TryWatchingTrajectoryAd(TrajectoryAdAttemptedEvent e)
     {
         if (roundDataManager.GetTrajectoryViewsRemaining() != 0)
@@ -693,7 +617,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             return;
         }
         
-        trajectoryAdButtonSection.SetActive(false);
+        playerHUD.SetTrajectoryAdButtonSectionActive(false);
         
         AdManager.ShowRewardedAd((success) =>
             {
@@ -701,7 +625,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
                 {
                     roundDataManager.AddTrajectoryView();
                 }
-                CheckToShowTrajectoryButton();
+                playerHUD.CheckToShowTrajectoryButton();
             });
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
@@ -12,7 +13,7 @@ public class TutorialManager : MonoBehaviour
     SceneContext sceneContext;
 
     public Tee tee;
-    public BallParameterController ballParameterController;
+    public ShotInput shotInput;
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
     public TrajectorySegmentVisuals[] trajectories;
@@ -69,19 +70,19 @@ public class TutorialManager : MonoBehaviour
     private void OnEnable()
     {
         showTrajectory = false;
-        EventBus.Subscribe<TrajectoryEnabledEvent>(TrajectoryEnabled);
+        EventBus.Subscribe<HUDAction_CheckTrajectory>(TrajectoryEnabled);
         EventBus.Subscribe<TutorialResetEvent>(TutorialReset);
         EventBus.Subscribe<GameExitedEvent>(ReturnToMainMenu);
     }
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<TrajectoryEnabledEvent>(TrajectoryEnabled);
+        EventBus.Unsubscribe<HUDAction_CheckTrajectory>(TrajectoryEnabled);
         EventBus.Unsubscribe<TutorialResetEvent>(TutorialReset);
         EventBus.Unsubscribe<GameExitedEvent>(ReturnToMainMenu);
     }
 
-    private void TrajectoryEnabled(TrajectoryEnabledEvent e)
+    private void TrajectoryEnabled(HUDAction_CheckTrajectory e)
     {
         showTrajectory = true;
     }
@@ -96,9 +97,9 @@ public class TutorialManager : MonoBehaviour
     {
         if (ball != null && ballState == BallState.OnTee)
         {
-            launchForce = ballParameterController.powerInput.Power;
-            launchAngle = ballParameterController.angleInput.cylinderPivot.rotation;
-            spinVector = ballParameterController.spinInput.SpinVector;
+            launchForce = shotInput.powerInput.Power;
+            launchAngle = shotInput.angleInput.cylinderPivot.rotation;
+            spinVector = shotInput.spinInput.SpinVector;
 
             if (!trajectoryButtonSection.activeSelf && launchForce > 20 && launchAngle.eulerAngles.sqrMagnitude > 1)
             {
@@ -126,7 +127,7 @@ public class TutorialManager : MonoBehaviour
         inputManager.SetContext(GameContext.InGame);
         gravity = -Physics.gravity.y;
         TutorialContext = new TutorialContext();
-        TutorialContext.InitTutorial(ball, ballParameterController, tee);
+        TutorialContext.InitTutorial(ball, shotInput, tee);
         ball.Initialize(TutorialContext, TrajectoryModifier);
     }
 

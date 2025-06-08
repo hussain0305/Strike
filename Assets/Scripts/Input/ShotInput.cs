@@ -4,18 +4,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StoppedBallParameterInput { }
+public class StoppedShotInput { }
 
-public class BallParameterInputSwitchedEvent
+public class ShotInputSwitchedEvent
 {
-    public BallParameterController.ShotParameter ShotParameter;
-    public BallParameterInputSwitchedEvent(BallParameterController.ShotParameter shotParameter)
+    public ShotInput.ShotParameter ShotParameter;
+    public ShotInputSwitchedEvent(ShotInput.ShotParameter shotParameter)
     {
         ShotParameter = shotParameter;
     }
 }
 
-public class BallParameterController : MonoBehaviour
+public class ShotInput : MonoBehaviour
 {
     public enum ShotParameter
     {
@@ -58,7 +58,7 @@ public class BallParameterController : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
-        EventBus.Subscribe<BallParameterInputSwitchedEvent>(ShotParameterInputSwitched);
+        EventBus.Subscribe<ShotInputSwitchedEvent>(ShotParameterInputSwitched);
         EventBus.Subscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
         EventBus.Subscribe<CameraSwitchCompletedEvent>(CameraSwitchCompleted);
         
@@ -80,7 +80,7 @@ public class BallParameterController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe<BallParameterInputSwitchedEvent>(ShotParameterInputSwitched);
+        EventBus.Unsubscribe<ShotInputSwitchedEvent>(ShotParameterInputSwitched);
         EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
         EventBus.Unsubscribe<CameraSwitchProcessedEvent>(CameraSwitchProcessed);
         EventBus.Unsubscribe<CameraSwitchCompletedEvent>(CameraSwitchCompleted);
@@ -105,7 +105,7 @@ public class BallParameterController : MonoBehaviour
         return currentParameterInput == ShotParameter.Power;
     }
 
-    private void ShotParameterInputSwitched(BallParameterInputSwitchedEvent e)
+    private void ShotParameterInputSwitched(ShotInputSwitchedEvent e)
     {
         currentParameterInput = e.ShotParameter;
     }
@@ -140,7 +140,7 @@ public class BallParameterController : MonoBehaviour
     public void SetShotParameterSelected(ShotParameter shotParameter)
     {
         SetShotParameterSelected();
-        EventBus.Publish(new BallParameterInputSwitchedEvent(shotParameter));
+        EventBus.Publish(new ShotInputSwitchedEvent(shotParameter));
         switch (shotParameter)
         {
             case ShotParameter.Spin:

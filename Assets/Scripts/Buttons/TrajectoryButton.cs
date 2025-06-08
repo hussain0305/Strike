@@ -29,7 +29,7 @@ public class TrajectoryButton : MonoBehaviour
         remainingInfoBubble.SetActive(false);
         countdownText.gameObject.SetActive(true);
         trajectoryIcon.gameObject.SetActive(false);
-        EventBus.Publish(new TrajectoryEnabledEvent());
+        EventBus.Publish(new HUDAction_CheckTrajectory());
     }
 
     public void SetCountdownText(int secondsRemaining)

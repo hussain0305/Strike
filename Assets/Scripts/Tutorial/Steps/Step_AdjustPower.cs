@@ -41,7 +41,7 @@ public class Step_AdjustPower : TutorialStep
 
         phase = Phase.WaitForSwipe;
         controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your Power.");
-        startingPower = (int)controller.tutorialHUD.BallParameterController.powerInput.Power;
+        startingPower = (int)controller.tutorialHUD.shotInput.powerInput.Power;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
 
@@ -52,7 +52,7 @@ public class Step_AdjustPower : TutorialStep
 
         while (true)
         {
-            var currentPower = (int)controller.tutorialHUD.BallParameterController.powerInput.Power;
+            var currentPower = (int)controller.tutorialHUD.shotInput.powerInput.Power;
 
             if (!powerChanged && Mathf.Abs(currentPower - startingPower) > 5f)
             {

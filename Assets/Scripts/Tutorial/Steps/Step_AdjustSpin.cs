@@ -41,7 +41,7 @@ public class Step_AdjustSpin : TutorialStep
 
         phase = Phase.WaitForSwipe;
         controller.tutorialHUD.SetInstructionText("Now swipe across the screen to set your spin.");
-        startingSpin = controller.tutorialHUD.BallParameterController.spinInput.SpinVector;
+        startingSpin = controller.tutorialHUD.shotInput.spinInput.SpinVector;
         controller.StartCoroutine(CheckSwipeCoroutine());
     }
 
@@ -52,7 +52,7 @@ public class Step_AdjustSpin : TutorialStep
 
         while (true)
         {
-            var currentSpin = controller.tutorialHUD.BallParameterController.spinInput.SpinVector;
+            var currentSpin = controller.tutorialHUD.shotInput.spinInput.SpinVector;
 
             if (!spinChanged && Vector2.SqrMagnitude(currentSpin - startingSpin) > 0.2f)
             {

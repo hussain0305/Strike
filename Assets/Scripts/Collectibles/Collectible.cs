@@ -295,9 +295,9 @@ public class Collectible : MonoBehaviour, ICollectible
 
     public void NullifyVelocities()
     {
-        RBody.isKinematic = true;
         RBody.angularVelocity = Vector3.zero;
         RBody.linearVelocity = Vector3.zero;
+        RBody.isKinematic = true;
     }
     
     public bool CanBeCollected()

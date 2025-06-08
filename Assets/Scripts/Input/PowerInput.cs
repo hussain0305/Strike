@@ -8,16 +8,16 @@ public class PowerInput : MonoBehaviour
 
     public float Power { get; private set; }
     
-    private BallParameterController ballParameterController;
-    private BallParameterController BallParameterController
+    private ShotInput shotInput;
+    private ShotInput ShotInput
     {
         get
         {
-            if (!ballParameterController)
+            if (!shotInput)
             {
-                ballParameterController = GetComponent<BallParameterController>();
+                shotInput = GetComponent<ShotInput>();
             }
-            return ballParameterController;
+            return shotInput;
         }
     }
 
@@ -37,7 +37,7 @@ public class PowerInput : MonoBehaviour
 
     private void Update()
     {
-        if (!BallParameterController.IsInputtingPower())
+        if (!ShotInput.IsInputtingPower())
         {
             return;
         }
@@ -64,7 +64,8 @@ public class PowerInput : MonoBehaviour
 
     void UpdateSwipe(Vector2 position)
     {
-        if (!isDragging) return;
+        if (!isDragging)
+            return;
 
         float verticalDelta = (position.y - startTouch.y) / Screen.height;
         Power += verticalDelta * powerMultiplier;
@@ -80,7 +81,7 @@ public class PowerInput : MonoBehaviour
 
     void EndSwipe()
     {
-        EventBus.Publish(new StoppedBallParameterInput());
+        EventBus.Publish(new StoppedShotInput());
         isDragging = false;
     }
 

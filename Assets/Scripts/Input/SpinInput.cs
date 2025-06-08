@@ -22,22 +22,22 @@ public class SpinInput : MonoBehaviour
         controlBounds = controlArea.rect.size / 2f;
     }
 
-    private BallParameterController ballParameterController;
-    private BallParameterController BallParameterController
+    private ShotInput shotInput;
+    private ShotInput ShotInput
     {
         get
         {
-            if (!ballParameterController)
+            if (!shotInput)
             {
-                ballParameterController = GetComponent<BallParameterController>();
+                shotInput = GetComponent<ShotInput>();
             }
-            return ballParameterController;
+            return shotInput;
         }
     }
     
     private void Update()
     {
-        if (!BallParameterController.IsInputtingSpin())
+        if (!ShotInput.IsInputtingSpin())
         {
             return;
         }
@@ -51,7 +51,7 @@ public class SpinInput : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isInteracting = false;
-            EventBus.Publish(new StoppedBallParameterInput());
+            EventBus.Publish(new StoppedShotInput());
         }
 
         if (Input.GetMouseButton(0) && isInteracting)

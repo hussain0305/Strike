@@ -17,16 +17,16 @@ public class AngleInput : MonoBehaviour
     private MinMaxInt pitchLimits = new (-5, 75);
     private MinMaxInt yawLimits = new (-75, 75);
 
-    private BallParameterController ballParameterController;
-    private BallParameterController BallParameterController
+    private ShotInput shotInput;
+    private ShotInput ShotInput
     {
         get
         {
-            if (!ballParameterController)
+            if (!shotInput)
             {
-                ballParameterController = GetComponent<BallParameterController>();
+                shotInput = GetComponent<ShotInput>();
             }
-            return ballParameterController;
+            return shotInput;
         }
     }
     
@@ -42,7 +42,7 @@ public class AngleInput : MonoBehaviour
 
     private void Update()
     {
-        if (!BallParameterController.IsInputtingAngle())
+        if (!ShotInput.IsInputtingAngle())
         {
             return;
         }
@@ -75,7 +75,8 @@ public class AngleInput : MonoBehaviour
 
     void UpdateSwipe(Vector2 position)
     {
-        if (!isDragging) return;
+        if (!isDragging)
+            return;
 
         Vector2 swipeVector = position - startTouch;
 
@@ -95,7 +96,7 @@ public class AngleInput : MonoBehaviour
 
     void EndSwipe()
     {
-        EventBus.Publish(new StoppedBallParameterInput());
+        EventBus.Publish(new StoppedShotInput());
         isDragging = false;
     }
 
