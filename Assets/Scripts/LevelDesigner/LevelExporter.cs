@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelExporter : MonoBehaviour
 {
@@ -226,7 +229,9 @@ public class LevelExporter : MonoBehaviour
             }
 
             gameModeEntry.levels.Add(levelData.levelNumber);
-
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(GameModeLevelMapping.Instance);
+#endif
             Debug.Log($"Updated GameModeLevelMapping with Level {levelData.levelNumber} for GameMode {gameMode}.");
         }
         else

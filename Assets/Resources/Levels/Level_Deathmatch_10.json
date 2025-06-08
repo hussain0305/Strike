@@ -1,6 +1,6 @@
 {
     "gameMode": 2,
-    "levelNumber": 3,
+    "levelNumber": 10,
     "targetPoints": 5,
     "collectibles": [
         {
@@ -9,15 +9,75 @@
             "multiplierTokenType": 0,
             "dangerTokenType": 0,
             "position": {
-                "x": -20.0,
+                "x": -5.0,
                 "y": 0.20000001788139344,
-                "z": 46.0
+                "z": 45.0
             },
             "rotation": {
                 "x": 0.0,
-                "y": -0.3826834261417389,
+                "y": 0.0,
                 "z": 0.0,
-                "w": 0.9238795638084412
+                "w": 1.0
+            },
+            "value": 1,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": true,
+            "isKinematic": false
+        },
+        {
+            "type": 0,
+            "pointTokenType": 1,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 0.0,
+                "y": 0.20000001788139344,
+                "z": 40.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 1,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 2,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": true,
+            "isKinematic": false
+        },
+        {
+            "type": 0,
+            "pointTokenType": 1,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 0,
+            "position": {
+                "x": 5.0,
+                "y": 0.20000001788139344,
+                "z": 45.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
             },
             "value": 1,
             "numTimesCanBeCollected": 1,
@@ -102,96 +162,6 @@
                 "x": 10.0,
                 "y": 0.20000001788139344,
                 "z": 50.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            },
-            "value": 1,
-            "numTimesCanBeCollected": 1,
-            "pointDisplayType": 2,
-            "path": [],
-            "movementSpeed": 0.0,
-            "rotationAxis": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotationSpeed": 0.0,
-            "activeOnStart": true,
-            "isKinematic": false
-        },
-        {
-            "type": 0,
-            "pointTokenType": 1,
-            "multiplierTokenType": 0,
-            "dangerTokenType": 0,
-            "position": {
-                "x": 20.0,
-                "y": 0.20000001788139344,
-                "z": 46.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.3826834261417389,
-                "z": 0.0,
-                "w": 0.9238795638084412
-            },
-            "value": 1,
-            "numTimesCanBeCollected": 1,
-            "pointDisplayType": 2,
-            "path": [],
-            "movementSpeed": 0.0,
-            "rotationAxis": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotationSpeed": 0.0,
-            "activeOnStart": true,
-            "isKinematic": false
-        },
-        {
-            "type": 0,
-            "pointTokenType": 1,
-            "multiplierTokenType": 0,
-            "dangerTokenType": 0,
-            "position": {
-                "x": 5.0,
-                "y": 0.20000001788139344,
-                "z": 40.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-            },
-            "value": 1,
-            "numTimesCanBeCollected": 1,
-            "pointDisplayType": 2,
-            "path": [],
-            "movementSpeed": 0.0,
-            "rotationAxis": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotationSpeed": 0.0,
-            "activeOnStart": true,
-            "isKinematic": false
-        },
-        {
-            "type": 0,
-            "pointTokenType": 1,
-            "multiplierTokenType": 0,
-            "dangerTokenType": 0,
-            "position": {
-                "x": -5.0,
-                "y": 0.20000001788139344,
-                "z": 40.0
             },
             "rotation": {
                 "x": 0.0,
@@ -332,15 +302,195 @@
             "rotationSpeed": 0.0,
             "activeOnStart": true,
             "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": -10.0,
+                "y": 0.20000001788139344,
+                "z": 47.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": 10.0,
+                "y": 0.20000001788139344,
+                "z": 47.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": 0.0,
+                "y": 0.20000001788139344,
+                "z": 47.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": -5.0,
+                "y": 0.20000001788139344,
+                "z": 42.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": 5.0,
+                "y": 0.20000001788139344,
+                "z": 42.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
+        },
+        {
+            "type": 2,
+            "pointTokenType": 0,
+            "multiplierTokenType": 0,
+            "dangerTokenType": 3,
+            "position": {
+                "x": 0.0,
+                "y": 0.20000001788139344,
+                "z": 37.5
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "value": 0,
+            "numTimesCanBeCollected": 1,
+            "pointDisplayType": 0,
+            "path": [],
+            "movementSpeed": 0.0,
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": 0.0,
+            "activeOnStart": false,
+            "isKinematic": false
         }
     ],
     "stars": [
         {
             "index": 0,
             "position": {
-                "x": -20.25,
+                "x": -10.270000457763672,
                 "y": 6.579999923706055,
-                "z": 35.029998779296878
+                "z": 33.06999969482422
             }
         },
         {
@@ -354,9 +504,9 @@
         {
             "index": 2,
             "position": {
-                "x": 21.670000076293947,
+                "x": 11.020000457763672,
                 "y": 6.860000133514404,
-                "z": 38.529998779296878
+                "z": 20.65999984741211
             }
         }
     ],

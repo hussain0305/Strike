@@ -174,7 +174,7 @@ public class RandomizedGutterWall : EndlessModeSpawner
     {
         GameObject obj = spawnPoint
             ? poolingManager.GetObject(PointTokenType.Cuboid_Gutter)
-            : poolingManager.GetObject(DangerTokenType.Cube_3x3);
+            : poolingManager.GetObject(DangerTokenType.Cuboid_Gutter);
         var rb = obj.GetComponent<Rigidbody>();
         if (rb)
             rb.isKinematic = true;

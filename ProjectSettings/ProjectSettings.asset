@@ -825,6 +825,7 @@ PlayerSettings:
   webWasm2023: 0
   scriptingDefineSymbols:
     Standalone: TESTER_MODE
+    WebGL: TESTER_MODE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

@@ -80,8 +80,9 @@ public enum MultiplierTokenType
 public enum DangerTokenType
 {
     None,
-    Cube_3x3,
-    Pin_2x
+    Cuboid_Gutter,
+    Pin_2x,
+    Cuboid_2x2,
 };
 
 public enum PinBehaviourPerTurn
