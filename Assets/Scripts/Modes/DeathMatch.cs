@@ -13,6 +13,7 @@ public class DeathMatch : GameMode
     {
         defaultWinCondition = WinCondition.Survival;
         pinBehaviour = PinBehaviourPerTurn.DisappearUponCollection;
+        numAdditionalVolleyGrants = 0;
     }
 
     public override void OnShotComplete(bool hitDangerPin, bool hitNormalPin)

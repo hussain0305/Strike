@@ -366,10 +366,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         if(!CanGrantAdditionalVolleys())
             yield break;
+
+        int pointsRemaining = gameMode.PointsRequired - roundDataManager.GetPointsForPlayer(0);
         
-        if (volleyNumber >= TotalVolleysAvailable)
+        if (volleyNumber >= TotalVolleysAvailable && pointsRemaining > 0)
         {
-            string messageString = $"YOU ARE {gameMode.PointsRequired - roundDataManager.GetPointsForPlayer(0)} POINTS SHORT. WATCH AN AD FOR {gameMode.NumAdditionalVolleysPerGrant} ADDITIONAL VOLLEYS?";
+            string messageString = $"YOU ARE {pointsRemaining} POINTS SHORT. WATCH AN AD FOR {gameMode.NumAdditionalVolleysPerGrant} ADDITIONAL VOLLEYS?";
             additionalVolleyOffer.Show(messageString, (offerTaken) => { });
                     
             yield return new WaitWhile(() => additionalVolleyOffer.offerActive);
