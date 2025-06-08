@@ -3,21 +3,8 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public class PlayerEliminatedEvent
-{
-    public int PlayerIndex;
-    public EliminationReason EliminationReason;
-
-    public PlayerEliminatedEvent(int playerIndex, EliminationReason eliminationReason)
-    {
-        this.PlayerIndex = playerIndex;
-        this.EliminationReason = eliminationReason;
-    }
-}
-
 public class RoundDataManager : MonoBehaviour
 {
-    public Canvas worldSpaceCanvas;
     public Transform collectibleHeadersParent;
     public CollectibleHeader collectibleHeaderPrefab;
     
@@ -68,7 +55,6 @@ public class RoundDataManager : MonoBehaviour
     {
         PlayerGameData data = new PlayerGameData();
         
-        //TODO: Name might be introduced later
         data.name = $"Player {_index + 1}";
         data.totalPoints = 0;
         data.shotsTaken = 0;

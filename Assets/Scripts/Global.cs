@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-//============---- ENUMS ----============
+#region Enums
 
 [System.Serializable]
 public enum GameModeType
@@ -169,7 +169,9 @@ public enum EliminationReason
     HitNoting
 };
 
-//============---- STRUCTS ----============
+#endregion
+
+#region Structs
 
 public struct ShotInfo
 {
@@ -307,6 +309,142 @@ public struct MinMaxFloat
 
     public float Clamp(float value) => Mathf.Clamp(value, Min, Max);
 }
+#endregion
+
+#region Events
+
+public class BallShotEvent { }
+public class CueNextShotEvent { }
+public class PreNextShotCuedEvent { }
+public class InGameEvent { }
+public class GameEndedEvent { }
+public class GameExitedEvent { }
+public class GameRestartedEvent { }
+
+public class ShotCompleteEvent
+{
+    public List<Vector3> ShotTrajectory;
+    public ShotCompleteEvent(List<Vector3> capturedTrajectory)
+    {
+        ShotTrajectory = capturedTrajectory;
+    }
+}
+
+public class ProjectilesSpawnedEvent
+{
+    public GameObject[] projectiles;
+    public ProjectilesSpawnedEvent(GameObject[] _projectiles)
+    {
+        projectiles = _projectiles;
+    }
+}
+
+public class NewGameStartedEvent
+{
+    public int NumPlayers;
+
+    public NewGameStartedEvent(int _numPlayers)
+    {
+        NumPlayers = _numPlayers;
+    }
+}
+
+public class NextShotCuedEvent
+{
+    public int CurrentPlayerTurn;
+    public NextShotCuedEvent()
+    {
+        CurrentPlayerTurn = 0;
+    }
+    public NextShotCuedEvent(int _currentPlayerTurn)
+    {
+        CurrentPlayerTurn = _currentPlayerTurn;
+    }
+}
+
+public class NewRoundStartedEvent
+{
+    public int RoundNumber;
+    public NewRoundStartedEvent(int roundNumber)
+    {
+        RoundNumber = roundNumber;
+    }
+}
+
+public class ResultDeterminedEvent
+{
+    public bool IsPlayingSolo;
+    public bool Won;
+    
+    public ResultDeterminedEvent(bool _isPlayingSolo, bool _won)
+    {
+        IsPlayingSolo = _isPlayingSolo;
+        Won = _won;
+    }
+}
+
+public class PlayerEliminatedEvent
+{
+    public int PlayerIndex;
+    public EliminationReason EliminationReason;
+
+    public PlayerEliminatedEvent(int playerIndex, EliminationReason eliminationReason)
+    {
+        this.PlayerIndex = playerIndex;
+        this.EliminationReason = eliminationReason;
+    }
+}
+
+public class CameraSwitchProcessedEvent
+{
+    public CameraHoistLocation NewCameraPos { get; }
+    public float SwitchTime { get; }
+    
+    public CameraSwitchProcessedEvent(CameraHoistLocation newCameraPos, float time)
+    {
+        NewCameraPos = newCameraPos;
+        SwitchTime = time;
+    }
+}
+
+public class CameraSwitchCompletedEvent
+{
+    public CameraHoistLocation NewCameraPos { get; }
+
+    public CameraSwitchCompletedEvent(CameraHoistLocation newCameraPos)
+    {
+        NewCameraPos = newCameraPos;
+    }
+}
+
+public class GameModeChangedEvent
+{
+    public GameModeInfo GameModeInfo;
+    public GameModeChangedEvent(GameModeInfo gameModeInfo)
+    {
+        GameModeInfo = gameModeInfo;
+    }
+}
+public class NumPlayersChangedEvent
+{
+    public int numPlayers;
+    public NumPlayersChangedEvent(int _num)
+    {
+        numPlayers = _num;
+    }
+}
+
+public class GameStateChangedEvent
+{
+    public GameState gameState;
+
+    public GameStateChangedEvent(GameState newGameState)
+    {
+        gameState = newGameState;
+    }
+}
+
+#endregion
 
 #region Endless Mode
 

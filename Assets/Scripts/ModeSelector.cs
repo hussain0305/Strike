@@ -1,26 +1,5 @@
-using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
-public class GameModeChangedEvent
-{
-    public GameModeInfo GameModeInfo;
-    public GameModeChangedEvent(GameModeInfo gameModeInfo)
-    {
-        GameModeInfo = gameModeInfo;
-    }
-}
-public class NumPlayersChangedEvent
-{
-    public int numPlayers;
-    public NumPlayersChangedEvent(int _num)
-    {
-        numPlayers = _num;
-    }
-}
 
 public class ModeSelector : MonoBehaviour
 {

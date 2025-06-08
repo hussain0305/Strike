@@ -5,16 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class GameStateChangedEvent
-{
-    public GameState gameState;
-
-    public GameStateChangedEvent(GameState newGameState)
-    {
-        gameState = newGameState;
-    }
-}
-
 public class GameStateManager : MonoBehaviour
 {
     private List<GameStateToggleListener> stateToggleListeners = new List<GameStateToggleListener>();

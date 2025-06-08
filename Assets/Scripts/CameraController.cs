@@ -2,28 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraSwitchProcessedEvent
-{
-    public CameraHoistLocation NewCameraPos { get; }
-    public float SwitchTime { get; }
-    
-    public CameraSwitchProcessedEvent(CameraHoistLocation newCameraPos, float time)
-    {
-        NewCameraPos = newCameraPos;
-        SwitchTime = time;
-    }
-}
-
-public class CameraSwitchCompletedEvent
-{
-    public CameraHoistLocation NewCameraPos { get; }
-
-    public CameraSwitchCompletedEvent(CameraHoistLocation newCameraPos)
-    {
-        NewCameraPos = newCameraPos;
-    }
-}
-
 public class CameraController : MonoBehaviour
 {
     public Button cameraToggleButton;
