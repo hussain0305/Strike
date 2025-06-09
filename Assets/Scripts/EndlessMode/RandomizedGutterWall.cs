@@ -208,7 +208,7 @@ public class RandomizedGutterWall : EndlessModeSpawner
             if (cm == null)
                 cm = obj.AddComponent<ContinuousMovement>();
                  
-            cm.CreateMarkers(path[0], path[1]);
+            cm.CreateMarkers(path);
             cm.speed = 1f;
         }
         else if (cm != null)

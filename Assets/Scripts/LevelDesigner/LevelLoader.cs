@@ -27,7 +27,7 @@ public class LevelLoader : MonoBehaviour
             if (!cmScript)
                 cmScript = obj.AddComponent<ContinuousMovement>();
 
-            cmScript.CreateMarkers(path[0], path[1]);
+            cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
         }
         else if (cmScript)

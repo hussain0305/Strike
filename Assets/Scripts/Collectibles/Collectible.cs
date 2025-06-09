@@ -320,7 +320,7 @@ public class Collectible : MonoBehaviour, ICollectible
             if (!cmScript)
                 cmScript = gameObject.AddComponent<ContinuousMovement>();
             
-            cmScript.CreateMarkers(path[0], path[1]);
+            cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
             RBody.isKinematic = true;
         }

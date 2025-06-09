@@ -121,15 +121,7 @@ public class LevelEditorWindow : EditorWindow
                 if (!cmScript)
                     cmScript = Undo.AddComponent<ContinuousMovement>(collectibleObject);
                 Undo.RecordObject(cmScript, "Modify Collectible Movement");
-                cmScript.CreateMarkers(collectibleData.path[0], collectibleData.path[1]);
-                GameObject goA = new GameObject("A");
-                goA.transform.parent = collectibleObject.transform;
-                goA.transform.position = collectibleData.path[0];
-                cmScript.pointATransform = goA.transform;
-                GameObject goB = new GameObject("B");
-                goB.transform.parent = collectibleObject.transform;
-                goB.transform.position = collectibleData.path[1];
-                cmScript.pointBTransform = goB.transform;
+                cmScript.CreateMarkers(collectibleData.path);
             }
             else if (cmScript)
             {
@@ -215,7 +207,7 @@ public class LevelEditorWindow : EditorWindow
             if (!cmScript)
                 cmScript = Undo.AddComponent<ContinuousMovement>(portalObject);
             Undo.RecordObject(cmScript, "Modify Portal Movement");
-            cmScript.CreateMarkers(portalData.path[0], portalData.path[1]);
+            cmScript.CreateMarkers(portalData.path);
         }
         else if (cmScript)
         {

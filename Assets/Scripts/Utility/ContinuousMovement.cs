@@ -3,55 +3,65 @@ using UnityEngine;
 
 public class ContinuousMovement : MonoBehaviour
 {
-    public Transform pointATransform;
-    public Transform pointBTransform;
+    public Transform[] pointTransforms;
+    [HideInInspector]
+    public Vector3[] points;
     
     public float speed = 1f;
 
     private float lerpFactor = 0f;
-    private bool goingForward = true;
-
-    private void Start()
-    {
-        if (pointATransform)
-            pointATransform.parent = transform.parent.parent;
-        if (pointBTransform)
-            pointBTransform.parent = transform.parent.parent;
-    }
-
+    private int currentSegment = 0;
+    private bool canMove = false;
+    
     private void OnEnable()
     {
         lerpFactor = 0f;
+        EventBus.Subscribe<NewGameStartedEvent>(NewGameStarted);
+    }
+
+    private void OnDisable()
+    {
+        canMove = false;
+        EventBus.Unsubscribe<NewGameStartedEvent>(NewGameStarted);
+    }
+
+    private void NewGameStarted(NewGameStartedEvent e)
+    {
+        Transform platform = transform.parent.parent;
+        for (int i = 0; i < pointTransforms.Length; i++)
+        {
+            if (pointTransforms[i])
+                pointTransforms[i].parent = platform;
+        }
+
+        canMove = true;
     }
 
     void Update()
     {
-        transform.position = Vector3.Lerp(pointATransform.position, pointBTransform.position, lerpFactor);
+        if (!canMove)
+            return;
+        
+        Transform a = pointTransforms[currentSegment];
+        Transform b = pointTransforms[(currentSegment + 1) % pointTransforms.Length];
+        transform.position = Vector3.Lerp(a.position, b.position, lerpFactor);
 
-        if (goingForward)
+        lerpFactor += Time.deltaTime * speed;
+        if (lerpFactor >= 1f)
         {
-            lerpFactor += Time.deltaTime * speed;
-            if (lerpFactor >= 1f)
-            {
-                lerpFactor = 1f;
-                goingForward = false;
-            }
-        }
-        else
-        {
-            lerpFactor -= Time.deltaTime * speed;
-            if (lerpFactor <= 0f)
-            {
-                lerpFactor = 0f;
-                goingForward = true;
-            }
+            lerpFactor = 0f;
+            currentSegment = (currentSegment + 1) % pointTransforms.Length;
         }
     }
 
-    public void CreateMarkers(Vector3 pointA, Vector3 pointB)
+    public void CreateMarkers(Vector3[] positions)
     {
-        pointATransform = CreateMarker("PointA", pointA);
-        pointBTransform = CreateMarker("PointB", pointB);
+        pointTransforms = new Transform[positions.Length];
+        points = positions;
+        for (int i = 0; i < positions.Length; i++)
+        {
+            pointTransforms[i] = CreateMarker("Point" + i, positions[i]);
+        }
     }
     
     Transform CreateMarker(string _name, Vector3 position)

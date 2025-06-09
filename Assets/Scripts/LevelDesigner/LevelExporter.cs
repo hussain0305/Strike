@@ -126,9 +126,12 @@ public class LevelExporter : MonoBehaviour
             ContinuousMovement moveScript = collectible.GetComponent<ContinuousMovement>();
             float movementSpeed = 0;
             Vector3[] path = null;
-            if (moveScript != null)
+            if (moveScript != null && moveScript.pointTransforms != null)
             {
-                path = new[] { moveScript.pointATransform.position, moveScript.pointBTransform.position };
+                int numPathPoints = moveScript.pointTransforms.Length;
+                path = new Vector3[numPathPoints];
+                for (int i = 0; i < numPathPoints; i++)
+                    path[i] = moveScript.pointTransforms[i].position;
                 movementSpeed = moveScript.speed;
             }
             
@@ -255,7 +258,10 @@ public class LevelExporter : MonoBehaviour
         ContinuousMovement movementScript = portal.GetComponent<ContinuousMovement>();
         if (movementScript)
         {
-            portalData.path = new[] { movementScript.pointATransform.position, movementScript.pointBTransform.position };
+            int numPathPoints = movementScript.pointTransforms.Length;
+            portalData.path = new Vector3[numPathPoints];
+            for (int i = 0; i < numPathPoints; i++)
+                portalData.path[i] = movementScript.pointTransforms[i].position;
             portalData.movementSpeed = movementScript.speed;
         }
 
@@ -288,7 +294,10 @@ public class LevelExporter : MonoBehaviour
         ContinuousMovement movementScript = obstacle.GetComponent<ContinuousMovement>();
         if (movementScript)
         {
-            obstacleData.path = new[] { movementScript.pointATransform.position, movementScript.pointBTransform.position };
+            int numPathPoints = movementScript.pointTransforms.Length;
+            obstacleData.path = new Vector3[numPathPoints];
+            for (int i = 0; i < numPathPoints; i++)
+                obstacleData.path[i] = movementScript.pointTransforms[i].position;
             obstacleData.movementSpeed = movementScript.speed;
         }
 

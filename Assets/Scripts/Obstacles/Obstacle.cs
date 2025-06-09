@@ -35,7 +35,7 @@ public class Obstacle : MonoBehaviour
             if (!cmScript)
                 cmScript = gameObject.AddComponent<ContinuousMovement>();
             
-            cmScript.CreateMarkers(path[0], path[1]);
+            cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
             
             RBody.isKinematic = true;
