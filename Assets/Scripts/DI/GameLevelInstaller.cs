@@ -14,6 +14,7 @@ public class GameLevelInstaller : MonoInstaller
     public ShotInput shotInput;
     public PlayerHUD playerHUD;
     public TrajectoryHistoryViewer trajectoryHistoryViewer;
+    public LevelManager levelManager;
     
     public override void InstallBindings()
     {
@@ -72,6 +73,11 @@ public class GameLevelInstaller : MonoInstaller
             .FromInstance(trajectoryHistoryViewer)
             .AsSingle();
         
+        Container
+            .Bind<LevelManager>()
+            .FromInstance(levelManager)
+            .AsSingle();
+        
         Container.Inject(gameManager);
         Container.Inject(roundDataManager);
         Container.Inject(cameraManager);
@@ -80,6 +86,9 @@ public class GameLevelInstaller : MonoInstaller
         Container.Inject(notableEventsManager);
         Container.Inject(shotInput);
         Container.Inject(playerHUD);
+        
+        var gameStateManager = ProjectContext.Instance.Container.Resolve<GameStateManager>();
+        Container.Inject(gameStateManager);
         
         var poolingManager = ProjectContext.Instance.Container.Resolve<PoolingManager>();
         Container.Inject(poolingManager);

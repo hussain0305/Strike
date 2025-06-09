@@ -15,6 +15,8 @@ public class GameStateManager : MonoBehaviour
     private PoolingManager poolingManager;
     [InjectOptional]
     private ModeSelector modeSelector;
+    [InjectOptional]
+    private LevelManager levelManager;
     
     [Inject]
     public void Construct(PoolingManager _poolingManager)
@@ -73,10 +75,10 @@ public class GameStateManager : MonoBehaviour
 
     public void ReturnEverythingToPool()
     {
-        Transform collectiblesParent = LevelManager.Instance.collectiblesParent;
-        Transform stars = LevelManager.Instance.starsParent;
-        Transform worldObstacles = LevelManager.Instance.worldObstaclesParent;
-        Transform platformObstacles = LevelManager.Instance.platformObstaclesParent;
+        Transform collectiblesParent = levelManager.collectiblesParent;
+        Transform stars = levelManager.starsParent;
+        Transform worldObstacles = levelManager.worldObstaclesParent;
+        Transform platformObstacles = levelManager.platformObstaclesParent;
         
         List<Transform> collectibles = new List<Transform>(collectiblesParent.childCount);
         foreach (Transform child in collectiblesParent)

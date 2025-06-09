@@ -4322,7 +4322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9316c6449dd1cd84aaf5d386b3cfb329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSpaceCanvas: {fileID: 1315147194}
   collectibleHeadersParent: {fileID: 475929225}
   collectibleHeaderPrefab: {fileID: 8924292255016654566, guid: 37ea3b2a77a2ef94fa890b5b34b86922, type: 3}
   scoreboardPrefab: {fileID: 7896665729871777823, guid: 5e3e1552f9800af48b99b88b8f6d027e, type: 3}
@@ -5202,6 +5201,7 @@ MonoBehaviour:
   shotInput: {fileID: 1671959285}
   playerHUD: {fileID: 1586351919010768102}
   trajectoryHistoryViewer: {fileID: 2183589339321459631}
+  levelManager: {fileID: 856693395}
 --- !u!114 &1298743692
 MonoBehaviour:
   m_ObjectHideFlags: 0

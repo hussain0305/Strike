@@ -13,6 +13,7 @@ public class EndlessLevelInstaller : MonoInstaller
     public ShotInput shotInput;
     public PlayerHUD playerHUD;
     public TrajectoryHistoryViewer trajectoryHistoryViewer;
+    public LevelManager levelManager;
 
     public override void InstallBindings()
     {
@@ -70,6 +71,11 @@ public class EndlessLevelInstaller : MonoInstaller
             .Bind<TrajectoryHistoryViewer>()
             .FromInstance(trajectoryHistoryViewer)
             .AsSingle();
+        
+        Container
+            .Bind<LevelManager>()
+            .FromInstance(levelManager)
+            .AsSingle();
 
         var defaultMode = Container.Resolve<GameMode>();
         
@@ -81,6 +87,9 @@ public class EndlessLevelInstaller : MonoInstaller
         Container.Inject(defaultMode);
         Container.Inject(shotInput);
         Container.Inject(playerHUD);
+        
+        var gameStateManager = ProjectContext.Instance.Container.Resolve<GameStateManager>();
+        Container.Inject(gameStateManager);
 
         var poolingManager = ProjectContext.Instance.Container.Resolve<PoolingManager>();
         Container.Inject(poolingManager);
@@ -89,6 +98,9 @@ public class EndlessLevelInstaller : MonoInstaller
     public void ReinjectAll()
     {
         Container.InjectGameObject(gameObject);
+        
+        var gameStateManager = ProjectContext.Instance.Container.Resolve<GameStateManager>();
+        Container.Inject(gameStateManager);
 
         var poolingManager = ProjectContext.Instance.Container.Resolve<PoolingManager>();
         Container.Inject(poolingManager);

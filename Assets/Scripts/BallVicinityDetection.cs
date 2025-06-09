@@ -10,7 +10,7 @@ public class BallVicinityDetection : MonoBehaviour
     private Vector3 lastPosition;
     private int raycastLayerMask;
     private int portalLayerMask;
-    private const float portalRayDistance = 1f;
+    private const float portalRayDistance = 3f;
     
     private GameManager gameManager;
     private GameManager GameManager => gameManager ??= Ball.GameManager;

@@ -3,21 +3,9 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private static LevelManager instance;
-    public static LevelManager Instance => instance;
-
     public Transform starsParent;
     public Transform portalsParent;
     public Transform collectiblesParent;
     public Transform worldObstaclesParent;
     public Transform platformObstaclesParent;
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(instance.gameObject);
-        }
-        instance = this;
-    }
 }
