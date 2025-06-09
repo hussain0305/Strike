@@ -1,0 +1,25 @@
+1 -
+
+While refactoring the project for review, I was constantly torn between what would be the ideal solution and changing the implementation to that - vs. what made sense to do in this project.
+
+For example, some of the core parts of the game are handled in GameManger, GameMode, and RoundDataManager classes which work together to manage the flow of the game. While there is a clear separation of concerns here, an argument can be made that these classes should communicate with each other using interfaces, and each of them themselves should be implementations of these interfaces, so that at least there is no tight coupling. That would be the logical way to do things in a big project that has ambitions of continuous expansion and rules and modes not yet charted out. However, with this project I had a very clear scope of what I wanted to do, so I decided to follow the YAGNI principle - do what makes sense for this project, not an ideal super-codebase that is capable of handling a lot but does very little.
+
+In places where it made sense - for example context classes which were used by the Ball class to dictate which environment the ball is in, I did use Interfaces. On the same note - GameModes use inheritance rather than interface implementations, because I knew what variations I will have, and I did not want code duplications in a bunch of different interface implementations that are 90% the same.
+
+
+2 -
+
+I am aware that the use of Singletons is frowned upon, and rightly so, but I have used them in just a few places. To address the biggest sin with Singletons - They are not part of any core system design, everywhere in the core I have used Dependency Injection. However, there are some modules that live on the periphery of the system - like fetching assets that are referenced in scriptable objects - those I converted to singletons so that fetching global assets wherever I wanted them was handy, and switching and swapping them out was all condensed to one singular place. You might be thinking about adressables, and I did think that past the prototyping phase I will put it together, but the game just evolved in a way where I don't think I need it anymore - I have very few assets and everything is just tiny-sized and the game runs on web well. If I continue to work on the game and it expands to have more assets, maybe I'll do it in the future, but as of now I have not used Adressables.
+
+Apart from that, I have used that in one other place - a central "coroutine dispatcher" that I use to manage coroutines like the Ball previews, where I want to ensure that only one of type of coroutine is playing. I did this as a singleton because this would not be a 2-way communication anyway, i.e. there is no risk of "anyone can access this from anywhere and mutate its data or state". Parts of the program just have access to it to "hand off" what they want done, and the coroutine dispatcher takes it from there.
+
+
+3 -
+
+I think those were the 2 main points I wanted to clarify. Apart from that, I only see one other thing that might be confusing, which is the GameplayLevelMapping class/scriptable object. At the moment it's just holding all the levels of each gamemode and their level numbers. It might seem non-sensical that why is there an array of, say, 10 integers, and it's just holding the values 1-10, this could just have been one integer of the max value. The purpose for that is that my original idea was that every level will have a unique name and some other data to go with it, like difficulty rating, in which case, I would have kept all of that in that scriptable object. Even though it's not being used at the moment, I might decide to do it in the future, so I have left that in.
+
+Nothing else comes to mind at the moment, but I'm sure there still might be things in there you might find odd. I wrote all this because I did not know how exactly you will be gauging this - whether you're looking for "things as they should be ideally done"(a principle that I would have followed had I known from the start that I was making a project for revie), or "things that makes sense in the project"(which is the principle you will see in the codebase because it started off as a project that's supposed to run well, be easy to scale and maintain - and it does all these things.)
+
+If you find any other oddities, please let me know and I'll see if I can rationalize or explain the decision.
+
+Thanks!
