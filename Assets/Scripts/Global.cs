@@ -83,6 +83,7 @@ public enum DangerTokenType
     Cuboid_Gutter,
     Pin_2x,
     Cuboid_2x2,
+    DangerGround
 };
 
 public enum PinBehaviourPerTurn

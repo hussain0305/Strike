@@ -57,7 +57,7 @@ public class GameModeInfoController : MonoBehaviour
 
     public void GameModeChanged(GameModeChangedEvent e)
     {
-        currentGameModeInfo = currentGameModeInfo;
+        currentGameModeInfo = e.GameModeInfo;
         
         string[] rulesArray = new string[e.GameModeInfo.rules.Length];
         for (int i = 0; i < rulesArray.Length; i++)

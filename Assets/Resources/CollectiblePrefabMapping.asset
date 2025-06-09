@@ -60,6 +60,9 @@ MonoBehaviour:
   - dangerTokenType: 3
     prefab: {fileID: 5940289607546129480, guid: 61d0aa41e700e214aa6e472ff6951bd4, type: 3}
     dimensions: {x: 8, y: 8, z: 2}
+  - dangerTokenType: 4
+    prefab: {fileID: 5940289607546129480, guid: 52457db4a8355374585a0306f64f2c46, type: 3}
+    dimensions: {x: 1, y: 1, z: 1}
   obstaclePrefabs:
   - obstacleType: 1
     prefab: {fileID: 5940289607546129480, guid: e0a54d12887dc514baac9fe32be874e0, type: 3}
