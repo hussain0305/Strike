@@ -26,8 +26,8 @@ public class LevelLoader : MonoBehaviour
         {
             if (!cmScript)
                 cmScript = obj.AddComponent<ContinuousMovement>();
-            cmScript.pointA = path[0];
-            cmScript.pointB = path[1];
+
+            cmScript.CreateMarkers(path[0], path[1]);
             cmScript.speed  = movementSpeed;
         }
         else if (cmScript)
@@ -52,5 +52,5 @@ public class LevelLoader : MonoBehaviour
         {
             Destroy(crScript);
         }
-    } 
+    }
 }

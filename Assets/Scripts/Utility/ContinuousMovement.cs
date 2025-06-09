@@ -5,23 +5,18 @@ public class ContinuousMovement : MonoBehaviour
 {
     public Transform pointATransform;
     public Transform pointBTransform;
-
-    [HideInInspector]
-    public Vector3 pointA;
-    [HideInInspector]
-    public Vector3 pointB;
     
     public float speed = 1f;
 
     private float lerpFactor = 0f;
     private bool goingForward = true;
 
-    private void Awake()
+    private void Start()
     {
         if (pointATransform)
-            pointA = pointATransform.position;
+            pointATransform.parent = transform.parent.parent;
         if (pointBTransform)
-            pointB = pointBTransform.position;
+            pointBTransform.parent = transform.parent.parent;
     }
 
     private void OnEnable()
@@ -31,7 +26,7 @@ public class ContinuousMovement : MonoBehaviour
 
     void Update()
     {
-        transform.position = Vector3.Lerp(pointA, pointB, lerpFactor);
+        transform.position = Vector3.Lerp(pointATransform.position, pointBTransform.position, lerpFactor);
 
         if (goingForward)
         {
@@ -51,5 +46,19 @@ public class ContinuousMovement : MonoBehaviour
                 goingForward = true;
             }
         }
+    }
+
+    public void CreateMarkers(Vector3 pointA, Vector3 pointB)
+    {
+        pointATransform = CreateMarker("PointA", pointA);
+        pointBTransform = CreateMarker("PointB", pointB);
+    }
+    
+    Transform CreateMarker(string _name, Vector3 position)
+    {
+        var markerTransform = new GameObject(_name).transform;
+        markerTransform.position = position;
+        markerTransform.SetParent(transform, true);
+        return markerTransform;
     }
 }

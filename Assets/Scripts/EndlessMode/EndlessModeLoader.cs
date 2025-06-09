@@ -374,6 +374,14 @@ public class EndlessModeLoader : LevelLoader
         obj.transform.position = pos;
         obj.transform.rotation = rot;
 
+        ContinuousMovement movementScript = obj.GetComponent<ContinuousMovement>();
+        if (movementScript)
+            Destroy(movementScript);
+
+        ContinuousRotation rotationScript = obj.GetComponent<ContinuousRotation>();
+        if (rotationScript)
+            Destroy(rotationScript);
+
         targetPoints = difficulty * TARGET_TO_DIFFICULTY_FACTOR;
         
         if (obj.TryGetComponent<Collectible>(out var collectible))
