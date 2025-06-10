@@ -5123,6 +5123,7 @@ GameObject:
   - component: {fileID: 8839064378779409502}
   - component: {fileID: 6693987516097949405}
   - component: {fileID: 6070395944184512583}
+  - component: {fileID: 1880157847227989701}
   m_Layer: 14
   m_Name: MirroredBall
   m_TagString: Untagged
@@ -5196,3 +5197,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1880157847227989701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3931144424910952291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1750e644706954cb5a6843260997b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
