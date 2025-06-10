@@ -1501,7 +1501,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -14, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &133630674
@@ -1606,9 +1606,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 133630673}
@@ -3616,9 +3620,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 216286517}
@@ -6341,9 +6349,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -6845,9 +6857,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 396298127}
@@ -8604,9 +8620,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 1
   normalTextColor: {r: 1, g: 0.33490568, b: 0.33490568, a: 1}
   popTarget: {fileID: 0}
@@ -13390,7 +13410,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Abyss Corp.
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f9e7a584e27592340bcaf99226494863, type: 2}
@@ -18228,9 +18248,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -18530,9 +18554,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 1103771269}
@@ -18922,9 +18950,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -19857,9 +19889,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -20023,9 +20059,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 1153743377}
@@ -20837,9 +20877,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -21162,9 +21206,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 780814942}
@@ -21867,8 +21915,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Pre-alpha build, sound effects are still WIP. \n\nProvide feedback for
-    - aditional polish, effects, gameplay mechanics and feedback"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 6cf4ac32f116dab4b9eec10e543879b5, type: 2}
@@ -23261,9 +23308,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -28799,9 +28850,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 1696161712}
@@ -31522,9 +31577,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -33718,9 +33777,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -33924,7 +33987,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2033316409
@@ -34029,9 +34092,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 2033316408}
@@ -35048,9 +35115,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -36576,9 +36647,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 1681893468039767875}
@@ -37571,9 +37646,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -37601,9 +37680,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 0}
@@ -37876,9 +37959,13 @@ MonoBehaviour:
   playsHoverSound: 1
   playsClickSound: 1
   overrideHoverSound: 0
-  hoverClipOverride: {fileID: 0}
+  hoverClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideClickSound: 0
-  clickClipOverride: {fileID: 0}
+  clickClipOverride:
+    clip: {fileID: 0}
+    volume: 0
   overrideNormalTextColor: 0
   normalTextColor: {r: 0, g: 0, b: 0, a: 0}
   popTarget: {fileID: 6077308541698283652}
