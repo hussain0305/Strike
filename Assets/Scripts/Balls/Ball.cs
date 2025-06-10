@@ -19,7 +19,7 @@ public class BallHitSomethingEvent
     }
 }
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, ISwitchTrigger
 {
     public Transform ball;
     public Rigidbody rb;

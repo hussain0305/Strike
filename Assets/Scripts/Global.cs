@@ -42,7 +42,9 @@ public enum ObstacleType
     WallSeeThrough, //8
     ForcePad,
     PhysicsPlank,
-    SwitchFlipper
+    SwitchFlipper,
+    LongWall,
+    SquareWall
 };
 
 public enum Positioning

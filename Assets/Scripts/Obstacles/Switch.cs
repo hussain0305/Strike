@@ -39,6 +39,9 @@ public class Switch : MonoBehaviour
         if (switchedThisTurn)
             return;
 
+        if (other.GetComponent<ISwitchTrigger>() == null)
+            return;
+        
         Obstacle triggeringObstacle = other.GetComponent<Obstacle>();
         bool markAsSwitched = triggeringObstacle && triggeringObstacle.type != ObstacleType.SwitchFlipper;
         SwitchPressed(markAsSwitched);
