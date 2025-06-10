@@ -64,8 +64,10 @@ public enum PointTokenType
     Brick,
     Cuboid_Gutter,
     Cube4x4,
-    Hex_1x,
-    Hex_2x
+    Hex_1x, //10
+    Hex_2x,
+    HexFlatTop_1x,
+    HexFlatTop_2x
 };
 
 [System.Serializable]
