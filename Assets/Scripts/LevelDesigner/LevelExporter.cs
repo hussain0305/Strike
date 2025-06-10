@@ -301,7 +301,7 @@ public class LevelExporter : MonoBehaviour
             obstacleData.movementSpeed = movementScript.speed;
         }
 
-        ContinuousRotation rotationScript = obstacle.GetComponent<ContinuousRotation>();
+        ContinuousRotation rotationScript = obstacle.GetComponentInChildren<ContinuousRotation>();
         if (rotationScript)
         {
             obstacleData.rotationAxis = rotationScript.rotationAxis;
