@@ -38,14 +38,13 @@ public class BallVicinityDetection : MonoBehaviour
             if (!Ball.collidedWithSomething)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(lastPosition, motionVector.normalized, out hit, rayLength, raycastLayerMask))
+                if (Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out hit, rayLength, raycastLayerMask))
                 {
                     if (hit.collider.gameObject != Ball.gameObject)
                     {
                         Ball.collidedWithSomething = true;
                     }
                 }
-                // Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * rayLength, Color.red, 2f);
             }
             
             RaycastHit portalHit;
