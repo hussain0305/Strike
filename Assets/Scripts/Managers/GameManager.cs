@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
 
         ball = spawned.GetComponent<Ball>();
 
-        ball.Initialize(Context, TrajectoryModifier, extras);
+        ball.Initialize(Context, TrajectoryModifier, props, extras);
     }
     
     public void SetupPlayers()

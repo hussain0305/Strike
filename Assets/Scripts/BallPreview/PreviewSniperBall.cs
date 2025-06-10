@@ -5,15 +5,16 @@ public class PreviewSniperBall : BallPreview, IBallPreview
 {
     private Ball ball;
     
-    public void PlayPreview(GameObject previewBall)
+    public void PlayPreview(string ballID, GameObject previewBall)
     {
+        Init(ballID);
         ball = previewBall.GetComponent<Ball>();
         CoroutineDispatcher.Instance.RunCoroutine(PreviewRoutine(), CoroutineType.BallPreview);
     }
 
     public IEnumerator PreviewRoutine()
     {
-        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier);
+        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
         Vector3[] drawnTrajectory = new[] { Vector3.zero, Vector3.zero };
         while (true)
         {

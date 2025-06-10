@@ -33,15 +33,16 @@ public class PreviewMirrorBall : BallPreview, IBallPreview
         }
     }
 
-    public void PlayPreview(GameObject previewBall)
+    public void PlayPreview(string ballID, GameObject previewBall)
     {
+        Init(ballID);
         ball = previewBall.GetComponent<Ball>();
         CoroutineDispatcher.Instance.RunCoroutine(PreviewRoutine(), CoroutineType.BallPreview);
     }
 
     public IEnumerator PreviewRoutine()
     {
-        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier);
+        ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
         while (true)
         {
             MainMenu.Context.SpoofNewTrajectory(spinXMin:0.35f, spinXMax:0.7f, launchForceMin:7f, launchForceMax:8f);

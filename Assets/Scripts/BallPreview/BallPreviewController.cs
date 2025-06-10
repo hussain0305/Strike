@@ -27,11 +27,11 @@ public class BallPreviewController : MonoBehaviour
     {
         if (previewOverrides.TryGetValue(ballID, out IBallPreview preview))
         {
-            preview.PlayPreview(previewBall);
+            preview.PlayPreview(ballID, previewBall);
         }
         else
         {
-            defaultPreview.PlayPreview(previewBall);
+            defaultPreview.PlayPreview(ballID, previewBall);
         }
     }
 }

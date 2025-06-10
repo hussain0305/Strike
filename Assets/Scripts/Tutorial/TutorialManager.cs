@@ -128,7 +128,7 @@ public class TutorialManager : MonoBehaviour
         gravity = -Physics.gravity.y;
         TutorialContext = new TutorialContext();
         TutorialContext.InitTutorial(ball, shotInput, tee);
-        ball.Initialize(TutorialContext, TrajectoryModifier);
+        ball.Initialize(TutorialContext, TrajectoryModifier, selected);
     }
 
     private void SetupUI()

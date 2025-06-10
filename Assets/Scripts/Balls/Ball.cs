@@ -89,10 +89,15 @@ public class Ball : MonoBehaviour
         EventBus.Unsubscribe<ShotCompleteEvent>(ShotCompleted);
     }
 
-    public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier, List<IBallAbilityModule> additionalModules = null)
+    public void Initialize(IContextProvider _context, ITrajectoryModifier _trajectoryModifier, BallProperties ballProperties, List<IBallAbilityModule> additionalModules = null)
     {
         context = _context;
         trajectoryModifier = _trajectoryModifier;
+
+        spinEffect = ballProperties.spin;
+        curveClamp = spinEffect;
+        dipClamp = spinEffect;
+        rb.mass = ballProperties.weight;
         
         trajectoryDefinition = context.GetTrajectoryDefinition();
         tee = context.GetTee();
@@ -145,7 +150,6 @@ public class Ball : MonoBehaviour
                 while (haltBall)
                 {
                     yield return null;
-                    continue;
                 }
                 Vector3 currentPoint = trajectoryPart[i];
                 Vector3 nextPoint = trajectoryPart[i + 1];

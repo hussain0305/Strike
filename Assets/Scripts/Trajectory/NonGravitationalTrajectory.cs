@@ -6,21 +6,23 @@ public class NonGravitationalTrajectory : ITrajectoryCalculator
     private IContextProvider context;
     private Rigidbody rb;
     private int trajectoryDefinition;
+    public Ball ball { get; set; }
 
     private float spinEffect;
     private float curveClamp;
     private float dipClamp;
     
     private List<Vector3> trajectoryPoints = new List<Vector3>();
-
-    public void Initialize(IContextProvider _context, Ball ball, float _gravity, int trajectoryPointCount)
+    
+    public void Initialize(IContextProvider _context, Ball _ball, float _gravity, int _trajectoryPointCount)
     {
         context = _context;
+        ball = _ball;
         rb = ball.rb;
         spinEffect = ball.spinEffect;
         curveClamp = ball.curveClamp;
         dipClamp = ball.dipClamp;
-        trajectoryDefinition = trajectoryPointCount;
+        trajectoryDefinition = _trajectoryPointCount;
     }
 
     public List<Vector3> CalculateTrajectory(Vector3 startPosition)
