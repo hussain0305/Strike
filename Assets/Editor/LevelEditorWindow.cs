@@ -127,7 +127,22 @@ public class LevelEditorWindow : EditorWindow
             {
                 Undo.DestroyObjectImmediate(cmScript);
             }
-
+            
+            bool collectibleRotates = collectibleData.rotationAxis != Vector3.zero && collectibleData.rotationSpeed != 0;
+            var crScript = collectibleObject.GetComponent<ContinuousRotation>();
+            if (collectibleRotates)
+            {
+                if (!crScript)
+                    crScript = Undo.AddComponent<ContinuousRotation>(collectibleObject);
+                
+                Undo.RecordObject(crScript, "Modify Collectible Rotation");
+                crScript.rotationAxis = collectibleData.rotationAxis;
+                crScript.rotationSpeed = collectibleData.rotationSpeed;
+            }
+            else if (crScript)
+            {
+                Undo.DestroyObjectImmediate(crScript);
+            }
         }
 
         foreach (var starData in loadedLevelData.stars)
