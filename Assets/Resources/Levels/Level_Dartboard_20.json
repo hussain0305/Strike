@@ -1,7 +1,7 @@
 {
     "gameMode": 4,
-    "levelNumber": 13,
-    "targetPoints": 300,
+    "levelNumber": 18,
+    "targetPoints": 450,
     "collectibles": [
         {
             "type": 0,
@@ -1861,6 +1861,53 @@
         }
     ],
     "portals": [],
-    "obstacles": [],
+    "obstacles": [
+        {
+            "type": 10,
+            "positioning": 0,
+            "movementSpeed": 0.0,
+            "rotationSpeed": 30.0,
+            "position": {
+                "x": 0.0,
+                "y": 4.119999885559082,
+                "z": 34.0
+            },
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+            },
+            "rotation": {
+                "x": 0.5,
+                "y": -0.5,
+                "z": 0.5,
+                "w": 0.5
+            },
+            "path": []
+        },
+        {
+            "type": 10,
+            "positioning": 0,
+            "movementSpeed": 0.0,
+            "rotationSpeed": -30.0,
+            "position": {
+                "x": 0.0,
+                "y": 4.119999885559082,
+                "z": 66.0
+            },
+            "rotationAxis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+            },
+            "rotation": {
+                "x": 0.5,
+                "y": -0.5,
+                "z": 0.5,
+                "w": 0.5
+            },
+            "path": []
+        }
+    ],
     "platformRotationSpeed": 0.0
 }
