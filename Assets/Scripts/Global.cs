@@ -78,7 +78,7 @@ public enum MultiplierTokenType
 {
     None,
     CircularTrigger,
-    BoxCollision
+    BigMultiplier
 };
 
 [System.Serializable]
