@@ -44,7 +44,8 @@ public enum ObstacleType
     PhysicsPlank,
     SwitchFlipper,
     LongWall,
-    SquareWall
+    SquareWall,
+    HighPoweredForcePad //14
 };
 
 public enum Positioning

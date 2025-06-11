@@ -4,7 +4,8 @@ using UnityEngine.Serialization;
 
 public class ForcePad : Obstacle
 {
-    private float pushForceMagnitude = 30f;
+    public float pushForceMagnitude = 30f;
+    public float delay = 0.15f;
 
     void OnTriggerEnter(Collider other)
     {
@@ -21,7 +22,7 @@ public class ForcePad : Obstacle
         
         ball.collidedWithSomething = true;
         
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(delay);
         
         rBody.linearVelocity = Vector3.zero;
         rBody.angularVelocity = Vector3.zero;
