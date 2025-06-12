@@ -7,6 +7,10 @@ public class BallVicinityDetection : MonoBehaviour
 {
     private Ball ball;
     private Ball Ball => ball ??= GetComponentInParent<Ball>();
+    
+    private PortalTraveler traveler;
+    private PortalTraveler PortalTraveler => traveler ??= GetComponentInParent<PortalTraveler>();
+    
     private Vector3 lastPosition;
     private int raycastLayerMask;
     private int portalLayerMask;
@@ -33,50 +37,20 @@ public class BallVicinityDetection : MonoBehaviour
 
         float rayLength = GameManager.PowerInput.Power / 4f;
         
-        if (motionVector.sqrMagnitude > 0)
+        if (motionVector.sqrMagnitude > 0 && !Ball.collidedWithSomething)
         {
-            if (!Ball.collidedWithSomething)
-            {
-                RaycastHit hit;
-                if (Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out hit, rayLength, raycastLayerMask))
-                {
-                    if (hit.collider.gameObject != Ball.gameObject)
-                    {
-                        Ball.collidedWithSomething = true;
-                    }
-                }
-            }
+            bool hitPortal = Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out RaycastHit portalHit,
+                rayLength, portalLayerMask );
             
-            RaycastHit portalHit;
-            Debug.DrawLine(lastPosition, lastPosition + motionVector.normalized * portalRayDistance, Color.red, 2f);
-            if (Physics.Raycast(lastPosition, motionVector.normalized, out portalHit, portalRayDistance, portalLayerMask))
+            if (Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out var hit, rayLength, raycastLayerMask))
             {
-                var portal = portalHit.collider.GetComponentInParent<Portal>();
-                if (portal != null && portal.linkedPortal != null)
+                if (hitPortal && portalHit.distance < hit.distance)
                 {
-                    bool enteredFromFront = Vector3.Dot(motionVector, portal.transform.forward) > 0f;
-                    Vector3 localPos = portal.transform.InverseTransformPoint(portalHit.point);
-                    Quaternion localRot = Quaternion.Inverse(portal.transform.rotation) * Ball.transform.rotation;
-
-                    if (!enteredFromFront)
-                        localRot = Quaternion.Euler(0f, 180f, 0f) * localRot;
                     
-                    Transform exitT = portal.linkedPortal.transform;
-                    Vector3 exitPos = exitT.TransformPoint(localPos) + exitT.forward * 0.1f;
-                    Quaternion exitRot = exitT.rotation * localRot;
-
-                    var traveler = Ball.GetComponent<PortalTraveler>();
-                    if (traveler != null)
-                    {
-                        traveler.Teleport(exitPos, exitRot);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Ball needs a PortalTraveler component!");
-                    }
-
-                    lastPosition = exitPos;
-                    return;
+                }
+                else if (hit.collider.gameObject != Ball.gameObject && !PortalTraveler.isPassingThroughPortal)
+                {
+                    Ball.collidedWithSomething = true;
                 }
             }
         }

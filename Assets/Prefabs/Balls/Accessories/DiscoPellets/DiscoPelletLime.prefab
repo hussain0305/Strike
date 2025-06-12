@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3798794528407180581}
   - component: {fileID: 1516453715555116339}
   - component: {fileID: -1267790179493944082}
+  - component: {fileID: -3970292494766133017}
   m_Layer: 14
   m_Name: DiscoPelletLime
   m_TagString: Untagged
@@ -148,6 +149,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1750e644706954cb5a6843260997b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3970292494766133017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089681808455105078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616859f3543157a479311f37a7cf30eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2563479659410322876

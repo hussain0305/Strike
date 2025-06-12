@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,10 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var traveler = other.GetComponent<PortalTraveler>();
-        if (traveler == null || linkedPortal == null) return;
+        if (traveler == null || linkedPortal == null)
+            return;
+
+        traveler.isPassingThroughPortal = true;
 
         Vector3 localPos = transform.InverseTransformPoint(traveler.transform.position);
         Quaternion localRot = Quaternion.Inverse(transform.rotation) * traveler.transform.rotation;
@@ -23,5 +27,14 @@ public class Portal : MonoBehaviour
         exitPos += linkedPortal.transform.forward * 0.1f;
 
         traveler.Teleport(exitPos, exitRot);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        var traveler = other.GetComponent<PortalTraveler>();
+        if (traveler == null)
+            return;
+
+        traveler.isPassingThroughPortal = false;
     }
 }

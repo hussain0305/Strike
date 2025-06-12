@@ -4,6 +4,9 @@ public class PortalTraveler : MonoBehaviour
 {
     private Rigidbody rBody;
 
+    [HideInInspector]
+    public bool isPassingThroughPortal;
+    
     private void Awake()
     {
         rBody = GetComponent<Rigidbody>();
