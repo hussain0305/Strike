@@ -35,6 +35,7 @@ public class ContinuousMovement : MonoBehaviour
         }
 
         canMove = true;
+        currentSegment = 0;
     }
 
     void Update()
@@ -56,6 +57,7 @@ public class ContinuousMovement : MonoBehaviour
 
     public void CreateMarkers(Vector3[] positions)
     {
+        currentSegment = 0;
         pointTransforms = new Transform[positions.Length];
         points = positions;
         for (int i = 0; i < positions.Length; i++)
