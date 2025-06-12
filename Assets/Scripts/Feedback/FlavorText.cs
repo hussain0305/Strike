@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FlavorText : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro message;
-    private float lifetime = 1.2f;
+    public TextMeshPro message;
+    private float lifetime = 2f;
     private float popInTime = 0.2f;
     private float scaleDownTime = 0.2f;
     private float verticalMoveAmount = 10f;

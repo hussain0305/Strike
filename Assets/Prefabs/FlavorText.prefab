@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1447423340900922108}
   - component: {fileID: 8569648412079214744}
+  - component: {fileID: 6359318612369490074}
   m_Layer: 0
   m_Name: FlavorText
   m_TagString: Untagged
@@ -46,6 +47,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   message: {fileID: 5154316914492687368}
+--- !u!114 &6359318612369490074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476629344110022545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b5755d76b9be843874156ca8cdf1ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  faceWithZAxis: 0
+  nullifyY: 0
 --- !u!1 &5084557043369418436
 GameObject:
   m_ObjectHideFlags: 0
