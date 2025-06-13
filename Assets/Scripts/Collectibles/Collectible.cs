@@ -223,6 +223,10 @@ public class Collectible : MonoBehaviour, ICollectible
             case PinBehaviourPerTurn.DisappearUponCollection:
                 PerformDisappearingModeResetChecks();
                 break;
+            
+            case PinBehaviourPerTurn.RefreshPin:
+                RefreshPin();
+                break;
         }
     }
 
@@ -291,6 +295,12 @@ public class Collectible : MonoBehaviour, ICollectible
         
         if (continuousMovement)
             continuousMovement.enabled = true;
+    }
+
+    public void RefreshPin()
+    {
+        numTimesCollected = 0;
+        accountedForInThisShot = false;
     }
 
     public void NullifyVelocities()

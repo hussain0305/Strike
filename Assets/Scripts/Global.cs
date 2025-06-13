@@ -95,7 +95,8 @@ public enum PinBehaviourPerTurn
 {
     StayAsIs,
     Reset,
-    DisappearUponCollection
+    DisappearUponCollection,
+    RefreshPin
 }
 
 [System.Serializable]
