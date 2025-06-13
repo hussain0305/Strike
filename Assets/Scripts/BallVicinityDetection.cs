@@ -39,10 +39,10 @@ public class BallVicinityDetection : MonoBehaviour
         
         if (motionVector.sqrMagnitude > 0 && !Ball.collidedWithSomething)
         {
-            bool hitPortal = Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out RaycastHit portalHit,
+            bool hitPortal = Physics.SphereCast(lastPosition, Global.BALL_RADIUS, motionVector.normalized, out RaycastHit portalHit,
                 rayLength, portalLayerMask );
             
-            if (Physics.SphereCast(lastPosition, 0.525f, motionVector.normalized, out var hit, rayLength, raycastLayerMask))
+            if (Physics.SphereCast(lastPosition, Global.BALL_RADIUS, motionVector.normalized, out var hit, rayLength, raycastLayerMask))
             {
                 if (hitPortal && portalHit.distance < hit.distance)
                 {

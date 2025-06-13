@@ -622,4 +622,6 @@ public static class Global
     public static readonly LayerMask GroundSurface = LayerMask.GetMask("Ground");
     public static readonly LayerMask LevelSurfaces = LayerMask.GetMask("Wall", "Ground");
     public static readonly LayerMask StickySurfaces = LayerMask.GetMask("CollideWithBall");
+
+    public static readonly float BALL_RADIUS = 0.525f;
 }

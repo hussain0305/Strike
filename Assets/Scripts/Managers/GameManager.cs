@@ -383,6 +383,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     
     public void DrawTrajectory(List<List<Vector3>> trajectorySegments)
     {
+        trajectorySegments = TrajectoryPruner.PruneByCollision(trajectorySegments);
         for (int i = 0; i < trajectorySegments.Count; i++)
         {
             LineRenderer line = trajectories[i].trajectory;
