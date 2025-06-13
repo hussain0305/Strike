@@ -5,6 +5,7 @@ public interface IContextProvider
 {
     int GetTrajectoryDefinition();
     void SetBallState(BallState newState);
+    BallState GetBallState();
     float GetGravity();
     float GetLaunchForce();
     Tee GetTee();

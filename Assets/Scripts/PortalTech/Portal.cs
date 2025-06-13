@@ -20,8 +20,9 @@ public class Portal : MonoBehaviour
             return;
         }
         traveler.isPassingThroughPortal = true;
-        
-        if (other.GetComponent<Ball>())
+
+        Ball ball = other.GetComponent<Ball>();
+        if (ball && ball.IsInControlledMotion)
             return;
         
         PortalBridge.EnteredPortal(traveler, this);
@@ -36,7 +37,8 @@ public class Portal : MonoBehaviour
 
         traveler.isPassingThroughPortal = false;
         
-        if (other.GetComponent<Ball>())
+        Ball ball = other.GetComponent<Ball>();
+        if (ball && ball.IsInControlledMotion)
             return;
 
         PortalBridge.ExitedPortal(traveler, this);

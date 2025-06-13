@@ -50,6 +50,11 @@ public class MenuContext : IContextProvider
         
     }
 
+    public BallState GetBallState()
+    {
+        return BallState.OnTee;
+    }
+
     public float GetGravity()
     {
         return gravity;

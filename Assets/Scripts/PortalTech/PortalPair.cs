@@ -59,7 +59,7 @@ public class PortalPair : MonoBehaviour
             {
                 status.exitFromExitPortalRegistered = true;
 
-                if (!status.TeleportationResolved())
+                if (status.TeleportationResolved())
                 {
                     currentTravelers.Remove(traveler);
                 }

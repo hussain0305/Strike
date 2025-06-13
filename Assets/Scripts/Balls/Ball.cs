@@ -52,8 +52,20 @@ public class Ball : MonoBehaviour, ISwitchTrigger
     public bool shouldResumePhysics = true;
     [HideInInspector]
     public bool haltBall = false;
-    [HideInInspector]
-    public BallState ballState = BallState.OnTee;
+
+    public BallState BallState
+    {
+        get
+        {
+            if(context != null)
+                return context.GetBallState();
+
+            return BallState.OnTee;
+        }
+    }
+
+    public bool IsInControlledMotion => BallState == BallState.InControlledMotion;
+    public bool IsInPhysicsMotion => BallState == BallState.InPhysicsMotion;
 
     private AbilityDriver abilityDriver;
     private CollisionForce collisionForce;

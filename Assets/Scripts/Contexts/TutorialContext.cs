@@ -47,6 +47,11 @@ public class TutorialContext : IContextProvider
         
     }
 
+    public BallState GetBallState()
+    {
+        return BallState.OnTee;
+    }
+
     public float GetGravity()
     {
         return gravity;
