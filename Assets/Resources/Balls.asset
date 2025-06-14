@@ -39,7 +39,20 @@ MonoBehaviour:
     prefab: {fileID: 1089681808455105078, guid: 7f239bb0717d5774c9b9d0117970618b, type: 3}
     id: bouncyBall
     cost: 10
-  - name: Bowling Ball
+  - name: Spinny
+    description: A little extra spin never hurt anybody
+    rarity: 2
+    weight: 1
+    spin: 15
+    abilityAxis: 9
+    abilityAxisText: Aerodynamics
+    abilityText: Extra Spin
+    moduleDefinition: {fileID: 11400000, guid: 0bc7dc323b8f9eb4da6876aa851566ff, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 5336990206a3fc646b1c7a3959f83299, type: 3}
+    id: spinnyBall
+    cost: 10
+  - name: Bowling
     description: Extra Heavy. Not an option for every situation, but the only options
       for some situations.
     rarity: 0

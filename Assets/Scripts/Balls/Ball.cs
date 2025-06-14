@@ -106,9 +106,7 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         context = _context;
         trajectoryModifier = _trajectoryModifier;
 
-        spinEffect = ballProperties.spin;
-        curveClamp = spinEffect;
-        dipClamp = spinEffect;
+        SetSpin(ballProperties.spin);
         rb.mass = ballProperties.weight;
         
         trajectoryDefinition = context.GetTrajectoryDefinition();
@@ -122,6 +120,13 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         InitAbilityDriver(additionalModules);
         InitTrajectoryCalcualtor();
         AdjustEffectsIfNeeded();
+    }
+
+    public void SetSpin(float _spin)
+    {
+        spinEffect = _spin;
+        curveClamp = _spin;
+        dipClamp = _spin;
     }
     
     public void Shoot()
