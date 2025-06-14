@@ -9,6 +9,8 @@ public enum AbilityAxis {
     Lifetime,
     OnHitEffect,
     AimModifier,
+    PhysicsMaterial,
+    SpinModifier,
 }
 
 public interface IBallAbilityModule

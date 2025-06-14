@@ -25,9 +25,22 @@ MonoBehaviour:
     prefab: {fileID: 3931144424910952291, guid: c3613743306a885429a288d93f20e705, type: 3}
     id: soccBall
     cost: 0
+  - name: Bouncy
+    description: Sometimes useful, sometimes a nuisance
+    rarity: 0
+    weight: 1
+    spin: 5
+    abilityAxis: 8
+    abilityText: Extra Bounce
+    moduleDefinition: {fileID: 11400000, guid: 5e7beadd9b72e3a4c818dab81552d573, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 83e7d70d43c327c40ab4aa6724342aef, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 7f239bb0717d5774c9b9d0117970618b, type: 3}
+    id: bouncyBall
+    cost: 10
   - name: Bowling Ball
-    description: 
-    rarity: 1
+    description: Extra Heavy. Not an option for every situation, but the only options
+      for some situations.
+    rarity: 0
     weight: 2.5
     spin: 2
     abilityAxis: 0
