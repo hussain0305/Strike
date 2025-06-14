@@ -262,6 +262,7 @@ public struct BallProperties
     public float weight;
     public float spin;
     public AbilityAxis abilityAxis;
+    public string abilityAxisText;
     public string abilityText;
     public AbilityModuleDefinition moduleDefinition;
     

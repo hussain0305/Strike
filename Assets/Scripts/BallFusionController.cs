@@ -14,7 +14,7 @@ public struct FusionBallProperties
     public void Set(BallProperties properties, string suffix)
     {
         nameLabel.text = $"{properties.name.ToUpper()}";// [{suffix}]
-        abilityAxisText.text = properties.abilityAxis.ToString();
+        abilityAxisText.text = properties.abilityAxisText;
     }
 
     public void Reset()

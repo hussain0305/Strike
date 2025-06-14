@@ -19,6 +19,7 @@ MonoBehaviour:
     weight: 1
     spin: 5
     abilityAxis: 0
+    abilityAxisText: No Ability
     abilityText: Enhanced Curve
     moduleDefinition: {fileID: 0}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
@@ -31,6 +32,7 @@ MonoBehaviour:
     weight: 1
     spin: 5
     abilityAxis: 8
+    abilityAxisText: Physical Attribute
     abilityText: Extra Bounce
     moduleDefinition: {fileID: 11400000, guid: 5e7beadd9b72e3a4c818dab81552d573, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 83e7d70d43c327c40ab4aa6724342aef, type: 2}
@@ -44,7 +46,8 @@ MonoBehaviour:
     weight: 2.5
     spin: 2
     abilityAxis: 0
-    abilityText: Enhanced Push Force
+    abilityAxisText: Physical Attribute
+    abilityText: Extra Weight
     moduleDefinition: {fileID: 0}
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
@@ -56,6 +59,7 @@ MonoBehaviour:
     weight: 0.5
     spin: 0
     abilityAxis: 7
+    abilityAxisText: Aim Modifier
     abilityText: Red-Dot Aim
     moduleDefinition: {fileID: 11400000, guid: 77f216611e9f3134b969d0becfcb068f, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
@@ -68,6 +72,7 @@ MonoBehaviour:
     weight: 0.5
     spin: 0
     abilityAxis: 1
+    abilityAxisText: Burst
     abilityText: Spawns additional pellets
     moduleDefinition: {fileID: 11400000, guid: dbe3607823e1cc4469d6716f545adb12, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
@@ -80,6 +85,7 @@ MonoBehaviour:
     weight: 1
     spin: 5
     abilityAxis: 3
+    abilityAxisText: Collision
     abilityText: Sticks to point of contact
     moduleDefinition: {fileID: 11400000, guid: e373140171cdfc84e90c1a7d300314b1, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
@@ -92,6 +98,7 @@ MonoBehaviour:
     weight: 1
     spin: 5
     abilityAxis: 3
+    abilityAxisText: Collision
     abilityText: Passes through objects
     moduleDefinition: {fileID: 11400000, guid: 3079079a1a76d944784cddff64451631, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
@@ -104,7 +111,8 @@ MonoBehaviour:
     weight: 1
     spin: 0
     abilityAxis: 3
-    abilityText: Passes through objects
+    abilityAxisText: Collision
+    abilityText: Bounces towards other objects on its path
     moduleDefinition: {fileID: 11400000, guid: 2f2e56beac84be643b5f3303a9167695, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 3931144424910952291, guid: c1b6920855a75e045935f1a9c50bad30, type: 3}
@@ -116,6 +124,7 @@ MonoBehaviour:
     weight: 1
     spin: 15
     abilityAxis: 1
+    abilityAxisText: Multi-shot
     abilityText: A mirrored shadow ball
     moduleDefinition: {fileID: 11400000, guid: f5bd881120a147e4eae4f64169501dc6, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
@@ -129,7 +138,8 @@ MonoBehaviour:
     weight: 1
     spin: 0
     abilityAxis: 1
-    abilityText: Spawn pellets in an area
+    abilityAxisText: Scatter
+    abilityText: Pepper pellets in an area
     moduleDefinition: {fileID: 11400000, guid: 7e4828eae4d1d1e47b5e146a2dc22679, type: 2}
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 3931144424910952291, guid: 66c0659fe5a9662409ca9ca670025b61, type: 3}
