@@ -15,15 +15,23 @@ MonoBehaviour:
   gameModes:
   - gameMode: 0
     displayName: Pins
-    description: Knock over tokens to accumulate points
+    description: EASY
     rules:
     - Reach Target Points
     - Tokens reset each volley
     scene: 1
     starsRequiredToUnlock: 0
+  - gameMode: 4
+    displayName: Dartboard
+    description: EASY
+    rules:
+    - Reach Target Points
+    - Tokens reset each volley
+    scene: 5
+    starsRequiredToUnlock: 50
   - gameMode: 3
     displayName: Pinocalypse
-    description: Gameplay evolves as collected pins disappear after every round
+    description: MEDIUM
     rules:
     - Reach Target Points
     - Tokens can only be collected once
@@ -31,7 +39,7 @@ MonoBehaviour:
     starsRequiredToUnlock: 100
   - gameMode: 2
     displayName: Deathmatch
-    description: "Pressure Mounts. Miss and You\u2019re Out. Last One Standing."
+    description: DIFFICULT
     rules:
     - Survive all 5 volleys
     - Loss if an X Token is hit
@@ -40,17 +48,9 @@ MonoBehaviour:
     starsRequiredToUnlock: 100
   - gameMode: 1
     displayName: Portals
-    description: Portals go Rrrrraaaaa
+    description: VERY DIFFICULT
     rules:
     - Reach Target Points
     - Tokens do not reset positions
     scene: 2
-    starsRequiredToUnlock: 50
-  - gameMode: 4
-    displayName: Dartboard
-    description: Involves some dartboard-shaped trickery
-    rules:
-    - Reach Target Points
-    - Tokens reset each volley
-    scene: 5
     starsRequiredToUnlock: 50
