@@ -68,7 +68,7 @@ public class Collectible : MonoBehaviour, ICollectible
     
     private int numPlayers = -1;
     private int currentPlayer = -1;
-    private bool[] stateForPlayers;
+    private GameEntityState[] stateForPlayers;
     private bool isPlayingSolo = true;
     private bool isKinematicInThisLevel;
     private bool IsDisappearingMode => context?.GetPinResetBehaviour() == PinBehaviourPerTurn.DisappearUponCollection;
@@ -158,18 +158,25 @@ public class Collectible : MonoBehaviour, ICollectible
 
     public void NewGameStarted(NewGameStartedEvent e)
     {
-        numPlayers = e.NumPlayers;
-        stateForPlayers = new bool[numPlayers];
-        isPlayingSolo = numPlayers == 1;
-        currentPlayer = 0;
+        NewGameStarted(e.NumPlayers);
     }
 
     public void NewGameStarted(int _numPlayers)
     {
         numPlayers = _numPlayers;
-        stateForPlayers = new bool[numPlayers];
+        RecordInitialState();
         isPlayingSolo = numPlayers == 1;
         currentPlayer = 0;
+    }
+
+    public void RecordInitialState()
+    {
+        stateForPlayers = new GameEntityState[numPlayers];
+        for (int i = 0; i < numPlayers; i++)
+        {
+            stateForPlayers[i].position = transform.position;
+            stateForPlayers[i].rotation = transform.rotation;
+        }
     }
 
     public void OnCollisionEnter(Collision other)
@@ -194,7 +201,9 @@ public class Collectible : MonoBehaviour, ICollectible
         accountedForInThisShot = true;
 
         if (stateForPlayers != null && currentPlayer < stateForPlayers.Length)
-            stateForPlayers[currentPlayer] = true;
+        {
+            stateForPlayers[currentPlayer].collected = true;
+        }
         
         EventBus.Publish(new CollectibleHitEvent(type, value, hitPosition));
         header?.gameObject.SetActive(false);
@@ -208,6 +217,7 @@ public class Collectible : MonoBehaviour, ICollectible
 
     public void NextShotCued(NextShotCuedEvent e)
     {
+        RecordCurrentState();
         currentPlayer = e.CurrentPlayerTurn;
         header?.gameObject.SetActive(true);
 
@@ -225,7 +235,7 @@ public class Collectible : MonoBehaviour, ICollectible
                 break;
             
             case PinBehaviourPerTurn.RefreshPin:
-                RefreshPin();
+                PerformRefreshPinChecks();
                 break;
         }
     }
@@ -263,7 +273,7 @@ public class Collectible : MonoBehaviour, ICollectible
         }
         else
         {
-            if (stateForPlayers[currentPlayer])
+            if (stateForPlayers[currentPlayer].collected)
                 Stow();
             else
                 ResetPin();
@@ -297,12 +307,24 @@ public class Collectible : MonoBehaviour, ICollectible
             continuousMovement.enabled = true;
     }
 
-    public void RefreshPin()
+    public void PerformRefreshPinChecks()
     {
         numTimesCollected = 0;
         accountedForInThisShot = false;
+
+        if (!isPlayingSolo)
+        {
+            transform.position = stateForPlayers[currentPlayer].position;
+            transform.rotation = stateForPlayers[currentPlayer].rotation;
+        }
     }
 
+    private void RecordCurrentState()
+    {
+        stateForPlayers[currentPlayer].position = transform.position;
+        stateForPlayers[currentPlayer].rotation = transform.rotation;
+    }
+    
     public void NullifyVelocities()
     {
         RBody.angularVelocity = Vector3.zero;

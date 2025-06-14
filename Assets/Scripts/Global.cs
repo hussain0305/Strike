@@ -45,7 +45,8 @@ public enum ObstacleType
     SwitchFlipper,
     LongWall,
     SquareWall,
-    HighPoweredForcePad //14
+    HighPoweredForcePad,
+    SmallHatch //15
 };
 
 public enum Positioning
@@ -316,6 +317,14 @@ public struct MinMaxFloat
 
     public float Clamp(float value) => Mathf.Clamp(value, Min, Max);
 }
+
+public struct GameEntityState
+{
+    public bool collected;
+    public Vector3 position;
+    public Quaternion rotation;
+}
+
 #endregion
 
 #region Events

@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 4443179051864298488}
   - component: {fileID: 5498849689033612258}
   - component: {fileID: 4117359525990430056}
+  - component: {fileID: -653108228248784836}
   m_Layer: 8
   m_Name: Cube2x2
   m_TagString: Untagged
@@ -167,6 +168,7 @@ MonoBehaviour:
   value: 25
   numTimesCanBeCollected: 1
   activeOnStart: 1
+  isKinematic: 0
   heightMultipleForOffsetCalculation: 1
   body: {fileID: 763378489987802348}
   inBodyPointDisplay: {fileID: 2869525423738759289}
@@ -207,6 +209,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8, y: 8.063698, z: 2}
   m_Center: {x: 0, y: 3.968151, z: 0}
+--- !u!114 &-653108228248784836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940289607546129480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616859f3543157a479311f37a7cf30eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPassingThroughPortal: 0
 --- !u!1 &7384339457062315163
 GameObject:
   m_ObjectHideFlags: 0

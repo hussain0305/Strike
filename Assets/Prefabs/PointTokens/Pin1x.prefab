@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 2954699665254431922}
   - component: {fileID: 4443179051864298488}
   - component: {fileID: 6298529393298946341}
+  - component: {fileID: 6723893840785792012}
   m_Layer: 8
   m_Name: Pin1x
   m_TagString: Untagged
@@ -379,6 +380,7 @@ MonoBehaviour:
   value: 25
   numTimesCanBeCollected: 1
   activeOnStart: 1
+  isKinematic: 0
   heightMultipleForOffsetCalculation: 2
   body: {fileID: 1861416091964994729}
   inBodyPointDisplay: {fileID: 5834824851321849911}
@@ -398,6 +400,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   edges: {fileID: 3630067011689426886}
   hitPointsDisplay: {fileID: 5834824851321849911}
+--- !u!114 &6723893840785792012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940289607546129480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 616859f3543157a479311f37a7cf30eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPassingThroughPortal: 0
 --- !u!1 &6492957625365441706
 GameObject:
   m_ObjectHideFlags: 0
