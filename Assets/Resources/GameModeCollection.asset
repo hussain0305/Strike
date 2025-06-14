@@ -21,14 +21,6 @@ MonoBehaviour:
     - Tokens reset each volley
     scene: 1
     starsRequiredToUnlock: 0
-  - gameMode: 4
-    displayName: Dartboard
-    description: EASY
-    rules:
-    - Reach Target Points
-    - Tokens reset each volley
-    scene: 5
-    starsRequiredToUnlock: 50
   - gameMode: 3
     displayName: Pinocalypse
     description: MEDIUM
@@ -37,6 +29,14 @@ MonoBehaviour:
     - Tokens can only be collected once
     scene: 4
     starsRequiredToUnlock: 100
+  - gameMode: 4
+    displayName: Dartboard
+    description: MEDIUM
+    rules:
+    - Reach Target Points
+    - Tokens reset each volley
+    scene: 5
+    starsRequiredToUnlock: 50
   - gameMode: 2
     displayName: Deathmatch
     description: DIFFICULT
