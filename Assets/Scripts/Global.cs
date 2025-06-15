@@ -48,7 +48,8 @@ public enum ObstacleType
     HighPoweredForcePad,
     SmallHatch, //15
     WideWallSeeThrough,
-    WreckingBall
+    WreckingBall,
+    SpeedNullifier
 };
 
 public enum Positioning
