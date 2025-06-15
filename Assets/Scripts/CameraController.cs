@@ -247,7 +247,7 @@ public class CameraController : MonoBehaviour
     private IEnumerator CameraPan(Transform positions)
     {
         Transform mainCam = Camera.main.transform;
-        float timePerPathSegment = 2;
+        float timePerPathSegment = 1.5f;
         int numPositions = positions.childCount;
         
         int nextPoint = -1;
