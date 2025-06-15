@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
@@ -19,8 +20,10 @@ public class CameraController : MonoBehaviour
     public Button stayInPlaceCamButton;
 
     [Header("Camera Pan Options")]
-    public Button panCameraButton;
-    public Transform[] panPoints;
+    public Button panCameraButtonNear;
+    public Button panCameraButtonFar;
+    public Transform panPointsNear;
+    public Transform panPointsFar;
     public Transform panFocalPoint;
     
     private bool markersCurrentlyVisible = false;
@@ -51,7 +54,8 @@ public class CameraController : MonoBehaviour
         cameraToggleButton.onClick.AddListener(RolloutMenuButtonPressed);
         followCamButton.onClick.AddListener(SetToFollowCam);
         stayInPlaceCamButton.onClick.AddListener(SetToStayCam);
-        panCameraButton.onClick.AddListener(StartCameraPan);
+        panCameraButtonNear.onClick.AddListener(() => { StartCameraPan(panPointsNear); });
+        panCameraButtonFar.onClick.AddListener(() => { StartCameraPan(panPointsFar); });
         
         EventBus.Subscribe<BallShotEvent>(BallShot);
         EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
@@ -63,7 +67,8 @@ public class CameraController : MonoBehaviour
         cameraToggleButton.onClick.RemoveAllListeners();
         followCamButton.onClick.RemoveAllListeners();
         stayInPlaceCamButton.onClick.RemoveAllListeners();
-        panCameraButton.onClick.RemoveAllListeners();
+        panCameraButtonNear.onClick.RemoveAllListeners();
+        panCameraButtonFar.onClick.RemoveAllListeners();
 
         EventBus.Unsubscribe<BallShotEvent>(BallShot);
         EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
@@ -229,29 +234,29 @@ public class CameraController : MonoBehaviour
         EventBus.Publish(new CameraSwitchCompletedEvent(currentCameraHoistedAt));
     }
 
-    public void StartCameraPan()
+    public void StartCameraPan(Transform positions)
     {
         panCamera = true;
         if (cameraMovementCoroutine != null)
         {
             StopCoroutine(cameraMovementCoroutine);
         }
-        cameraMovementCoroutine = StartCoroutine(CameraPan());
+        cameraMovementCoroutine = StartCoroutine(CameraPan(positions));
     }
     
-    private IEnumerator CameraPan()
+    private IEnumerator CameraPan(Transform positions)
     {
         Transform mainCam = Camera.main.transform;
-
         float timePerPathSegment = 2;
+        int numPositions = positions.childCount;
         
         int nextPoint = -1;
         while (panCamera)
         {
-            nextPoint = (nextPoint + 1) % panPoints.Length;
+            nextPoint = (nextPoint + 1) % numPositions;
             float timePassed = 0;
             Vector3 startPosition = mainCam.position;
-            Vector3 endPosition = panPoints[nextPoint].position;
+            Vector3 endPosition = positions.GetChild(nextPoint).position;
             while (timePassed <= timePerPathSegment && panCamera)
             {
                 mainCam.position = Vector3.Lerp(startPosition, endPosition, timePassed / timePerPathSegment);
