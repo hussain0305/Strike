@@ -46,7 +46,8 @@ public enum ObstacleType
     LongWall,
     SquareWall,
     HighPoweredForcePad,
-    SmallHatch //15
+    SmallHatch, //15
+    WideWallSeeThrough,
 };
 
 public enum Positioning
