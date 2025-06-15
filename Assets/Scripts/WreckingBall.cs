@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WreckingBall : Obstacle
@@ -9,7 +10,13 @@ public class WreckingBall : Obstacle
     private Rigidbody RBody => rb ??= GetComponent<Rigidbody>();
     
     private readonly string wreckingBallTag = "WreckingBall";
-    
+
+    private void OnEnable()
+    {
+        RBody.linearVelocity = Vector3.zero;
+        RBody.angularVelocity = Vector3.zero;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag(wreckingBallTag))
@@ -27,6 +34,7 @@ public class WreckingBall : Obstacle
         if (collidedRigidbody != null)
         {
             Vector3 direction = (collision.transform.position - transform.position).normalized;
+            direction.y = Mathf.Abs(direction.y);
             collidedRigidbody.AddForce(direction * appliedForceStrength * RBody.linearVelocity.sqrMagnitude, forceMode);
         }
     }
