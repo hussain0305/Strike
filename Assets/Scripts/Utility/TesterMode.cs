@@ -34,6 +34,7 @@ public class TesterMode : MonoBehaviour
     {
         foreach (var gameMode in GameModeLevelMapping.Instance.gameModeLevels)
         {
+            SaveManager.SetGameModeUnlocked((int)gameMode.gameMode);
             foreach (int level in gameMode.levels)
             {
                 SaveManager.SetLevelCompleted(gameMode.gameMode, level);
