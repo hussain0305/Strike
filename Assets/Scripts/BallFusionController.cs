@@ -268,6 +268,7 @@ public class BallFusionController : MonoBehaviour
     {
         SaveManager.SetSelectedFusion(primaryBallID, secondaryBallID);
         SaveManager.SetFusionEquipped(true);
+        EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionPositive));
         UpdateActionButtons();
     }
 
@@ -310,6 +311,7 @@ public class BallFusionController : MonoBehaviour
             SaveManager.AddUnlockedFusion(primaryBallID, secondaryBallID);
             UpdateActionButtons();
             LoadFavorites();
+            EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionPositive));
         }
         else
         {
@@ -328,6 +330,7 @@ public class BallFusionController : MonoBehaviour
 
     private IEnumerator ShowCannotUnlockMessage()
     {
+        EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionNegative));
         fuseButtonObject.SetActive(false);
         addToFavoritesButtonObject.SetActive(false);
         equipButtonObject.SetActive(false);

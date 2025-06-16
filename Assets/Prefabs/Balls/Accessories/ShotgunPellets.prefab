@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1516453715555116339}
   - component: {fileID: 1193503749694395137}
   - component: {fileID: 4375060857380927852}
+  - component: {fileID: 4019168194963344807}
   m_Layer: 14
   m_Name: ShotgunPellets
   m_TagString: Untagged
@@ -163,6 +164,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 616859f3543157a479311f37a7cf30eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPassingThroughPortal: 0
+--- !u!114 &4019168194963344807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089681808455105078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3771c218695ecea49b9b8347df9bf3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxType: 1
 --- !u!1 &2563479659410322876
 GameObject:
   m_ObjectHideFlags: 0

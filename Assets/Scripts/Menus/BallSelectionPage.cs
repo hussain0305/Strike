@@ -91,6 +91,7 @@ public class BallSelectionPage : MonoBehaviour
 
     private void OnEquipBall()
     {
+        EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionPositive));
         SaveManager.SetEquippedBall(currentSelectedBall);
         SetupEquipOrUnlockButton();
     }
@@ -236,6 +237,7 @@ public class BallSelectionPage : MonoBehaviour
             SaveManager.SpendStars(cost);
             SaveManager.AddUnlockedBall(currentSelectedBall);
             SetupEquipOrUnlockButton();
+            EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionPositive));
         }
         else
         {
@@ -254,6 +256,7 @@ public class BallSelectionPage : MonoBehaviour
 
     private IEnumerator ShowCannotUnlockMessage()
     {
+        EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionNegative));
         equippedSection.gameObject.SetActive(false);
         equipSection.gameObject.SetActive(false);
         unlockSection.gameObject.SetActive(false);

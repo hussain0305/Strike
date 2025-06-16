@@ -7,6 +7,8 @@ public struct Sound
 
     [Range(0f, 1f)]
     public float volume;
+    
+    public SFXPriority priority;
 }
 
 [CreateAssetMenu(fileName = "SoundLibrary", menuName = "Audio/SoundLibrary")]
@@ -20,17 +22,28 @@ public class SoundLibrary : ScriptableObject
     public Sound buttonHoverSFX;
     public Sound buttonClickSFX;
     public Sound backButtonClickSFX;
+    public Sound menuActionPositive;
+    public Sound menuActionNegative;
     
     [Header("Sound Effects - Game")]
     public Sound ballShotSFX;
     public Sound starPickupSFX;
-    public Sound[] positiveHitSFX;
-    public Sound[] negativeHitSFX;
+    public Sound positiveHitSFX;
+    public Sound negativeHitSFX;
+    public Sound multiplierHitSFX;
     public Sound eliminationSFX;
-    public Sound forcePadSFX;
     public Sound nextShotCuedSFX;
     public Sound ambientNoise;
     
+    [Header("Ball Sound Effects - General")]
+    public Sound ballBounceSFX;
+    
+    [Header("Ball Sound Effects - General")]
+    public Sound pelletBounceSFX;
+
+    [Header("Ball Sound Effects - General")]
+    public Sound discoPelletsSpawnSFX;
+
     [Header("Sound Effects - Results")]
     public Sound wonGameSFX;
     public Sound lostGameSFX;

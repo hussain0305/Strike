@@ -54,6 +54,7 @@ public class LevelSelectionMenu : MonoBehaviour
     {
         IEnumerator FadePrompt()
         {
+            EventBus.Publish(new PlaySoundEvent(SFXType.MenuActionNegative));
             float timePassed = 0;
             float timeToFadeIn = 0.25f;
             while (timePassed <= timeToFadeIn)

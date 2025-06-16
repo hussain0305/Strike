@@ -5,6 +5,18 @@ using UnityEngine;
 using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
+public enum SFXType{ Unclassified, PelletBounce, DiscoPelletSpawn, MenuActionPositive, MenuActionNegative}
+
+public enum SFXPriority
+{
+    None = 0,
+    VeryLow = 1,
+    Low = 2,
+    Medium = 3,
+    High = 4,
+    VeryHigh = 5
+}
+
 public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
@@ -17,15 +29,17 @@ public class AudioManager : MonoBehaviour
     public SoundLibrary soundLibrary;
 
     private AudioSource activeMusicSource;
-    private HashSet<string> uniquePlayingSounds = new HashSet<string>();
 
     [Header("SFX Settings")]
-    [SerializeField] private int sfxPoolSize = 10;
-    private List<AudioSource> sfxSources;
-    private int sfxIndex = 0;
+    [SerializeField] private int sfxPoolSize = 20;
+    private Queue<AudioSource> inactiveSources;
+    private Dictionary<SFXPriority, List<AudioSource>> activeSources;
 
     public enum AudioChannel { Music, SFX, Ambient }
 
+    private int numPositiveHitsThisTurn = 0;
+    private int numNegativeHitsThisTurn = 0;
+    
     private void Awake()
     {
         activeMusicSource = musicSourceA;
@@ -34,13 +48,19 @@ public class AudioManager : MonoBehaviour
 
     private void InitializeSFXPool()
     {
-        sfxSources = new List<AudioSource>(sfxPoolSize);
+        activeSources = new Dictionary<SFXPriority, List<AudioSource>>();
+        foreach (SFXPriority sfxPriority in Enum.GetValues(typeof(SFXPriority)))
+        {
+            activeSources.Add(sfxPriority, new List<AudioSource>());
+        }
+        
+        inactiveSources = new Queue<AudioSource>(sfxPoolSize);
         for (int i = 0; i < sfxPoolSize; i++)
         {
             AudioSource src = gameObject.AddComponent<AudioSource>();
             src.outputAudioMixerGroup = sfxSource.outputAudioMixerGroup;
             src.playOnAwake = false;
-            sfxSources.Add(src);
+            inactiveSources.Enqueue(src);
         }
     }
 
@@ -49,10 +69,11 @@ public class AudioManager : MonoBehaviour
         EventBus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
         EventBus.Subscribe<SaveLoadedEvent>(OnSaveLoaded);
         
+        EventBus.Subscribe<PlaySoundEvent>(PlaySoundEventReceived);
+        EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
         EventBus.Subscribe<BallShotEvent>(BallShot);
         EventBus.Subscribe<CollectibleHitEvent>(CollectibleHit);
         EventBus.Subscribe<StarCollectedEvent>(StarCollected);
-        EventBus.Subscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
         EventBus.Subscribe<ResultDeterminedEvent>(ResultDetermined);
     }
 
@@ -61,10 +82,11 @@ public class AudioManager : MonoBehaviour
         EventBus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
         EventBus.Unsubscribe<SaveLoadedEvent>(OnSaveLoaded);
         
+        EventBus.Unsubscribe<PlaySoundEvent>(PlaySoundEventReceived);
+        EventBus.Unsubscribe<NextShotCuedEvent>(NextShotCued);
         EventBus.Unsubscribe<BallShotEvent>(BallShot);
         EventBus.Unsubscribe<CollectibleHitEvent>(CollectibleHit);
         EventBus.Unsubscribe<StarCollectedEvent>(StarCollected);
-        EventBus.Unsubscribe<PromptToSelectLevelEvent>(PromptToSelectLevel);
         EventBus.Unsubscribe<ResultDeterminedEvent>(ResultDetermined);
     }
     
@@ -98,34 +120,19 @@ public class AudioManager : MonoBehaviour
         from.volume = 1;
     }
 
-    public void PlaySFX(Sound sound, bool allowOverlap = true)
+    public void PlaySFX(Sound sound, float pitch = 1, float volume = 1)
     {
-        if (!allowOverlap)
+        if (!GetAvailableSFXSource(sound.priority, out AudioSource source))
+            return;
+
+        if (sound.clip == soundLibrary?.buttonHoverSFX.clip)
         {
-            if (uniquePlayingSounds.Contains(sound.clip.name))
-                return;
-            
-            uniquePlayingSounds.Add(sound.clip.name);
+            pitch = Random.Range(0.95f, 1.05f);
         }
-
-        AudioSource source = sfxSources[sfxIndex];
-        sfxIndex = (sfxIndex + 1) % sfxSources.Count;
-
-        source.pitch = sound.clip == soundLibrary?.buttonHoverSFX.clip ? Random.Range(0.95f, 1.05f) : 1;
-        source.PlayOneShot(sound.clip, sound.volume);
-
-        if (!allowOverlap)
-        {
-            StartCoroutine(RemoveFromUniqueList(sound.clip));
-        }
+        source.pitch = pitch;
+        source.PlayOneShot(sound.clip, sound.volume * volume);
     }
-
-    private IEnumerator RemoveFromUniqueList(AudioClip clip)
-    {
-        yield return new WaitForSeconds(clip.length);
-        uniquePlayingSounds.Remove(clip.name);
-    }
-
+    
     public void SetVolume(AudioChannel channel, float volume)
     {
         string param = "";
@@ -157,11 +164,72 @@ public class AudioManager : MonoBehaviour
         SetVolume(AudioChannel.Ambient, SaveManager.GetAmbientVolume());
     }
 
-    public AudioSource GetAvailableSFXSource()
+    public bool GetAvailableSFXSource(SFXPriority priority, out AudioSource source)
     {
-        AudioSource source = sfxSources[sfxIndex];
-        sfxIndex = (sfxIndex + 1) % sfxSources.Count;
-        return source;
+        if (inactiveSources.Count > 0)
+        {
+            source = inactiveSources.Dequeue();
+            activeSources[priority].Add(source); 
+            return true;
+        }
+        
+        CleanupSFXDictionaryForInactiveSources();
+
+        if (inactiveSources.Count > 0)
+        {
+            source = inactiveSources.Dequeue();
+            activeSources[priority].Add(source); 
+            return true;
+        }
+
+        foreach (var sourcePriority in activeSources.Keys)
+        {
+            if (sourcePriority < priority && activeSources[sourcePriority] != null && activeSources[sourcePriority].Count > 0)
+            {
+                for (int i = 0; i < activeSources[sourcePriority].Count; i++)
+                {
+                    if (!activeSources[sourcePriority][i].isPlaying)
+                    {
+                        source = activeSources[sourcePriority][i];
+                        activeSources[sourcePriority].Remove(source); 
+                        activeSources[priority].Add(source);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        source = null;
+        return false;
+    }
+
+    public void CleanupSFXDictionaryForInactiveSources()
+    {
+        foreach (var sources in activeSources.Values)
+        {
+            AudioSource[] sourcesArray = sources.ToArray();
+            for (int i = 0; i < sourcesArray.Length; i++)
+            {
+                if (!sourcesArray[i].isPlaying)
+                {
+                    inactiveSources.Enqueue(sourcesArray[i]);
+                    sources.Remove(sourcesArray[i]);
+                }
+            }
+        }
+    }
+
+    public void CleanupSFXDictionaryCompletely()
+    {
+        foreach (var sources in activeSources.Values)
+        {
+            AudioSource[] sourcesArray = sources.ToArray();
+            for (int i = 0; i < sourcesArray.Length; i++)
+            {
+                inactiveSources.Enqueue(sourcesArray[i]);
+                sources.Remove(sourcesArray[i]);
+            }
+        }
     }
 
     public IEnumerator ResetPitchAfter(float delay, AudioSource source)
@@ -190,8 +258,36 @@ public class AudioManager : MonoBehaviour
     
 #region Playing Specific Event Sounds
 
+    public void PlaySoundEventReceived(PlaySoundEvent e)
+    {
+        switch (e.Type)
+        {
+            case SFXType.PelletBounce:
+                PlaySFX(soundLibrary.pelletBounceSFX, e.Pitch, e.Volume);
+                break;
+            case SFXType.DiscoPelletSpawn:
+                PlaySFX(soundLibrary.discoPelletsSpawnSFX, e.Pitch, e.Volume);
+                break;
+            
+            case SFXType.MenuActionPositive:
+                PlaySFX(soundLibrary.menuActionPositive);
+                break;
+            case SFXType.MenuActionNegative:
+                PlaySFX(soundLibrary.menuActionNegative);
+                break;
+        }
+    }
+
+    public void NextShotCued(NextShotCuedEvent e)
+    {
+        CleanupSFXDictionaryCompletely();
+        PlaySFX(soundLibrary.nextShotCuedSFX);
+    }
+
     public void BallShot(BallShotEvent e)
     {
+        numNegativeHitsThisTurn = 0;
+        numPositiveHitsThisTurn = 0;
         PlaySFX(soundLibrary.ballShotSFX);
     }
         
@@ -201,12 +297,23 @@ public class AudioManager : MonoBehaviour
         {
             case CollectibleType.Points:
                 if (e.Value > 0)
-                    PlaySFX(soundLibrary.positiveHitSFX[Random.Range(0, soundLibrary.positiveHitSFX.Length)]);
+                {
+                    numPositiveHitsThisTurn++;
+                    PlaySFX(soundLibrary.positiveHitSFX, 
+                        0.8f + (numPositiveHitsThisTurn * 0.04f),
+                        0.75f + (numPositiveHitsThisTurn * 0.05f));
+                }
                 else
-                    PlaySFX(soundLibrary.negativeHitSFX[Random.Range(0, soundLibrary.negativeHitSFX.Length)]);
+                {
+                    numNegativeHitsThisTurn++;
+                    PlaySFX(soundLibrary.negativeHitSFX, 
+                        0.8f + (numNegativeHitsThisTurn * 0.04f),
+                        0.75f + (numNegativeHitsThisTurn * 0.05f));
+                        ;
+                }
                 break;
             case CollectibleType.Multiple:
-                PlaySFX(soundLibrary.positiveHitSFX[Random.Range(0, soundLibrary.positiveHitSFX.Length)]);
+                PlaySFX(soundLibrary.multiplierHitSFX);
                 break;
             case CollectibleType.Danger:
                 PlaySFX(soundLibrary.eliminationSFX);
@@ -243,11 +350,6 @@ public class AudioManager : MonoBehaviour
         {
             PlayMusic((Sound)music);
         }
-    }
-
-    public void PromptToSelectLevel(PromptToSelectLevelEvent e)
-    {
-        PlaySFX(soundLibrary.negativeHitSFX[0]);
     }
 
     public void ResultDetermined(ResultDeterminedEvent e)

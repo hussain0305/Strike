@@ -80,6 +80,8 @@ public class Ball : MonoBehaviour, ISwitchTrigger
     [InjectOptional]
     private GameManager gameManager;
     public GameManager GameManager => gameManager;
+    [InjectOptional]
+    private AudioManager audioManager;
     
     [Inject]
     public void Construct(GameStateManager _gameStateManager)
@@ -107,6 +109,7 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         trajectoryModifier = _trajectoryModifier;
 
         SetSpin(ballProperties.spin);
+        InitSFX();
         rb.mass = ballProperties.weight;
         
         trajectoryDefinition = context.GetTrajectoryDefinition();
@@ -120,6 +123,11 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         InitAbilityDriver(additionalModules);
         InitTrajectoryCalcualtor();
         AdjustEffectsIfNeeded();
+    }
+
+    private void InitSFX()
+    {
+        bounceSFX.clip = audioManager.soundLibrary.ballBounceSFX.clip;
     }
 
     public void SetSpin(float _spin)
@@ -141,8 +149,8 @@ public class Ball : MonoBehaviour, ISwitchTrigger
             StartCoroutine(CaptureTrajectory());
         }
         
-        wooshSFX.enabled = true;
-        wooshSFX.Play();
+        // wooshSFX.enabled = true;
+        // wooshSFX.Play();
     }
 
     public List<Vector3> CalculateTrajectory()
@@ -248,10 +256,10 @@ public class Ball : MonoBehaviour, ISwitchTrigger
 
     private void OnCollisionEnter(Collision other)
     {
+        BallBounced(other.impulse.sqrMagnitude);
         Collectible collectible = other.gameObject.GetComponent<Collectible>();
         if (((1 << other.gameObject.layer) & Global.LevelSurfaces) != 0)
         {
-            BallBounced();
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect}, lastKnownVelocity));
         }
         else if(collectible)
@@ -262,7 +270,6 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         }       
         else if (((1 << other.gameObject.layer) & Global.StickySurfaces) != 0)
         {
-            BallBounced();
             collidedWithSomething = true;
             EventBus.Publish(new BallHitSomethingEvent(other, new HashSet<PFXType> {PFXType.FlatHitEffect, PFXType.HitPFXObstacle}, lastKnownVelocity));
         }
@@ -289,8 +296,13 @@ public class Ball : MonoBehaviour, ISwitchTrigger
         }
     }
 
-    public void BallBounced()
+    public void BallBounced(float impactSpeed)
     {
+        float normalizedSpeed = Mathf.InverseLerp(0, 4000f, impactSpeed); 
+        float volume = Mathf.Lerp(0.4f, 1.25f, normalizedSpeed);
+        float pitch = Mathf.Lerp(0.4f, 1.25f, normalizedSpeed);
+        bounceSFX.pitch = pitch;
+        bounceSFX.volume = volume;
         bounceSFX.Play();
     }
 }
