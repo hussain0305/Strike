@@ -15,9 +15,12 @@ public class PreviewRicochet : BallPreview, IBallPreview
     public IEnumerator PreviewRoutine()
     {
         ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
+        SpoofedTrajectoryParameters parameters = new SpoofedTrajectoryParameters();
+        parameters.CreateFromBallProperties(properties);
+        
         while (true)
         {
-            MainMenu.Context.SpoofNewTrajectory();
+            MainMenu.Context.SpoofNewTrajectory(parameters);
             MainMenu.Context.DrawTrajectory(ball.CalculateTrajectory().ToArray());
             EventBus.Publish(new NextShotCuedEvent());
 

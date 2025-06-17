@@ -34,12 +34,15 @@ public class DiscoModule : IBallAbilityUpdateableModule
         ball = ownerBall;
         context  = _context;
 
-        ball.StartCoroutine(InitializePelletPool());
+        CoroutineDispatcher.Instance.RunCoroutine(InitializePelletPool());
+        // ball.StartCoroutine(InitializePelletPool());
     }
     
     public void OnUpdate()
     {
-        if (GameManager.BallState == BallState.OnTee || pelletsSpawned)
+        // if (GameManager.BallState == BallState.OnTee || pelletsSpawned)
+        //     return;
+        if (context.GetBallState() == BallState.OnTee || pelletsSpawned)
             return;
 
         if (ball.transform.position.y >= lastY)
@@ -89,6 +92,7 @@ public class DiscoModule : IBallAbilityUpdateableModule
         for (int i = 0; i < pelletCount; i++)
         {
             GameObject pellet = Object.Instantiate(discoPelletPrefabs[Random.Range(0, discoPelletPrefabs.Length)]);
+            pellet.transform.localScale = ball.transform.localScale / 5;
             pellet.SetActive(false);
             discoPelletsPool.Enqueue(pellet);
             yield return null;

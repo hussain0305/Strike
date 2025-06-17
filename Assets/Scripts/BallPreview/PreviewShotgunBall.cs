@@ -15,9 +15,16 @@ public class PreviewShotgunBall : BallPreview, IBallPreview
     public IEnumerator PreviewRoutine()
     {
         ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
+        SpoofedTrajectoryParameters parameters = new SpoofedTrajectoryParameters();
+        parameters.spinX = new MinMaxFloat(0, 0);
+        parameters.spinY = new MinMaxFloat(0, 0);
+        parameters.angleX = new MinMaxFloat(-35, -20);
+        parameters.angleY = new MinMaxFloat(-10, 15);
+        parameters.launchForce = new MinMaxFloat(18, 20);
+
         while (true)
         {
-            MainMenu.Context.SpoofNewTrajectory();
+            MainMenu.Context.SpoofNewTrajectory(parameters);
             MainMenu.Context.DrawTrajectory(ball.CalculateTrajectory().ToArray());
             EventBus.Publish(new NextShotCuedEvent());
 

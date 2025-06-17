@@ -19,6 +19,7 @@ public class BallPreviewController : MonoBehaviour
         {
             { "sniperBall", gameObject.AddComponent<PreviewSniperBall>() },
             { "mirrorBall", gameObject.AddComponent<PreviewMirrorBall>() },
+            { "shotgunBall", gameObject.AddComponent<PreviewShotgunBall>() }
             // { "stickyBall", gameObject.AddComponent<PreviewStickyBall>() },
         };
     }

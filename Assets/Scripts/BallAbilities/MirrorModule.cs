@@ -17,6 +17,11 @@ public class MirrorModule : IBallAbilityModule, IBallAbilityUpdateableModule
         {
             mirroredBall.transform.parent = ball.transform.parent;
             mirroredBall.transform.localScale = ball.transform.localScale;
+            if (context is MenuContext menuCtx)
+            {
+                mirroredBall.GetComponentInChildren<TrailRenderer>()?.gameObject.SetActive(false);
+                mirroredBall.GetComponentInChildren<ParticleSystem>()?.gameObject.SetActive(false);
+            }
         }
     }
 

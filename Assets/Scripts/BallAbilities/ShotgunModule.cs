@@ -29,7 +29,8 @@ public class ShotgunModule : IBallAbilityModule
         ball = ownerBall;
         context = _context;
 
-        ball.StartCoroutine(InitializePelletPool());
+        CoroutineDispatcher.Instance.RunCoroutine(InitializePelletPool());
+        // ball.StartCoroutine(InitializePelletPool());
     }
 
     public void OnBallShot(BallShotEvent e)
@@ -55,6 +56,7 @@ public class ShotgunModule : IBallAbilityModule
         for (int i = 0; i < pelletCount; i++)
         {
             GameObject pellet = Object.Instantiate(pelletPrefab);
+            pellet.transform.localScale = ball.transform.localScale / 5;
             pellet.SetActive(false);
             pelletPool.Enqueue(pellet);
             yield return null;

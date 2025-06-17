@@ -15,9 +15,12 @@ public class PreviewStickyBall : BallPreview, IBallPreview
     public IEnumerator PreviewRoutine()
     {
         ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
+        SpoofedTrajectoryParameters parameters = new SpoofedTrajectoryParameters();
+        parameters.CreateFromBallProperties(properties);
+
         while (true)
         {
-            Context.SpoofNewTrajectory();
+            Context.SpoofNewTrajectory(parameters);
             Context.DrawTrajectory(ball.CalculateTrajectory().ToArray());
             EventBus.Publish(new NextShotCuedEvent());
 

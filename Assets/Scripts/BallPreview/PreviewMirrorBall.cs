@@ -43,9 +43,16 @@ public class PreviewMirrorBall : BallPreview, IBallPreview
     public IEnumerator PreviewRoutine()
     {
         ball.Initialize(MainMenu.Context, MainMenu.TrajectoryModifier, properties);
+        SpoofedTrajectoryParameters parameters = new SpoofedTrajectoryParameters();
+        parameters.CreateFromBallProperties(properties);
+        parameters.spinX = new MinMaxFloat(0.05f, 0.1f);
+        parameters.spinY = new MinMaxFloat(0, 0);
+        parameters.angleX = new MinMaxFloat(-30, -50);
+        parameters.angleY = new MinMaxFloat(5, 10);
+        
         while (true)
         {
-            MainMenu.Context.SpoofNewTrajectory(spinXMin:0.35f, spinXMax:0.7f, launchForceMin:7f, launchForceMax:8f);
+            MainMenu.Context.SpoofNewTrajectory(parameters);
             MainMenu.Context.DrawTrajectory(ball.CalculateTrajectory().ToArray());
             EventBus.Publish(new NextShotCuedEvent());
 
