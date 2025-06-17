@@ -79,6 +79,10 @@ public class GameModeInfoController : MonoBehaviour
         {
             StopCoroutine(infoCarouselCoroutine);
         }
+
+        if (!gameObject.activeInHierarchy)
+            return;
+        
         infoCarouselCoroutine = StartCoroutine(InfoCarousel());
     }
     

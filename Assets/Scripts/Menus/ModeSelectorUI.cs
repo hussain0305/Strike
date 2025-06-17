@@ -12,6 +12,7 @@ public class ModeSelectorUI : MonoBehaviour
     public TextMeshProUGUI selectedGameModeNameText;
     public TextMeshProUGUI selectedGameModeDescriptionText;
     public GameObject bottomPanelGameModeUnlocked;
+    public GameObject infoPanel;
 
     [Header("Game Mode - Locked")]
     public GameObject lockedSection;
@@ -101,9 +102,11 @@ public class ModeSelectorUI : MonoBehaviour
         selectedGameModeDescriptionText.text = info.description;
 
         bool unlocked = SaveManager.GetIsGameModeUnlocked((int)modeSelector.CurrentSelectedMode);
+        infoPanel.SetActive(unlocked);
         lockedSection.SetActive(!unlocked);
         bottomPanelGameModeLocked.SetActive(!unlocked);
         bottomPanelGameModeUnlocked.SetActive(unlocked);
+        levelButtonParent.gameObject.SetActive(unlocked);
 
         if (!unlocked)
         {
@@ -118,10 +121,6 @@ public class ModeSelectorUI : MonoBehaviour
                     SaveManager.SetGameModeUnlocked((int)modeSelector.CurrentSelectedMode);
                     modeSelector.GameModeSelected(modeSelector.CurrentSelectedMode);
                 });
-        }
-        else
-        {
-            levelButtonParent.gameObject.SetActive(true);
         }
     }
 

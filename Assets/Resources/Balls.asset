@@ -28,7 +28,7 @@ MonoBehaviour:
     cost: 0
   - name: Bouncy
     description: Sometimes useful, sometimes a nuisance
-    rarity: 0
+    rarity: 1
     weight: 1
     spin: 5
     abilityAxis: 8
@@ -41,7 +41,7 @@ MonoBehaviour:
     cost: 10
   - name: Spinny
     description: A little extra spin never hurt anybody
-    rarity: 2
+    rarity: 1
     weight: 1
     spin: 15
     abilityAxis: 9
@@ -55,7 +55,7 @@ MonoBehaviour:
   - name: Bowling
     description: Extra Heavy. Not an option for every situation, but the only options
       for some situations.
-    rarity: 0
+    rarity: 1
     weight: 2.5
     spin: 2
     abilityAxis: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 50bbb14bc8c599648b3a6bda1cc2ac28, type: 3}
     id: bowlingBall
-    cost: 30
+    cost: 10
   - name: Sniper
     description: Hit exactly where you aim. No Gravity, no spin.
     rarity: 2
@@ -78,59 +78,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
     id: sniperBall
-    cost: 90
-  - name: Shotgun
-    description: A flurry of pellets shoot with the ball, hitting additional targets
-    rarity: 3
-    weight: 0.5
-    spin: 0
-    abilityAxis: 1
-    abilityAxisText: Burst
-    abilityText: Spawns additional pellets
-    moduleDefinition: {fileID: 11400000, guid: dbe3607823e1cc4469d6716f545adb12, type: 2}
-    physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
-    prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
-    id: shotgunBall
-    cost: 500
-  - name: Sticky
-    description: Sticks to the surface of first contact
-    rarity: 2
-    weight: 1
-    spin: 5
-    abilityAxis: 3
-    abilityAxisText: Collision
-    abilityText: Sticks to point of contact
-    moduleDefinition: {fileID: 11400000, guid: e373140171cdfc84e90c1a7d300314b1, type: 2}
-    physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
-    prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
-    id: stickyBall
-    cost: 1
-  - name: Ghost
-    description: Passes through everything, collects everything. EVERYTHING
-    rarity: 2
-    weight: 1
-    spin: 5
-    abilityAxis: 3
-    abilityAxisText: Collision
-    abilityText: Passes through objects
-    moduleDefinition: {fileID: 11400000, guid: 3079079a1a76d944784cddff64451631, type: 2}
-    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
-    prefab: {fileID: 3514905537347721854, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
-    id: ghostBall
-    cost: 1
-  - name: Ricochet
-    description: Bounces between eligible targets
-    rarity: 3
-    weight: 1
-    spin: 0
-    abilityAxis: 3
-    abilityAxisText: Collision
-    abilityText: Bounces towards other objects on its path
-    moduleDefinition: {fileID: 11400000, guid: 2f2e56beac84be643b5f3303a9167695, type: 2}
-    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
-    prefab: {fileID: 3931144424910952291, guid: c1b6920855a75e045935f1a9c50bad30, type: 3}
-    id: ricoBall
-    cost: 1
+    cost: 30
   - name: Mirror
     description: A second, mirrored ball collecting everything in its path
     rarity: 2
@@ -143,11 +91,63 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 3931144424910952291, guid: 076a488c0394fad4aa651dc1800341d5, type: 3}
     id: mirrorBall
-    cost: 1
+    cost: 40
+  - name: Ricochet
+    description: Bounces between eligible targets
+    rarity: 2
+    weight: 1
+    spin: 0
+    abilityAxis: 3
+    abilityAxisText: Collision
+    abilityText: Bounces towards other objects on its path
+    moduleDefinition: {fileID: 11400000, guid: 2f2e56beac84be643b5f3303a9167695, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 3931144424910952291, guid: c1b6920855a75e045935f1a9c50bad30, type: 3}
+    id: ricoBall
+    cost: 50
+  - name: Shotgun
+    description: A flurry of pellets shoot with the ball, hitting additional targets
+    rarity: 3
+    weight: 0.5
+    spin: 0
+    abilityAxis: 1
+    abilityAxisText: Burst
+    abilityText: Spawns additional pellets
+    moduleDefinition: {fileID: 11400000, guid: dbe3607823e1cc4469d6716f545adb12, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
+    id: shotgunBall
+    cost: 50
+  - name: Sticky
+    description: Sticks to the surface of first contact
+    rarity: 3
+    weight: 1
+    spin: 5
+    abilityAxis: 3
+    abilityAxisText: Collision
+    abilityText: Sticks to point of contact
+    moduleDefinition: {fileID: 11400000, guid: e373140171cdfc84e90c1a7d300314b1, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
+    id: stickyBall
+    cost: 75
+  - name: Ghost
+    description: Passes through everything, collects everything. EVERYTHING
+    rarity: 3
+    weight: 1
+    spin: 5
+    abilityAxis: 3
+    abilityAxisText: Collision
+    abilityText: Passes through objects
+    moduleDefinition: {fileID: 11400000, guid: 3079079a1a76d944784cddff64451631, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
+    prefab: {fileID: 3514905537347721854, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
+    id: ghostBall
+    cost: 75
   - name: Disco
     description: Stops at the highest point in its trajectory and sprinkles pellets
       in every direction
-    rarity: 2
+    rarity: 3
     weight: 1
     spin: 0
     abilityAxis: 1
@@ -157,7 +157,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 3931144424910952291, guid: 66c0659fe5a9662409ca9ca670025b61, type: 3}
     id: discoBall
-    cost: 1
+    cost: 75
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3

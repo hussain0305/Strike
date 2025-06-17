@@ -28,7 +28,7 @@ MonoBehaviour:
     - Reach Target Points
     - Tokens can only be collected once
     scene: 4
-    starsRequiredToUnlock: 100
+    starsRequiredToUnlock: 25
   - gameMode: 4
     displayName: Dartboard
     description: MEDIUM
@@ -36,7 +36,7 @@ MonoBehaviour:
     - Reach Target Points
     - Tokens reset each volley
     scene: 5
-    starsRequiredToUnlock: 50
+    starsRequiredToUnlock: 25
   - gameMode: 2
     displayName: Deathmatch
     description: DIFFICULT
@@ -45,7 +45,7 @@ MonoBehaviour:
     - Loss if an X Token is hit
     - Loss if no tokens are hit
     scene: 3
-    starsRequiredToUnlock: 100
+    starsRequiredToUnlock: 25
   - gameMode: 1
     displayName: Portals
     description: VERY DIFFICULT
@@ -53,4 +53,4 @@ MonoBehaviour:
     - Reach Target Points
     - Tokens do not reset positions
     scene: 2
-    starsRequiredToUnlock: 50
+    starsRequiredToUnlock: 75
