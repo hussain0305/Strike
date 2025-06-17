@@ -52,7 +52,7 @@ public class RandomizedGutterWall : EndlessModeSpawner
     [Inject]
     private GameManager gameManager;
 
-    public void Setup(int _difficulty)
+    public void Setup(int _difficulty, bool hasEliminationPins)
     {
         difficulty = _difficulty;
         difficultyFactor = difficulty / 10f;
@@ -74,7 +74,7 @@ public class RandomizedGutterWall : EndlessModeSpawner
             float t = (difficulty - 5) / 5f;
             pointTokenProb = Mathf.Lerp(1f, 0.5f, t);
         }
-        SpawnOnSides(numSides, numLevels, options, new IncludeTypesInRandomization(true, true, pointTokenProb));
+        SpawnOnSides(numSides, numLevels, options, new IncludeTypesInRandomization(true, hasEliminationPins, pointTokenProb));
     }
     
     public void SpawnOnSides(int numSides, int numLevels, RandomizedMovementOptions movementOptions, IncludeTypesInRandomization types)
