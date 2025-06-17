@@ -68,6 +68,7 @@ public class SettingsPage : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
+        audioManager.SetVolume(AudioManager.AudioChannel.SFX, value);
         audioManager.SetVolume(AudioManager.AudioChannel.Music, value);
         UpdateMusicUI((int)value);
     }

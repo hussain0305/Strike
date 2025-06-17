@@ -11,6 +11,7 @@ public class TrailReset : MonoBehaviour
     {
         EventBus.Subscribe<BallShotEvent>(ResumeTrail);
         EventBus.Subscribe<NextShotCuedEvent>(ResetTrail);
+        ResumeTrail(null);
     }
 
     private void OnDisable()
