@@ -3481,6 +3481,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84e37a83695f52d45a32782f4d242ecc, type: 3}
   m_PrefabInstance: {fileID: 708983097}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &759685411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8030375704714805227, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
+  m_PrefabInstance: {fileID: 1586351919010768099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &820094854
 GameObject:
   m_ObjectHideFlags: 0
@@ -6956,6 +6961,9 @@ MonoBehaviour:
     textGO: {fileID: 1101066268}
   - numHits: 10
     textGO: {fileID: 1760916580}
+  godlikeStreak:
+    numHits: 11
+    textGO: {fileID: 759685411}
   multiplierText:
     textGO: {fileID: 1856268338}
     textComponent: {fileID: 549986273}
@@ -9053,6 +9061,10 @@ PrefabInstance:
       propertyPath: trajectoryHistoryViewer
       value: 
       objectReference: {fileID: 2183589339321459631}
+    - target: {fileID: 3462736057206481060, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3701260490446656545, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
       propertyPath: 'scalingData.Array.data[0].objectsToScale.Array.data[0]'
       value: 

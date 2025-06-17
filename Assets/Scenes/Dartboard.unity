@@ -6256,6 +6256,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 165264012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1519773823 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8030375704714805227, guid: ccaf31d57ea5c9741b7f0a627c0140a1, type: 3}
+  m_PrefabInstance: {fileID: 1586351919010768099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1519807638
 GameObject:
   m_ObjectHideFlags: 0
@@ -6982,6 +6987,9 @@ MonoBehaviour:
     textGO: {fileID: 1101066268}
   - numHits: 10
     textGO: {fileID: 1760916580}
+  godlikeStreak:
+    numHits: 11
+    textGO: {fileID: 1519773823}
   multiplierText:
     textGO: {fileID: 1856268338}
     textComponent: {fileID: 549986273}

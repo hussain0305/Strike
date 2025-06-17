@@ -22,6 +22,7 @@ public class NotableEventsManager : MonoBehaviour
     }
 
     public HitTextInfo[] streakTexts;
+    public HitTextInfo godlikeStreak;
     public MultiplierUITextInfo multiplierText;
     
     private int numberHitsInThisShot = 0;
@@ -86,10 +87,12 @@ public class NotableEventsManager : MonoBehaviour
 
     public void PlayHitMessage(int numHits)
     {
+        bool candidateFound = false;
         foreach (HitTextInfo currentText in streakTexts)
         {
             if (currentText.numHits == numHits)
             {
+                candidateFound = true;
                 currentActiveText = currentText.textGO;
                 currentActiveText.SetActive(true);
                 PlayScaleUpAnimation(currentActiveText);
@@ -98,6 +101,13 @@ public class NotableEventsManager : MonoBehaviour
             {
                 currentText.textGO.SetActive(false);
             }
+        }
+
+        if (!candidateFound)
+        {
+            currentActiveText = godlikeStreak.textGO;
+            currentActiveText.SetActive(true);
+            PlayScaleUpAnimation(currentActiveText);
         }
     }
 
