@@ -15,7 +15,7 @@ public class Step_AdjustAngle : TutorialStep
         {
             TutorialHUD.TutorialScreenElements.AngleButton
         };
-        successfulText = "Now let's talk about how to figure out where the ball is going to land.";
+        successfulText = "Now let's try figuring out where the ball is going to land.";
 
         base.Begin(tutorialController);
 
@@ -59,15 +59,10 @@ public class Step_AdjustAngle : TutorialStep
                 angleChanged = true;
             }
 
-            if (angleChanged)
-            {
-#if UNITY_EDITOR || UNITY_STANDALONE
+            if (Input.touchSupported)
+                fingerLifted = Input.touchCount == 0;
+            else
                 fingerLifted = Input.GetMouseButtonUp(0);
-#elif UNITY_IOS || UNITY_ANDROID
-            if (Input.touchCount == 0) 
-                fingerLifted = true;
-#endif            
-            }
 
             if (angleChanged && fingerLifted)
             {

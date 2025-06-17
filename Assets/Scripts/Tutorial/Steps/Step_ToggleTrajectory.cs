@@ -17,7 +17,7 @@ public class Step_ToggleTrajectory : TutorialStep
 
         phase = Phase.WaitForFirstTap;
 
-        controller.tutorialHUD.SetInstructionText("Every two seconds—and any time you tweak a shot parameter—an indicator shows where the ball would land on an unobstructed trajectory",
+        controller.tutorialHUD.SetInstructionText("Periodically, an indicator shows where the ball would land on an unobstructed trajectory",
             "Tap anywhere to continue.");
         controller.StartCoroutine(WaitForScreenTap(0.2f));
     }

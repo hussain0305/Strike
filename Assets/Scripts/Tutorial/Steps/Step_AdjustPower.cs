@@ -61,12 +61,10 @@ public class Step_AdjustPower : TutorialStep
 
             if (powerChanged)
             {
-#if UNITY_EDITOR || UNITY_STANDALONE
-                fingerLifted = Input.GetMouseButtonUp(0);
-#elif UNITY_IOS || UNITY_ANDROID
-            if (Input.touchCount == 0) 
-                fingerLifted = true;
-#endif            
+                if (Input.touchSupported)
+                    fingerLifted = Input.touchCount == 0;
+                else
+                    fingerLifted = Input.GetMouseButtonUp(0);
             }
 
             if (powerChanged && fingerLifted)
