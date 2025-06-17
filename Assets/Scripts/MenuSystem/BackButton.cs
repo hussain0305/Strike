@@ -29,7 +29,6 @@ public class BackButton : MonoBehaviour
     
     public void BackButtonPressed()
     {
-        EventBus.Publish(new GoingBackEvent());
-        menuManager.CloseCurrentMenu();
+        menuManager.MenuBackAction();
     }
 }

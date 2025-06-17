@@ -65,6 +65,12 @@ public class MenuManager : MonoBehaviour
         menuStack.Push(menu);
     }
 
+    public void MenuBackAction()
+    {
+        EventBus.Publish(new GoingBackEvent());
+        CloseCurrentMenu();
+    }
+    
     public void CloseCurrentMenu()
     {
         if (menuStack.Count > 0)

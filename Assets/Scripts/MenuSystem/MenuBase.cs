@@ -7,6 +7,7 @@ public class MenuBase : MonoBehaviour
     [System.Serializable]
     public enum MenuType
     {
+        None = -1,
         MainMenu,
         GameModeScreen,
         BallSelectionPage,

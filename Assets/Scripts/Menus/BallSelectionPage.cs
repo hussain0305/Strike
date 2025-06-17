@@ -83,6 +83,7 @@ public class BallSelectionPage : MonoBehaviour
 
     private void OnDisable()
     {
+        EventBus.Publish(new MenuClosedEvent(MenuBase.MenuType.BallSelectionPage));
         EventBus.Unsubscribe<BallSelectedEvent>(BallSelected);
         
         equipBallButton.onClick.RemoveAllListeners();
@@ -170,8 +171,11 @@ public class BallSelectionPage : MonoBehaviour
         
         HighlightSelected(ballID);
         SetupEquipOrUnlockButton();
-        
-        previewController.PlayPreview(selectedBallProperties.id, selectedBall);
+
+        if (gameObject.activeInHierarchy)
+        {
+            previewController.PlayPreview(selectedBallProperties.id, selectedBall);
+        }
     }
     
     public void HighlightSelected(string ballID)

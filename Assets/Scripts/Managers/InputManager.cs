@@ -54,13 +54,13 @@ public class InputManager : MonoBehaviour
         switch (currentContext)
         {
             case GameContext.InMenu:
-                menuManager.CloseCurrentMenu();
+                menuManager.MenuBackAction();
                 break;
 
             case GameContext.InGame:
                 if (menuManager.IsAnyMenuOpen())
                 {
-                    menuManager.CloseCurrentMenu();
+                    menuManager.MenuBackAction();
                 }
                 else
                 {

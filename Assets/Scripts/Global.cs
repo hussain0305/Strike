@@ -464,6 +464,15 @@ public class GameStateChangedEvent
     }
 }
 
+public class MenuClosedEvent
+{
+    public MenuBase.MenuType ClosedMenu;
+    public MenuClosedEvent(MenuBase.MenuType closedMenu)
+    {
+        ClosedMenu = closedMenu;
+    }
+}
+
 #endregion
 
 #region Endless Mode

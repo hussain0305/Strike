@@ -30,6 +30,7 @@ public class CoroutineDispatcher : MonoBehaviour
 
     private void OnEnable()
     {
+        EventBus.Subscribe<MenuClosedEvent>(MenuClosed);
         EventBus.Subscribe<InGameEvent>(StopPreviewCoroutines);
         EventBus.Subscribe<GoingBackEvent>(StopPreviewCoroutines);
         EventBus.Subscribe<BallSelectedEvent>(StopPreviewCoroutines);
@@ -37,6 +38,7 @@ public class CoroutineDispatcher : MonoBehaviour
 
     private void OnDisable()
     {
+        EventBus.Unsubscribe<MenuClosedEvent>(MenuClosed);
         EventBus.Unsubscribe<InGameEvent>(StopPreviewCoroutines);
         EventBus.Unsubscribe<GoingBackEvent>(StopPreviewCoroutines);
         EventBus.Unsubscribe<BallSelectedEvent>(StopPreviewCoroutines);
@@ -80,6 +82,14 @@ public class CoroutineDispatcher : MonoBehaviour
         {
             StopCoroutine(runningCoroutine);
             activeCoroutines.Remove(CoroutineType.BallPreview);
+        }
+    }
+
+    public void MenuClosed(MenuClosedEvent e)
+    {
+        if (e.ClosedMenu == MenuBase.MenuType.BallSelectionPage)
+        {
+            StopPreviewCoroutines();
         }
     }
 }
