@@ -105,11 +105,14 @@ public static class SaveManager
         return currentSaveData.stars;
     }
 
-    public static void AddStars(int numStars)
+    public static void AddStars(int numStars, bool writeSaveImmediately = true)
     {
         EnsureDataLoaded();
         currentSaveData.stars = currentSaveData.stars + numStars;
-        SaveData();
+        if (writeSaveImmediately)
+        {
+            SaveData();
+        }
         EventBus.Publish(new StarsEarnedEvent(numStars));
     }
 
@@ -160,11 +163,12 @@ public static class SaveManager
         return currentSaveData.selectedBall;
     }
 
-    public static void SetLevelCompleted(GameModeType gameMode, int levelIndex)
+    public static void SetLevelCompleted(GameModeType gameMode, int levelIndex, bool writeSaveImmediately = true)
     {
-        SetLevelCompleted((int)gameMode, levelIndex);
+        SetLevelCompleted((int)gameMode, levelIndex, writeSaveImmediately);
     }
-    public static void SetLevelCompleted(int gameModeIndex, int levelIndex)
+    
+    public static void SetLevelCompleted(int gameModeIndex, int levelIndex, bool writeSaveImmediately = true)
     {
         EnsureDataLoaded();
         foreach (var progress in currentSaveData.levelProgress)
@@ -174,13 +178,19 @@ public static class SaveManager
                 if (levelIndex > progress.maxUnlockedLevel)
                 {
                     progress.maxUnlockedLevel = levelIndex;
-                    SaveData();
+                    if (writeSaveImmediately)
+                    {
+                        SaveData();
+                    }
                 }
                 return;
             }
         }
         currentSaveData.levelProgress.Add(new LevelProgress(gameModeIndex, levelIndex));
-        SaveData();
+        if (writeSaveImmediately)
+        {
+            SaveData();
+        }
     }
 
     public static int GetHighestClearedLevel(GameModeType gameModeIndex)
@@ -214,7 +224,7 @@ public static class SaveManager
         return currentSaveData.unlockedBalls.Contains(ballID);
     }
     
-    public static void SetStarCollected(int gameMode, int levelIndex, int starIndex)
+    public static void SetStarCollected(int gameMode, int levelIndex, int starIndex, bool writeSaveImmediately = true)
     {
         string key = $"{gameMode}-{levelIndex}";
 
@@ -223,7 +233,10 @@ public static class SaveManager
             currentSaveData.collectedStars[key] = 0;
         }
         currentSaveData.collectedStars[key] |= (1 << (starIndex));
-        SaveData();
+        if (writeSaveImmediately)
+        {
+            SaveData();
+        }
     }
 
     public static bool IsStarCollected(int gameMode, int levelIndex, int starIndex)

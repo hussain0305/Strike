@@ -213,7 +213,6 @@ public class EndlessModeLoader : LevelLoader
             
             endlessLevelInstaller.ReinjectAll();
         }
-
     }
 
     public void GetSectorsToFill(out SectorCoord[] loneSectors, out SectorCoord[][] areas)

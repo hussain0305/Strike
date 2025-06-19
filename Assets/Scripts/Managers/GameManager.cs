@@ -587,10 +587,10 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         
         if (levelCleared)
         {
-            SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel());
+            SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), false);
             foreach (int starIndex in starsCollected)
             {
-                SaveManager.SetStarCollected((int)modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), starIndex);
+                SaveManager.SetStarCollected((int)modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), starIndex, false);
             }
             SaveManager.AddStars(starsCollected.Count);
         }
