@@ -172,6 +172,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<StoppedShotInput>(StoppedInputtingShot);
         EventBus.Subscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Subscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
+        
+        EventBus.Subscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
     }
 
     private void OnDisable()
@@ -184,6 +186,16 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<StoppedShotInput>(StoppedInputtingShot);
         EventBus.Unsubscribe<GameRestartedEvent>(GameRestarted);
         EventBus.Unsubscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
+        
+        EventBus.Unsubscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+    }
+
+    private void ProjectilesSpawned(ProjectilesSpawnedEvent e)
+    {
+        foreach (var projectile in e.projectiles)
+        {
+            projectile.transform.parent = tee.transform;
+        }
     }
 
     public void LevelSetupComplete()

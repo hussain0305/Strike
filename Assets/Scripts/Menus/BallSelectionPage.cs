@@ -55,6 +55,7 @@ public class BallSelectionPage : MonoBehaviour
     private void OnEnable()
     {
         EventBus.Subscribe<BallSelectedEvent>(BallSelected);
+        EventBus.Subscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
         
         equipBallButton.onClick.AddListener(OnEquipBall);        
         unlockBallButton.onClick.AddListener(TryUnlockBall);
@@ -85,7 +86,8 @@ public class BallSelectionPage : MonoBehaviour
     {
         EventBus.Publish(new MenuClosedEvent(MenuBase.MenuType.BallSelectionPage));
         EventBus.Unsubscribe<BallSelectedEvent>(BallSelected);
-        
+        EventBus.Unsubscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+
         equipBallButton.onClick.RemoveAllListeners();
         unlockBallButton.onClick.RemoveAllListeners();
     }
@@ -270,5 +272,13 @@ public class BallSelectionPage : MonoBehaviour
 
         SetupEquipOrUnlockButton();
         cantUnlockMessageCoroutine = null;
+    }
+
+    public void ProjectilesSpawned(ProjectilesSpawnedEvent e)
+    {
+        foreach (GameObject go in e.projectiles)
+        {
+            go.transform.parent = previewBallsParent;
+        }
     }
 }
