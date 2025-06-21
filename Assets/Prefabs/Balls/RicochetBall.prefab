@@ -5198,7 +5198,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
@@ -5403,7 +5403,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3972711049933203424, guid: 294b96f01e894c548a548423a7e55fdd, type: 2}
-  m_audioClip: {fileID: 8300000, guid: b9540f81eaaac3445b8c91b19560f4b4, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b9540f81eaaac3445b8c91b19560f4b4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -5532,7 +5532,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3972711049933203424, guid: 294b96f01e894c548a548423a7e55fdd, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cad8c6f0bf38a394da5ab24bcf04faf6, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: cad8c6f0bf38a394da5ab24bcf04faf6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
