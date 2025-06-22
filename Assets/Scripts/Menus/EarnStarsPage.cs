@@ -15,7 +15,7 @@ public class EarnStarsPage : MonoBehaviour
 
     public Button exchangeButton;
     
-    private const int EXCHANGE_RATE = 50;
+    private const int EXCHANGE_RATE = 200;
     
     private void OnEnable()
     {
