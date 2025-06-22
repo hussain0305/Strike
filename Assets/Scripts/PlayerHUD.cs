@@ -119,7 +119,10 @@ public class PlayerHUD : MonoBehaviour, IHUD
         else
         {
             trajectoryButtonSection.gameObject.SetActive(false);
+#if ADS_DISABLED
+#else
             trajectoryAdButtonSection.gameObject.SetActive(true);
+#endif
         }
     }
     
@@ -167,6 +170,9 @@ public class PlayerHUD : MonoBehaviour, IHUD
 
     public void SetTrajectoryAdButtonSectionActive(bool active)
     {
+#if ADS_DISABLED
+        active = false;
+#endif
         trajectoryAdButtonSection.gameObject.SetActive(active);
     }
 

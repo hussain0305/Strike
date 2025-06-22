@@ -311,8 +311,12 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             yield break;
 
         int pointsRemaining = gameMode.PointsRequired - roundDataManager.GetPointsForPlayer(0);
-        
-        if (volleyNumber >= TotalVolleysAvailable && pointsRemaining > 0)
+
+        bool allowAdditionalVolleyOffers = true;
+#if ADS_DISABLED
+        allowAdditionalVolleyOffers = false;
+#endif
+        if (volleyNumber >= TotalVolleysAvailable && pointsRemaining > 0 && allowAdditionalVolleyOffers)
         {
             string messageString = $"YOU ARE {pointsRemaining} POINTS SHORT. WATCH AN AD FOR {gameMode.NumAdditionalVolleysPerGrant} ADDITIONAL VOLLEYS?";
             additionalVolleyOffer.Show(messageString, (offerTaken) => { });
