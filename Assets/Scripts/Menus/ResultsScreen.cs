@@ -10,6 +10,10 @@ public class ResultsScreen : MonoBehaviour
     public Transform winConditionPointsRequirement;
     public Transform wonMessage;
     public Transform lostMessage;
+    public GameObject starsCollectedSection;
+    public GameObject surplusPointsEarnedSection;
+    public TextMeshProUGUI starsCollectedValue;
+    public TextMeshProUGUI surplusPointsEarnedValue;
     
     [Header("Win Condition - Points Ranking")]
     public Transform winConditionPointsRanking;
@@ -50,7 +54,7 @@ public class ResultsScreen : MonoBehaviour
         nextLevelButton.onClick.RemoveAllListeners();
     }
 
-    public void SetupResult(bool levelCleared)
+    public void SetupResult(bool levelCleared, int starsCollected, int surplusPoints)
     {
         winConditionPointsRanking.gameObject.SetActive(false);
         winConditionPointsRequirement.gameObject.SetActive(true);
@@ -59,6 +63,11 @@ public class ResultsScreen : MonoBehaviour
         lostMessage.gameObject.SetActive(!levelCleared);
         backgroundImage.material = levelCleared ? GlobalAssets.Instance.winResultBackgroundMaterial : GlobalAssets.Instance.loseResultBackgroundMaterial;
 
+        starsCollectedSection.SetActive(levelCleared && starsCollected > 0);
+        surplusPointsEarnedSection.SetActive(levelCleared && surplusPoints > 0);
+        starsCollectedValue.text = starsCollected.ToString();
+        surplusPointsEarnedValue.text = surplusPoints.ToString();
+        
         CheckIsNextLevelAvailable();
     }
     

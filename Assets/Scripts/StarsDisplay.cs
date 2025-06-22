@@ -14,6 +14,8 @@ public class StarsDisplay : MonoBehaviour
     private TextMeshProUGUI currentChangeText;
     private Coroutine starsChangedAnimation;
 
+    private float xCurrentScale = 1;
+
     private void OnEnable()
     {
         EventBus.Subscribe<StarsEarnedEvent>(StarsEarned);
@@ -55,6 +57,13 @@ public class StarsDisplay : MonoBehaviour
 
     private IEnumerator StarsChangedAnimation(int change)
     {
+        if (change == 0)
+        {
+            starsAddedText.gameObject.SetActive(false);
+            starsSpentText.gameObject.SetActive(false);
+            yield break;
+        }
+        
         bool starsAdded = change > 0;
         starsAddedText.gameObject.SetActive(starsAdded);
         starsSpentText.gameObject.SetActive(!starsAdded);
@@ -80,7 +89,11 @@ public class StarsDisplay : MonoBehaviour
             
             starCount.text = currentStarCount.ToString();
             currentChangeText.text = $"{sign}{Math.Abs(currentChangeValue)}";
-            starCountBG.fillAmount = GetFillAmount(Math.Abs(currentStarCount));
+            xCurrentScale = GetFillAmount(Math.Abs(currentStarCount));
+            Vector3 scale = starCountBG.transform.localScale;
+            starCountBG.transform.localScale = new Vector3(xCurrentScale, scale.y, scale.z) ;
+            Vector3 changeTextScale = currentChangeText.transform.localScale;
+            currentChangeText.transform.localScale = new Vector3(1f / xCurrentScale, changeTextScale.y, changeTextScale.z);
 
             yield return null;
         }
@@ -102,7 +115,9 @@ public class StarsDisplay : MonoBehaviour
 
         int numStars = SaveManager.GetStars();
         starCount.text = numStars.ToString();
-        starCountBG.fillAmount = GetFillAmount(numStars);
+        xCurrentScale = GetFillAmount(numStars);
+        Vector3 scale = starCountBG.transform.localScale;
+        starCountBG.transform.localScale = new Vector3(xCurrentScale, scale.y, scale.z) ;
     }
     
     private float GetFillAmount(int stars)

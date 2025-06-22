@@ -36,15 +36,7 @@ public class Star : MonoBehaviour
     public int index;
 
     private int collectionCollisionMask;
-
-    private GameManager gameManager;
-
-    [Inject]
-    public void Construct(GameManager _gameManager)
-    {
-        gameManager = _gameManager;
-    }
-
+    
     private void Start()
     {
         collectionCollisionMask = LayerMask.GetMask("OtherCollectingObject", "Ball");
@@ -54,7 +46,6 @@ public class Star : MonoBehaviour
     {
         if ((collectionCollisionMask & (1 << other.gameObject.layer)) != 0)
         {
-            gameManager.StarCollected(index);
             EventBus.Publish(new StarCollectedEvent(index, other.transform.position));
             gameObject.SetActive(false);
         }

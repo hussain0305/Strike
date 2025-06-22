@@ -446,5 +446,37 @@ public static class SaveManager
         return rec;
     }
 
+    public static bool SpendSurplusPoints(int numPoints, bool writeSaveImmediately = true)
+    {
+        EnsureDataLoaded();
+        if (currentSaveData.surplusPoints < numPoints)
+            return false;
+
+        currentSaveData.surplusPoints -= numPoints;
+        if (writeSaveImmediately)
+        {
+            SaveData();
+        }
+        EventBus.Publish(new SurplusPointsSpentEvent(numPoints));
+        return true;
+    }
+
+    public static void AddSurplusPoints(int numPoints, bool writeSaveImmediately = true)
+    {
+        EnsureDataLoaded();
+        currentSaveData.surplusPoints += numPoints;
+        if (writeSaveImmediately)
+        {
+            SaveData();
+        }
+        EventBus.Publish(new SurplusPointsEarnedEvent(numPoints));
+    }
+
+    public static int GetSurplusPoints()
+    {
+        EnsureDataLoaded();
+        return currentSaveData.surplusPoints;
+    }
+
     #endregion
 }

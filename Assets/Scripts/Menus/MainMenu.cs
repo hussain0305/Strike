@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
     public Button gauntletModeButton;
     public Button randomizerModeButton;
     public Button settingsPageButton;
-    public Button tuorialButton;
+    public Button earnStarsButton;
     public Button exitButton;
 
     private static MenuContext context;
@@ -76,10 +76,10 @@ public class MainMenu : MonoBehaviour
             menuManager.OpenMenu(MenuBase.MenuType.SettingsPage);
         });
         
-        tuorialButton.onClick.RemoveAllListeners();
-        tuorialButton.onClick.AddListener(() =>
+        earnStarsButton.onClick.RemoveAllListeners();
+        earnStarsButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(modeSelector.GetTutorialLevel());
+            menuManager.OpenMenu(MenuBase.MenuType.EarnStarsPage);
         });
         
         exitButton.onClick.RemoveAllListeners();

@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     private int volleyNumber = 1;
     public int VolleyNumber => volleyNumber;
     private bool showTrajectory = false;
-    private List<int> starsCollected = new List<int>();
+    private HashSet<int> starsCollected = new HashSet<int>();
     private Coroutine minTimePerShotRoutine;
     private Coroutine optTimePerShotRoutine;
     private Coroutine trajectoryViewRoutine;
@@ -154,7 +154,6 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         InitGame();
         InitBall();
-        
         SetupPlayers();
         levelLoader.LoadLevel();
         playerHUD.ShowLevelInfo();
@@ -174,6 +173,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Subscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
         
         EventBus.Subscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+        EventBus.Subscribe<StarCollectedEvent>(StarCollected);
     }
 
     private void OnDisable()
@@ -188,6 +188,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
         EventBus.Unsubscribe<TrajectoryAdAttemptedEvent>(TryWatchingTrajectoryAd);
         
         EventBus.Unsubscribe<ProjectilesSpawnedEvent>(ProjectilesSpawned);
+        EventBus.Unsubscribe<StarCollectedEvent>(StarCollected);
     }
 
     private void ProjectilesSpawned(ProjectilesSpawnedEvent e)
@@ -575,9 +576,9 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     }
 
 
-    public void StarCollected(int index)
+    public void StarCollected(StarCollectedEvent e)
     {
-        starsCollected.Add(index);
+        starsCollected.Add(e.Index);
     }
 
     public void GameRestarted(GameRestartedEvent e)
@@ -589,8 +590,18 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         EventBus.Publish(new GameEndedEvent());
         cameraController.ResetCamera();
-        PostGameStuff();
+        MarkLevelComplete();
         SetupResults();
+        PostGameStuff();
+    }
+
+    public void MarkLevelComplete()
+    {
+        bool levelCleared = modeSelector.IsPlayingSolo && gameMode.LevelCompletedSuccessfully();
+        if (levelCleared)
+        {
+            SaveManager.SetLevelCompleted(modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), false);
+        }
     }
 
     public void PostGameStuff()
@@ -604,6 +615,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             {
                 SaveManager.SetStarCollected((int)modeSelector.GetSelectedGameMode(), modeSelector.GetSelectedLevel(), starIndex, false);
             }
+            SaveManager.AddSurplusPoints(roundDataManager.GetPointsForPlayer(0) - gameMode.PointsRequired, false);
             SaveManager.AddStars(starsCollected.Count);
         }
 
@@ -623,7 +635,8 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     {
         if (modeSelector.IsPlayingSolo)
         {
-            resultScreen.SetupResult(gameMode.LevelCompletedSuccessfully());
+            resultScreen.SetupResult(gameMode.LevelCompletedSuccessfully(), starsCollected.Count, 
+                roundDataManager.GetPointsForPlayer(0) - gameMode.PointsRequired);
         }
         else
         {

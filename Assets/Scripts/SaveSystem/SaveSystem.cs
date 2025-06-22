@@ -68,6 +68,9 @@ public class SaveData
     
     public List<EndlessModeRecord> endlessRecordsList = new List<EndlessModeRecord>();
     public List<CollectedStarEntry> collectedStarsList = new List<CollectedStarEntry>();
+
+    public int surplusPoints = 0;
+    
     public void SyncDictionaryToList()
     {
         collectedStarsList = collectedStars.Select(kvp => new CollectedStarEntry(kvp.Key, kvp.Value)).ToList();

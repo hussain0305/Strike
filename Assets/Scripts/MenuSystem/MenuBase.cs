@@ -15,7 +15,8 @@ public class MenuBase : MonoBehaviour
         PauseMenu,
         SettingsPage,
         RandomizerPage,
-        AdditionalVolleyOfferPopup
+        AdditionalVolleyOfferPopup,
+        EarnStarsPage
     };
     
     [System.Serializable]
