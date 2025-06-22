@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+public class HUDAction_CheckedCameraOptions { }
+
 public class CameraController : MonoBehaviour
 {
     public Button cameraToggleButton;
@@ -79,6 +81,7 @@ public class CameraController : MonoBehaviour
     {
         if (!GameManager.BallShootable)
             return;
+        EventBus.Publish(new HUDAction_CheckedCameraOptions());
         ToggleRollOutMenuVisibility(!rollOutMenu.activeSelf);
     }
 

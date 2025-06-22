@@ -33,7 +33,7 @@ public class PlayerHUD : MonoBehaviour, IHUD
     private Vector2 SpinVector => SpinInput.SpinVector;
     private Quaternion LaunchAngle => AngleInput.cylinderPivot.rotation;
 
-    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 5;
+    private const int MIN_POWER_TO_OFFER_TRAJECTORY_VIEW = 10;
 
     private bool shotOngoing;
     

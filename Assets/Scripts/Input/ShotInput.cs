@@ -31,23 +31,28 @@ public class ShotInput : MonoBehaviour
 
     public TextMeshProUGUI spinTextNormal;
     public TextMeshProUGUI spinTextGlowy;
+    public TextMeshProUGUI spinTextTutorial;
+    
     public TextMeshProUGUI angleTextNormal;
     public TextMeshProUGUI angleTextGlowy;
+    public TextMeshProUGUI angleTextTutorial;
+    
     public TextMeshProUGUI powerTextNormal;
     public TextMeshProUGUI powerTextGlowy;
-    
+    public TextMeshProUGUI powerTextTutorial;
+
     public SpinInput spinInput;
     public AngleInput angleInput;
     public PowerInput powerInput;
 
     private bool isCurrentlyAtAimCamPosition = false;
     private Coroutine movingButtonsCoroutine;
-    private const float SPIN_BUTTON_DEFAULT_POSITION = -140f;
-    private const float ANGLE_BUTTON_DEFAULT_POSITION = -180f;
-    private const float POWER_BUTTON_DEFAULT_POSITION = 175f;
-    private const float SPIN_BUTTON_AIM_CAM_POSITION = -280f;
-    private const float ANGLE_BUTTON_AIM_CAM_POSITION = -360f;
-    private const float POWER_BUTTON_AIM_CAM_POSITION = 350f;
+    private const float SPIN_BUTTON_DEFAULT_POSITION = -175f;
+    private const float ANGLE_BUTTON_DEFAULT_POSITION = -225f;
+    private const float POWER_BUTTON_DEFAULT_POSITION = 200f;
+    private const float SPIN_BUTTON_AIM_CAM_POSITION = -325f;
+    private const float ANGLE_BUTTON_AIM_CAM_POSITION = -420f;
+    private const float POWER_BUTTON_AIM_CAM_POSITION = 380f;
     private RectTransform spinButtonRect;
     private RectTransform SpinButtonRect => spinButtonRect ??= spinButton.GetComponent<RectTransform>();
     private RectTransform angleButtonRect;
@@ -115,13 +120,16 @@ public class ShotInput : MonoBehaviour
         currentParameterInput = ShotParameter.None;
         spinTextNormal.text = "Spin";
         spinTextGlowy.text = "Spin";
+        spinTextTutorial.text = "Click to set";
         
         angleTextNormal.text = "Angle";
         angleTextGlowy.text = "Angle";
-        
+        angleTextTutorial.text = "Click to set";
+
         powerTextNormal.text = "Power";
         powerTextGlowy.text = "Power";
-        
+        powerTextTutorial.text = "Click to set";
+
         SetShotParameterSelected();
     }
 
@@ -146,14 +154,17 @@ public class ShotInput : MonoBehaviour
             case ShotParameter.Spin:
                 spinTextNormal.gameObject.SetActive(false);
                 spinTextGlowy.gameObject.SetActive(true);
+                spinTextTutorial.text = "SPIN";
                 break;
             case ShotParameter.Angle:
                 angleTextNormal.gameObject.SetActive(false);
                 angleTextGlowy.gameObject.SetActive(true);
+                angleTextTutorial.text = "ANGLE";
                 break;
             case ShotParameter.Power:
                 powerTextNormal.gameObject.SetActive(false);
                 powerTextGlowy.gameObject.SetActive(true);
+                powerTextTutorial.text = "POWER";
                 break;
         }
     }

@@ -25,6 +25,7 @@ public class TrajectoryHistoryButton : MonoBehaviour
     {
         button.onClick.AddListener(() =>
         {
+            EventBus.Publish(new HUDAction_CheckTrajectoryHistory());
             trajectoryHistoryBeingDisplayed = !trajectoryHistoryBeingDisplayed;
             if (trajectoryHistoryBeingDisplayed)
             {
