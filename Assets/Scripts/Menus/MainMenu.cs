@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     public Button settingsPageButton;
     public Button earnStarsButton;
     public Button exitButton;
+    public GameObject[] disableForWebBuild;
 
     private static MenuContext context;
     public static MenuContext Context
@@ -83,7 +84,14 @@ public class MainMenu : MonoBehaviour
         });
         
         exitButton.onClick.RemoveAllListeners();
+#if WEB_BUILD
+        for (int i = 0; i < disableForWebBuild.Length; i++)
+        {
+            disableForWebBuild[i].SetActive(false);
+        }
+#else
         exitButton.onClick.AddListener(Application.Quit);
+#endif
     }
 
     private void OnDisable()

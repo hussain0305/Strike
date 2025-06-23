@@ -825,7 +825,7 @@ PlayerSettings:
   webWasm2023: 0
   scriptingDefineSymbols:
     Standalone: TESTER_MODE
-    WebGL: ADS_DISABLED
+    WebGL: ADS_DISABLED;WEB_BUILD
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

@@ -136,11 +136,11 @@ public class BallFusionController : MonoBehaviour
         if (!isPrimary && !string.IsNullOrEmpty(primaryBallID))
             blockAxis = Balls.Instance.GetBall(primaryBallID).abilityAxis;
 
-        foreach (var btn in pooledButtons)
+        foreach (FusionBallButton btn in pooledButtons)
         {
-            bool allow = isPrimary
-                         || blockAxis == null
-                         || btn.ballProperties.abilityAxis != blockAxis.Value;
+            bool allow = (isPrimary || blockAxis == null
+                         || btn.ballProperties.abilityAxis != blockAxis.Value)
+                         && SaveManager.IsBallUnlocked(btn.ballID);
             btn.gameObject.SetActive(allow);
         }
     }

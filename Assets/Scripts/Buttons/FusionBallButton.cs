@@ -8,7 +8,8 @@ public class FusionBallButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Button button;
 
-    private string ballID;
+    [HideInInspector]
+    public string ballID;
     private Action<string> onChosen;
     [HideInInspector]
     public BallProperties ballProperties;
