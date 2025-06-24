@@ -103,7 +103,7 @@ public class NotableEventsManager : MonoBehaviour
             }
         }
 
-        if (!candidateFound)
+        if (!candidateFound && currentActiveText != godlikeStreak.textGO)
         {
             currentActiveText = godlikeStreak.textGO;
             currentActiveText.SetActive(true);

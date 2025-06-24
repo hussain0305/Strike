@@ -29,7 +29,9 @@ public class FlavorTextSpawner : MonoBehaviour
     private int numHitsInThisShot = 0;
     
     private Queue<GameObject> pool = new Queue<GameObject>();
-
+    private Dictionary<int, int> flavorTextPositionBuckets = new Dictionary<int, int>();
+    
+    private int bucketWidth = 10;
     private const float MIN_JITTER = 0.1f;
     private const float MAX_JITTER = 4.0f;
     private const float ELIMINATION_JITTER = 2f;
@@ -72,7 +74,13 @@ public class FlavorTextSpawner : MonoBehaviour
                 GetRandomMessageAndMaterial(e.Value, out string chosenMessage, out Material chosenMaterial);
                 GameObject ft = GetFromPool();
 
-                ft.transform.position = e.HitPosition + new Vector3(Random.Range(0, numHitsInThisShot - 1), Random.Range(0, numHitsInThisShot - 1), 0);
+                int bucketKey = GetXBucketKey(e.HitPosition.x);
+                if (!flavorTextPositionBuckets.ContainsKey(bucketKey))
+                    flavorTextPositionBuckets.Add(bucketKey, 0);
+                flavorTextPositionBuckets[bucketKey]++;
+                
+                ft.transform.position = e.HitPosition + new Vector3(Random.Range(flavorTextPositionBuckets[bucketKey] - 2, flavorTextPositionBuckets[bucketKey] - 1), 
+                    flavorTextPositionBuckets[bucketKey] * 4.5f, 0);
                 ft.SetActive(true);
                 ft.GetComponent<FlavorText>().Init(chosenMessage, chosenMaterial, jitterStrength, this);
                 break;
@@ -98,6 +106,7 @@ public class FlavorTextSpawner : MonoBehaviour
     {
         playerEliminated = false;
         numHitsInThisShot = 0;
+        flavorTextPositionBuckets.Clear();
     }
     
     public void ReturnToPool(GameObject ft)
@@ -141,5 +150,11 @@ public class FlavorTextSpawner : MonoBehaviour
         
         var matList = points > 0 ? positiveMaterials : negativeMaterials;
         mat = matList.Length > 0 ? matList[Random.Range(0, matList.Length)] : null;
+    }
+    
+    public int GetXBucketKey(float x)
+    {
+        int bucketIndex = Mathf.FloorToInt(x / bucketWidth);
+        return (bucketIndex * bucketWidth) + (bucketWidth / 2);
     }
 }
