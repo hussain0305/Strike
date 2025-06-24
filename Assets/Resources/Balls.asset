@@ -78,7 +78,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 94356913b962134469309f4e5e23c68d, type: 3}
     id: sniperBall
-    cost: 20
+    cost: 25
   - name: Mirror
     description: A second, mirrored ball collecting everything in its path
     rarity: 2
@@ -105,22 +105,9 @@ MonoBehaviour:
     prefab: {fileID: 3931144424910952291, guid: c1b6920855a75e045935f1a9c50bad30, type: 3}
     id: ricoBall
     cost: 30
-  - name: Shotgun
-    description: A flurry of pellets shoot with the ball, hitting additional targets
-    rarity: 3
-    weight: 0.5
-    spin: 0
-    abilityAxis: 1
-    abilityAxisText: Burst
-    abilityText: Spawns additional pellets
-    moduleDefinition: {fileID: 11400000, guid: dbe3607823e1cc4469d6716f545adb12, type: 2}
-    physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
-    prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
-    id: shotgunBall
-    cost: 50
   - name: Sticky
     description: Sticks to the surface of first contact
-    rarity: 3
+    rarity: 2
     weight: 1
     spin: 5
     abilityAxis: 3
@@ -130,7 +117,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 79c139b40b3b4174ab8159150fefa39e, type: 2}
     prefab: {fileID: 1089681808455105078, guid: 12b8b2cc918b8a142be93c1f03e1b8c7, type: 3}
     id: stickyBall
-    cost: 50
+    cost: 40
   - name: Ghost
     description: Passes through everything, collects everything. EVERYTHING
     rarity: 3
@@ -144,6 +131,19 @@ MonoBehaviour:
     prefab: {fileID: 3514905537347721854, guid: 8917eb515da00374e99be301eb5a058e, type: 3}
     id: ghostBall
     cost: 60
+  - name: Shotgun
+    description: A flurry of pellets shoot with the ball, hitting additional targets
+    rarity: 3
+    weight: 0.5
+    spin: 0
+    abilityAxis: 1
+    abilityAxisText: Burst
+    abilityText: Spawns additional pellets
+    moduleDefinition: {fileID: 11400000, guid: dbe3607823e1cc4469d6716f545adb12, type: 2}
+    physicsMaterial: {fileID: 13400000, guid: 47b3cdf5bf5ea6a439d83c6c19529a98, type: 2}
+    prefab: {fileID: 1089681808455105078, guid: d664012b82fabb440a06980d5b524447, type: 3}
+    id: shotgunBall
+    cost: 75
   - name: Disco
     description: Stops at the highest point in its trajectory and sprinkles pellets
       in every direction
@@ -157,7 +157,7 @@ MonoBehaviour:
     physicsMaterial: {fileID: 13400000, guid: 3c2e82a0def14654abe471b1eaede083, type: 2}
     prefab: {fileID: 3931144424910952291, guid: 66c0659fe5a9662409ca9ca670025b61, type: 3}
     id: discoBall
-    cost: 75
+    cost: 90
   maxWeight: 10
   maxSpin: 15
   maxBounce: 3

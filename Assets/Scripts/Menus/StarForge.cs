@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EarnStarsPage : MonoBehaviour
+public class StarForge : MonoBehaviour
 {
     public GameObject exchangeAvailableSection;
     public GameObject exchangeUnavailableSection;
@@ -15,7 +15,7 @@ public class EarnStarsPage : MonoBehaviour
 
     public Button exchangeButton;
     
-    private const int EXCHANGE_RATE = 200;
+    private const int EXCHANGE_RATE = 50;
     
     private void OnEnable()
     {
