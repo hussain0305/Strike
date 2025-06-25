@@ -9,7 +9,7 @@ public class FlavorTextSpawner : MonoBehaviour
     public Material[] positiveMaterials;
     public Material[] negativeMaterials;
     public Material dangerMaterial;
-    public int poolSize = 10;
+    public int poolSize = 20;
     
     public readonly Dictionary<int, string[]> pointThresholdMessages = new Dictionary<int, string[]>
     {
@@ -31,7 +31,8 @@ public class FlavorTextSpawner : MonoBehaviour
     private Queue<GameObject> pool = new Queue<GameObject>();
     private Dictionary<int, int> flavorTextPositionBuckets = new Dictionary<int, int>();
     
-    private int bucketWidth = 10;
+    private const int BUCKET_WIDTH = 20;
+    private const int MAX_FLAVOR_TEXTS_PER_COLUMN = 4;
     private const float MIN_JITTER = 0.1f;
     private const float MAX_JITTER = 4.0f;
     private const float ELIMINATION_JITTER = 2f;
@@ -154,7 +155,30 @@ public class FlavorTextSpawner : MonoBehaviour
     
     public int GetXBucketKey(float x)
     {
-        int bucketIndex = Mathf.FloorToInt(x / bucketWidth);
-        return (bucketIndex * bucketWidth) + (bucketWidth / 2);
+        int bucketIndex = Mathf.FloorToInt(x / BUCKET_WIDTH);
+        int bucketKey = (bucketIndex * BUCKET_WIDTH) + (BUCKET_WIDTH / 2);
+        if (flavorTextPositionBuckets.ContainsKey(bucketKey) &&
+            flavorTextPositionBuckets[bucketKey] <= MAX_FLAVOR_TEXTS_PER_COLUMN)
+        {
+            return bucketKey;
+        }
+
+        for (int i = 1; i < 5; i++)
+        {
+            int adjustedBucketKey = bucketKey - (i * BUCKET_WIDTH);
+            if (flavorTextPositionBuckets.ContainsKey(adjustedBucketKey) &&
+                flavorTextPositionBuckets[adjustedBucketKey] <= MAX_FLAVOR_TEXTS_PER_COLUMN)
+            {
+                return adjustedBucketKey;
+            }
+            
+            adjustedBucketKey = bucketKey + (i * BUCKET_WIDTH);
+            if (flavorTextPositionBuckets.ContainsKey(adjustedBucketKey) &&
+                flavorTextPositionBuckets[adjustedBucketKey] <= MAX_FLAVOR_TEXTS_PER_COLUMN)
+            {
+                return adjustedBucketKey;
+            }
+        }
+        return bucketKey;
     }
 }
