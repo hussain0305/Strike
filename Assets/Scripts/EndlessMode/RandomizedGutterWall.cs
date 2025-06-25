@@ -190,6 +190,10 @@ public class RandomizedGutterWall : EndlessModeSpawner
             int maxPoints = difficulty * maxGutterWallPointsFactor;
             
             float points = Mathf.Lerp(minPoints, maxPoints, Random.value);
+            if (difficulty > 4 && Random.Range(1, 13) < difficulty)
+            {
+                points *= -1;
+            }
             int roundedOffPoints = Mathf.CeilToInt(points / 5f) * 5;
             
             LevelExporter.CollectibleData data = new LevelExporter.CollectibleData();
