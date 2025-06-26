@@ -827,7 +827,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: TESTER_MODE
+    Standalone: WEB_BUILD;ADS_DISABLED
     WebGL: ADS_DISABLED;WEB_BUILD
   additionalCompilerArguments: {}
   platformArchitecture: {}
