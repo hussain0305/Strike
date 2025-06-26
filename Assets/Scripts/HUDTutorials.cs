@@ -179,6 +179,7 @@ public class HUDTutorials : MonoBehaviour
     {
         if (!swipeTutorialShown)
         {
+            swipeTutorialShown = true;
             swipeTutorial.gameObject.SetActive(true);
         }
 

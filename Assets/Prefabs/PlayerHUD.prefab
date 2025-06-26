@@ -1429,7 +1429,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ 3 ]'
+  m_text: <color="orange">[ 3 ]</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -4497,18 +4497,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743515178192316348}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7712219035259803227}
+  m_Father: {fileID: 1707949917526086782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 1000, y: 300}
-  m_Pivot: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -50, y: -50}
+  m_SizeDelta: {x: 1949.5762, y: 300}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &3948754035162677757
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4537,7 +4537,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SWIPE ACROSS THE SCREEN TO SET
+  m_text: 'TO SET SHOT PARAMETERS -
+
+    <color="orange">SWIPE</color> ACROSS THE
+    SCREEN, OR
+
+    USE <color="orange">W</color> / <color="orange">A</color> / <color="orange">S</color>
+    / <color="orange">D</color>, OR
+
+    USE <color="orange">UP</color> / <color="orange">DOWN</color>
+    / <color="orange">LEFT</color> / <color="orange">RIGHT</color>
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -4564,15 +4575,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 75
-  m_fontSizeBase: 75
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -5875,7 +5886,6 @@ RectTransform:
   - {fileID: 5915761277474723982}
   - {fileID: 177143082922550598}
   - {fileID: 7169688709251089881}
-  - {fileID: 5005217176137366616}
   m_Father: {fileID: 1707949917526086782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -5910,6 +5920,7 @@ MonoBehaviour:
   spinInput: {fileID: 1606771313911406883}
   angleInput: {fileID: 8618386653439688}
   powerInput: {fileID: 8544745534358801410}
+  parameterChangeKeys: 7700000061000000730000006400000011010000120100001401000013010000
 --- !u!114 &1606771313911406883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6038,7 +6049,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ 2 ]'
+  m_text: <color="orange">[ 2 ]</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -7934,7 +7945,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ SPACEBAR ]'
+  m_text: <color="orange">[ SPACEBAR ]</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -9728,7 +9739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ Click ] Camera options'
+  m_text: <color="orange">[ CLICK ]</color> Camera options
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -10429,6 +10440,7 @@ RectTransform:
   - {fileID: 9068859953408716939}
   - {fileID: 7712219035259803227}
   - {fileID: 4674951050098416472}
+  - {fileID: 5005217176137366616}
   m_Father: {fileID: 3120318156853850914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -12001,7 +12013,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ H ] SHOT HISTORY'
+  m_text: <color="orange">[ H ]</color> SHOT HISTORY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -12040,7 +12052,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 32
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -14445,7 +14457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ T ] CHECK TRAJECTORY'
+  m_text: <color="orange">[ T ]</color> CHECK TRAJECTORY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
@@ -14484,7 +14496,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 32
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -14581,7 +14593,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[ 1 ]'
+  m_text: <color="orange">[ 1 ]</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5411cb1f349097944bc632d4d6034136, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 80a0f683ba0d20a4ea6bc5b0fe4fa0f4, type: 2}
