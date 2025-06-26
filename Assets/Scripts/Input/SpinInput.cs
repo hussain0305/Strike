@@ -16,7 +16,8 @@ public class SpinInput : MonoBehaviour
     private bool isInteracting;
     private Vector2 startTouchPosition;
     private Vector2 controlBounds;
-    
+    private Vector2 keyboardInputChange;
+
     private void Start()
     {
         controlBounds = controlArea.rect.size / 2f;
@@ -60,19 +61,45 @@ public class SpinInput : MonoBehaviour
             Vector2 swipeDelta = currentTouchPosition - startTouchPosition;
 
             swipeDelta *= swipeSpeed;
-
-            SpinVector += swipeDelta / new Vector2(Screen.width, Screen.height);
-            SpinVector = Vector2.ClampMagnitude(SpinVector, 1f);
-            
-            string spinText = $"{SpinVector.x * 100:F0}, {SpinVector.y * 100:F0}";
-            foreach (TextMeshProUGUI valText in spinValueText)
-            {
-                valText.text = spinText;
-            }
+            SpinChanged(swipeDelta);
             startTouchPosition = currentTouchPosition;
-            
-            UpdatePointer();
         }
+        
+        else if (!isInteracting)
+        {
+            keyboardInputChange = Vector2.zero;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
+                keyboardInputChange += 2 * Vector2.up;
+            }
+            else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                keyboardInputChange += 2 * Vector2.down;
+            }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                keyboardInputChange += 2 * Vector2.left;
+            }
+            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                keyboardInputChange += 2 * Vector2.right;
+            }
+            SpinChanged(keyboardInputChange);
+        }
+    }
+
+    public void SpinChanged(Vector2 swipeDelta)
+    {
+        SpinVector += swipeDelta / new Vector2(Screen.width, Screen.height);
+        SpinVector = Vector2.ClampMagnitude(SpinVector, 1f);
+            
+        string spinText = $"{SpinVector.x * 100:F0}, {SpinVector.y * 100:F0}";
+        foreach (TextMeshProUGUI valText in spinValueText)
+        {
+            valText.text = spinText;
+        }
+            
+        UpdatePointer();
     }
 
     public void UpdatePointer()

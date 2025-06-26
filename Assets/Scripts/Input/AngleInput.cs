@@ -29,6 +29,8 @@ public class AngleInput : MonoBehaviour
             return shotInput;
         }
     }
+
+    private Vector2 keyboardInputChange;
     
     private void OnEnable()
     {
@@ -60,6 +62,33 @@ public class AngleInput : MonoBehaviour
             EndSwipe();
         }
 
+        if (!isDragging)
+        {
+            keyboardInputChange = Vector2.zero;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
+                keyboardInputChange += Vector2.right / 5;
+            }
+            else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                keyboardInputChange += Vector2.left / 5;
+            }
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                keyboardInputChange += Vector2.down / 5;
+            }
+            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                keyboardInputChange += Vector2.up / 5;
+            }
+
+            accumulatedAngles += keyboardInputChange;
+            accumulatedAngles.x = Mathf.Clamp(accumulatedAngles.x, pitchLimits.Min, pitchLimits.Max);
+            accumulatedAngles.y = Mathf.Clamp(accumulatedAngles.y, yawLimits.Min, yawLimits.Max);
+
+            cylinderPivot.rotation = Quaternion.Euler(-accumulatedAngles.x, accumulatedAngles.y, 0);
+        }
+        
         Vector2 angle = CalculateProjectedAngle();
         foreach (TextMeshProUGUI valText in angleValueText)
         {

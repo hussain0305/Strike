@@ -25,6 +25,10 @@ public class PowerInput : MonoBehaviour
     private Vector2 startTouch;
     private bool isDragging = false;
 
+    private float keyboardInputChange;
+    private float nextKeyboardInputAllowedTime = 0;
+    private float keyboardInputInterval = 0.05f;
+    
     private void OnEnable()
     {
         EventBus.Subscribe<NextShotCuedEvent>(Reset);
@@ -53,6 +57,30 @@ public class PowerInput : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             EndSwipe();
+        }
+        
+        else if (!isDragging && Time.time > nextKeyboardInputAllowedTime)
+        {
+            keyboardInputChange = 0;
+            nextKeyboardInputAllowedTime += keyboardInputInterval;
+            
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ||
+                Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                keyboardInputChange = 1;
+            }
+            else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ||
+                Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                keyboardInputChange = -1;
+            }
+            
+            Power += keyboardInputChange;
+            Power = Mathf.Clamp(Power, 0f, 100);
+            foreach (TextMeshProUGUI valText in powerText)
+            {
+                valText.text = Power.ToString("F0");
+            }
         }
     }
 

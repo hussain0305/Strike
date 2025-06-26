@@ -17,7 +17,7 @@ public class PlayerHUD : MonoBehaviour, IHUD
     public TrajectoryButton trajectoryButton;
     public GameObject trajectoryButtonSection;
     public GameObject trajectoryAdButtonSection;
-    public GameObject trajectoryHistoryButton;
+    public TrajectoryHistoryButton trajectoryHistoryButton;
     
     [Header("Game Screen")]
     public Button fireButton;

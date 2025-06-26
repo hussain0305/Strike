@@ -23,18 +23,20 @@ public class TrajectoryHistoryButton : MonoBehaviour
 
     private void Start()
     {
-        button.onClick.AddListener(() =>
+        button.onClick.AddListener(ButtonPressed);
+    }
+
+    public void ButtonPressed()
+    {
+        EventBus.Publish(new HUDAction_CheckTrajectoryHistory());
+        trajectoryHistoryBeingDisplayed = !trajectoryHistoryBeingDisplayed;
+        if (trajectoryHistoryBeingDisplayed)
         {
-            EventBus.Publish(new HUDAction_CheckTrajectoryHistory());
-            trajectoryHistoryBeingDisplayed = !trajectoryHistoryBeingDisplayed;
-            if (trajectoryHistoryBeingDisplayed)
-            {
-                trajectoryHistoryViewer.ShowTrajectoryHistory();
-            }
-            else
-            {
-                trajectoryHistoryViewer.HideTrajectoryHistory();
-            }
-        });
+            trajectoryHistoryViewer.ShowTrajectoryHistory();
+        }
+        else
+        {
+            trajectoryHistoryViewer.HideTrajectoryHistory();
+        }
     }
 }

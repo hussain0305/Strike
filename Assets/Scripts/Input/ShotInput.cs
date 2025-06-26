@@ -60,6 +60,12 @@ public class ShotInput : MonoBehaviour
     private RectTransform powerButtonRect;
     private RectTransform PowerButtonRect => powerButtonRect ??= powerButton.GetComponent<RectTransform>();
 
+    public KeyCode[] parameterChangeKeys = new KeyCode[]
+    {
+        KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D,
+        KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow
+    };
+    
     private void OnEnable()
     {
         EventBus.Subscribe<NextShotCuedEvent>(NextShotCued);
@@ -96,6 +102,18 @@ public class ShotInput : MonoBehaviour
     }
 
     private ShotParameter currentParameterInput = ShotParameter.None;
+
+    private void Update()
+    {
+        for (int i = 0; i < parameterChangeKeys.Length; i++)
+        {
+            if (Input.GetKeyUp(parameterChangeKeys[i]))
+            {
+                EventBus.Publish(new StoppedShotInput());
+                break;
+            }
+        }
+    }
 
     public bool IsInputtingSpin()
     {

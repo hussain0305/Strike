@@ -27,7 +27,7 @@ public abstract class GameMode : MonoBehaviour
     protected float maxTimePerShot = 10;
     public float MaxTimePerShot => maxTimePerShot;
     
-    private int numProjectileViews = 3;
+    private int numProjectileViews = 5;
     public int NumProjectileViews => numProjectileViews;
     
     private int projectileViewDuration = 30;

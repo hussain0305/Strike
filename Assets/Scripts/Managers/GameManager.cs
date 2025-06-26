@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
     [Inject]
     private ShotInput shotInput;
     [Inject]
-    private IHUD playerHUD;
+    private PlayerHUD playerHUD;
     [InjectOptional]
     private InGameContext context;
     public InGameContext Context => context;
@@ -263,6 +263,42 @@ public class GameManager : MonoBehaviour, IInitializable, IDisposable
             {
                 ShowBallLanding();
             }
+        }
+        HandleKeyboardInput();
+    }
+
+    private void HandleKeyboardInput()
+    {
+        if (!BallShootable)
+        {
+            if (playerHUD.nextButton.gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
+                NextButtonPressed(null);
+            
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            shotInput.SetShotParameterSelected(ShotInput.ShotParameter.Spin);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            shotInput.SetShotParameterSelected(ShotInput.ShotParameter.Angle);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            shotInput.SetShotParameterSelected(ShotInput.ShotParameter.Power);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            FireButtonPressed(null);
+        }
+        else if (playerHUD.trajectoryButton.gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.T))
+        {
+            playerHUD.trajectoryButton.ButtonPressed();
+        }
+        else if (playerHUD.trajectoryHistoryButton.gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.H))
+        {
+            playerHUD.trajectoryHistoryButton.ButtonPressed();
         }
     }
 
