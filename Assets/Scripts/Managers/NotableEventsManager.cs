@@ -65,8 +65,11 @@ public class NotableEventsManager : MonoBehaviour
                 ShowMultiplierText();
                 break;
             case CollectibleType.Points:
-                numberHitsInThisShot++;
-                PlayHitMessage(numberHitsInThisShot);
+                if (e.Value > 0)
+                {
+                    numberHitsInThisShot++;
+                    PlayHitMessage(numberHitsInThisShot);
+                }
                 break;
         }
     }
