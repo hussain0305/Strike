@@ -5,6 +5,7 @@ public class AngleInput : MonoBehaviour
 {
     public Transform cylinderPivot;
     public float rotationSpeed = 1f;
+    public float keyboardRotationSpeed = 20;
     public TextMeshProUGUI[] angleValueText;
     public float planeDistance = 2.0f;
     public Vector2 InputVector { get; private set; }
@@ -67,19 +68,19 @@ public class AngleInput : MonoBehaviour
             keyboardInputChange = Vector2.zero;
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             {
-                keyboardInputChange += Vector2.right / 5;
+                keyboardInputChange += Vector2.right / keyboardRotationSpeed;
             }
             else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
             {
-                keyboardInputChange += Vector2.left / 5;
+                keyboardInputChange += Vector2.left / keyboardRotationSpeed;
             }
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
-                keyboardInputChange += Vector2.down / 5;
+                keyboardInputChange += Vector2.down / keyboardRotationSpeed;
             }
             else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {
-                keyboardInputChange += Vector2.up / 5;
+                keyboardInputChange += Vector2.up / keyboardRotationSpeed;
             }
 
             accumulatedAngles += keyboardInputChange;
