@@ -11,7 +11,8 @@ public class ContinuousMovement : MonoBehaviour
 
     private float lerpFactor = 0f;
     private int currentSegment = 0;
-    private bool canMove = false;
+    [HideInInspector]
+    public bool canMove = false;
     
     private void OnEnable()
     {

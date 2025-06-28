@@ -206,18 +206,20 @@ public class RandomizedGutterWall : EndlessModeSpawner
             pointToken.InitializeAndSetup(gameManager.Context, data);
         }
         
-        var cm = obj.GetComponent<ContinuousMovement>();
+        var cmScript = obj.GetComponent<ContinuousMovement>();
         if (shouldMove)
         {
-            if (cm == null)
-                cm = obj.AddComponent<ContinuousMovement>();
+            if (cmScript == null)
+                cmScript = obj.AddComponent<ContinuousMovement>();
                  
-            cm.CreateMarkers(path);
-            cm.speed = 1f;
+            cmScript.enabled = true;
+            cmScript.canMove = true;
+            cmScript.CreateMarkers(path);
+            cmScript.speed = 1f;
         }
-        else if (cm != null)
+        else if (cmScript != null)
         {
-            Destroy(cm);
+            Destroy(cmScript);
         }
     }
 

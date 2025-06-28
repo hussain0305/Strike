@@ -310,7 +310,10 @@ public class Collectible : MonoBehaviour, ICollectible
         transform.rotation = defaultRotation;
         
         if (continuousMovement)
+        {
             continuousMovement.enabled = true;
+            continuousMovement.canMove = true;
+        }
     }
 
     public void PerformRefreshPinChecks()
@@ -358,10 +361,11 @@ public class Collectible : MonoBehaviour, ICollectible
             if (!cmScript)
                 cmScript = gameObject.AddComponent<ContinuousMovement>();
             
+            cmScript.enabled = true;
+            cmScript.canMove = true;
             cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
             RBody.isKinematic = true;
-            cmScript.enabled = true;
         }
         else if (cmScript)
         {
@@ -380,9 +384,10 @@ public class Collectible : MonoBehaviour, ICollectible
         {
             if (!crScript)
                 crScript = gameObject.AddComponent<ContinuousRotation>();
+            
+            crScript.enabled = true;
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
-            crScript.enabled = true;
         }
         else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
         {

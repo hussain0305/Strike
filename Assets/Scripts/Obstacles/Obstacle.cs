@@ -35,9 +35,10 @@ public class Obstacle : MonoBehaviour
             if (!cmScript)
                 cmScript = gameObject.AddComponent<ContinuousMovement>();
             
+            cmScript.enabled = true;
+            cmScript.canMove = true;
             cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
-            cmScript.enabled = true;
             
             RBody.isKinematic = true;
         }
@@ -56,9 +57,10 @@ public class Obstacle : MonoBehaviour
         {
             if (!crScript)
                 crScript = axisOfRotation.AddComponent<ContinuousRotation>();
+            
+            crScript.enabled = true;
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
-            crScript.enabled = true;
 
             RBody.isKinematic = true;
         }

@@ -60,6 +60,8 @@ public class ForcePad : Obstacle
         {
             if (!crScript)
                 crScript = axisOfRotation.AddComponent<ContinuousRotation>();
+            
+            crScript.enabled = true;
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
             crScript.RotateAroundWorld();

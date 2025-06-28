@@ -27,6 +27,8 @@ public class LevelLoader : MonoBehaviour
             if (!cmScript)
                 cmScript = obj.AddComponent<ContinuousMovement>();
 
+            cmScript.enabled = true;
+            cmScript.canMove = true;
             cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
         }
@@ -45,6 +47,8 @@ public class LevelLoader : MonoBehaviour
         {
             if (!crScript)
                 crScript = obj.AddComponent<ContinuousRotation>();
+
+            crScript.enabled = true;
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
         }
