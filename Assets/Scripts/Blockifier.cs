@@ -12,8 +12,8 @@ public static class Blockifier
     }
     
     private static PoolingManager poolingManager;
-    private static int fineDetailBlockRadius = 1;
-    private static float blockifyForce = 3;
+    private static readonly int fineDetailBlockRadius = 1;
+    private static readonly float forceFactor = 0.005f;
     private static List<BuildingBlock> active1XBlocks = new();
     private static List<BuildingBlock> active2XBlocks = new();
 
@@ -29,7 +29,7 @@ public static class Blockifier
         
         int xSize = collectibleSize.x;
         int ySize = collectibleSize.y;
-        int zSize = 1;//collectibleSize.z;
+        int zSize = collectibleSize.z;
 
         bool[,,] occupied = new bool[xSize, ySize, zSize];
 
@@ -42,7 +42,7 @@ public static class Blockifier
         int beginY = Mathf.Max(0, impactY - fineDetailBlockRadius);
         int endY = Mathf.Min(ySize - 1, impactY + fineDetailBlockRadius);
         int beginZ = Mathf.Max(0, impactZ - fineDetailBlockRadius);
-        int endZ = beginZ;//Mathf.Min(zSize - 1, impactZ + fineDetailBlockRadius);
+        int endZ = Mathf.Min(zSize - 1, impactZ + fineDetailBlockRadius);
 
         void Place1xBlock(int x, int y, int z)
         {
@@ -59,14 +59,12 @@ public static class Blockifier
             
             block.transform.position = worldPos;
             block.transform.rotation = transform.rotation;
-            // Vector3 direction = (worldPos - worldImpactPoint).normalized;
-            // block.linearVelocity = direction * blockifyForce * impactVelocity.sqrMagnitude;
             
-            Vector3 direction = (worldPos - worldImpactPoint).normalized;
-            Vector3 blended = Vector3.Lerp(impactVelocity.normalized, direction, 0.6f).normalized;
+            Vector3 direction = worldPos - worldImpactPoint;
             Vector3 randomOffset = Random.insideUnitSphere * 0.2f;
-            Vector3 finalVelocity = (blended + randomOffset).normalized * impactVelocity.magnitude;
+            Vector3 finalVelocity = forceFactor * impactVelocity.sqrMagnitude * (direction + randomOffset);
             block.rBody.linearVelocity = finalVelocity;
+            block.rBody.angularVelocity = Vector3.one * Random.Range(-1f, 1f);
 
             active1XBlocks.Add(block);
         }
@@ -84,14 +82,13 @@ public static class Blockifier
             BuildingBlock block = poolingManager.Get2xBlocks(1)[0];
             block.transform.position = worldPos;
             block.transform.rotation = transform.rotation;
-            // Vector3 direction = (worldPos - worldImpactPoint).normalized;
-            // block.linearVelocity = direction * blockifyForce * 0.75f;
-            Vector3 direction = (worldPos - worldImpactPoint).normalized;
-            Vector3 blended = Vector3.Lerp(impactVelocity.normalized, direction, 0.4f).normalized;
+
+            Vector3 direction = worldPos - worldImpactPoint;
             Vector3 randomOffset = Random.insideUnitSphere * 0.1f;
-            Vector3 finalVelocity = (blended + randomOffset).normalized * (impactVelocity.magnitude * 0.75f);
+            Vector3 finalVelocity = (forceFactor / 2) * impactVelocity.sqrMagnitude * (direction + randomOffset);
 
             block.rBody.linearVelocity = finalVelocity;
+            block.rBody.angularVelocity = Vector3.one * Random.Range(-1f, 1f);
             active2XBlocks.Add(block);
         }
 
@@ -101,7 +98,7 @@ public static class Blockifier
             {
                 for (int dy = 0; dy < 2; dy++)
                 {
-                    for (int dz = 0; dz < 1; dz++)//dz < 2
+                    for (int dz = 0; dz < 2; dz++)
                     {
                         int nx = x + dx;
                         int ny = y + dy;
@@ -120,7 +117,7 @@ public static class Blockifier
             {
                 for (int dy = 0; dy < 2; dy++)
                 {
-                    for (int dz = 0; dz < 1; dz++)//dz < 2
+                    for (int dz = 0; dz < 2; dz++)
                     {
                         if (occupied[x + dx, y + dy, z + dz])
                             return false;
