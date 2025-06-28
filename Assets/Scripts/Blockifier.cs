@@ -162,7 +162,7 @@ public static class Blockifier
             }
         }
         
-        pointTokenScript.Stow();
+        pointTokenScript.ToggleVisibility(false);
     }
 
     public static void AssignPoolingManager(PoolingManager _poolingManager)
