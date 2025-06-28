@@ -116,8 +116,8 @@ public class PoolingManager : MonoBehaviour
     public Queue<BuildingBlock> blocks1xPool = new Queue<BuildingBlock>();
     public Queue<BuildingBlock> blocks2xPool = new Queue<BuildingBlock>();
 
-    private const int NUM_1X_BLOCKS = 50;
-    private const int NUM_2X_BLOCKS = 50;
+    private const int NUM_1X_BLOCKS = 100;
+    private const int NUM_2X_BLOCKS = 100;
     
     public void InitBlockificationPool()
     {

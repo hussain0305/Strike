@@ -8,6 +8,7 @@ public static class Blockifier
         EventBus.Subscribe<GameEndedEvent>(Cleanup);
         EventBus.Subscribe<GameExitedEvent>(Cleanup);
         EventBus.Subscribe<NextShotCuedEvent>(Cleanup);
+        EventBus.Subscribe<GameRestartedEvent>(Cleanup);
     }
     
     private static PoolingManager poolingManager;
@@ -28,7 +29,7 @@ public static class Blockifier
         
         int xSize = collectibleSize.x;
         int ySize = collectibleSize.y;
-        int zSize = collectibleSize.z;
+        int zSize = 1;//collectibleSize.z;
 
         bool[,,] occupied = new bool[xSize, ySize, zSize];
 
@@ -41,7 +42,7 @@ public static class Blockifier
         int beginY = Mathf.Max(0, impactY - fineDetailBlockRadius);
         int endY = Mathf.Min(ySize - 1, impactY + fineDetailBlockRadius);
         int beginZ = Mathf.Max(0, impactZ - fineDetailBlockRadius);
-        int endZ = Mathf.Min(zSize - 1, impactZ + fineDetailBlockRadius);
+        int endZ = beginZ;//Mathf.Min(zSize - 1, impactZ + fineDetailBlockRadius);
 
         void Place1xBlock(int x, int y, int z)
         {
@@ -100,7 +101,7 @@ public static class Blockifier
             {
                 for (int dy = 0; dy < 2; dy++)
                 {
-                    for (int dz = 0; dz < 2; dz++)
+                    for (int dz = 0; dz < 1; dz++)//dz < 2
                     {
                         int nx = x + dx;
                         int ny = y + dy;
@@ -119,7 +120,7 @@ public static class Blockifier
             {
                 for (int dy = 0; dy < 2; dy++)
                 {
-                    for (int dz = 0; dz < 2; dz++)
+                    for (int dz = 0; dz < 1; dz++)//dz < 2
                     {
                         if (occupied[x + dx, y + dy, z + dz])
                             return false;
