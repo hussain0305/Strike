@@ -60,6 +60,10 @@ public class CollectiblePrefabMapping : ScriptableObject
     public DangerTokenPrefab[] dangerTokenPrefabs;
     public ObstaclePrefab[] obstaclePrefabs;
     public GameObject starPrefab;
+
+    [Header("Blockification")]
+    public GameObject block1x;
+    public GameObject block2x;
     
     private Dictionary<PointTokenType, PointTokenPrefab> pointTokenDict = new ();
     private Dictionary<MultiplierTokenType, MultiplierTokenPrefab> multiplierTokenDict = new ();

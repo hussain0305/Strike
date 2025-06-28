@@ -62,7 +62,7 @@ public class PowerInput : MonoBehaviour
         else if (!isDragging && Time.time > nextKeyboardInputAllowedTime)
         {
             keyboardInputChange = 0;
-            nextKeyboardInputAllowedTime += keyboardInputInterval;
+            nextKeyboardInputAllowedTime = Time.time + keyboardInputInterval;
             
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ||
                 Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using Zenject;
@@ -102,5 +103,114 @@ public class PoolingManager : MonoBehaviour
         star.transform.SetParent(transform);
         star.SetActive(false);
         starPool.Enqueue(star);
+    }
+    
+    // BLOCKIFICATION 
+
+    private void Start()
+    {
+        InitBlockificationPool();
+        Blockifier.AssignPoolingManager(this);
+    }
+
+    public Queue<BuildingBlock> blocks1xPool = new Queue<BuildingBlock>();
+    public Queue<BuildingBlock> blocks2xPool = new Queue<BuildingBlock>();
+
+    private const int NUM_1X_BLOCKS = 50;
+    private const int NUM_2X_BLOCKS = 50;
+    
+    public void InitBlockificationPool()
+    {
+        IEnumerator InitPool()
+        {
+            int i = 0;
+            GameObject spawnedGameObject;
+            while (i < NUM_1X_BLOCKS)
+            {
+                spawnedGameObject = Instantiate(prefabMapping.block1x, transform);
+                blocks1xPool.Enqueue(spawnedGameObject.GetComponent<BuildingBlock>());
+                spawnedGameObject.SetActive(false);
+
+                i++;
+                yield return null;
+            }
+            
+            i = 0;
+            while (i < NUM_2X_BLOCKS)
+            {
+                spawnedGameObject = Instantiate(prefabMapping.block2x, transform);
+                blocks2xPool.Enqueue(spawnedGameObject.GetComponent<BuildingBlock>());
+                spawnedGameObject.SetActive(false);
+                
+                i++;
+                yield return null;
+            }
+        }
+
+        StartCoroutine(InitPool());
+    }
+
+    public List<BuildingBlock> Get1xBlocks(int num)
+    {
+        List<BuildingBlock> result = new List<BuildingBlock>();
+
+        for (int i = 0; i < num; i++)
+        {
+            BuildingBlock block;
+            if (blocks1xPool.Count > 0)
+            {
+                block = blocks1xPool.Dequeue();
+            }
+            else
+            {
+                block = Instantiate(prefabMapping.block1x, transform).GetComponent<BuildingBlock>();
+            }
+
+            block.gameObject.SetActive(true);
+            result.Add(block);
+        }
+
+        return result;
+    }
+
+    public void Return1xBlocks(List<BuildingBlock> blocks)
+    {
+        foreach (BuildingBlock block in blocks)
+        {
+            block.gameObject.SetActive(false);
+            blocks1xPool.Enqueue(block);
+        }
+    }
+    
+    public List<BuildingBlock> Get2xBlocks(int num)
+    {
+        List<BuildingBlock> result = new List<BuildingBlock>();
+
+        for (int i = 0; i < num; i++)
+        {
+            BuildingBlock block;
+            if (blocks2xPool.Count > 0)
+            {
+                block = blocks2xPool.Dequeue();
+            }
+            else
+            {
+                block = Instantiate(prefabMapping.block2x, transform).GetComponent<BuildingBlock>();
+            }
+
+            block.gameObject.SetActive(true);
+            result.Add(block);
+        }
+
+        return result;
+    }
+
+    public void Return2xBlocks(List<BuildingBlock> blocks)
+    {
+        foreach (BuildingBlock block in blocks)
+        {
+            block.gameObject.SetActive(false);
+            blocks2xPool.Enqueue(block);
+        }
     }
 }

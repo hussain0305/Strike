@@ -37,6 +37,7 @@ public class Obstacle : MonoBehaviour
             
             cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
+            cmScript.enabled = true;
             
             RBody.isKinematic = true;
         }
@@ -57,7 +58,8 @@ public class Obstacle : MonoBehaviour
                 crScript = axisOfRotation.AddComponent<ContinuousRotation>();
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
-            
+            crScript.enabled = true;
+
             RBody.isKinematic = true;
         }
         else if (crScript)

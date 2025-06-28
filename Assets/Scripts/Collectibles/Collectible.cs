@@ -83,6 +83,8 @@ public class Collectible : MonoBehaviour, ICollectible
     
     private GameStateManager gameStateManager;
     private RoundDataManager roundDataManager;
+
+    private PointToken pointTokenScript;
     
     [Inject]
     public void Construct(GameStateManager _gameStateManager, RoundDataManager _roundDataManager)
@@ -95,6 +97,7 @@ public class Collectible : MonoBehaviour, ICollectible
     {
         SaveDefaults();
         hitReaction = GetComponent<ICollectibleHitReaction>();
+        pointTokenScript = GetComponent<PointToken>();
     }
 
     public void Start()
@@ -181,15 +184,15 @@ public class Collectible : MonoBehaviour, ICollectible
 
     public void OnCollisionEnter(Collision other)
     {
-        ProcessHit(other.gameObject, other.transform.position);
+        ProcessHit(other.gameObject, other.transform.position, other.relativeVelocity);
     }
     
     private void OnTriggerEnter(Collider other)
     {
-        ProcessHit(other.gameObject, other.transform.position);
+        ProcessHit(other.gameObject, other.transform.position, Vector3.zero);
     }
 
-    private void ProcessHit(GameObject collidingObject, Vector3 hitPosition)
+    private void ProcessHit(GameObject collidingObject, Vector3 hitPosition, Vector3 impactVelocity)
     {
         if (collidingObject != null && (collectingLayer & (1 << collidingObject.layer)) == 0)
             return;
@@ -208,6 +211,9 @@ public class Collectible : MonoBehaviour, ICollectible
         EventBus.Publish(new CollectibleHitEvent(type, value, hitPosition));
         header?.gameObject.SetActive(false);
         hitReaction?.CheckIfHitsExhasuted(numTimesCollected, numTimesCanBeCollected);
+
+        if (pointTokenScript)
+            Blockifier.SpawnDestructionChunks(hitPosition, pointTokenScript, impactVelocity);
     }
 
     public void BallShot(BallShotEvent e)
@@ -280,7 +286,7 @@ public class Collectible : MonoBehaviour, ICollectible
         }
     }
     
-    private void Stow()
+    public void Stow()
     {
         RBody.isKinematic = true;
         if (continuousMovement)
@@ -355,6 +361,7 @@ public class Collectible : MonoBehaviour, ICollectible
             cmScript.CreateMarkers(path);
             cmScript.speed  = movementSpeed;
             RBody.isKinematic = true;
+            cmScript.enabled = true;
         }
         else if (cmScript)
         {
@@ -375,6 +382,7 @@ public class Collectible : MonoBehaviour, ICollectible
                 crScript = gameObject.AddComponent<ContinuousRotation>();
             crScript.rotationAxis = rotationAxis;
             crScript.rotationSpeed = rotationSpeed;
+            crScript.enabled = true;
         }
         else if (crScript && !crScript.gameObject.CompareTag(Global.ResistComponentDeletionTag))
         {
