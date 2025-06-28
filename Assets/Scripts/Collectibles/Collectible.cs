@@ -40,9 +40,6 @@ public class Collectible : MonoBehaviour, ICollectible
     [Header("Feedback and Visual Indicators")]
     public PointDisplayType pointDisplay;
 
-    [Header("Other stuff")]
-    public GameObject[] deactivateForInvisibility;
-    
     public bool SetupFloatingBoard => pointDisplay == PointDisplayType.FloatingBoard;
     public bool SetupInBodyBoard => pointDisplay == PointDisplayType.InBody;
     public bool HasPointBoard => pointDisplay != PointDisplayType.None;
@@ -169,7 +166,6 @@ public class Collectible : MonoBehaviour, ICollectible
 
     public void NewGameStarted(int _numPlayers)
     {
-        ToggleVisibility(true);
         numPlayers = _numPlayers;
         RecordInitialState();
         isPlayingSolo = numPlayers == 1;
@@ -228,7 +224,6 @@ public class Collectible : MonoBehaviour, ICollectible
     public void NextShotCued(NextShotCuedEvent e)
     {
         RecordCurrentState();
-        ToggleVisibility(true);
         currentPlayer = e.CurrentPlayerTurn;
         header?.gameObject.SetActive(true);
 
@@ -299,19 +294,10 @@ public class Collectible : MonoBehaviour, ICollectible
 
         transform.position = new Vector3(500, 500, 500);
     }
-
-    public void ToggleVisibility(bool isVisible)
-    {
-        foreach (GameObject go in deactivateForInvisibility)
-        {
-            go.SetActive(isVisible);
-        }
-    }
     
     public void ResetPin()
     {
         NullifyVelocities();
-        ToggleVisibility(true);
         RBody.isKinematic = isKinematicInThisLevel;
         if (!RBody.isKinematic)
         {
