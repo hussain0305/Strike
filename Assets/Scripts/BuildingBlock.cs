@@ -13,7 +13,7 @@ public class BuildingBlock : MonoBehaviour
 
     public void SetPositiveBlock()
     {
-        edgeMesh.sharedMaterial = GlobalAssets.Instance.positiveCollectibleMaterial;
+        edgeMesh.sharedMaterial = GlobalAssets.Instance.positiveCollectibleHitMaterial;
     }
 
     public void SetNegativeBlock()

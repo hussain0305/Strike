@@ -72,10 +72,15 @@ public static class Blockifier
         void Place2xBlock(int x, int y, int z)
         {
             for (int dx = 0; dx < 2; dx++)
-            for (int dy = 0; dy < 2; dy++)
-            for (int dz = 0; dz < 2; dz++)
-                occupied[x + dx, y + dy, z + dz] = true;
-
+            {
+                for (int dy = 0; dy < 2; dy++)
+                {
+                    for (int dz = 0; dz < 2; dz++)
+                    {
+                        occupied[x + dx, y + dy, z + dz] = true;
+                    }
+                }
+            }
             Vector3 localCenter = new Vector3(x + 1f - xSize / 2f, y, z + 1f - zSize / 2f);
             Vector3 worldPos = transform.TransformPoint(localCenter);
 
