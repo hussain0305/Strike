@@ -6,21 +6,28 @@ public static class WebGLSaveSystem
     {
         string json = JsonUtility.ToJson(data);
         string encryptedJson = EncryptionUtils.Encrypt(json);
-        PlayerPrefs.SetString("StrSaveData", encryptedJson);
-        PlayerPrefs.Save();
+
+        string safeString = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(encryptedJson));
+        WebGLStorageBridge.Save("StrSaveData", safeString);
     }
 
     public static SaveData LoadGame()
     {
-        if (PlayerPrefs.HasKey("StrSaveData"))
+        string safeString = WebGLStorageBridge.Load("StrSaveData");
+
+        if (string.IsNullOrEmpty(safeString))
         {
-            string encryptedJson = PlayerPrefs.GetString("StrSaveData");
+            return new SaveData();
+        }
+        
+        try
+        {
+            string encryptedJson = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(safeString));
             string json = EncryptionUtils.Decrypt(encryptedJson);
             return JsonUtility.FromJson<SaveData>(json);
         }
-        else
+        catch (System.Exception ex)
         {
-            Debug.LogWarning("No save data found in PlayerPrefs, returning default values.");
             return new SaveData();
         }
     }
