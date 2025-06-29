@@ -116,8 +116,8 @@ public class PoolingManager : MonoBehaviour
     public Queue<BuildingBlock> blocks1xPool = new Queue<BuildingBlock>();
     public Queue<BuildingBlock> blocks2xPool = new Queue<BuildingBlock>();
 
-    private const int NUM_1X_BLOCKS = 100;
-    private const int NUM_2X_BLOCKS = 100;
+    private const int INITIAL_BATCH_OF_1X_BLOCKS = 150;
+    private const int INITIAL_BATCH_OF_2X_BLOCKS = 100;
     
     public void InitBlockificationPool()
     {
@@ -125,7 +125,7 @@ public class PoolingManager : MonoBehaviour
         {
             int i = 0;
             GameObject spawnedGameObject;
-            while (i < NUM_1X_BLOCKS)
+            while (i < INITIAL_BATCH_OF_1X_BLOCKS)
             {
                 spawnedGameObject = Instantiate(prefabMapping.block1x, transform);
                 blocks1xPool.Enqueue(spawnedGameObject.GetComponent<BuildingBlock>());
@@ -136,7 +136,7 @@ public class PoolingManager : MonoBehaviour
             }
             
             i = 0;
-            while (i < NUM_2X_BLOCKS)
+            while (i < INITIAL_BATCH_OF_2X_BLOCKS)
             {
                 spawnedGameObject = Instantiate(prefabMapping.block2x, transform);
                 blocks2xPool.Enqueue(spawnedGameObject.GetComponent<BuildingBlock>());
