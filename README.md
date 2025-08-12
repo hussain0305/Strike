@@ -1,4 +1,4 @@
-# 🎯 Strike – Physics Trick Shot Game
+# 🎯 Trick Shot Rumble (formerly called Strike) – Physics Trick Shot Game
 
 *Strike* is a fast-paced 2D physics game where players launch customizable balls to knock over collectibles in a freeform arena. Unlike traditional bowling-style games, *Strike* encourages creativity through swipes, ball abilities, and dynamic environments like portals and danger zones.
 
